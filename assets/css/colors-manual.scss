@@ -1,0 +1,19 @@
+---
+---
+
+@import "colors";
+
+:root {
+  @include colors;
+  @include light-colors;
+}
+
+[data-theme="dark"] {
+  @include dark-colors;
+}
+
+@media print {
+  :root {
+    @include light-colors;
+  }
+}
