@@ -8,5 +8,5 @@ permalink: /notes/
 * [Computer Architecture](computer-architecture/)
 * [Operating Systems](operating-systems/)
 * [Programming Languages](programming-languages/)
-* [Data Structures](data-structures/)
+* [Data Structures & Algorithms](data-structures-&-algorithms/)
 * [Discrete Math](discrete-math/)
