@@ -45,24 +45,24 @@
     <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>Posts | nate’s site</title>
+<title>Huffman Coding | nate’s site</title>
 <meta name="generator" content="Jekyll v3.9.2" />
-<meta property="og:title" content="Posts" />
+<meta property="og:title" content="Huffman Coding" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Home" />
 <meta property="og:description" content="Home" />
-<link rel="canonical" href="http://localhost:4000/posts/" />
-<meta property="og:url" content="http://localhost:4000/posts/" />
+<link rel="canonical" href="http://localhost:4000/notes/image-compression/test.html" />
+<meta property="og:url" content="http://localhost:4000/notes/image-compression/test.html" />
 <meta property="og:site_name" content="nate’s site" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Posts" />
+<meta property="twitter:title" content="Huffman Coding" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Posts","url":"http://localhost:4000/posts/"}</script>
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Huffman Coding","url":"http://localhost:4000/notes/image-compression/test.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=11238d90b52e1dc058a907a081982888dd37da69">
-    <link rel="stylesheet" href="/assets/css/style.css?v=11238d90b52e1dc058a907a081982888dd37da69">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=0c24358b1f13ee565fd84ebb1bdea3a08d30b8ce">
+    <link rel="stylesheet" href="/assets/css/style.css?v=0c24358b1f13ee565fd84ebb1bdea3a08d30b8ce">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -124,6 +124,13 @@
     </ul>
     <button class="theme-switch"><i class="far fa-moon"></i></button>
     
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#encoding-nodes">Encoding Nodes</a></li><li><a href="#decoding">Decoding</a></li></ul>
+            
+    
   </div>
 
         </header>
@@ -141,7 +148,18 @@
       </div>
       <section>
 
-      
+      <h1 id="huffman-coding">Huffman Coding</h1>
+
+<h2 id="encoding-nodes">Encoding Nodes</h2>
+
+<p>Involves sorting image characters by frequency, combining the two least frequent characters into a new node (with their combined frequency), Then, we insert this node back into the list.</p>
+
+<p>For example…</p>
+
+<p>This process is repeated until there’s only one element left, which becomes the root of the Huffman tree. To encode a character, traverse the tree from the root, marking 0 for left branches and 1 for right branches.</p>
+
+<h2 id="decoding">Decoding</h2>
+
 
 
       </section>
