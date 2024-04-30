@@ -4,10 +4,16 @@
 <loc>http://localhost:4000/about/</loc>
 </url>
 <url>
+<loc>http://localhost:4000/notes/linear-algebra/basics.html</loc>
+</url>
+<url>
 <loc>http://localhost:4000/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/notes/image-compression/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/notes/linear-algebra/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/notes/</loc>

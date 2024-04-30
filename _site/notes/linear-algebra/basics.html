@@ -45,20 +45,20 @@
     <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>nate’s site | Home</title>
+<title>The Basics | nate’s site</title>
 <meta name="generator" content="Jekyll v3.9.2" />
-<meta property="og:title" content="nate’s site" />
+<meta property="og:title" content="The Basics" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Home" />
 <meta property="og:description" content="Home" />
-<link rel="canonical" href="http://localhost:4000/404.html" />
-<meta property="og:url" content="http://localhost:4000/404.html" />
+<link rel="canonical" href="http://localhost:4000/notes/linear-algebra/basics.html" />
+<meta property="og:url" content="http://localhost:4000/notes/linear-algebra/basics.html" />
 <meta property="og:site_name" content="nate’s site" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="nate’s site" />
+<meta property="twitter:title" content="The Basics" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"nate’s site","url":"http://localhost:4000/404.html"}</script>
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"The Basics","url":"http://localhost:4000/notes/linear-algebra/basics.html"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="stylesheet" href="/assets/css/colors-manual.css?v=09e0af3aa68ead0d29b02555d264884a97d08cfd">
@@ -124,6 +124,13 @@
     </ul>
     <button class="theme-switch"><i class="far fa-moon"></i></button>
     
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#field-of-real-numbers">Field of Real Numbers</a></li><li><a href="#a-linear-equation">A Linear Equation</a></li><li><a href="#comparing-vectors">Comparing Vectors</a></li></ul>
+            
+    
   </div>
 
         </header>
@@ -141,11 +148,91 @@
       </div>
       <section>
 
-      <div class="404-container">
-  <h1></h1>
+      <h1 id="the-basics">The Basics</h1>
 
-  <p><strong>Coming Soon!</strong></p>
-</div>
+\[\begin{bmatrix}
+1 &amp; 2 &amp; 3 \\
+4 &amp; 5 &amp; 6 \\
+7 &amp; 8 &amp; 9 \\
+\end{bmatrix}\]
+
+<h2 id="field-of-real-numbers">Field of Real Numbers</h2>
+
+<p>$\mathbb{R}$: Set of real numbers</p>
+
+<p>A set is a collection, possibly empty, of elements</p>
+
+<p>$a,b\in \mathbb{R}$: Pair of real numbers</p>
+
+<p>Read “$a,b$ are in $\mathbb{R}$” or “$a,b$ are elements of $\mathbb{R}$”</p>
+
+<p><strong>Fact:</strong> Can add, subtract, or multiply any $a,b\in \mathbb{R}$ to get another $c\in \mathbb{R}$, and:</p>
+
+\[\begin{align*}
+a+b &amp;= b+a \\
+a-b &amp;= -(b-a) \\
+ab &amp;= ba
+\end{align*}\]
+
+<p>Can also divide $b$ by $a$ if $a\neq 0$</p>
+
+<p>Say “$\mathbb{R}$ is a field”</p>
+
+<hr />
+
+<h2 id="a-linear-equation">A Linear Equation</h2>
+
+<p><strong>Claim</strong>:
+The equation $4x=2$ is satisfied for exactly one $x\in \mathbb{R}$</p>
+
+<p>It is easy to verify $x=\frac{1}{2}$ satisfies $4x=2$</p>
+
+<p>Use division to show $x=\frac{2}{4} =\frac{1}{2}$ is the only solution</p>
+
+<hr />
+
+<p><strong>Fact</strong>:
+If $a,b\in \mathbb{R}$ and $a\neq 0$, then $ax=b$ for exactly one $x\in \mathbb{R}$</p>
+
+<p><strong>Proof</strong>:
+Divide both sides by $a$ (or multiply by $\frac{1}{a}$) to get $x=\frac{a}{a} x=\frac{b}{a}$</p>
+
+<p>This works because $\mathbb{R}$ is a field and division undoes multiplication</p>
+
+<hr />
+
+<p><strong>Definition</strong>:
+A vector is an arrow with a tail (initial point) and head (terminal point)</p>
+
+<p><strong>Example</strong>:
+Standard Position</p>
+
+<p>$O=( 0,0)$: The origin</p>
+
+<p><strong>Definition</strong>:
+A vector $v$ is in standard position iff $v=\overrightarrow{OA}$ for some $A$</p>
+
+<p>The phrase “$P$ iff $Q$” means “$P$ is true exactly when $Q$ is”</p>
+
+<p><strong>Example</strong>:</p>
+
+<p>$v$ and $w$ are in standard position</p>
+
+<p>$w\prime $ is not in standard position</p>
+
+<h2 id="comparing-vectors">Comparing Vectors</h2>
+
+<p><strong>Definition</strong>:
+Two plane vectors are equal iff they have the same “direction” and “length”</p>
+
+<p><strong>Example</strong>:
+In the previous example, $w=w\prime $ but $w\neq v$</p>
+
+<p><strong>Fact</strong>:
+Vectors in standard position are equal iff they have the same entries</p>
+
+<p><strong>Fact</strong>:
+Every vector is equal to a unique vector in standard position</p>
 
 
       </section>
