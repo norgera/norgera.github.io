@@ -1,0 +1,449 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Eigenvalues and Eigenvectors | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Eigenvalues and Eigenvectors" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/linear-algebra/eigenstuff.html" />
+<meta property="og:url" content="http://localhost:4000/notes/linear-algebra/eigenstuff.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Eigenvalues and Eigenvectors" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Eigenvalues and Eigenvectors","url":"http://localhost:4000/notes/linear-algebra/eigenstuff.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=341fff04a96b70606aa3b89eaa7ee0746bca53cb">
+    <link rel="stylesheet" href="/assets/css/style.css?v=341fff04a96b70606aa3b89eaa7ee0746bca53cb">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#eigenvalues">Eigenvalues</a></li><li><a href="#eigenvectors">Eigenvectors</a></li><li><a href="#calculating-eigenvectors-and-eigenvalues">Calculating Eigenvectors and Eigenvalues</a></li><li><a href="#complex-example">Complex Example</a></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="eigenvalues-and-eigenvectors">Eigenvalues and Eigenvectors</h1>
+
+<h3 id="eigenvalues">Eigenvalues</h3>
+
+<p>Given a square matrix $A$, an eigenvalue $\lambda$ and an eigenvector $v$ satisfy the equation:</p>
+
+\[A v = \lambda v\]
+
+<p>This can be rearranged to:</p>
+
+\[(A - \lambda I) v = 0\]
+
+<p>where $I$ is the identity matrix. For non-trivial solutions (where $v$ is not the zero vector), the determinant of $(A - \lambda I)$ must be zero:</p>
+
+\[\det(A - \lambda I) = 0\]
+
+<p>Solving this characteristic equation will yield the eigenvalues. Substituting each eigenvalue back into the equation $(A - \lambda I) v = 0$ allows for solving the corresponding eigenvectors.</p>
+
+<p><strong>Example: Calculating Eigenvalues</strong></p>
+
+<p>For the matrix:</p>
+
+\[A = \begin{bmatrix}
+2 &amp; 1 \\
+1 &amp; 2
+\end{bmatrix}\]
+
+<p>The characteristic equation is:</p>
+
+\[\det \left( \begin{bmatrix}
+2 - \lambda &amp; 1 \\
+1 &amp; 2 - \lambda
+\end{bmatrix} \right) = 0\]
+
+<p>which simplifies to:</p>
+
+\[(2-\lambda)^2 - 1 = \lambda^2 - 4\lambda + 3 = 0\]
+
+<p>The solutions are $\lambda = 1$ and $\lambda = 3$. Substituting these back into the eigenvector equation provides the corresponding eigenvectors.</p>
+
+<h3 id="eigenvectors">Eigenvectors</h3>
+<p><strong>Example: Calculating Eigenvectors</strong></p>
+
+<p>Given the matrix $A$:</p>
+
+\[A = \begin{bmatrix}
+2 &amp; 1 \\
+1 &amp; 2
+\end{bmatrix}\]
+
+<p>We found the eigenvalues $\lambda = 1$ and $\lambda = 3$. Now, we’ll calculate the eigenvectors corresponding to each eigenvalue.</p>
+
+<p><strong>Eigenvector for $\lambda = 1$</strong></p>
+
+<p>Substitute $\lambda = 1$ into the equation $(A - \lambda I)v = 0$:</p>
+
+\[\begin{bmatrix}
+2 - 1 &amp; 1 \\
+1 &amp; 2 - 1
+\end{bmatrix} \begin{bmatrix}
+x \\
+y
+\end{bmatrix} = \begin{bmatrix}
+0 \\
+0
+\end{bmatrix}\]
+
+<p>This simplifies to:</p>
+
+\[\begin{bmatrix}
+1 &amp; 1 \\
+1 &amp; 1
+\end{bmatrix} \begin{bmatrix}
+x \\
+y
+\end{bmatrix} = \begin{bmatrix}
+0 \\
+0
+\end{bmatrix}\]
+
+<p>Which further reduces to $x + y = 0$. Solving for $y$, we have $y = -x$. Thus, the eigenvectors are any scalar multiple of:</p>
+
+\[\begin{bmatrix}
+1 \\
+-1
+\end{bmatrix}\]
+
+<p><strong>Eigenvector for $\lambda = 3$</strong></p>
+
+<p>Substitute $\lambda = 3$ into the equation $(A - \lambda I)v = 0$:</p>
+
+\[\begin{bmatrix}
+2 - 3 &amp; 1 \\
+1 &amp; 2 - 3
+\end{bmatrix} \begin{bmatrix}
+x \\
+y
+\end{bmatrix} = \begin{bmatrix}
+0 \\
+0
+\end{bmatrix}\]
+
+<p>This simplifies to:</p>
+
+\[\begin{bmatrix}
+-1 &amp; 1 \\
+1 &amp; -1
+\end{bmatrix} \begin{bmatrix}
+x \\
+y
+\end{bmatrix} = \begin{bmatrix}
+0 \\
+0
+\end{bmatrix}\]
+
+<p>Which reduces to $-x + y = 0$. Solving for $y$, we have $y = x$. Thus, the eigenvectors are any scalar multiple of:</p>
+
+\[\begin{bmatrix}
+1 \\
+1
+\end{bmatrix}\]
+
+<p>For the matrix $A$, the eigenvectors corresponding to $\lambda = 1$ are any scalar multiples of $\begin{bmatrix} 1 \ -1 \end{bmatrix}$, and for $\lambda = 3$, they are any scalar multiples of $\begin{bmatrix} 1 \ 1 \end{bmatrix}$. These vectors indicate the directions in which the matrix $A$ stretches the space by the factors $1$ and $3$, respectively.</p>
+
+<h3 id="calculating-eigenvectors-and-eigenvalues">Calculating Eigenvectors and Eigenvalues</h3>
+
+<p>Consider the matrix $B$:</p>
+
+\[B = \begin{bmatrix}
+3 &amp; 2 &amp; 4 \\
+2 &amp; 0 &amp; 2 \\
+4 &amp; 2 &amp; 3
+\end{bmatrix}\]
+
+<p><strong>Step 1: Find the Eigenvalues</strong></p>
+
+<p>First, we need to determine the eigenvalues by solving the characteristic equation derived from $\det(B - \lambda I) = 0$.</p>
+
+\[\det \left( \begin{bmatrix}
+3 - \lambda &amp; 2 &amp; 4 \\
+2 &amp; -\lambda &amp; 2 \\
+4 &amp; 2 &amp; 3 - \lambda
+\end{bmatrix} \right) = 0\]
+
+<p>Expanding this determinant:</p>
+
+\[(3-\lambda)\left((-\lambda)(3-\lambda) - 4\right) - 2\left(2(3-\lambda) - 8\right) + 4\left(4 - 2\lambda\right) = 0\]
+
+<p>Simplifying, we find:</p>
+
+\[-\lambda^3 + 6\lambda^2 + 8\lambda - 48 = 0\]
+
+<p>The eigenvalues are found to be $\lambda_1 = 8$, $\lambda_2 = 4$, and $\lambda_3 = -4$.</p>
+
+<p><strong>Step 2: Find the Eigenvectors</strong></p>
+
+<p><strong>For $\lambda_1 = 8$</strong>:</p>
+
+<p>Substitute $\lambda = 8$ back into the equation $(B - 8I)v = 0$:</p>
+
+\[\begin{bmatrix}
+-5 &amp; 2 &amp; 4 \\
+2 &amp; -8 &amp; 2 \\
+4 &amp; 2 &amp; -5
+\end{bmatrix} \begin{bmatrix}
+x \\
+y \\
+z
+\end{bmatrix} = \begin{bmatrix}
+0 \\
+0 \\
+0
+\end{bmatrix}\]
+
+<p>Solving this system (e.g., using row reduction), we find the eigenvector:</p>
+
+\[\begin{bmatrix}
+x \\
+y \\
+z
+\end{bmatrix} = t \begin{bmatrix}
+2 \\
+1 \\
+-2
+\end{bmatrix}, \quad t \in \mathbb{R}\]
+
+<p><strong>For $\lambda_2 = 4$</strong>:</p>
+
+<p>Substitute $\lambda = 4$ into $(B - 4I)v = 0$:</p>
+
+\[\begin{bmatrix}
+-1 &amp; 2 &amp; 4 \\
+2 &amp; -4 &amp; 2 \\
+4 &amp; 2 &amp; -1
+\end{bmatrix} \begin{bmatrix}
+x \\
+y \\
+z
+\end{bmatrix} = \begin{bmatrix}
+0 \\
+0 \\
+0
+\end{bmatrix}\]
+
+<p>Solving this, we find the eigenvector:</p>
+
+\[\begin{bmatrix}
+x \\
+y \\
+z
+\end{bmatrix} = s \begin{bmatrix}
+2 \\
+0 \\
+1
+\end{bmatrix}, \quad s \in \mathbb{R}\]
+
+<p><strong>For $\lambda_3 = -4$</strong>:</p>
+
+<p>Substitute $\lambda = -4$ into $(B - (-4)I)v = 0$:</p>
+
+\[\begin{bmatrix}
+7 &amp; 2 &amp; 4 \\
+2 &amp; 4 &amp; 2 \\
+4 &amp; 2 &amp; 7
+\end{bmatrix} \begin{bmatrix}
+x \\
+y \\
+z
+\end{bmatrix} = \begin{bmatrix}
+0 \\
+0 \\
+0
+\end{bmatrix}\]
+
+<p>Solving this, we find the eigenvector:</p>
+
+\[\begin{bmatrix}
+x \\
+y \\
+z
+\end{bmatrix} = u \begin{bmatrix}
+2 \\
+-5 \\
+2
+\end{bmatrix}, \quad u \in \mathbb{R}\]
+
+<hr />
+
+<h3 id="complex-example">Complex Example</h3>
+
+<p>Consider a matrix $A$ defined as:</p>
+
+\[A = \begin{bmatrix}
+1 &amp; -2 \\
+1 &amp; 3
+\end{bmatrix}\]
+
+<p><strong>Finding Complex Eigenvalues</strong></p>
+
+<p>First, we determine the eigenvalues by setting up and solving the characteristic equation derived from $\text{det}(A - \lambda I) = 0$.</p>
+
+<p>The characteristic polynomial is calculated as:
+\((1-\lambda)(3-\lambda) + 2 = \lambda^2 - 4\lambda + 5 = 0\)</p>
+
+<p>Solving this using the quadratic formula yields:
+\(\lambda = \frac{4 \pm \sqrt{16 - 20}}{2} = \frac{4 \pm \sqrt{-4}}{2} = 2 \pm i\)</p>
+
+<p><strong>Finding the Corresponding Eigenvectors</strong></p>
+
+<p>For $\lambda = 2 + i$:
+Substitute $\lambda = 2 + i$ into $(A - \lambda I)v = 0$:</p>
+
+\[\begin{bmatrix}
+-1 - i &amp; -2 \\
+1 &amp; 1 - i
+\end{bmatrix}\]
+
+<p>Through row reduction and simplification, we find that an eigenvector corresponding to $\lambda = 2 + i$ is:</p>
+
+\[v_1 = \begin{bmatrix}
+-1 + i \\
+1
+\end{bmatrix}\]
+
+<p>For $\lambda = 2 - i$:
+Similarly, substituting $\lambda = 2 - i$ yields another eigenvector:</p>
+
+\[v_2 = \begin{bmatrix}
+-1 - i \\
+1
+\end{bmatrix}\]
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>
