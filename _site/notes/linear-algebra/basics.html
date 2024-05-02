@@ -45,9 +45,9 @@
     <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>The Basics | nate’s site</title>
+<title>Basics of Real Numbers and Fields | nate’s site</title>
 <meta name="generator" content="Jekyll v3.9.2" />
-<meta property="og:title" content="The Basics" />
+<meta property="og:title" content="Basics of Real Numbers and Fields" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Home" />
 <meta property="og:description" content="Home" />
@@ -56,13 +56,13 @@
 <meta property="og:site_name" content="nate’s site" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="The Basics" />
+<meta property="twitter:title" content="Basics of Real Numbers and Fields" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"The Basics","url":"http://localhost:4000/notes/linear-algebra/basics.html"}</script>
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Basics of Real Numbers and Fields","url":"http://localhost:4000/notes/linear-algebra/basics.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=09e0af3aa68ead0d29b02555d264884a97d08cfd">
-    <link rel="stylesheet" href="/assets/css/style.css?v=09e0af3aa68ead0d29b02555d264884a97d08cfd">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=341fff04a96b70606aa3b89eaa7ee0746bca53cb">
+    <link rel="stylesheet" href="/assets/css/style.css?v=341fff04a96b70606aa3b89eaa7ee0746bca53cb">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -128,7 +128,7 @@
                 
                 <h4>Table of Contents</h4>
             
-                <ul class="toc"><li><a href="#field-of-real-numbers">Field of Real Numbers</a></li><li><a href="#a-linear-equation">A Linear Equation</a></li><li><a href="#comparing-vectors">Comparing Vectors</a></li></ul>
+                <ul class="toc"><li><a href="#properties-of-real-numbers-mathbbr">Properties of Real Numbers ($\mathbb{R}$)</a><ul><li><a href="#field-properties">Field Properties</a></li></ul></li><li><a href="#definitions-of-linear-equations">Definitions of Linear Equations</a><ul><li><a href="#example">Example</a></li><li><a href="#properties-applied">Properties Applied</a></li></ul></li></ul>
             
     
   </div>
@@ -148,91 +148,59 @@
       </div>
       <section>
 
-      <h1 id="the-basics">The Basics</h1>
+      <h1 id="basics-of-real-numbers-and-fields">Basics of Real Numbers and Fields</h1>
 
-\[\begin{bmatrix}
-1 &amp; 2 &amp; 3 \\
-4 &amp; 5 &amp; 6 \\
-7 &amp; 8 &amp; 9 \\
-\end{bmatrix}\]
+<h2 id="properties-of-real-numbers-mathbbr">Properties of Real Numbers ($\mathbb{R}$)</h2>
 
-<h2 id="field-of-real-numbers">Field of Real Numbers</h2>
+<p>The set of real numbers, denoted as $\mathbb{R}$, includes all the numbers on the continuous number line, encompassing both rational and irrational numbers.</p>
 
-<p>$\mathbb{R}$: Set of real numbers</p>
+<h3 id="field-properties">Field Properties</h3>
 
-<p>A set is a collection, possibly empty, of elements</p>
+<ul>
+  <li><strong>Addition and Multiplication</strong>: For any two real numbers $a$ and $b$, the sum ($a+b$) and product ($ab$) are also real numbers.</li>
+  <li><strong>Associativity</strong>: Addition and multiplication of real numbers are associative.
+    <ul>
+      <li>$(a + b) + c = a + (b + c)$</li>
+      <li>$(ab)c = a(bc)$</li>
+    </ul>
+  </li>
+  <li><strong>Commutativity</strong>: Both addition and multiplication of real numbers are commutative.
+    <ul>
+      <li>$a + b = b + a$</li>
+      <li>$ab = ba$</li>
+    </ul>
+  </li>
+  <li><strong>Identity Elements</strong>:
+    <ul>
+      <li>The additive identity is 0, meaning $a + 0 = a$.</li>
+      <li>The multiplicative identity is 1, meaning $a \cdot 1 = a$.</li>
+    </ul>
+  </li>
+  <li><strong>Additive Inverses</strong>: Every real number $a$ has an additive inverse $-a$ such that $a + (-a) = 0$.</li>
+  <li><strong>Multiplicative Inverses</strong>: Every non-zero real number $a$ has a multiplicative inverse $\frac{1}{a}$ such that $a \cdot \frac{1}{a} = 1$.</li>
+  <li><strong>Distributive Law</strong>: Multiplication distributes over addition.
+    <ul>
+      <li>$a(b + c) = ab + ac$</li>
+    </ul>
+  </li>
+</ul>
 
-<p>$a,b\in \mathbb{R}$: Pair of real numbers</p>
+<h2 id="definitions-of-linear-equations">Definitions of Linear Equations</h2>
 
-<p>Read “$a,b$ are in $\mathbb{R}$” or “$a,b$ are elements of $\mathbb{R}$”</p>
+<p>A linear equation in the field of real numbers is an equation that involves linear combinations of variables, each multiplied by a real number, equating to a real number.</p>
 
-<p><strong>Fact:</strong> Can add, subtract, or multiply any $a,b\in \mathbb{R}$ to get another $c\in \mathbb{R}$, and:</p>
+<h3 id="example">Example</h3>
 
-\[\begin{align*}
-a+b &amp;= b+a \\
-a-b &amp;= -(b-a) \\
-ab &amp;= ba
-\end{align*}\]
+<p>The linear equation $4x = 2$ has a solution in real numbers which can be found as follows:</p>
+<ul>
+  <li>Solving for $x$ gives $x = \frac{2}{4} = 0.5$.</li>
+</ul>
 
-<p>Can also divide $b$ by $a$ if $a\neq 0$</p>
+<p>This example demonstrates the closure properties of the field of real numbers under operations necessary for solving linear equations.</p>
 
-<p>Say “$\mathbb{R}$ is a field”</p>
+<h3 id="properties-applied">Properties Applied</h3>
 
-<hr />
-
-<h2 id="a-linear-equation">A Linear Equation</h2>
-
-<p><strong>Claim</strong>:
-The equation $4x=2$ is satisfied for exactly one $x\in \mathbb{R}$</p>
-
-<p>It is easy to verify $x=\frac{1}{2}$ satisfies $4x=2$</p>
-
-<p>Use division to show $x=\frac{2}{4} =\frac{1}{2}$ is the only solution</p>
-
-<hr />
-
-<p><strong>Fact</strong>:
-If $a,b\in \mathbb{R}$ and $a\neq 0$, then $ax=b$ for exactly one $x\in \mathbb{R}$</p>
-
-<p><strong>Proof</strong>:
-Divide both sides by $a$ (or multiply by $\frac{1}{a}$) to get $x=\frac{a}{a} x=\frac{b}{a}$</p>
-
-<p>This works because $\mathbb{R}$ is a field and division undoes multiplication</p>
-
-<hr />
-
-<p><strong>Definition</strong>:
-A vector is an arrow with a tail (initial point) and head (terminal point)</p>
-
-<p><strong>Example</strong>:
-Standard Position</p>
-
-<p>$O=( 0,0)$: The origin</p>
-
-<p><strong>Definition</strong>:
-A vector $v$ is in standard position iff $v=\overrightarrow{OA}$ for some $A$</p>
-
-<p>The phrase “$P$ iff $Q$” means “$P$ is true exactly when $Q$ is”</p>
-
-<p><strong>Example</strong>:</p>
-
-<p>$v$ and $w$ are in standard position</p>
-
-<p>$w\prime $ is not in standard position</p>
-
-<h2 id="comparing-vectors">Comparing Vectors</h2>
-
-<p><strong>Definition</strong>:
-Two plane vectors are equal iff they have the same “direction” and “length”</p>
-
-<p><strong>Example</strong>:
-In the previous example, $w=w\prime $ but $w\neq v$</p>
-
-<p><strong>Fact</strong>:
-Vectors in standard position are equal iff they have the same entries</p>
-
-<p><strong>Fact</strong>:
-Every vector is equal to a unique vector in standard position</p>
+<p>These properties allow for the operation of basic algebraic techniques used in solving equations and manipulating expressions. For instance, the equation $ax + b = 0$ can be solved by applying the field properties to isolate $x$</p>
 
 
       </section>
