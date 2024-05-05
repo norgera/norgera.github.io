@@ -45,9 +45,9 @@
     <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>Orthogonality and Least Squares | nate’s site</title>
+<title>Orthogonality | nate’s site</title>
 <meta name="generator" content="Jekyll v3.9.2" />
-<meta property="og:title" content="Orthogonality and Least Squares" />
+<meta property="og:title" content="Orthogonality" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Home" />
 <meta property="og:description" content="Home" />
@@ -56,13 +56,13 @@
 <meta property="og:site_name" content="nate’s site" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Orthogonality and Least Squares" />
+<meta property="twitter:title" content="Orthogonality" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Orthogonality and Least Squares","url":"http://localhost:4000/notes/linear-algebra/ortho.html"}</script>
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Orthogonality","url":"http://localhost:4000/notes/linear-algebra/ortho.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=341fff04a96b70606aa3b89eaa7ee0746bca53cb">
-    <link rel="stylesheet" href="/assets/css/style.css?v=341fff04a96b70606aa3b89eaa7ee0746bca53cb">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=aa4589133f8fe0d2b4e3d23879b7898b31bdcba6">
+    <link rel="stylesheet" href="/assets/css/style.css?v=aa4589133f8fe0d2b4e3d23879b7898b31bdcba6">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -124,13 +124,6 @@
     </ul>
     <button class="theme-switch"><i class="far fa-moon"></i></button>
     
-      
-                
-                <h4>Table of Contents</h4>
-            
-                <ul class="toc"><li><a href="#orthogonality-in-vector-spaces">Orthogonality in Vector Spaces</a></li><li><a href="#projection-and-the-gram-schmidt-process">Projection and the Gram-Schmidt Process</a><ul><li><a href="#projection">Projection</a><ul><li><a href="#formula-for-projection-onto-a-vector">Formula for Projection onto a Vector</a></li></ul></li><li><a href="#gram-schmidt-process">Gram-Schmidt Process</a><ul><li><a href="#process-outline">Process Outline</a></li></ul></li></ul></li><li><a href="#least-squares-approximation">Least Squares Approximation</a><ul><li><a href="#mathematical-formulation">Mathematical Formulation</a></li></ul></li><li><a href="#example-linear-regression">Example: Linear Regression</a></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
-            
-    
   </div>
 
         </header>
@@ -148,15 +141,195 @@
       </div>
       <section>
 
-      <h1 id="orthogonality-and-least-squares">Orthogonality and Least Squares</h1>
+      <h2 id="orthogonality">Orthogonality</h2>
 
-<p>Orthogonality and least squares are crucial concepts in linear algebra, pivotal in many applications across statistics, engineering, and science. This section provides a detailed overview of these topics, explaining their theoretical bases and practical applications.</p>
+<p><strong>Suppose $A$ is symmetric.</strong></p>
 
-<h2 id="orthogonality-in-vector-spaces">Orthogonality in Vector Spaces</h2>
+<p>Given:</p>
+<ul>
+  <li>$A x_1 = \lambda_1 x_1$</li>
+  <li>$A x_2 = \lambda_2 x_2$</li>
+  <li>$\lambda_1 \neq \lambda_2$</li>
+</ul>
 
-<p>Orthogonality in vector spaces is a fundamental concept that facilitates understanding and solving problems in various areas of mathematics and physics.</p>
+<p>Then:
+\(x_1 \cdot x_2 = 0\)</p>
 
-<p><strong>Orthogonality</strong>: Two vectors are orthogonal if their dot product is zero. This relationship is a key aspect of vector spaces because it implies that the vectors are independent of each other in the space they span.</p>
+<p>This states that eigenvectors corresponding to distinct eigenvalues of a symmetric matrix are orthogonal.</p>
+
+<p><strong>Proof</strong></p>
+
+<p>Start with the given conditions and use the properties of symmetric matrices and their eigenvectors:</p>
+
+\[\begin{aligned}
+(x_1^T A) x_2 &amp;= x_1^T (A x_2) \\
+&amp;= x_1^T (\lambda_2 x_2) \\
+&amp;= \lambda_2 (x_1^T x_2) \\
+(A^T x_1)^T x_2 &amp;= (A x_1)^T x_2 \\
+&amp;= (\lambda_1 x_1)^T x_2 \\
+&amp;= \lambda_1 (x_1^T x_2)
+\end{aligned}\]
+
+<p>Since $A$ is symmetric, $A = A^T$, and from the above, we have:</p>
+
+\[\lambda_1 (x_1^T x_2) = \lambda_2 (x_1^T x_2)\]
+
+<p>Implying:</p>
+
+\[(\lambda_1 - \lambda_2)(x_1^T x_2) = 0\]
+
+<p>Since $\lambda_1 \neq \lambda_2$, it follows that:</p>
+
+\[x_1^T x_2 = 0\]
+
+<p>Thus, $x_1 \cdot x_2 = 0$, confirming that the vectors are orthogonal.</p>
+
+<h1 id="orthogonal-vectors">Orthogonal Vectors</h1>
+
+<h2 id="definition">Definition</h2>
+
+<p>Say $\mathbf{x}_1, \ldots, \mathbf{x}_m \in \mathbb{R}^n$ are orthogonal if $\mathbf{x}_i \cdot \mathbf{x}_j = 0$ for $i \neq j$ (each $\mathbf{x}_i$ is at a “right angle” to the other $\mathbf{x}_j$).</p>
+
+<h2 id="examples">Examples</h2>
+
+<ul>
+  <li>$\mathbf{x} \in \mathbb{R}^n \Longrightarrow 0 \cdot \mathbf{x} = 0 \Longrightarrow 0, \mathbf{x}$ are orthogonal.</li>
+  <li>The standard basis $\underline{e_1, \ldots, e_n} \in \mathbb{R}^n$: Standard basis $\Longrightarrow e_i \cdot e_j = \begin{cases} 1 &amp; i=j \ 0 &amp; i \neq j \end{cases} \Longrightarrow e_1, \ldots, e_n$ are orthogonal. Columns of $n \times n$ identity matrix.</li>
+</ul>
+
+<h2 id="exercise">Exercise</h2>
+
+<p>Show the columns of a diagonal matrix are orthogonal.</p>
+
+<h2 id="example">Example</h2>
+
+\[\ 
+A = \begin{bmatrix} 
+1 &amp; 1 \\ 
+1 &amp; -1 
+\end{bmatrix} \Longrightarrow \mathbf{a}_1 = \begin{bmatrix} 
+1 \\ 
+1 
+\end{bmatrix}, \mathbf{a}_2 = \begin{bmatrix} 
+1 \\ 
+-1 
+\end{bmatrix}\]
+
+\[\Longrightarrow \mathbf{a}_1 \cdot \mathbf{a}_2 = 1 - 1 = 0\]
+
+\[\Longrightarrow \text{Columns of } A \text{ are orthogonal}\]
+
+<p>(Notice $\text{Span}(\mathbf{a}_1) = \text{Line } y = x$, $\text{Span}(\mathbf{a}_2) = \text{Line } y = -x$ are orthogonal lines)</p>
+
+<h2 id="fact">Fact</h2>
+
+<p>If $\mathbf{x}_1, \ldots, \mathbf{x}_m \in \mathbb{R}^n$ are non-zero and orthogonal, then $\mathbf{x}_1, \ldots, \mathbf{x}_m$ are linearly independent.</p>
+
+<h2 id="proof">Proof</h2>
+
+<p>Suppose $a_1\mathbf{x}_1 + \cdots + a_m\mathbf{x}_m = 0$ (where $a_1, \ldots, a_m \in \mathbb{R}^n$)</p>
+
+<ul>
+  <li>We want to show that $a_1 = \cdots = a_m = 0$</li>
+</ul>
+
+<p>\(\
+\begin{aligned}
+\mathbf{x}_1, \ldots, \mathbf{x}_m \text{ are non-zero and orthogonal} \\
+\Longrightarrow (a_1\mathbf{x}_1 + \cdots + a_m\mathbf{x}_m) = a_1\mathbf{x}_1 \cdot \mathbf{x}_j + \cdots + a_j\mathbf{x}_j \cdot \mathbf{x}_j + \cdots + a_m\mathbf{x}_m \cdot \mathbf{x}_j \\
+= a_j\mathbf{x}_j \cdot \mathbf{x}_j \text{ since } \mathbf{x}_i \cdot \mathbf{x}_j \text{ for } i \neq j \\
+\Longrightarrow a_j(\mathbf{x}_j \cdot \mathbf{x}_j) = 0 \text{ and } \mathbf{x}_j \cdot \mathbf{x}_j \neq 0 \text{ for every } j \\
+\Longrightarrow a_j = 0 \text{ for every } j
+\end{aligned}\)\</p>
+
+<p><strong>Theorem</strong></p>
+
+<p>The following are equivalent:</p>
+
+<ol>
+  <li>$Q$ is orthogonal</li>
+  <li>$\Vert Q\mathbf{x}\Vert = \Vert \mathbf{x}\Vert$ for every $\mathbf{x} \in \mathbb{R}^{n}$ (multiplication by $Q$ preserves length)</li>
+  <li>$Q\mathbf{x} \cdot Q\mathbf{y} = \mathbf{x} \cdot \mathbf{y}$ for every $\mathbf{x}, \mathbf{y} \in \mathbb{R}^{n}$ (preserves length and angle)</li>
+</ol>
+
+<p><strong>Partial Proof</strong></p>
+
+<p>We’ll show $1 \Longrightarrow 3 \Longrightarrow 2$</p>
+
+\[\begin{aligned}
+Suppose Q \text{ is orthogonal} &amp; \Longrightarrow Q^T Q = I \Longrightarrow (Q\mathbf{x} \cdot Q\mathbf{y}) = (Q\mathbf{x})^T (Q\mathbf{y}) = \mathbf{x}^T Q^T Q \mathbf{y} = \mathbf{x}^T \mathbf{y} = \mathbf{x} \cdot \mathbf{y} \text{ for every } \mathbf{x}, \mathbf{y} \in \mathbb{R}^{n}
+\end{aligned}\]
+
+\[\begin{aligned}
+\Longrightarrow &amp; \Vert Q\mathbf{x}\Vert^2 = (Q\mathbf{x} \cdot Q\mathbf{x}) = \mathbf{x} \cdot \mathbf{x} = \Vert \mathbf{x}\Vert^2 \text{ for every } \mathbf{x}
+\Longrightarrow &amp; \Vert Q\mathbf{x}\Vert = \Vert \mathbf{x}\Vert \text{ for every } \mathbf{x}
+\end{aligned}\]
+
+<p><strong>Definition</strong></p>
+
+<p><em>Projection onto</em> $W$ is the transformation $\mathrm{proj}_W : \mathbb{R}^n \rightarrow W$ given by:</p>
+
+\[\mathrm{proj}_W(\mathbf{x}) = (\mathbf{x} \cdot \mathbf{x}_1)\mathbf{x}_1 + \cdots + (\mathbf{x} \cdot \mathbf{x}_m)\mathbf{x}_m\]
+
+<p>Linear combination of $\mathbf{x}_1, \dots, \mathbf{x}_m$ with coefficients given by dot products.</p>
+
+<p><strong>Claim</strong></p>
+
+<ol>
+  <li>$\mathrm{proj}_W$ is a linear transformation.</li>
+  <li>$\mathrm{proj}_W(\mathbf{x}) = \mathbf{x}$ iff $\mathbf{x} \in W$.</li>
+</ol>
+
+<p><strong>Example</strong></p>
+
+\[\begin{aligned}
+B &amp;= \left\{ \mathbf{e}_1 = \begin{bmatrix} 1 \\ 0 \end{bmatrix} \right\} \subseteq \mathbb{R}^2 \\
+&amp; \Longrightarrow \mathrm{proj}_W \left( \begin{bmatrix} x \\ y \end{bmatrix} \right) = \left( \begin{bmatrix} x \\ y \end{bmatrix} \cdot \begin{bmatrix} 1 \\ 0 \end{bmatrix} \right) \mathbf{e}_1 = x \mathbf{e}_1 = \begin{bmatrix} x \\ 0 \end{bmatrix} \\
+&amp; \Longrightarrow \mathrm{proj}_W = \text{“Project onto the } x\text{-axis”}
+\end{aligned}\]
+
+\[\begin{aligned}
+B &amp;= \left\{ \mathbf{e}_1 = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}, \mathbf{e}_2 = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix} \right\} \subseteq \mathbb{R}^3 \\
+&amp; \Longrightarrow \mathrm{proj}_W \left( \begin{bmatrix} x \\ y \\ z \end{bmatrix} \right) = x \mathbf{e}_1 + y \mathbf{e}_2 = \begin{bmatrix} x \\ y \\ 0 \end{bmatrix} \\
+&amp; \Longrightarrow \mathrm{proj}_W = \text{“Project onto } xy\text{-plane”}
+\end{aligned}\]
+
+<h1 id="examples-of-orthogonality-and-orthonormality">Examples of Orthogonality and Orthonormality</h1>
+
+<h2 id="zero-vector-example">Zero Vector Example</h2>
+
+<p>Any vector $\mathbf{x}$ in $\mathbb{R}^n$ is orthogonal to the zero vector since the dot product of zero with any vector is zero:</p>
+
+<p>$ 0 \cdot \mathbf{x} = 0 $</p>
+
+<p>Thus, $0$ and $\mathbf{x}$ are orthogonal.</p>
+
+<h2 id="standard-basis-example">Standard Basis Example</h2>
+
+<p>The standard basis vectors $\mathbf{e}_1, \ldots, \mathbf{e}_n$ in $\mathbb{R}^n$ are orthogonal. This is expressed by:</p>
+
+<p>$\mathbf{e}_i \cdot \mathbf{e}_j = \begin{cases} 
+1 &amp; \text{if } i = j <br />
+0 &amp; \text{if } i \neq j 
+\end{cases}$</p>
+
+<p>This reflects the properties of the columns of an $n \times n$ identity matrix being orthogonal.</p>
+
+<h2 id="matrix-columns-example">Matrix Columns Example</h2>
+
+<p>For the matrix $A = \begin{bmatrix} 1 &amp; 1 \ 1 &amp; -1 \end{bmatrix}$, the columns $\mathbf{a}_1 = \begin{bmatrix} 1 \ 1 \end{bmatrix}$ and $\mathbf{a}_2 = \begin{bmatrix} 1 \ -1 \end{bmatrix}$ are orthogonal because:</p>
+
+<p>$\mathbf{a}_1 \cdot \mathbf{a}_2 = 1 \cdot 1 + 1 \cdot (-1) = 1 - 1 = 0$</p>
+
+<p>This example also explains that the lines $y = x$ and $y = -x$, which are the spans of $\mathbf{a}_1$ and $\mathbf{a}_2$, are orthogonal.</p>
+
+<h2 id="orthonormal-basis-example">Orthonormal Basis Example</h2>
+
+<p>The standard basis ${ \mathbf{e}_1, \ldots, \mathbf{e}_n }$ is orthonormal in $\mathbb{R}^n$, and also a different basis \left { \begin{bmatrix} 1 \ 1 \end{bmatrix}, \begin{bmatrix} 1 \ -1 \end{bmatrix} \right}$ is orthogonal but not orthonormal, highlighting the difference between these properties.</p>
+
+<h2 id="diagonal-matrix-example">Diagonal Matrix Example</h2>
+
+<p>An exercise is suggested to show that the columns of any diagonal matrix are orthogonal under certain conditions, relying on the student to work through the proof. This involves checking that the dot products of distinct columns yield zero, a characteristic of orthogonal vectors.</p>
 
 <h2 id="projection-and-the-gram-schmidt-process">Projection and the Gram-Schmidt Process</h2>
 
@@ -205,27 +378,6 @@ w_{i+1} &amp;= v_{i+1} - \sum_{j=1}^i \frac{v_{i+1} \cdot w_j}{w_j \cdot w_j} w_
 &amp;= v_{i+1} - \sum_{j=1}^i \text{proj}_{w_j}(v_{i+1})
 \end{aligned}\]
 
-<h2 id="least-squares-approximation">Least Squares Approximation</h2>
-
-<p>Least squares approximation is a statistical method used to determine the best fit line or curve to a set of data points by minimizing the errors made in the predictions of the dependent variable.</p>
-
-<h4 id="mathematical-formulation">Mathematical Formulation</h4>
-
-<p>Given data points $(x_i, y_i)$, find $m$ and $b$ such that the sum</p>
-
-\[\sum_{i=1}^n (y_i - (mx_i + b))^2\]
-
-<p>is minimized, where $m$ is the slope and $b$ is the y-intercept of the line.</p>
-
-<h3 id="example-linear-regression">Example: Linear Regression</h3>
-
-<ul>
-  <li><strong>Linear Regression</strong>: A common application of least squares fitting where a linear relationship between variables is assumed.</li>
-</ul>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>Orthogonality and least squares are not only theoretical constructs but also provide practical tools in areas ranging from digital communication systems to economic forecasting. Understanding these concepts is crucial for professionals in STEM fields, as they underpin many of the computational and analytical methods used in practice.</p>
 
 
       </section>

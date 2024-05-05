@@ -1,0 +1,436 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>BWT &amp; MTF Coding | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="BWT &amp; MTF Coding" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/image-compression/bwt-mtf.html" />
+<meta property="og:url" content="http://localhost:4000/notes/image-compression/bwt-mtf.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="BWT &amp; MTF Coding" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"BWT &amp; MTF Coding","url":"http://localhost:4000/notes/image-compression/bwt-mtf.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=aa4589133f8fe0d2b4e3d23879b7898b31bdcba6">
+    <link rel="stylesheet" href="/assets/css/style.css?v=aa4589133f8fe0d2b4e3d23879b7898b31bdcba6">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#the-burrows-wheeler-transform-bwt">The Burrows-Wheeler Transform (BWT)</a><ul><li><a href="#example-code">Example Code</a></li></ul></li><li><a href="#move-to-front-encoding">Move-to-Front Encoding</a></li><li><a href="#move-to-front-decoding">Move-to-Front Decoding</a></li><li><a href="#further-processing-of-move-to-front-encoding-output">Further Processing of Move-to-Front Encoding Output</a></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="bwt--mtf-coding">BWT &amp; MTF Coding</h1>
+
+<h3 id="the-burrows-wheeler-transform-bwt">The Burrows-Wheeler Transform (BWT)</h3>
+
+<ul>
+  <li>The Burrows-Wheeler Transform (BWT) algorithm utilizes the context of the symbol being encoded to achieve lossless compression, but in a very different way.</li>
+  <li>The transform itself was initially developed by David Wheeler in 1983.</li>
+  <li>Yet, the BWT compression algorithm saw the light in 1994 by Michael Burrows and David Wheeler.</li>
+  <li>Currently, BWT is used in data compression techniques such as bzip2.</li>
+  <li>Unlike most of the previous algorithms that we have looked at:
+    <ul>
+      <li>The BWT algorithm requires the entire sequence to be available to the encoder before the encoding process takes place.</li>
+      <li>The BWT decoding procedure is not immediately obvious once we know the encoding procedure.</li>
+    </ul>
+  </li>
+  <li><strong>Algorithm Summary</strong>:
+    <ul>
+      <li>Given a sequence of letters of length (N):
+        <ul>
+          <li>Create (N - 1) other sequences, where each of these (N - 1) sequences is a cyclic shift of the original sequence; The total number of sequences is (N - 1 + 1) (the original sequence) = (N).</li>
+          <li>These (N) sequences are sorted in lexicographic (alphabetical) order.</li>
+          <li>The encoder encodes the last letter in each cyclically shifted and sorted sequence (i.e., encoding a sequence of length (N) letters).</li>
+          <li>The compressed file consists of two parts:
+            <ul>
+              <li>This sequence of Last letters, (L).</li>
+              <li>The position of the original sequence in the sorted list.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="example-code">Example Code</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">print_cyclic_shifts</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">cyclic_shift</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span> <span class="o">+</span> <span class="n">s</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s"> </span><span class="si">{</span><span class="n">cyclic_shift</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">sort_cyclic_shifts_alphabetically</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">cyclic_shifts</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span> <span class="o">+</span> <span class="n">s</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+    <span class="n">cyclic_shifts_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">cyclic_shifts</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'∆'</span><span class="p">,</span> <span class="s">' '</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">shift</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cyclic_shifts_sorted</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s"> </span><span class="si">{</span><span class="n">shift</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">last_chars_from_sorted_shifts</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">cyclic_shifts</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span> <span class="o">+</span> <span class="n">s</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+    <span class="n">cyclic_shifts_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">cyclic_shifts</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'∆'</span><span class="p">,</span> <span class="s">' '</span><span class="p">))</span>
+    <span class="n">last_chars</span> <span class="o">=</span> <span class="s">''</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">shift</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">shift</span> <span class="ow">in</span> <span class="n">cyclic_shifts_sorted</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">last_chars</span>
+
+<span class="k">def</span> <span class="nf">remove_repeated_chars</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="s">"""
+    First sort the string s in alphabetical order, considering '∆' as a space (which sorts before all other characters),
+    then remove repeated characters, preserving the order of characters in the sorted string.
+    """</span>
+    <span class="c1"># Sort the string alphabetically, treating '∆' as a space
+</span>    <span class="n">sorted_string</span> <span class="o">=</span> <span class="s">''</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'∆'</span><span class="p">,</span> <span class="s">' '</span><span class="p">)))</span>
+    <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">sorted_string</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+            <span class="n">seen</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+            <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+    <span class="c1"># After sorting and removing duplicates, concatenate back to a unique sorted string
+</span>    <span class="n">unique_sorted_string</span> <span class="o">=</span> <span class="s">''</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">unique_sorted_string</span>
+
+
+<span class="k">def</span> <span class="nf">process_string</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Cyclic Shifts:"</span><span class="p">)</span>
+    <span class="n">print_cyclic_shifts</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Sorted Cyclic Shifts Alphabetically:"</span><span class="p">)</span>
+    <span class="n">sort_cyclic_shifts_alphabetically</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">last_chars</span> <span class="o">=</span> <span class="n">last_chars_from_sorted_shifts</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\n</span><span class="s">L Sequence: </span><span class="si">{</span><span class="n">last_chars</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">unique_sorted_string</span> <span class="o">=</span> <span class="n">remove_repeated_chars</span><span class="p">(</span><span class="n">last_chars</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="se">\n</span><span class="s">Symbols: </span><span class="si">{</span><span class="n">unique_sorted_string</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+<span class="c1"># Example usage
+</span><span class="n">original_string</span> <span class="o">=</span> <span class="s">"this∆is∆the"</span>
+<span class="n">process_string</span><span class="p">(</span><span class="n">original_string</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Output</strong></p>
+
+<p>Cyclic Shifts: <br />
+0 this∆is∆the <br />
+1 his∆is∆thet <br />
+2 is∆is∆theth <br />
+3 s∆is∆thethi <br />
+4 ∆is∆thethis <br />
+5 is∆thethis∆ <br />
+6 s∆thethis∆i <br />
+7 ∆thethis∆is <br />
+8 thethis∆is∆ <br />
+9 hethis∆is∆t <br />
+10 ethis∆is∆th</p>
+
+<p>Sorted Cyclic Shifts Alphabetically: <br />
+0 ∆is∆thethis <br />
+1 ∆thethis∆is <br />
+2 ethis∆is∆th <br />
+3 hethis∆is∆t <br />
+4 his∆is∆thet <br />
+5 is∆is∆theth <br />
+6 is∆thethis∆ <br />
+7 s∆is∆thethi <br />
+8 s∆thethis∆i <br />
+9 thethis∆is∆ <br />
+10 this∆is∆the</p>
+
+<p>L Sequence: sshtth∆ii∆e - (last column)</p>
+
+<h3 id="move-to-front-encoding">Move-to-Front Encoding</h3>
+<ul>
+  <li><strong>Overview</strong>:
+    <ul>
+      <li>A coding scheme that takes advantage of long runs of identical symbols is the Move-to-Front encoding scheme, or simply MTF (a.k.a. Global Structure Transformation, or simply GST).</li>
+    </ul>
+  </li>
+  <li><strong>Initial Setup</strong>:
+    <ul>
+      <li>The scheme starts with an initial listing of the source alphabet, where each symbol in the alphabet is assigned a distinct number (code), for example:
+        <ul>
+          <li>The 1st alphabet symbol will be assigned <code class="language-plaintext highlighter-rouge">0</code>.</li>
+          <li>The 2nd alphabet symbol will be assigned <code class="language-plaintext highlighter-rouge">1</code>, and so on (codeword encoding).</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Encoding Process</strong>:
+    <ul>
+      <li>Once a particular symbol occurs:
+        <ul>
+          <li>The number (code) corresponding to its place in the list is transmitted.</li>
+          <li>The symbol is moved to the front of the list.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Efficiency in Encoding Repetitive Symbols</strong>:
+    <ul>
+      <li>This way, any run of repetitive symbols will be encoded by:
+        <ul>
+          <li>a code for the symbol itself followed by a sequence of zeros.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">move_to_front_encode</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">alphabet</span><span class="p">):</span>
+    <span class="c1"># Convert the alphabet to a list for easy manipulation
+</span>    <span class="n">alphabet_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">alphabet</span><span class="p">)</span>
+    <span class="n">encoded_sequence</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># Encode each symbol in the sequence
+</span>    <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">alphabet_list</span><span class="p">.</span><span class="n">index</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>  <span class="c1"># Find the index of the symbol
+</span>        <span class="n">encoded_sequence</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>  <span class="c1"># Record the index
+</span>        <span class="n">alphabet_list</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>  <span class="c1"># Remove the symbol from its current position
+</span>        <span class="n">alphabet_list</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">symbol</span><span class="p">)</span>  <span class="c1"># Move the symbol to the front
+</span>        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"After encoding '</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s">': </span><span class="si">{</span><span class="n">alphabet_list</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>  <span class="c1"># Show the alphabet list after each shift
+</span>    
+    <span class="k">return</span> <span class="n">encoded_sequence</span>
+
+<span class="c1"># Given sequence and alphabet
+</span><span class="n">sequence</span> <span class="o">=</span> <span class="s">"this∆is∆the"</span>
+<span class="n">alphabet</span> <span class="o">=</span> <span class="s">"∆ehist"</span>
+
+<span class="c1"># Encode the sequence
+</span><span class="n">encoded_sequence</span> <span class="o">=</span> <span class="n">move_to_front_encode</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">alphabet</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Encoded Sequence: </span><span class="si">{</span><span class="n">encoded_sequence</span><span class="si">}</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Output</strong></p>
+
+<p>After encoding ‘t’: [‘t’, ‘∆’, ‘e’, ‘h’, ‘i’, ‘s’] <br />
+After encoding ‘h’: [‘h’, ‘t’, ‘∆’, ‘e’, ‘i’, ‘s’] <br />
+After encoding ‘i’: [‘i’, ‘h’, ‘t’, ‘∆’, ‘e’, ‘s’] <br />
+After encoding ‘s’: [’s’, ‘i’, ‘h’, ‘t’, ‘∆’, ‘e’] <br />
+After encoding ‘∆’: [‘∆’, ‘s’, ‘i’, ‘h’, ‘t’, ‘e’] <br />
+After encoding ‘i’: [‘i’, ‘∆’, ‘s’, ‘h’, ‘t’, ‘e’] <br />
+After encoding ‘s’: [’s’, ‘i’, ‘∆’, ‘h’, ‘t’, ‘e’] <br />
+After encoding ‘∆’: [‘∆’, ‘s’, ‘i’, ‘h’, ‘t’, ‘e’] <br />
+After encoding ‘t’: [‘t’, ‘∆’, ‘s’, ‘i’, ‘h’, ‘e’] <br />
+After encoding ‘h’: [‘h’, ‘t’, ‘∆’, ‘s’, ‘i’, ‘e’] <br />
+After encoding ‘e’: [‘e’, ‘h’, ‘t’, ‘∆’, ‘s’, ‘i’] <br />
+Encoded Sequence: [5, 3, 4, 5, 4, 2, 2, 2, 4, 4, 5]</p>
+
+<h3 id="move-to-front-decoding">Move-to-Front Decoding</h3>
+
+<ul>
+  <li><strong>Setup</strong>:
+    <ul>
+      <li>To decode a move-to-front encoded sequence, it starts with an initial listing of the source alphabet, where each symbol in the alphabet is assigned a distinct number (code). For example:
+        <ul>
+          <li>The 1st alphabet symbol will be assigned <code class="language-plaintext highlighter-rouge">0</code>.</li>
+          <li>The 2nd alphabet symbol will be assigned <code class="language-plaintext highlighter-rouge">1</code>, and so on.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Decoding Process</strong>:
+    <ul>
+      <li>Once reading a code from the encoded sequence:
+        <ul>
+          <li>The symbol corresponding to this code is decoded.</li>
+          <li>The symbol is moved to the front of the list.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">move_to_front_decode</span><span class="p">(</span><span class="n">encoded_sequence</span><span class="p">,</span> <span class="n">alphabet</span><span class="p">):</span>
+    <span class="c1"># Convert the alphabet to a list for easy manipulation
+</span>    <span class="n">alphabet_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">alphabet</span><span class="p">)</span>
+    <span class="n">decoded_sequence</span> <span class="o">=</span> <span class="s">""</span>
+    
+    <span class="c1"># Decode each index in the encoded sequence
+</span>    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">encoded_sequence</span><span class="p">:</span>
+        <span class="n">symbol</span> <span class="o">=</span> <span class="n">alphabet_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>  <span class="c1"># Retrieve the symbol from the alphabet list
+</span>        <span class="n">decoded_sequence</span> <span class="o">+=</span> <span class="n">symbol</span>  <span class="c1"># Append the symbol to the decoded sequence
+</span>        <span class="n">alphabet_list</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">alphabet_list</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">symbol</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"After decoding index </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">alphabet_list</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>  <span class="c1"># Show the alphabet list after each shift
+</span>    
+    <span class="k">return</span> <span class="n">decoded_sequence</span>
+
+<span class="c1"># Use the previously encoded sequence and the same alphabet for decoding
+</span><span class="n">encoded_sequence</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">alphabet</span> <span class="o">=</span> <span class="s">"∆ehist"</span>
+
+<span class="c1"># Decode the sequence
+</span><span class="n">decoded_sequence</span> <span class="o">=</span> <span class="n">move_to_front_decode</span><span class="p">(</span><span class="n">encoded_sequence</span><span class="p">,</span> <span class="n">alphabet</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Decoded Sequence: </span><span class="si">{</span><span class="n">decoded_sequence</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Output:</strong></p>
+
+<p>After decoding index 5: [‘t’, ‘∆’, ‘e’, ‘h’, ‘i’, ‘s’] <br />
+After decoding index 3: [‘h’, ‘t’, ‘∆’, ‘e’, ‘i’, ‘s’] <br />
+After decoding index 4: [‘i’, ‘h’, ‘t’, ‘∆’, ‘e’, ‘s’] <br />
+After decoding index 5: [’s’, ‘i’, ‘h’, ‘t’, ‘∆’, ‘e’] <br />
+After decoding index 4: [‘∆’, ‘s’, ‘i’, ‘h’, ‘t’, ‘e’] <br />
+After decoding index 2: [‘i’, ‘∆’, ‘s’, ‘h’, ‘t’, ‘e’] <br />
+After decoding index 2: [’s’, ‘i’, ‘∆’, ‘h’, ‘t’, ‘e’] <br />
+After decoding index 2: [‘∆’, ‘s’, ‘i’, ‘h’, ‘t’, ‘e’] <br />
+After decoding index 4: [‘t’, ‘∆’, ‘s’, ‘i’, ‘h’, ‘e’] <br />
+After decoding index 4: [‘h’, ‘t’, ‘∆’, ‘s’, ‘i’, ‘e’] <br />
+After decoding index 5: [‘e’, ‘h’, ‘t’, ‘∆’, ‘s’, ‘i’] <br />
+Decoded Sequence: this∆is∆the</p>
+
+<h3 id="further-processing-of-move-to-front-encoding-output">Further Processing of Move-to-Front Encoding Output</h3>
+
+<p>While the resulting sequence from Move-to-Front encoding is not too impressive initially, we should expect to see a large number of <code class="language-plaintext highlighter-rouge">0</code>s if the sequence to be encoded is larger.</p>
+
+<ul>
+  <li><strong>Run-Length Encoding</strong>:
+    <ul>
+      <li>The output of the Move-to-Front (also known as Global Structure Transformation) is sent to a Run-Length Encoder to efficiently encode the repetitive zeros.</li>
+    </ul>
+  </li>
+  <li><strong>Codeword Encoding</strong>:
+    <ul>
+      <li>The output from the Run-Length Encoder is then sent to a Codeword Encoder, such as Huffman or arithmetic encoder, for further compression.</li>
+    </ul>
+  </li>
+</ul>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

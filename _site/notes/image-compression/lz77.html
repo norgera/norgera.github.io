@@ -1,0 +1,795 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>LZ77 + LZ78 + LZW | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="LZ77 + LZ78 + LZW" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/image-compression/lz77.html" />
+<meta property="og:url" content="http://localhost:4000/notes/image-compression/lz77.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="LZ77 + LZ78 + LZW" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"LZ77 + LZ78 + LZW","url":"http://localhost:4000/notes/image-compression/lz77.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=aa4589133f8fe0d2b4e3d23879b7898b31bdcba6">
+    <link rel="stylesheet" href="/assets/css/style.css?v=aa4589133f8fe0d2b4e3d23879b7898b31bdcba6">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#dictionary-based-compressions">Dictionary-based Compressions</a></li><li><a href="#lz77-compression">LZ77 Compression</a></li><li><a href="#lz78-compression">LZ78 Compression</a></li><li><a href="#lempel-ziv-welch-lzw-compression">Lempel-Ziv-Welch (LZW) Compression</a></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="lz77--lz78--lzw">LZ77 + LZ78 + LZW</h1>
+
+<h3 id="dictionary-based-compressions">Dictionary-based Compressions</h3>
+
+<ul>
+  <li><strong>Introduction</strong>:
+    <ul>
+      <li><strong>How many words are in a dictionary?</strong>
+        <ul>
+          <li>Pocket dictionary: about 25,000 words.</li>
+          <li>Full-size dictionary: about 60,000 words.</li>
+        </ul>
+      </li>
+      <li><strong>Bits needed for indexing</strong>:
+        <ul>
+          <li>Pocket dictionary: 15 bits are needed (0 to 32,767).</li>
+          <li>Full-size dictionary: 16 bits are needed (0 to 64,535).</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Dictionary-based Encoding for Large Dictionaries</strong></p>
+
+<ul>
+  <li><strong>Example Setup</strong>:
+    <ul>
+      <li>Assume an English word consists of 6 letters on average.</li>
+      <li>Consider a dictionary containing half a million words:
+        <ul>
+          <li>This dictionary is searched for each word that needs to be encoded.</li>
+          <li>If a match is found:
+            <ul>
+              <li>The word is encoded by a pointer to that word (20 bits total):
+                <ul>
+                  <li>1 bit to indicate that a match was found.</li>
+                  <li>19 bits as a dictionary index to that word.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>Otherwise:
+            <ul>
+              <li>The word is encoded without any compression (50 bits on average):
+                <ul>
+                  <li>1 bit to indicate that no match was found.</li>
+                  <li>7 bits to identify the length of the word.</li>
+                  <li>6 characters per word (on average) × 7 bits per character.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Compression Efficiency Calculation</strong></p>
+
+<ul>
+  <li><strong>Compression Calculation</strong>:
+    <ul>
+      <li>After reading and compressing $N$ words, the size of the compressed file will be (on average):
+$
+N \times (20 \times P + 50 \times (1 - P)) \text{ bits},
+$</li>
+      <li>Without compression, we would need:
+$
+N \times 49 \text{ bits} \text{ to encode these } N \text{ words}
+$</li>
+      <li>To achieve compression, the following relation must hold:
+$
+(20 \times P + 50 \times (1 - P)) &lt; 49
+$</li>
+      <li>Or in other words, $P$ must be greater than $\frac{1}{30}$.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Statistical-based Versus Dictionary-based Compressions</strong></p>
+
+<ul>
+  <li><strong>Comparison</strong>:
+    <ul>
+      <li><strong>Statistical-based compression schemes</strong>:
+        <ul>
+          <li>Use a statistical model of the data.</li>
+          <li>The quality of the achieved compression depends on how good that model is.</li>
+        </ul>
+      </li>
+      <li><strong>Dictionary-based compression schemes</strong>:
+        <ul>
+          <li>A data string is partitioned into sub-strings of symbols.</li>
+          <li>Each sub-string is encoded as a dictionary index.</li>
+          <li>The dictionary can be:
+            <ul>
+              <li><strong>Static</strong>:
+                <ul>
+                  <li>Holds predetermined strings (image independent).</li>
+                  <li>Sometimes allows strings addition.</li>
+                  <li>Does not allow strings deletion.</li>
+                </ul>
+              </li>
+              <li><strong>Dynamic (adaptive)</strong>:
+                <ul>
+                  <li>Holds strings previously found in the input stream (image dependent).</li>
+                  <li>Allows strings addition and deletion.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><strong>Famous examples</strong>:
+        <ul>
+          <li>Perhaps the most famous dictionary-based compression schemes are LZ77 and LZ78.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="lz77-compression">LZ77 Compression</h3>
+
+<p>A full implementation on real images can be found <a href="https://github.com/norgera/CS4481-Image-Compression/tree/main/LZ77%20Coding" title="Title">here</a></p>
+
+<ul>
+  <li><strong>Background</strong>:
+    <ul>
+      <li>LZ77 is a dictionary-based compression scheme described by Ziv and Lempel in 1977, giving it the name LZ77.</li>
+    </ul>
+  </li>
+  <li><strong>Main Concept</strong>:
+    <ul>
+      <li>The principal idea of LZ77 is to use part of the previously seen input stream as a dictionary, known as the searching buffer.</li>
+      <li>The searching buffer acts as a sliding window on the input characters/pixels that have recently been encoded.</li>
+    </ul>
+  </li>
+  <li><strong>Encoding Process</strong>:
+    <ul>
+      <li>The encoder scans the search buffer looking for a match to the current data symbol to be encoded.</li>
+      <li>If a match is found, the encoder tries to match as many following symbols as possible.</li>
+      <li>The encoder continues the scan, attempting to find longer matches.</li>
+      <li>The longest match is selected to generate the token.</li>
+    </ul>
+  </li>
+  <li><strong>Token Structure</strong>:
+    <ul>
+      <li>An LZ77 token consists of three parts:
+        <ul>
+          <li><strong>Offset</strong>: How far back in the buffer the match starts.</li>
+          <li><strong>Match Length</strong>: The number of characters in the match.</li>
+          <li><strong>Next Mismatched Symbol Code</strong>: The code of the next mismatched symbol from the input stream.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">lz77_encode</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">search_buffer_size</span><span class="o">=</span><span class="mi">4096</span><span class="p">):</span>
+
+    <span class="n">encoded</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="n">max_match_length</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">max_match_distance</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">next_symbol</span> <span class="o">=</span> <span class="s">''</span>
+
+        <span class="c1"># Adjust search buffer to include the character for the current token
+</span>        <span class="n">buffer_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="n">search_buffer_size</span><span class="p">)</span>
+
+        <span class="c1"># Search for the longest and nearest match within the buffer
+</span>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">buffer_start</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">match_length</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="o">+</span> <span class="n">match_length</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="ow">and</span> <span class="n">data</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="n">match_length</span><span class="p">]</span> <span class="o">==</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">match_length</span><span class="p">]:</span>
+                <span class="n">match_length</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">j</span> <span class="o">+</span> <span class="n">match_length</span> <span class="o">&gt;=</span> <span class="n">i</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">+</span> <span class="n">match_length</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>  <span class="c1"># Stop conditions
+</span>                    <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">match_length</span> <span class="o">&gt;</span> <span class="n">max_match_length</span> <span class="ow">or</span> <span class="p">(</span><span class="n">match_length</span> <span class="o">==</span> <span class="n">max_match_length</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">-</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">max_match_distance</span><span class="p">):</span>
+                <span class="n">max_match_length</span> <span class="o">=</span> <span class="n">match_length</span>
+                <span class="n">max_match_distance</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="n">j</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="n">max_match_length</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="n">next_symbol</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">max_match_length</span><span class="p">]</span>
+
+        <span class="n">encoded</span><span class="p">.</span><span class="n">append</span><span class="p">((</span><span class="n">max_match_distance</span><span class="p">,</span> <span class="n">max_match_length</span><span class="p">,</span> <span class="n">next_symbol</span><span class="p">))</span>
+
+        <span class="c1"># Calculate the position after encoding the current token for accurate buffer
+</span>        <span class="n">i</span> <span class="o">+=</span> <span class="n">max_match_length</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c1"># Ensure the search buffer now reflects the inclusion of the token's character
+</span>        <span class="n">buffer_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="n">search_buffer_size</span><span class="p">)</span>
+        <span class="n">search_buffer</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">buffer_start</span><span class="p">:</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># Corrected to reflect current token character
+</span>        <span class="n">data_to_be_encoded</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span>  <span class="c1"># The rest of the data to encode
+</span>
+        <span class="c1"># Print the current search buffer and the remaining data to be encoded
+</span>        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Token: </span><span class="si">{</span><span class="n">encoded</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Search Buffer ('</span><span class="si">{</span><span class="n">search_buffer</span><span class="si">}</span><span class="s">') | Data to be Encoded: '</span><span class="si">{</span><span class="n">data_to_be_encoded</span><span class="si">}</span><span class="s">'"</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"----"</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">encoded</span>
+
+<span class="c1"># Re-encode with updated logic
+</span><span class="n">example_data</span> <span class="o">=</span> <span class="s">"sir sid eastman easily teases sea sick seal"</span>
+<span class="n">encoded_data_longest_nearest</span> <span class="o">=</span> <span class="n">lz77_encode</span><span class="p">(</span><span class="n">example_data</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Output:</strong></p>
+
+<p><img src="lzen.png" alt="My Example Image" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">lz77_decode</span><span class="p">(</span><span class="n">encoded_data</span><span class="p">):</span>
+    
+    <span class="n">decoded</span> <span class="o">=</span> <span class="s">""</span>
+
+    <span class="k">for</span> <span class="n">offset</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">next_symbol</span> <span class="ow">in</span> <span class="n">encoded_data</span><span class="p">:</span>
+        <span class="c1"># Start by finding the position in the decoded string to copy from
+</span>        <span class="n">start_pos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">decoded</span><span class="p">)</span> <span class="o">-</span> <span class="n">offset</span>
+        <span class="k">if</span> <span class="n">start_pos</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">"Invalid offset in token, cannot decode."</span><span class="p">)</span>
+
+        <span class="c1"># Copy the matched string from the decoded data itself
+</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">start_pos</span> <span class="o">+</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">decoded</span><span class="p">):</span>
+                <span class="n">decoded</span> <span class="o">+=</span> <span class="n">decoded</span><span class="p">[</span><span class="n">start_pos</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>  <span class="c1"># In case length exceeds the current decoded string size
+</span>
+        <span class="c1"># Append the next symbol to the decoded string
+</span>        <span class="n">decoded</span> <span class="o">+=</span> <span class="n">next_symbol</span>
+
+        <span class="c1"># Print the current state of decoding
+</span>        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Token: </span><span class="si">{</span><span class="n">offset</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="n">length</span><span class="si">}</span><span class="s">, '</span><span class="si">{</span><span class="n">next_symbol</span><span class="si">}</span><span class="s">')"</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Buffer: '</span><span class="si">{</span><span class="n">decoded</span><span class="si">}</span><span class="s">'"</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"----"</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">decoded</span>
+
+
+<span class="n">decoded_data</span> <span class="o">=</span> <span class="n">lz77_decode</span><span class="p">(</span><span class="n">encoded_data_longest_nearest</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Decoded data:"</span><span class="p">,</span> <span class="n">decoded_data</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p><strong>Output:</strong></p>
+
+<p>Decoded data: sir sid eastman easily teases sea sick seal</p>
+
+<p><img src="lzde.png" alt="My Example Image" /></p>
+
+<h3 id="lz78-compression">LZ78 Compression</h3>
+
+<ul>
+  <li><strong>Overview</strong>:
+    <ul>
+      <li>Unlike LZ77, LZ78 does not use a search buffer or sliding window.</li>
+      <li>Instead, it employs a dictionary of previously encountered strings.</li>
+    </ul>
+  </li>
+  <li><strong>Dictionary Initialization</strong>:
+    <ul>
+      <li>The dictionary starts empty, except for a null string at position zero.</li>
+      <li>The dictionary size is limited.</li>
+    </ul>
+  </li>
+  <li><strong>Compression Process</strong>:
+    <ul>
+      <li>During compression, the dictionary is searched for the longest substring which is a prefix of the sequence yet to be encoded.</li>
+      <li>The LZ78 encoder produces a two-part token:
+        <ul>
+          <li>A pointer to a dictionary entry.</li>
+          <li>The code of the next symbol.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Token Structure</strong>:
+    <ul>
+      <li>The length part of the token has been eliminated, as it is implied in the dictionary entry.</li>
+    </ul>
+  </li>
+  <li><strong>Dictionary Update</strong>:
+    <ul>
+      <li>Each token corresponds to a substring of encoded input symbols.</li>
+      <li>This substring is added to the dictionary after the token is written on the compressed stream.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">lz78_encoding</span><span class="p">(</span><span class="n">input_string</span><span class="p">):</span>
+    <span class="c1"># Initialize the dictionary with a NULL entry
+</span>    <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s">'NULL'</span><span class="p">}</span>
+    <span class="n">dict_index</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Start dictionary indices from 1 as 0 is reserved for NULL
+</span>    
+    <span class="c1"># The list to hold the tokens produced by the LZ78 encoding
+</span>    <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current_string</span> <span class="o">=</span> <span class="s">''</span>
+    
+    <span class="c1"># Process the input string character by character
+</span>    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">input_string</span><span class="p">:</span>
+        <span class="c1"># Check if the current string plus the new character is in the dictionary
+</span>        <span class="k">if</span> <span class="n">current_string</span> <span class="o">+</span> <span class="n">char</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="p">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="c1"># If the current string is empty, the index is 0, otherwise find the index
+</span>            <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">current_string</span> <span class="o">==</span> <span class="s">''</span> <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="n">dictionary</span><span class="p">.</span><span class="n">keys</span><span class="p">())[</span><span class="nb">list</span><span class="p">(</span><span class="n">dictionary</span><span class="p">.</span><span class="n">values</span><span class="p">()).</span><span class="n">index</span><span class="p">(</span><span class="n">current_string</span><span class="p">)]</span>
+            <span class="c1"># Append the token (index, new character) to the tokens list
+</span>            <span class="n">tokens</span><span class="p">.</span><span class="n">append</span><span class="p">((</span><span class="n">index</span><span class="p">,</span> <span class="n">char</span><span class="p">))</span>
+            <span class="c1"># Add the new string to the dictionary and increment the index
+</span>            <span class="n">dictionary</span><span class="p">[</span><span class="n">dict_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_string</span> <span class="o">+</span> <span class="n">char</span>
+            <span class="n">dict_index</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># Reset current string to empty
+</span>            <span class="n">current_string</span> <span class="o">=</span> <span class="s">''</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If the string is in the dictionary, concatenate the character to the current string
+</span>            <span class="n">current_string</span> <span class="o">+=</span> <span class="n">char</span>
+    
+    <span class="c1"># Handling the last token if the current_string is not empty
+</span>    <span class="k">if</span> <span class="n">current_string</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dictionary</span><span class="p">.</span><span class="n">keys</span><span class="p">())[</span><span class="nb">list</span><span class="p">(</span><span class="n">dictionary</span><span class="p">.</span><span class="n">values</span><span class="p">()).</span><span class="n">index</span><span class="p">(</span><span class="n">current_string</span><span class="p">)]</span>
+        <span class="n">tokens</span><span class="p">.</span><span class="n">append</span><span class="p">((</span><span class="n">index</span><span class="p">,</span> <span class="s">''</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">dictionary</span><span class="p">,</span> <span class="n">tokens</span>
+
+<span class="c1"># The input string for LZ78 encoding
+</span><span class="n">input_string</span> <span class="o">=</span> <span class="s">"sir sid eastman easily teases sea sick seal"</span>
+
+<span class="c1"># Perform the LZ78 encoding
+</span><span class="n">dict_result</span><span class="p">,</span> <span class="n">tokens_result</span> <span class="o">=</span> <span class="n">lz78_encoding</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
+
+<span class="c1"># Print the tokens
+</span><span class="k">print</span><span class="p">(</span><span class="s">"Tokens:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens_result</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s">,"</span><span class="p">)</span>
+
+<span class="c1"># Print the dictionary entries
+</span><span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Dictionary Entries:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">dict_result</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s">: '</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s">'"</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p><strong>Output:</strong></p>
+
+<p>Tokens:
+(0, ‘s’),
+(0, ‘i’),
+(0, ‘r’),
+(0, ‘ ‘),
+(1, ‘i’),
+(0, ‘d’),
+(4, ‘e’),
+(0, ‘a’),
+(1, ‘t’),
+(0, ‘m’),
+(8, ‘n’),
+(7, ‘a’),
+(5, ‘l’),
+(0, ‘y’),
+(4, ‘t’),
+(0, ‘e’),
+(8, ‘s’),
+(16, ‘s’),
+(4, ‘s’),
+(16, ‘a’),
+(19, ‘i’),
+(0, ‘c’),
+(0, ‘k’),
+(19, ‘e’),
+(8, ‘l’),</p>
+
+<p>Dictionary Entries:
+0: ‘NULL’
+1: ‘s’
+2: ‘i’
+3: ‘r’
+4: ‘ ‘
+5: ‘si’
+6: ‘d’
+7: ‘ e’
+8: ‘a’
+9: ‘st’
+10: ‘m’
+11: ‘an’
+12: ‘ ea’
+13: ‘sil’
+14: ‘y’
+15: ‘ t’
+16: ‘e’
+17: ‘as’
+18: ‘es’
+19: ‘ s’
+20: ‘ea’
+21: ‘ si’
+22: ‘c’
+23: ‘k’
+24: ‘ se’
+25: ‘al’</p>
+
+<p>or</p>
+
+<p><img src="lz78en.png" alt="My Example Image" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">lz78_decoding</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+    <span class="c1"># Initialize the dictionary with a NULL entry
+</span>    <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s">''</span><span class="p">}</span>
+    <span class="n">decoded_string</span> <span class="o">=</span> <span class="s">''</span>
+    
+    <span class="c1"># Process the tokens to rebuild the dictionary and the decoded string
+</span>    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+        <span class="c1"># If the index is in the dictionary, get the string and add the character to it
+</span>        <span class="k">if</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="p">:</span>
+            <span class="n">entry</span> <span class="o">=</span> <span class="n">dictionary</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">+</span> <span class="n">char</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">entry</span> <span class="o">=</span> <span class="n">char</span>
+            
+        <span class="c1"># Add the entry to the dictionary
+</span>        <span class="n">dictionary</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)]</span> <span class="o">=</span> <span class="n">entry</span>
+        <span class="c1"># Add the entry to the decoded string
+</span>        <span class="n">decoded_string</span> <span class="o">+=</span> <span class="n">entry</span>
+    
+    <span class="k">return</span> <span class="n">decoded_string</span>
+
+<span class="c1"># The tokens from the LZ78 encoding
+</span><span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">'s'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">'i'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">'r'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">' '</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'i'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">'d'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">'e'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">'a'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'t'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">'m'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s">'n'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s">'a'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s">'l'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">'y'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">'t'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">'e'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s">'s'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="s">'s'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">'s'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="s">'a'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s">'i'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">'c'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">'k'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s">'e'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s">'l'</span><span class="p">)</span>
+<span class="p">]</span>
+
+
+
+<span class="c1"># Perform the LZ78 decoding
+</span><span class="n">decoded_string</span> <span class="o">=</span> <span class="n">lz78_decoding</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">decoded_string</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p><strong>Output:</strong>
+sir sid eastman easily teases sea sick seal</p>
+
+<hr />
+
+<h3 id="lempel-ziv-welch-lzw-compression">Lempel-Ziv-Welch (LZW) Compression</h3>
+
+<ul>
+  <li><strong>Introduction to LZW</strong>:
+    <ul>
+      <li>LZW is a variant of the LZ78 compression algorithm, developed by Terry Welch in 1983. It’s named after its creators, Lempel, Ziv, and Welch.</li>
+    </ul>
+  </li>
+  <li><strong>Token Simplification in LZW</strong>:
+    <ul>
+      <li>Unlike LZ78, LZW can eliminate the need for the second part of the token (the single character) by pre-initializing the dictionary.</li>
+      <li><strong>Dictionary Initialization</strong>:
+        <ul>
+          <li>The dictionary is initialized with all possible values for single characters, i.e., <code class="language-plaintext highlighter-rouge">{0, 1, 2, ..., 255}</code>.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Special Control Code</strong>:
+    <ul>
+      <li><strong>Dictionary Entry Number 256</strong>:
+        <ul>
+          <li>Reserved as a special control code within the LZW dictionary.</li>
+        </ul>
+      </li>
+      <li><strong>Purpose</strong>:
+        <ul>
+          <li>This control code is used to force the dictionary to be flushed. This means it resets or clears the dictionary to start fresh.</li>
+        </ul>
+      </li>
+      <li><strong>Reason for Flushing</strong>:
+        <ul>
+          <li>The flushing mechanism allows the compression algorithm to adapt to changes in the data being compressed, which can enhance compression efficiency in scenarios where the data characteristics change over time.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Why LZW?</strong>:
+    <ul>
+      <li>By initializing the dictionary with all possible single-character strings and using a special control code to manage the dictionary’s size, LZW simplifies the encoding process. This reduces the complexity and size of the tokens generated during compression, potentially leading to more efficient compression under certain conditions.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">lzw_encoding</span><span class="p">(</span><span class="n">input_string</span><span class="p">):</span>
+    <span class="c1"># Initialize the dictionary with single characters (ASCII values)
+</span>    <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">)}</span>
+    <span class="n">dict_size</span> <span class="o">=</span> <span class="mi">256</span>
+    <span class="n">current_string</span> <span class="o">=</span> <span class="s">''</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># Process the input string character by character
+</span>    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">input_string</span><span class="p">:</span>
+        <span class="c1"># Form a new string by concatenating the current string and the new character
+</span>        <span class="n">new_string</span> <span class="o">=</span> <span class="n">current_string</span> <span class="o">+</span> <span class="n">char</span>
+        <span class="k">if</span> <span class="n">new_string</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="p">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="c1"># If the new string is already in the dictionary, set it as the current string
+</span>            <span class="n">current_string</span> <span class="o">=</span> <span class="n">new_string</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If current_string is not empty, add it to tokens
+</span>            <span class="k">if</span> <span class="n">current_string</span><span class="p">:</span>
+                <span class="c1"># Adjust the index for tokens greater than 255
+</span>                <span class="n">index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dictionary</span><span class="p">.</span><span class="n">keys</span><span class="p">())[</span><span class="nb">list</span><span class="p">(</span><span class="n">dictionary</span><span class="p">.</span><span class="n">values</span><span class="p">()).</span><span class="n">index</span><span class="p">(</span><span class="n">current_string</span><span class="p">)]</span>
+                <span class="n">tokens</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span> <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="mi">256</span> <span class="k">else</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="c1"># Add the new string to the dictionary and increment dict_size
+</span>            <span class="n">dictionary</span><span class="p">[</span><span class="n">dict_size</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_string</span>
+            <span class="n">dict_size</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># Reset current_string to the current char as it's not in the dictionary
+</span>            <span class="n">current_string</span> <span class="o">=</span> <span class="n">char</span>
+    
+    <span class="c1"># Append the last token if current_string is not empty
+</span>    <span class="k">if</span> <span class="n">current_string</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dictionary</span><span class="p">.</span><span class="n">keys</span><span class="p">())[</span><span class="nb">list</span><span class="p">(</span><span class="n">dictionary</span><span class="p">.</span><span class="n">values</span><span class="p">()).</span><span class="n">index</span><span class="p">(</span><span class="n">current_string</span><span class="p">)]</span>
+        <span class="n">tokens</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span> <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="mi">256</span> <span class="k">else</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">dictionary</span><span class="p">,</span> <span class="n">tokens</span>
+
+<span class="c1"># Perform LZW encoding on the given string
+</span><span class="n">input_string</span> <span class="o">=</span> <span class="s">"sir sid eastman easily teases sea sick seal"</span>
+<span class="n">dict_result</span><span class="p">,</span> <span class="n">tokens_result</span> <span class="o">=</span> <span class="n">lzw_encoding</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span>
+
+<span class="c1"># Print out the tokens, adjusted for indices greater than 255
+</span><span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens_result</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+
+<span class="c1"># Print the new dictionary entries, adjusted to start at index 257
+</span><span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">New dictionary entries (starting from 257):"</span><span class="p">)</span>
+<span class="n">new_dict_entries</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dict_result</span><span class="p">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="mi">256</span><span class="p">}</span>
+
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">new_dict_entries</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s">: '</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s">'"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Output:</strong></p>
+
+<p>115
+105
+114
+32
+257
+100
+32
+101
+97
+115
+116
+109
+97
+110
+263
+265
+105
+108
+121
+32
+116
+264
+115
+101
+115
+260
+264
+260
+105
+99
+107
+282
+97
+108</p>
+
+<p>New dictionary entries (starting from 257):
+257: ‘si’
+258: ‘ir’
+259: ‘r ‘
+260: ‘ s’
+261: ‘sid’
+262: ‘d ‘
+263: ‘ e’
+264: ‘ea’
+265: ‘as’
+266: ‘st’
+267: ‘tm’
+268: ‘ma’
+269: ‘an’
+270: ‘n ‘
+271: ‘ ea’
+272: ‘asi’
+273: ‘il’
+274: ‘ly’
+275: ‘y ‘
+276: ‘ t’
+277: ‘te’
+278: ‘eas’
+279: ‘se’
+280: ‘es’
+281: ‘s ‘
+282: ‘ se’
+283: ‘ea ‘
+284: ‘ si’
+285: ‘ic’
+286: ‘ck’
+287: ‘k ‘
+288: ‘ sea’
+289: ‘al’</p>
+
+<p>or</p>
+
+<p><img src="lzwen.png" alt="My Example Image" /></p>
+
+<p>Decode Function: TODO</p>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

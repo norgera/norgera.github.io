@@ -146,7 +146,7 @@ $$
 For the matrix $A$, the eigenvectors corresponding to $\lambda = 1$ are any scalar multiples of $\begin{bmatrix} 1 \\ -1 \end{bmatrix}$, and for $\lambda = 3$, they are any scalar multiples of $\begin{bmatrix} 1 \\ 1 \end{bmatrix}$. These vectors indicate the directions in which the matrix $A$ stretches the space by the factors $1$ and $3$, respectively.
 
 
-### Calculating Eigenvectors and Eigenvalues
+### Examples
 
 Consider the matrix $B$:
 
@@ -293,7 +293,7 @@ $$
 
 
 
-### Complex Example
+#### Complex Example
 
 Consider a matrix $A$ defined as:
 

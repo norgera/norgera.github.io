@@ -1,0 +1,416 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Huffman Coding | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Huffman Coding" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/image-compression/huffman.html" />
+<meta property="og:url" content="http://localhost:4000/notes/image-compression/huffman.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Huffman Coding" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Huffman Coding","url":"http://localhost:4000/notes/image-compression/huffman.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=aa4589133f8fe0d2b4e3d23879b7898b31bdcba6">
+    <link rel="stylesheet" href="/assets/css/style.css?v=aa4589133f8fe0d2b4e3d23879b7898b31bdcba6">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#codeword-encoding">Codeword Encoding</a></li><li><a href="#encoding-basics">Encoding Basics</a><ul><li><a href="#fixed-length-codes">Fixed-Length Codes</a></li></ul></li><li><a href="#decoding">Decoding</a></li><li><a href="#uniquely-decodable-codes">Uniquely Decodable Codes</a><ul><li><a href="#example-1">Example 1</a></li><li><a href="#example-2">Example 2</a></li><li><a href="#example-3">Example 3</a></li><li><a href="#example-4">Example 4</a></li><li><a href="#discussion-on-instantaneous-codes">Discussion on Instantaneous Codes</a></li><li><a href="#definitions-and-testing-for-unique-decodability">Definitions and Testing for Unique Decodability</a></li><li><a href="#procedure-to-test-for-unique-decodability">Procedure to Test for Unique Decodability</a></li><li><a href="#examples">Examples</a><ul><li><a href="#example-7">Example 7</a></li><li><a href="#example-8">Example 8</a></li><li><a href="#example-9">Example 9</a></li></ul></li><li><a href="#notes-on-uniquely-decodable-codes">Notes on Uniquely Decodable Codes</a></li></ul></li><li><a href="#huffman-encoding">Huffman Encoding</a><ul><li><a href="#example-of-huffman-encoding">Example of Huffman Encoding</a></li></ul></li><li><a href="#how-to-draw-a-huffman-tree">How to draw a Huffman tree?</a></li><li><a href="#huffman-decoding">Huffman Decoding</a></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="huffman-coding">Huffman Coding</h1>
+
+<h2 id="codeword-encoding">Codeword Encoding</h2>
+
+<h2 id="encoding-basics">Encoding Basics</h2>
+<ul>
+  <li><strong>Encoding</strong> involves assigning binary sequences to elements of an alphabet.</li>
+  <li>An <strong>alphabet</strong> is a collection of symbols.</li>
+  <li>The set of binary sequences is known as a <strong>code</strong> or <strong>codebook</strong>.</li>
+  <li>Each sequence in the code is referred to as a <strong>codeword</strong>.</li>
+  <li><strong>Example</strong>: ASCII uses a fixed-length 7-bit code, where ‘a’ is coded as <code class="language-plaintext highlighter-rouge">1100001</code>2 and ‘A’ as <code class="language-plaintext highlighter-rouge">1000001</code>2.</li>
+</ul>
+
+<h3 id="fixed-length-codes">Fixed-Length Codes</h3>
+<ul>
+  <li>The simplest method of encoding, where each codeword has the same number of bits.</li>
+  <li>This method’s bit rate per symbol is consistent, equivalent to the codeword length.</li>
+  <li>To reduce bits required for various messages, a variable bit length per symbol can be used, especially to use fewer bits for more frequently occurring symbols.</li>
+</ul>
+
+<h2 id="decoding">Decoding</h2>
+<ul>
+  <li><strong>Decoding</strong> converts a codeword back to the corresponding element in the alphabet.</li>
+  <li>A <strong>uniquely decodable code</strong> means there is only one way to decode a sequence of codewords.</li>
+  <li><strong>Non-uniquely Decodable Example</strong>: The phrase “I saw a man on a hill with a telescope” can imply multiple interpretations.</li>
+</ul>
+
+<h2 id="uniquely-decodable-codes">Uniquely Decodable Codes</h2>
+<h3 id="example-1">Example 1</h3>
+<ul>
+  <li>Codewords: a1 → 0, a2 → 0, a3 → 1, a4 → 10</li>
+  <li>This code is not uniquely decodable as a1 and a2 share the same codeword, causing ambiguity.</li>
+</ul>
+
+<h3 id="example-2">Example 2</h3>
+<ul>
+  <li>Codewords: a1 → 0, a2 → 1, a3 → 00, a4 → 11</li>
+  <li>Ambiguity arises here because encoding a1 twice (<code class="language-plaintext highlighter-rouge">00</code>) can also decode as a3.</li>
+</ul>
+
+<h3 id="example-3">Example 3</h3>
+<ul>
+  <li>Codewords: a1 → 0, a2 → 10, a3 → 110, a4 → 111</li>
+  <li>This is a uniquely decodable and instantaneous code because each codeword’s end can be identified without extra context (ends with <code class="language-plaintext highlighter-rouge">0</code> or three consecutive <code class="language-plaintext highlighter-rouge">1</code>s).</li>
+</ul>
+
+<h3 id="example-4">Example 4</h3>
+<ul>
+  <li>Codewords: a1 → 0, a2 → 01, a3 → 011, a4 → 0111</li>
+  <li>Also uniquely decodable; decoding stops as soon as a <code class="language-plaintext highlighter-rouge">0</code> is encountered.</li>
+  <li>However, it lacks the instantaneous property of Example 3 because the decoder needs to check following bits to confirm codeword completion.</li>
+</ul>
+
+<h3 id="discussion-on-instantaneous-codes">Discussion on Instantaneous Codes</h3>
+<ul>
+  <li>Instantaneous codes allow immediate decoding of each codeword as it is read, without needing the subsequent codeword.</li>
+  <li>While beneficial, instantaneous decoding is not required for a code to be uniquely decodable.</li>
+</ul>
+
+<h3 id="definitions-and-testing-for-unique-decodability">Definitions and Testing for Unique Decodability</h3>
+<ul>
+  <li><strong>Prefixes and Dangling Suffixes</strong>: A codeword <code class="language-plaintext highlighter-rouge">a</code> (k bits long) is considered a prefix of another codeword <code class="language-plaintext highlighter-rouge">b</code> (n bits long, where k &lt; n) if the first k bits of <code class="language-plaintext highlighter-rouge">b</code> are identical to <code class="language-plaintext highlighter-rouge">a</code>. The remaining bits of <code class="language-plaintext highlighter-rouge">b</code> are called the dangling suffix.</li>
+  <li><strong>Example</strong>: If <code class="language-plaintext highlighter-rouge">a = 010</code> and <code class="language-plaintext highlighter-rouge">b = 01011</code>, then <code class="language-plaintext highlighter-rouge">a</code> is a prefix of <code class="language-plaintext highlighter-rouge">b</code>, and the dangling suffix is <code class="language-plaintext highlighter-rouge">11</code>.</li>
+</ul>
+
+<h3 id="procedure-to-test-for-unique-decodability">Procedure to Test for Unique Decodability</h3>
+<ol>
+  <li><strong>Examine all pairs of codewords</strong>: Identify if one codeword is a prefix of another.</li>
+  <li><strong>Check the dangling suffix</strong>: If the dangling suffix matches any original codeword, the code is not uniquely decodable. Otherwise, add the dangling suffix to an augmented list for further checks.</li>
+  <li><strong>Repeat the process</strong>: Continue until no new unique dangling suffixes can be added or a suffix matches an original codeword.</li>
+</ol>
+
+<h3 id="examples">Examples</h3>
+<h4 id="example-7">Example 7</h4>
+<ul>
+  <li><strong>Codewords</strong>: <code class="language-plaintext highlighter-rouge">a1 → 0</code>, <code class="language-plaintext highlighter-rouge">a2 → 01</code>, <code class="language-plaintext highlighter-rouge">a3 → 11</code></li>
+  <li><strong>Analysis</strong>:
+    <ul>
+      <li>Initial list: <code class="language-plaintext highlighter-rouge">{0, 01, 11}</code></li>
+      <li><code class="language-plaintext highlighter-rouge">0</code> is a prefix for <code class="language-plaintext highlighter-rouge">01</code> with dangling suffix <code class="language-plaintext highlighter-rouge">1</code>.</li>
+      <li>The list becomes <code class="language-plaintext highlighter-rouge">{0, 01, 11, 1}</code>.</li>
+      <li>No further unique suffixes, and no suffix matches a codeword exactly. Hence, the code is uniquely decodable.</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="example-8">Example 8</h4>
+<ul>
+  <li><strong>Codewords</strong>: <code class="language-plaintext highlighter-rouge">a1 → 0</code>, <code class="language-plaintext highlighter-rouge">a2 → 01</code>, <code class="language-plaintext highlighter-rouge">a3 → 10</code></li>
+  <li><strong>Analysis</strong>:
+    <ul>
+      <li>Initial list: <code class="language-plaintext highlighter-rouge">{0, 01, 10}</code></li>
+      <li><code class="language-plaintext highlighter-rouge">0</code> is a prefix for <code class="language-plaintext highlighter-rouge">01</code> with dangling suffix <code class="language-plaintext highlighter-rouge">1</code>.</li>
+      <li><code class="language-plaintext highlighter-rouge">1</code> is a prefix for <code class="language-plaintext highlighter-rouge">10</code> with dangling suffix <code class="language-plaintext highlighter-rouge">0</code>.</li>
+      <li>Since <code class="language-plaintext highlighter-rouge">0</code> is a codeword, the code is not uniquely decodable.</li>
+      <li><strong>Counter Example</strong>: Concatenation of <code class="language-plaintext highlighter-rouge">01</code> and <code class="language-plaintext highlighter-rouge">10</code> can be decoded ambiguously as <code class="language-plaintext highlighter-rouge">a2 a1</code> or <code class="language-plaintext highlighter-rouge">a1 a3</code>.</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="example-9">Example 9</h4>
+<ul>
+  <li><strong>Codewords</strong>: <code class="language-plaintext highlighter-rouge">a1 → 101</code>, <code class="language-plaintext highlighter-rouge">a2 → 1011</code>, <code class="language-plaintext highlighter-rouge">a3 → 0100</code>, <code class="language-plaintext highlighter-rouge">a4 → 00101</code></li>
+  <li><strong>Analysis</strong>:
+    <ul>
+      <li>Identifying prefixes and suffixes creates a cycle where <code class="language-plaintext highlighter-rouge">101</code> (a1) reappears as a suffix, confirming the code is not uniquely decodable.</li>
+      <li><strong>Counter Example</strong>: The sequence <code class="language-plaintext highlighter-rouge">10110100101</code> can be decoded in multiple ways, confirming ambiguity.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="notes-on-uniquely-decodable-codes">Notes on Uniquely Decodable Codes</h3>
+<ul>
+  <li><strong>NB1</strong>: This testing method does not assess whether the code is instantaneous.</li>
+  <li><strong>NB2</strong>: If no codeword is a prefix of another, this results in a prefix-free code. Prefix-free codes are always uniquely decodable and instantaneous, but not all uniquely decodable codes are prefix-free.</li>
+</ul>
+
+<h2 id="huffman-encoding">Huffman Encoding</h2>
+
+<p>A full implementation can be seen 
+<a href="https://github.com/norgera/CS4481-Image-Compression/tree/main/Huffman%20Coding" title="Github">here</a>
+The process for creating a Huffman code is straightforward:</p>
+
+<ul>
+  <li><strong>Node Layout</strong>: Begin by laying out the individual symbols as an array of unmarked nodes.</li>
+  <li><strong>Weight Assignment</strong>: Assign to each node a weight corresponding to the frequency or probability of the symbol’s occurrence.</li>
+  <li><strong>Tree Construction</strong>:
+    <ol>
+      <li>Identify two unmarked nodes with the lowest weights.</li>
+      <li>Create an unmarked parent node for these two nodes, assigning it a weight equal to the sum of the weights of the two child nodes.</li>
+      <li>Label the paths to the child nodes arbitrarily with “0” and “1”.</li>
+      <li>Mark the child nodes as part of the tree.</li>
+    </ol>
+  </li>
+  <li><strong>Code Generation</strong>: The code for each symbol is formed by accumulating the labels from the root to the symbol itself at the leaf.</li>
+</ul>
+
+<h3 id="example-of-huffman-encoding">Example of Huffman Encoding</h3>
+
+<p>Consider a set of symbols R = {r1, r2, r3, r4, r5, r6} with the following probabilities of occurrence:</p>
+
+<ul>
+  <li>P(r1) = 20/32</li>
+  <li>P(r2) = 3/32</li>
+  <li>P(r3) = 3/32</li>
+  <li>P(r4) = 1/32</li>
+  <li>P(r5) = 4/32</li>
+  <li>P(r6) = 1/32</li>
+</ul>
+
+<p><img src="huff.png" alt="My Example Image" /></p>
+
+<p><img src="huff2.png" alt="My Example Image" /></p>
+
+<h2 id="how-to-draw-a-huffman-tree">How to draw a Huffman tree?</h2>
+<ul>
+  <li>Start from a single node (the root node).</li>
+  <li>Each node can have either:
+    <ul>
+      <li>zero branch (in this case we call it external node, or leave node)</li>
+      <li>Two branches (in this case we call it internal node)</li>
+    </ul>
+  </li>
+  <li>One of these branches corresponds to a 0 (assume it is the left branch).</li>
+  <li>The other branch corresponds to 1 (assume it is the right branch).</li>
+</ul>
+
+<p><img src="huff3.png" alt="My Example Image" /></p>
+
+<p>While the end-of-symbols-need-to-be-encoded is not reached:</p>
+<ul>
+  <li>Read a single symbol from the input data.</li>
+  <li>Find the corresponding Huffman code for that symbol.</li>
+  <li>Concatenate this Huffman code to the compressed Huffman data.</li>
+</ul>
+
+<p><strong>Example:</strong></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">r5 r1 r1 r5 r2 r6 r3 r1 r1 r4</code> will be encoded as <code class="language-plaintext highlighter-rouge">111001111001011110001010</code>.</li>
+</ul>
+
+<p>Consider a set of symbols R = {r1, r2, r3, r4}</p>
+<ul>
+  <li>The probability of occurrence of these symbols are:
+    <ul>
+      <li>P(r1) = 1/8</li>
+      <li>P(r2) = 1/8</li>
+      <li>P(r3) = 1/4</li>
+      <li>P(r4) = 1/2</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Design a Huffman code for these symbols and calculate the average bit rate per each symbol.</p>
+
+<ul>
+  <li>
+    <p>Using the same steps in Figure 1,</p>
+  </li>
+  <li>r1: 100</li>
+  <li>r2: 101</li>
+  <li>r3: 11</li>
+  <li>r4: 0</li>
+</ul>
+
+<p>Average bit rate calculation:</p>
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">3 × 1/8 + 3 × 1/8 + 2 × 1/4 + 1 × 1/2 = 1.75 bits per symbol</code></p>
+  </li>
+  <li>Consider a set of symbols R = {r1, r2, r3, r4}</li>
+  <li>The probability of occurrence of these symbols are:
+    <ul>
+      <li>P(r1) = 1/4</li>
+      <li>P(r2) = 1/4</li>
+      <li>P(r3) = 1/4</li>
+      <li>P(r4) = 1/4</li>
+    </ul>
+  </li>
+  <li>Design a Huffman code for these symbols and calculate the average bit rate per each symbol.</li>
+</ul>
+
+<p>Assigned Huffman Codes:</p>
+<ul>
+  <li>r1: 00</li>
+  <li>r2: 01</li>
+  <li>r3: 10</li>
+  <li>r4: 11</li>
+</ul>
+
+<p>Average bit rate calculation:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">2 × 1/4 + 2 × 1/4 + 2 × 1/4 + 2 × 1/4 = 2 bits per symbol</code></li>
+</ul>
+
+<h2 id="huffman-decoding">Huffman Decoding</h2>
+
+<p>While the end-of-compressed-Huffman-data is not reached:</p>
+<ul>
+  <li>Set the current node to the root node.</li>
+  <li>While the current node is not a leaf node:
+    <ul>
+      <li>Read a single bit from the compressed Huffman data.</li>
+      <li>If it is <code class="language-plaintext highlighter-rouge">0</code>, go to the left child node and declare it as the current node.</li>
+      <li>If it is <code class="language-plaintext highlighter-rouge">1</code>, go to the right child node and declare it as the current node.</li>
+    </ul>
+  </li>
+  <li>Get the decoded symbol from the current node root.</li>
+</ul>
+
+<p><strong>Example:</strong></p>
+<ul>
+  <li>The sequence <code class="language-plaintext highlighter-rouge">111001111001011110001010</code> will be decoded as:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">r5 r1 r1 r5 r2 r6 r3 r1 r1 r4</code></li>
+    </ul>
+  </li>
+</ul>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>
