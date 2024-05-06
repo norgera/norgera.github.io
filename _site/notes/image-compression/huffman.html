@@ -128,7 +128,7 @@
                 
                 <h4>Table of Contents</h4>
             
-                <ul class="toc"><li><a href="#codeword-encoding">Codeword Encoding</a></li><li><a href="#encoding-basics">Encoding Basics</a><ul><li><a href="#fixed-length-codes">Fixed-Length Codes</a></li></ul></li><li><a href="#decoding">Decoding</a></li><li><a href="#uniquely-decodable-codes">Uniquely Decodable Codes</a><ul><li><a href="#example-1">Example 1</a></li><li><a href="#example-2">Example 2</a></li><li><a href="#example-3">Example 3</a></li><li><a href="#example-4">Example 4</a></li><li><a href="#discussion-on-instantaneous-codes">Discussion on Instantaneous Codes</a></li><li><a href="#definitions-and-testing-for-unique-decodability">Definitions and Testing for Unique Decodability</a></li><li><a href="#procedure-to-test-for-unique-decodability">Procedure to Test for Unique Decodability</a></li><li><a href="#examples">Examples</a><ul><li><a href="#example-7">Example 7</a></li><li><a href="#example-8">Example 8</a></li><li><a href="#example-9">Example 9</a></li></ul></li><li><a href="#notes-on-uniquely-decodable-codes">Notes on Uniquely Decodable Codes</a></li></ul></li><li><a href="#huffman-encoding">Huffman Encoding</a><ul><li><a href="#example-of-huffman-encoding">Example of Huffman Encoding</a></li></ul></li><li><a href="#how-to-draw-a-huffman-tree">How to draw a Huffman tree?</a></li><li><a href="#huffman-decoding">Huffman Decoding</a></li></ul>
+                <ul class="toc"><li><a href="#codeword-encodingdecoding">Codeword Encoding/Decoding</a><ul><li><a href="#examples">Examples</a></li></ul></li><li><a href="#huffman-encoding">Huffman Encoding</a><ul><li><a href="#draw-huffman-trees">Draw Huffman trees</a></li></ul></li><li><a href="#huffman-decoding">Huffman Decoding</a></li></ul>
             
     
   </div>
@@ -150,9 +150,8 @@
 
       <h1 id="huffman-coding">Huffman Coding</h1>
 
-<h2 id="codeword-encoding">Codeword Encoding</h2>
+<h2 id="codeword-encodingdecoding">Codeword Encoding/Decoding</h2>
 
-<h2 id="encoding-basics">Encoding Basics</h2>
 <ul>
   <li><strong>Encoding</strong> involves assigning binary sequences to elements of an alphabet.</li>
   <li>An <strong>alphabet</strong> is a collection of symbols.</li>
@@ -161,59 +160,60 @@
   <li><strong>Example</strong>: ASCII uses a fixed-length 7-bit code, where ‘a’ is coded as <code class="language-plaintext highlighter-rouge">1100001</code>2 and ‘A’ as <code class="language-plaintext highlighter-rouge">1000001</code>2.</li>
 </ul>
 
-<h3 id="fixed-length-codes">Fixed-Length Codes</h3>
+<p><strong>Fixed-Length Codes</strong></p>
 <ul>
   <li>The simplest method of encoding, where each codeword has the same number of bits.</li>
   <li>This method’s bit rate per symbol is consistent, equivalent to the codeword length.</li>
   <li>To reduce bits required for various messages, a variable bit length per symbol can be used, especially to use fewer bits for more frequently occurring symbols.</li>
 </ul>
 
-<h2 id="decoding">Decoding</h2>
+<p><strong>Codeword Decoding</strong></p>
 <ul>
   <li><strong>Decoding</strong> converts a codeword back to the corresponding element in the alphabet.</li>
   <li>A <strong>uniquely decodable code</strong> means there is only one way to decode a sequence of codewords.</li>
   <li><strong>Non-uniquely Decodable Example</strong>: The phrase “I saw a man on a hill with a telescope” can imply multiple interpretations.</li>
 </ul>
 
-<h2 id="uniquely-decodable-codes">Uniquely Decodable Codes</h2>
-<h3 id="example-1">Example 1</h3>
+<p><strong>Uniquely Decodable Codes</strong></p>
+
+<p><strong>Example 1</strong></p>
 <ul>
   <li>Codewords: a1 → 0, a2 → 0, a3 → 1, a4 → 10</li>
   <li>This code is not uniquely decodable as a1 and a2 share the same codeword, causing ambiguity.</li>
 </ul>
 
-<h3 id="example-2">Example 2</h3>
+<p><strong>Example 2</strong></p>
 <ul>
   <li>Codewords: a1 → 0, a2 → 1, a3 → 00, a4 → 11</li>
   <li>Ambiguity arises here because encoding a1 twice (<code class="language-plaintext highlighter-rouge">00</code>) can also decode as a3.</li>
 </ul>
 
-<h3 id="example-3">Example 3</h3>
+<p><strong>Example 3</strong></p>
 <ul>
   <li>Codewords: a1 → 0, a2 → 10, a3 → 110, a4 → 111</li>
   <li>This is a uniquely decodable and instantaneous code because each codeword’s end can be identified without extra context (ends with <code class="language-plaintext highlighter-rouge">0</code> or three consecutive <code class="language-plaintext highlighter-rouge">1</code>s).</li>
 </ul>
 
-<h3 id="example-4">Example 4</h3>
+<p><strong>Example 4</strong></p>
 <ul>
   <li>Codewords: a1 → 0, a2 → 01, a3 → 011, a4 → 0111</li>
   <li>Also uniquely decodable; decoding stops as soon as a <code class="language-plaintext highlighter-rouge">0</code> is encountered.</li>
   <li>However, it lacks the instantaneous property of Example 3 because the decoder needs to check following bits to confirm codeword completion.</li>
 </ul>
 
-<h3 id="discussion-on-instantaneous-codes">Discussion on Instantaneous Codes</h3>
+<p><strong>Discussion on Instantaneous Codes</strong></p>
 <ul>
   <li>Instantaneous codes allow immediate decoding of each codeword as it is read, without needing the subsequent codeword.</li>
   <li>While beneficial, instantaneous decoding is not required for a code to be uniquely decodable.</li>
 </ul>
 
-<h3 id="definitions-and-testing-for-unique-decodability">Definitions and Testing for Unique Decodability</h3>
+<p><strong>Definitions and Testing for Unique Decodability</strong></p>
 <ul>
   <li><strong>Prefixes and Dangling Suffixes</strong>: A codeword <code class="language-plaintext highlighter-rouge">a</code> (k bits long) is considered a prefix of another codeword <code class="language-plaintext highlighter-rouge">b</code> (n bits long, where k &lt; n) if the first k bits of <code class="language-plaintext highlighter-rouge">b</code> are identical to <code class="language-plaintext highlighter-rouge">a</code>. The remaining bits of <code class="language-plaintext highlighter-rouge">b</code> are called the dangling suffix.</li>
   <li><strong>Example</strong>: If <code class="language-plaintext highlighter-rouge">a = 010</code> and <code class="language-plaintext highlighter-rouge">b = 01011</code>, then <code class="language-plaintext highlighter-rouge">a</code> is a prefix of <code class="language-plaintext highlighter-rouge">b</code>, and the dangling suffix is <code class="language-plaintext highlighter-rouge">11</code>.</li>
 </ul>
 
-<h3 id="procedure-to-test-for-unique-decodability">Procedure to Test for Unique Decodability</h3>
+<p><strong>Procedure to Test for Unique Decodability</strong></p>
 <ol>
   <li><strong>Examine all pairs of codewords</strong>: Identify if one codeword is a prefix of another.</li>
   <li><strong>Check the dangling suffix</strong>: If the dangling suffix matches any original codeword, the code is not uniquely decodable. Otherwise, add the dangling suffix to an augmented list for further checks.</li>
@@ -221,7 +221,7 @@
 </ol>
 
 <h3 id="examples">Examples</h3>
-<h4 id="example-7">Example 7</h4>
+<p><strong>Example 5</strong></p>
 <ul>
   <li><strong>Codewords</strong>: <code class="language-plaintext highlighter-rouge">a1 → 0</code>, <code class="language-plaintext highlighter-rouge">a2 → 01</code>, <code class="language-plaintext highlighter-rouge">a3 → 11</code></li>
   <li><strong>Analysis</strong>:
@@ -234,7 +234,7 @@
   </li>
 </ul>
 
-<h4 id="example-8">Example 8</h4>
+<p><strong>Example 6</strong></p>
 <ul>
   <li><strong>Codewords</strong>: <code class="language-plaintext highlighter-rouge">a1 → 0</code>, <code class="language-plaintext highlighter-rouge">a2 → 01</code>, <code class="language-plaintext highlighter-rouge">a3 → 10</code></li>
   <li><strong>Analysis</strong>:
@@ -248,7 +248,7 @@
   </li>
 </ul>
 
-<h4 id="example-9">Example 9</h4>
+<p><strong>Example 7</strong></p>
 <ul>
   <li><strong>Codewords</strong>: <code class="language-plaintext highlighter-rouge">a1 → 101</code>, <code class="language-plaintext highlighter-rouge">a2 → 1011</code>, <code class="language-plaintext highlighter-rouge">a3 → 0100</code>, <code class="language-plaintext highlighter-rouge">a4 → 00101</code></li>
   <li><strong>Analysis</strong>:
@@ -259,7 +259,7 @@
   </li>
 </ul>
 
-<h3 id="notes-on-uniquely-decodable-codes">Notes on Uniquely Decodable Codes</h3>
+<p><strong>Notes on Uniquely Decodable Codes</strong></p>
 <ul>
   <li><strong>NB1</strong>: This testing method does not assess whether the code is instantaneous.</li>
   <li><strong>NB2</strong>: If no codeword is a prefix of another, this results in a prefix-free code. Prefix-free codes are always uniquely decodable and instantaneous, but not all uniquely decodable codes are prefix-free.</li>
@@ -285,7 +285,7 @@ The process for creating a Huffman code is straightforward:</p>
   <li><strong>Code Generation</strong>: The code for each symbol is formed by accumulating the labels from the root to the symbol itself at the leaf.</li>
 </ul>
 
-<h3 id="example-of-huffman-encoding">Example of Huffman Encoding</h3>
+<p>Example of Huffman Encoding</p>
 
 <p>Consider a set of symbols R = {r1, r2, r3, r4, r5, r6} with the following probabilities of occurrence:</p>
 
@@ -302,7 +302,7 @@ The process for creating a Huffman code is straightforward:</p>
 
 <p><img src="huff2.png" alt="My Example Image" /></p>
 
-<h2 id="how-to-draw-a-huffman-tree">How to draw a Huffman tree?</h2>
+<h3 id="draw-huffman-trees">Draw Huffman trees</h3>
 <ul>
   <li>Start from a single node (the root node).</li>
   <li>Each node can have either:

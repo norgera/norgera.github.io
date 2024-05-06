@@ -128,7 +128,7 @@
                 
                 <h4>Table of Contents</h4>
             
-                <ul class="toc"><li><a href="#topic-01-what-is-an-image">Topic 01: What Is an Image?</a></li><li><a href="#composition-of-images">Composition of Images</a></li><li><a href="#image-compositions">Image Compositions</a></li><li><a href="#image-formats">Image Formats</a><ul><li><a href="#bitmap-format">Bitmap Format</a></li><li><a href="#vector-format">Vector Format</a></li></ul></li><li><a href="#examples-of-vector-format">Examples of Vector Format</a></li><li><a href="#digitization">Digitization</a></li><li><a href="#resolution-versus-density">Resolution Versus Density</a></li><li><a href="#pixel-depth-and-bit-plane">Pixel Depth and Bit Plane</a></li><li><a href="#display-devices">Display Devices</a><ul><li><a href="#computer-monitors">Computer Monitors</a></li><li><a href="#computer-printers">Computer Printers</a></li></ul></li><li><a href="#frame-and-animation">Frame and Animation</a></li><li><a href="#color-components-in-images">Color Components in Images</a></li><li><a href="#topic-01-how-do-we-see-things">Topic 01: How Do We See Things?</a></li><li><a href="#image-acquisition">Image Acquisition</a><ul><li><a href="#digital-sensors-and-digitization">Digital Sensors and Digitization</a></li><li><a href="#displaying-digital-images">Displaying Digital Images</a></li><li><a href="#acquiring-color-images">Acquiring Color Images</a></li><li><a href="#electromagnetic-waves-and-image-modalities">Electromagnetic Waves and Image Modalities</a></li><li><a href="#medical-imaging-modalities">Medical Imaging Modalities</a></li></ul></li><li><a href="#color-models">Color Models</a><ul><li><a href="#rgb-color-model">RGB Color Model</a></li><li><a href="#ycbcr-color-model">YCbCr Color Model</a></li><li><a href="#cmyk-color-model">CMYK Color Model</a></li><li><a href="#hsi-color-model">HSI Color Model</a></li></ul></li><li><a href="#grayscale-versus-color">Grayscale versus Color</a></li><li><a href="#true-color-versus-color-palette-systems">True-Color versus Color-Palette Systems</a></li><li><a href="#byte-ordering-and-bit-ordering">Byte Ordering and Bit Ordering</a></li><li><a href="#pbm-pgm-and-ppm-formats">PBM, PGM, and PPM Formats</a><ul><li><a href="#image-data-and-headers">Image Data and Headers</a></li><li><a href="#pbm-specifics">PBM Specifics</a></li><li><a href="#pgm-and-ppm-headers">PGM and PPM Headers</a></li><li><a href="#pnm-portable-any-map">PNM (Portable aNy Map)</a></li><li><a href="#viewing-pnm-files">Viewing PNM Files</a></li></ul></li><li><a href="#examples-and-notes">Examples and Notes</a><ul><li><a href="#raw-data-handling">Raw Data Handling</a></li></ul></li><li><a href="#topic-02-introduction-to-image-compression">Topic 02: Introduction to Image Compression</a><ul><li><a href="#what-is-compression">What is Compression?</a></li><li><a href="#why-compression">Why Compression?</a></li><li><a href="#data-vs-information">Data vs. Information</a></li><li><a href="#types-of-redundancy">Types of Redundancy</a></li><li><a href="#psychovisual-redundancy">Psychovisual Redundancy</a></li><li><a href="#lossless-vs-lossy-compression">Lossless vs. Lossy Compression</a></li><li><a href="#fidelity-criteria">Fidelity Criteria</a></li></ul></li><li><a href="#image-compression-techniques">Image Compression Techniques</a></li><li><a href="#decompression">Decompression</a></li></ul>
+                <ul class="toc"><li><a href="#what-is-an-image">What Is an Image?</a></li><li><a href="#how-do-we-see-things">How Do We See Things?</a></li><li><a href="#color-models">Color Models</a></li><li><a href="#pbm-pgm-and-ppm">PBM, PGM, and PPM</a></li><li><a href="#introduction-to-image-compression">Introduction to Image Compression</a></li></ul>
             
     
   </div>
@@ -150,7 +150,7 @@
 
       <h1 id="digital-image-fundamentals">Digital Image Fundamentals</h1>
 
-<h2 id="topic-01-what-is-an-image">Topic 01: What Is an Image?</h2>
+<h2 id="what-is-an-image">What Is an Image?</h2>
 <ul>
   <li>An <strong>image</strong> is a representation of the visual information in a given object or scene.</li>
   <li>Discusses the dimension of images including:
@@ -161,72 +161,72 @@
   </li>
 </ul>
 
-<h2 id="composition-of-images">Composition of Images</h2>
+<p><strong>Composition of Images</strong></p>
 <ul>
   <li>Images are made up of discrete units known as <strong>picture elements (pixels)</strong>.</li>
   <li>Each pixel occupies a small rectangular region and displays one color.</li>
   <li>Pixels are arranged in a two-dimensional array to form the complete image.</li>
 </ul>
 
-<h2 id="image-compositions">Image Compositions</h2>
+<p><strong>Image Compositions</strong></p>
 <ul>
   <li>Adjusting the color of individual pixels constructs images.</li>
   <li>Explains the count of pixels and the number of possible images based on pixel count and color variability.</li>
 </ul>
 
-<h2 id="image-formats">Image Formats</h2>
-<h3 id="bitmap-format">Bitmap Format</h3>
+<p><strong>Image Formats</strong>
+ Bitmap Format</p>
 <ul>
   <li>Bitmap images are displayed as a two-dimensional array, with each array element representing a single color.</li>
   <li>Discusses the drawbacks and advantages of bitmap images including size dependency and quality.</li>
 </ul>
 
-<h3 id="vector-format">Vector Format</h3>
+<p><strong>Vector Format</strong></p>
 <ul>
   <li>Vector format uses a series of drawing commands to represent images.</li>
   <li>Suitable for editing and scaling but not ideal for reproducing photographs.</li>
 </ul>
 
-<h2 id="examples-of-vector-format">Examples of Vector Format</h2>
+<p>Examples of Vector Format</p>
 <ul>
   <li>Provided Postscript commands to demonstrate vector image construction.</li>
 </ul>
 
-<h2 id="digitization">Digitization</h2>
+<p><strong>Digitization</strong></p>
 <ul>
   <li>Discusses the process of converting analog signals to digital form, utilizing devices like scanners and image grabbers.</li>
 </ul>
 
-<h2 id="resolution-versus-density">Resolution Versus Density</h2>
+<p><strong>Resolution Versus Density</strong></p>
 <ul>
   <li>Defines <strong>resolution</strong> as the detail measure in pixels and <strong>density</strong> as the detail per unit surface.</li>
   <li>Examples illustrating the impact of changing density on the appearance of images.</li>
 </ul>
 
-<h2 id="pixel-depth-and-bit-plane">Pixel Depth and Bit Plane</h2>
+<p><strong>Pixel Depth and Bit Plane</strong></p>
 <ul>
   <li><strong>Pixel depth</strong> determines the number of bits used per pixel, affecting the color depth.</li>
   <li><strong>Bit plane</strong> represents a two-dimensional array of bits, contributing to the overall depth of a bitmap image.</li>
 </ul>
 
-<h2 id="display-devices">Display Devices</h2>
-<h3 id="computer-monitors">Computer Monitors</h3>
+<p><strong>Display Devices</strong>
+ Computer Monitors</p>
 <ul>
   <li>Typically about 100 pixels per inch, with each pixel corresponding to a memory location controlled by the monitor’s controller.</li>
 </ul>
 
-<h3 id="computer-printers">Computer Printers</h3>
+<p><strong>Computer Printers</strong></p>
 <ul>
   <li>Higher pixel density compared to monitors, capable of 600, 1200, or more pixels per inch.</li>
 </ul>
 
-<h2 id="frame-and-animation">Frame and Animation</h2>
+<p><strong>Frame and Animation</strong></p>
 <ul>
   <li>Definition of a frame and the concept of animation through rapid sequence display.</li>
   <li>Calculation of data size for video animations based on frame size and playback speed.</li>
 </ul>
 
-<h2 id="color-components-in-images">Color Components in Images</h2>
+<p><strong>Color Components in Images</strong></p>
 <ul>
   <li>Categorizes images into:
     <ul>
@@ -237,39 +237,39 @@
   </li>
 </ul>
 
-<h2 id="topic-01-how-do-we-see-things">Topic 01: How Do We See Things?</h2>
+<h2 id="how-do-we-see-things">How Do We See Things?</h2>
 <ul>
   <li>Objects are seen when visible light is reflected from them. Without light, sight is not possible.</li>
   <li>When white light shines on a green object, most wavelengths are absorbed except for the green light, which is reflected.</li>
 </ul>
 
-<h2 id="image-acquisition">Image Acquisition</h2>
+<p><strong>Image Acquisition</strong></p>
 <ul>
   <li><strong>Image Acquisition</strong> is akin to how we perceive scenes, involving illumination of the scene by an energy source and capturing reflected or transmitted energy using sensors.</li>
 </ul>
 
-<h3 id="digital-sensors-and-digitization">Digital Sensors and Digitization</h3>
+<p><strong>Digital Sensors and Digitization</strong></p>
 <ul>
   <li>Digital sensors return a discrete set of energy levels.</li>
   <li><strong>Digitization</strong> (also known as quantization) converts continuous analog signals into a digital representation, resulting in numerical values rather than colors.</li>
 </ul>
 
-<h3 id="displaying-digital-images">Displaying Digital Images</h3>
+<p><strong>Displaying Digital Images</strong></p>
 <ul>
   <li>Image viewers convert numerical values back into colors, noting that a digital image is always an approximation of a real-world scene.</li>
 </ul>
 
-<h3 id="acquiring-color-images">Acquiring Color Images</h3>
+<p><strong>Acquiring Color Images</strong></p>
 <ul>
   <li>Color images are acquired using three filters sensitive to red, green, and blue, and three sensors measure the intensity output from each filter. This results in three monochrome images, where each image’s intensity is proportional to one of the filters’ responses.</li>
 </ul>
 
-<h3 id="electromagnetic-waves-and-image-modalities">Electromagnetic Waves and Image Modalities</h3>
+<p><strong>Electromagnetic Waves and Image Modalities</strong></p>
 <ul>
   <li>The energy source for human vision is visible light. Various image modalities are based on the wavelength of the electromagnetic waves used, requiring specific sensors to record and quantize the reflected energy.</li>
 </ul>
 
-<h3 id="medical-imaging-modalities">Medical Imaging Modalities</h3>
+<p><strong>Medical Imaging Modalities</strong></p>
 <ul>
   <li>Different modalities like X-ray, Angiography, Video Fluoroscopy, CT, MRI, Ultrasound, and Nuclear Medicine are used based on the need to visualize specific aspects of the human body.</li>
 </ul>
@@ -279,51 +279,51 @@
   <li>Numerous methods exist to numerically represent colors through different color models, designed to optimize display device characteristics.</li>
 </ul>
 
-<h3 id="rgb-color-model">RGB Color Model</h3>
+<p><strong>RGB Color Model</strong></p>
 <ul>
   <li><strong>RGB Color Model</strong> is commonly used where colors are created by combining red, green, and blue light. In a 24-bit RGB model, (0, 0, 0) represents black and (255, 255, 255) represents white.</li>
   <li>Explains the total number of colors possible by dividing each of the main three axes into 256 quantization levels.</li>
 </ul>
 
-<h3 id="ycbcr-color-model">YCbCr Color Model</h3>
+<p><strong>YCbCr Color Model</strong></p>
 <ul>
   <li>The <strong>YCbCr Color Model</strong> is used primarily in video systems. Y represents the luminance component, while Cb and Cr represent the chrominance components, specifying the blue and red content of the image respectively.</li>
   <li>Transformations between RGB and YCbCr involve linear algebra to shift from RGB values to YCbCr and back.</li>
 </ul>
 
-<h3 id="cmyk-color-model">CMYK Color Model</h3>
+<p><strong>CMYK Color Model</strong></p>
 <ul>
   <li><strong>CMYK</strong> is a subtractive color model used in printing. The model uses cyan, magenta, yellow, and key (black) inks. This model is efficient for printing as it reduces ink usage and drying times compared to mixing CMY to achieve black.</li>
 </ul>
 
-<h3 id="hsi-color-model">HSI Color Model</h3>
+<p><strong>HSI Color Model</strong></p>
 <ul>
   <li>The <strong>HSI (Hue, Saturation, Intensity) Color Model</strong> offers a cylindrical-coordinate representation of RGB colors, useful for image processing applications involving color manipulation.</li>
   <li>Conversion between RGB and HSI involves calculating hue as an angle, saturation as a radius, and intensity as the vertical axis.</li>
 </ul>
 
-<h2 id="grayscale-versus-color">Grayscale versus Color</h2>
+<p><strong>Grayscale versus Color</strong></p>
 <ul>
   <li>Explains the conversion of color images to grayscale by averaging the RGB components or using the luminance component (Y) from the YCbCr model. Grayscale devices display images in shades of gray, achieved when R, G, and B values are equal.</li>
 </ul>
 
-<h2 id="true-color-versus-color-palette-systems">True-Color versus Color-Palette Systems</h2>
+<p><strong>True-Color versus Color-Palette Systems</strong></p>
 <ul>
   <li>True-color systems use 24 bits per pixel to match human vision under normal conditions. Color-palette systems, using a look-up table of colors, reduce memory usage by storing images as indices from this table.</li>
 </ul>
 
-<h2 id="byte-ordering-and-bit-ordering">Byte Ordering and Bit Ordering</h2>
+<p><strong>Byte Ordering and Bit Ordering</strong></p>
 <ul>
   <li>Discusses the storage of integers in bitmap files and the compatibility issues among different processors based on byte ordering. Big-endian systems store the most significant byte first, while little-endian systems do the opposite.</li>
 </ul>
 
-<h2 id="pbm-pgm-and-ppm-formats">PBM, PGM, and PPM Formats</h2>
+<h2 id="pbm-pgm-and-ppm">PBM, PGM, and PPM</h2>
 <ul>
   <li><strong>PBM</strong> (Portable Bit Map), <strong>PGM</strong> (Portable Gray Map), and <strong>PPM</strong> (Portable Pixel Map) are simple bitmap image formats.</li>
   <li>Images consist of an ASCII text header followed by image data.</li>
 </ul>
 
-<h3 id="image-data-and-headers">Image Data and Headers</h3>
+<p><strong>Image Data and Headers</strong></p>
 <ul>
   <li>Headers in these formats:
     <ul>
@@ -340,7 +340,7 @@
   </li>
 </ul>
 
-<h3 id="pbm-specifics">PBM Specifics</h3>
+<p><strong>PBM Specifics</strong></p>
 <ul>
   <li><strong>PBM</strong> format:
     <ul>
@@ -357,7 +357,7 @@
 10000001 <br />
 …</p>
 
-<h3 id="pgm-and-ppm-headers">PGM and PPM Headers</h3>
+<p><strong>PGM and PPM Headers</strong></p>
 <ul>
   <li><strong>PGM</strong> headers also include a maximum gray value, affecting the bytes per pixel in raw format:</li>
   <li><code class="language-plaintext highlighter-rouge">P2</code> for ASCII and <code class="language-plaintext highlighter-rouge">P5</code> for raw pixel values.</li>
@@ -365,7 +365,7 @@
   <li><code class="language-plaintext highlighter-rouge">P3</code> for ASCII and <code class="language-plaintext highlighter-rouge">P6</code> for raw pixel values.</li>
 </ul>
 
-<h3 id="pnm-portable-any-map">PNM (Portable aNy Map)</h3>
+<p><strong>PNM (Portable aNy Map)</strong></p>
 <ul>
   <li>Sometimes, PBM, PGM, and PPM are collectively referred to as <strong>PNM</strong>.</li>
   <li>Conversion tools:</li>
@@ -373,16 +373,14 @@
   <li><code class="language-plaintext highlighter-rouge">pnmtotiff</code> for converting to TIFF format.</li>
 </ul>
 
-<h3 id="viewing-pnm-files">Viewing PNM Files</h3>
+<p><strong>Viewing PNM Files</strong></p>
 <ul>
   <li>Recommendations for viewing PNM files on various operating systems:</li>
   <li><strong>Linux</strong>: xv viewer</li>
   <li><strong>Windows</strong>: Irfan View</li>
-  <li><strong>Mac</strong>: Toy Viewer</li>
-</ul>
-
-<h2 id="examples-and-notes">Examples and Notes</h2>
-<ul>
+  <li>
+    <p><strong>Mac</strong>: Toy Viewer</p>
+  </li>
   <li><strong>Example PBM Image</strong>:</li>
 </ul>
 
@@ -397,65 +395,65 @@
   <li><strong>Note</strong>: In raw PBM format (<code class="language-plaintext highlighter-rouge">P4</code>), pixels are stored as bits (8 pixels per byte) and must not cross byte boundaries.</li>
 </ul>
 
-<h3 id="raw-data-handling">Raw Data Handling</h3>
+<p><strong>Raw Data Handling</strong></p>
 <ul>
   <li>In raw formats like <code class="language-plaintext highlighter-rouge">P4</code>, <code class="language-plaintext highlighter-rouge">P5</code>, and <code class="language-plaintext highlighter-rouge">P6</code>, the image data starts immediately after the header without any spaces or comments, requiring careful handling of byte and bit ordering, especially considering big-endian and little-endian differences.</li>
 </ul>
 
-<h2 id="topic-02-introduction-to-image-compression">Topic 02: Introduction to Image Compression</h2>
+<h2 id="introduction-to-image-compression">Introduction to Image Compression</h2>
 
-<h3 id="what-is-compression">What is Compression?</h3>
+<p><strong>What is Compression?</strong></p>
 <ul>
   <li><strong>Compression</strong> in the digital sense involves representing information in fewer bytes, not physically making objects smaller.</li>
   <li>The goal is to reduce the digital representation’s bit rate while maintaining acceptable or near-original quality.</li>
 </ul>
 
-<h3 id="why-compression">Why Compression?</h3>
+<p><strong>Why Compression?</strong></p>
 <ul>
   <li><strong>Necessity from the 1950s</strong>: As digital imaging evolved, the need to efficiently store and transmit large image files became apparent.</li>
   <li><strong>Example</strong>: A 12-megapixel color image can take up 36 MB of storage and 19.2 seconds to upload with a 15 Mbit/s connection.</li>
   <li><strong>Applications</strong>: From digital TV and video conferencing to medical imaging and remote sensing, compression is crucial for managing large data volumes.</li>
 </ul>
 
-<h3 id="data-vs-information">Data vs. Information</h3>
+<p><strong>Data vs. Information</strong></p>
 <ul>
   <li><strong>Distinction</strong>: Data is raw material; information is the final product.</li>
   <li><strong>Efficiency</strong>: Different amounts of data can represent the same information; reducing data redundancy improves efficiency.</li>
 </ul>
 
-<h3 id="types-of-redundancy">Types of Redundancy</h3>
+<p><strong>Types of Redundancy</strong></p>
 <ol>
   <li><strong>Psychovisual Redundancy</strong>: Not all visual information has equal importance to the human eye, allowing some data to be discarded without significant loss of perceived quality.</li>
   <li><strong>Encoding Redundancy</strong>: Refers to the inefficiencies in using code symbols to represent information, where optimizing the coding can lead to smaller file sizes.</li>
   <li><strong>Inter-pixel Redundancy</strong>: Leveraging the correlations between adjacent pixels can significantly reduce the amount of data needed to represent an image.</li>
 </ol>
 
-<h3 id="psychovisual-redundancy">Psychovisual Redundancy</h3>
+<p><strong>Psychovisual Redundancy</strong></p>
 <ul>
   <li><strong>Human Visual System (HVS)</strong>: More sensitive to certain visual information than others, allowing less critical data to be compressed or removed.</li>
   <li><strong>Reduction Techniques</strong>: By quantizing and removing less important data, we can compress images without greatly affecting visual quality.</li>
 </ul>
 
-<h3 id="lossless-vs-lossy-compression">Lossless vs. Lossy Compression</h3>
+<p><strong>Lossless vs. Lossy Compression</strong></p>
 <ul>
   <li><strong>Lossless Compression</strong>: No data is lost during compression; the decompressed image is identical to the original.</li>
   <li><strong>Lossy Compression</strong>: Some data is discarded, which means the decompressed image may not be identical to the original but is often sufficient for the intended use.</li>
 </ul>
 
-<h3 id="fidelity-criteria">Fidelity Criteria</h3>
+<p><strong>Fidelity Criteria</strong></p>
 <ul>
   <li><strong>Objective Criteria</strong>: Measures like Mean Absolute Error (MAE) and Peak Signal-to-Noise Ratio (PSNR) provide quantifiable metrics for assessing compression impact.</li>
   <li><strong>Subjective Criteria</strong>: Human assessment of image quality, which can vary based on individual perceptions and conditions.</li>
 </ul>
 
-<h2 id="image-compression-techniques">Image Compression Techniques</h2>
+<p><strong>Image Compression Techniques</strong></p>
 <ul>
   <li><strong>Transformation</strong>: Converts image data into a format that makes it easier to compress.</li>
   <li><strong>Quantization</strong>: Reduces the number of bits needed to store the transformed data by approximating its values.</li>
   <li><strong>Encoding</strong>: Applies a coding scheme to the quantized values to reduce the file size.</li>
 </ul>
 
-<h2 id="decompression">Decompression</h2>
+<p><strong>Decompression</strong></p>
 <ul>
   <li><strong>Reversal Process</strong>: Decompression involves reversing the compression steps to reconstruct the original image data.</li>
 </ul>

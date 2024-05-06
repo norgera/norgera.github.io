@@ -3,21 +3,19 @@ order: 2003
 layout: default
 toc: true
 ---
-### The Precision Issue
+## The Precision Issue
 - Is it possible to encode the whole British encyclopedia using just a number?
 - Note that, each succeeding interval, i.e., sub-interval, is contained in the preceding interval.
 - An undesirable consequence of this process is that the intervals get smaller and smaller and require higher precision as the string gets longer.
 - Theoretically speaking, there are infinite numbers in the interval [0, 1).
 - However, in practice, the number of numbers that can be uniquely represented on a machine is limited by the maximum number of bits used to represent the number.
 - In order to uniquely represent all of the sub-intervals, an increasing precision is needed, as the length of the encoded string increases.
-- How can we overcome this precision problem?
 
-#### Topic 04: Codeword Encoding--Arithmetic Encoding
 - To overcome this precision problem, we should deal with binary codes directly during the encoding/decoding processes.
   - An interval rescaling scheme is needed.
   - This rescaling scheme must preserve the already encoded information.
 
-#### Rescaling Scheme (Encoding)
+## Rescaling Scheme (Encoding)
 - As the interval becomes narrower, there are three possibilities that need action:
   - The interval is entirely confined to the lower half of the unit interval, i.e., [0, 1/2).
   - The interval is entirely confined to the upper half of the unit interval, i.e., [1/2, 1).
@@ -31,7 +29,7 @@ toc: true
   - As soon as we perform either of these mapping, all information about the most significant bit is lost; however, this should not matter, since we have already stored/sent this bit to the decoder.
   - This procedure is repeated each time we have a similar situation.
 
-#### Example 2:
+**Example**
 - Consider having 3 symbols, A1, A2, and A3.
 - The probabilities of these symbols are 0.8, 0.02, and 0.18, respectively.
 - It is required to encode the string A1A3A2A2.
@@ -53,8 +51,9 @@ $$
 - $F_X(0) = 0.0$
 
 
-### (An arithmetic encoding example WITHOUT scaling)
-**Initial interval** → $[0.0, 1.0)$
+**Without scaling**
+
+Initial interval → $[0.0, 1.0)$
 
 After encoding A1 → $[0.0, 0.8)$
 
@@ -64,72 +63,21 @@ After encoding A2 → $[0.7712, 0.77408)$
 
 After encoding A2 → $[0.773504, 0.7735616)$
 
-
-
-### With Scaling
-
-
-**Initial interval** → $[0.0, 1.0)$
-
-After encoding A1 → $[0.0, 0.8)$
-
-After encoding A3 → $[0.656, 0.8)$
-
-**Rescale E2** → $(0.1)_2$ → $[0.312, 0.6)$
-
-After encoding A2 → $[0.5424, 0.54816)$
-
-**Rescale E2** → $(0.11)_2$ → $[0.0848, 0.09632)$
-
-**Rescale E1** → $(0.110)_2$ → $[0.1696, 0.19264)$
-
-**Rescale E1** → $(0.1100)_2$ → $[0.3392, 0.38528)$
-
-**Rescale E1** → $(0.11000)_2$ → $[0.6784, 0.77056)$
-
-**Rescale E2** → $(0.110001)_2$ → $[0.35680, 0.54112)$
-
-After encoding A2 → $[0.504256, 0.5079424)$
-
-
-After encoding A2 → $[0.504256, 0.5079424)$
-
-**Rescale E2** → $(0.1100011)_2$ → $[0.008512, 0.0158848)$
-
-**Rescale E1** → $(0.11000110)_2$ → $[0.017024, 0.0317696)$
-
-**Rescale E1** → $(0.110001100)_2$ → $[0.034048, 0.0635392)$
-
-**Rescale E1** → $(0.1100011000)_2$ → $[0.068096, 0.127084)$
-
-**Rescale E1** → $(0.11000110000)_2$ → $[0.136192, 0.2541568)$
-
-**Rescale E1** → $(0.110001100000)_2$ → $[0.272384, 0.5083136)$
-
-After adding a tag representative → $(0.1100011000001)_2$
-
-Topic 04: Codeword Encoding--Arithmetic Encoding
-
-
-In the last example, rescaling is applied 12 times:
-
-**Without rescaling:**
 - The final interval is $[0.7735040, 0.7735616)$
 - The length of the final interval is $0.0000576$
 
 **With rescaling:**
 - The final interval is $[0.2723840, 0.5083136)$
 - The length of the final interval is $0.2359296$
+- In this example, rescaling is applied 12 times:
 
-**The ratio between final intervals is:**
+The ratio between final intervals is:
 $$ \frac{0.2359296}{0.0000576} = 4096 = 2^{12} $$
 
-i.e., the final interval has been enlarged by $2^{\text{number of rescaling applications}}$.
+i.e., the final interval has been enlarged by $2^{\text{number of rescaling applications}}.$ The bits that we have sent during the rescaling process represent the tag itself.
 
-The bits that we have sent during the rescaling process represent the tag itself.
-
-
-### Rescaling Scheme (Decoding)
+ ---
+## Rescaling Scheme (Decoding)
 
 **Note that:**
 - Before decoding a symbol, the decoder ensures that there are enough bits to unambiguously decode this symbol.
@@ -185,7 +133,6 @@ For the last case, i.e., when the interval is containing the midpoint of the uni
   - if the interval gets confined to the upper half of the unit interval, the encoder stores/sends to the decoder 1, followed by 0 (or more) to represent the number of applications of the $[1/4, 3/4) \rightarrow [0, 1)$ mapping
 
 
-## Rescaling Scheme
 
 Applying the rescaling scheme:
 - Allows us to better utilize the limited precision that we possess.
@@ -283,7 +230,7 @@ $
 
 
 
-### Integer Implementation (Encoding)
+## Integer Implementation (Encoding)
 
 - **Initialize**:
   - `current_L` and `current_U`
@@ -323,7 +270,7 @@ $
     - Transmit/store the `current_L`.
 
 
-### Integer Implementation (Decoding)
+## Integer Implementation (Decoding)
 
 - **Initialization**:
   - Initialize `current_L` and `current_U`.
@@ -350,7 +297,7 @@ $
     - Set `current_L` to `new_L`.
     - Set `current_U` to `new_U`.
 
-### Arithmetic Encoding vs Huffman Encoding
+## Arithmetic Encoding vs Huffman Encoding
 
 - **Arithmetic Encoding**:
   - Arithmetic encoding is especially useful when dealing with:
