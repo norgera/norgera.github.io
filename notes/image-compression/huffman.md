@@ -92,7 +92,8 @@ toc: true
 
 A full implementation can be seen 
 [here](https://github.com/norgera/CS4481-Image-Compression/tree/main/Huffman%20Coding "Github")
-The process for creating a Huffman code is straightforward:
+
+
 
 - **Node Layout**: Begin by laying out the individual symbols as an array of unmarked nodes.
 - **Weight Assignment**: Assign to each node a weight corresponding to the frequency or probability of the symbol's occurrence.
