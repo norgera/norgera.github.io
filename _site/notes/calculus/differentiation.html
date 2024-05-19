@@ -1,0 +1,1109 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Applications of Differentiation | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Applications of Differentiation" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/calculus/differentiation.html" />
+<meta property="og:url" content="http://localhost:4000/notes/calculus/differentiation.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Applications of Differentiation" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Applications of Differentiation","url":"http://localhost:4000/notes/calculus/differentiation.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=28694a1b72268c139baf770f3fd9c5dd5ccf61f6">
+    <link rel="stylesheet" href="/assets/css/style.css?v=28694a1b72268c139baf770f3fd9c5dd5ccf61f6">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#linear-and-quadratic-approximation">Linear and Quadratic Approximation</a></li><li><a href="#curve-sketching">Curve Sketching</a></li><li><a href="#maxmin-problems">Max/Min Problems</a></li><li><a href="#related-rates">Related Rates</a></li><li><a href="#newtons-method-and-other-applications">Newton’s Method and Other Applications</a></li><li><a href="#mean-value-theorem">Mean-Value Theorem</a></li><li><a href="#inequalities">Inequalities</a></li><li><a href="#differentials-and-antiderivatives">Differentials and Antiderivatives</a></li><li><a href="#differential-equations-and-separation-of-variables">Differential Equations and Separation of Variables</a></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="applications-of-differentiation">Applications of Differentiation</h1>
+
+<p>Today, we’ll be using differentiation to make approximations.</p>
+
+<h3 id="linear-and-quadratic-approximation">Linear and Quadratic Approximation</h3>
+
+<p>\(y = f(x)\)
+\(y = b + a(x - x_0)\)</p>
+
+<p>where:</p>
+<ul>
+  <li>$b = f(x_0)$</li>
+  <li>$a = f’(x_0)$</li>
+</ul>
+
+<p>The tangent line approximates $f(x)$. It gives a good approximation near the tangent point $x_0$. As you move away from $x_0$, however, the approximation grows less accurate.</p>
+
+\[f(x) \approx f(x_0) + f'(x_0)(x - x_0)\]
+
+<p><strong>Example 1:</strong>
+\(f(x) = \ln x, \quad x_0 = 1\)</p>
+
+<p>\(f(1) = \ln 1 = 0\)
+\(f'(1) = \left. \frac{1}{x} \right|_{x=1} = 1\)</p>
+
+<p>Change the basepoint:
+\(\text{Basepoint } u_0 = x_0 - 1 = 0\)</p>
+
+\[\ln x \approx f(1) + f'(1)(x - 1) = 0 + 1 \cdot (x - 1) = x - 1\]
+
+\[x = 1 + u \quad \Rightarrow \quad u = x - 1\]
+
+\[\ln(1 + u) \approx u\]
+
+<h2 id="basic-list-of-linear-approximations">Basic List of Linear Approximations</h2>
+
+<p>In this list, we always use base point $x_0$ = 0 and assume that abs(x) &lt; &lt; 1.</p>
+
+<ol>
+  <li>$\sin x \approx x$ (if $x \approx 0$)</li>
+  <li>$\cos x \approx 1$ (if $x \approx 0$)</li>
+  <li>$e^x \approx 1 + x$ (if $x \approx 0$)</li>
+  <li>$\ln(1 + x) \approx x$ (if $x \approx 0$)</li>
+  <li>$(1 + x)^r \approx 1 + rx$ (if $x \approx 0$)</li>
+</ol>
+
+<p><strong>Proof of 1:</strong>
+Take $f(x) = \sin x$, then $f’(x) = \cos x$ and $f(0) = 0$</p>
+
+<p>\(f'(0) = 1\)
+\(f(x) \approx f(0) + f'(0)(x - 0) = 0 + 1 \cdot x = x\)</p>
+
+<p>So using basepoint $x_0 = 0$, $f(x) = x$.</p>
+
+<p>The proofs of 2 and 3 are similar. We already proved 4 above.</p>
+
+<p><strong>Proof of 5:</strong></p>
+
+<p>\(f(x) = (1 + x)^r\)
+\(f(0) = 1\)</p>
+
+\[f'(0) = \left. \frac{d}{dx} (1 + x)^r \right|_{x=0} = r(1 + x)^{r-1} \bigg|_{x=0} = r\]
+
+\[f(x) = f(0) + f'(0)x = 1 + rx\]
+
+<p><strong>Example 2:</strong>
+Find the linear approximation of $f(x) = \frac{e^{-2x}}{\sqrt{1 + x}}$ near $x = 0$.</p>
+
+<p>We could calculate $f’(x)$ and find $f’(0)$. But instead, we will do this by combining basic approximations algebraically.</p>
+
+<p>\(e^{-2x} \approx 1 - 2x\) 
+(using $e^u \approx 1 + u$ where $u = -2x$)</p>
+
+\[\sqrt{1 + x} = (1 + x)^{1/2} \approx 1 + \frac{1}{2} x\]
+
+<p>Put these two approximations together to get:</p>
+
+\[\frac{e^{-2x}}{\sqrt{1 + x}} \approx \frac{1 - 2x}{1 + \frac{1}{2}x} \approx (1 - 2x)\left(1 + \frac{1}{2}x\right)^{-1}\]
+
+<p>Moreover, 
+\((1 + \frac{1}{2}x)^{-1} \approx 1 - \frac{1}{2}x \quad \text{(using } (1 + u)^{-1} \approx 1 - u \text{ with } u = \frac{x}{2})\)</p>
+
+<p>Thus,
+\(\frac{e^{-2x}}{\sqrt{1 + x}} \approx (1 - 2x)(1 - \frac{1}{2}x) = 1 - 2x - \frac{1}{2}x + 2\left(\frac{1}{2}x\right)^2\)</p>
+
+<p>Now, we discard that last $x^2$ term because we’ve already thrown out a number of other $x^2$ (and higher-order) terms in making these approximations. Remember, we’re assuming that abs(x) &lt; &lt; 1. This means that $x^2$ is very small, $x^3$ is even smaller, etc. We can ignore these higher-order terms because they are very, very small. This yields:</p>
+
+\[\frac{e^{-2x}}{\sqrt{1 + x}} \approx 1 - 2x - \frac{1}{2}x = 1 - \frac{5}{2}x\]
+
+<p>Because $f(x) \approx 1 - \frac{5}{2}x$, we can deduce $f(0) = 1$ and $f’(0) = -\frac{5}{2}$ directly from our linear approximation, which is quicker in this case than calculating $f’(x)$.</p>
+
+<p><strong>Example 3:</strong> 
+$f(x) = (1 + 2x)^{10}$</p>
+
+<p>On the first exam, you were asked to calculate 
+$\lim_{x \to 0} \frac{(1 + 2x)^{10} - 1}{x}$
+The quickest way to do this with the tools of Unit 1 is as follows:</p>
+
+\[\lim_{x \to 0} \frac{(1 + 2x)^{10} - 1}{x} = \lim_{x \to 0} \frac{f(x) - f(0)}{x} = f'(0) = 20\]
+
+<p>(since $f’(x) = 10(1 + 2x)^9 \cdot 2 = 20$ at $x = 0$)</p>
+
+<p>Now we can do the same problem a different way, namely, using linear approximation:</p>
+
+\[(1 + 2x)^{10} \approx 1 + 10(2x) \quad \text{(Use } (1 + u)^r \approx 1 + ru \text{ where } u = 2x \text{ and } r = 10)\]
+
+<p>Hence,</p>
+
+\[\frac{(1 + 2x)^{10} - 1}{x} \approx \frac{1 + 20x - 1}{x} = 20\]
+
+<p><strong>Example 4: Planet Quirk</strong></p>
+
+<p>Let’s say I am on Planet Quirk, and that a satellite is whizzing overhead with a velocity $v$. We want to find the time dilation (a concept from special relativity) that the clock onboard the satellite experiences relative to my wristwatch. We borrow the following equation from special relativity:</p>
+
+\[T' = \frac{T}{\sqrt{1 - \frac{v^2}{c^2}}}\]
+
+<p>A shortcut to the two-step process $\sqrt{1 + x} \approx 1 + \frac{1}{2} x$ is to write:</p>
+
+\[\frac{1}{\sqrt{1 + x}} \approx \frac{1}{1 + \frac{1}{2}x} \approx 1 - \frac{1}{2} x\]
+
+<p>Therefore,</p>
+
+\[\frac{1}{\sqrt{1 + x}} = (1 + x)^{-1/2} \approx 1 - \frac{1}{2} x\]
+
+<p>Here, $T’$ is the time I measure on my wristwatch, and $T$ is the time measured onboard the satellite.</p>
+
+\[T' = T \left( 1 - \frac{v^2}{c^2} \right)^{-1/2} \approx 1 + \frac{1}{2} \left( \frac{v^2}{c^2} \right) \left[ (1 + u)^4 \approx 1 + ru, \text{ where } u = -\frac{v^2}{c^2}, \ r = -\frac{1}{2} \right]\]
+
+<p>(using $(1 + u)^{-1/2} \approx 1 - \frac{1}{2} u$ with $u = \frac{v^2}{c^2}$).</p>
+
+<p>If $v = 4$ km/s, and the speed of light $c$ is $3 \times 10^5$ km/s, then:</p>
+
+\[\frac{v^2}{c^2} \approx 10^{-10}\]
+
+<p>There’s hardly any difference between the times measured on the ground and in the satellite. Nevertheless, engineers used this very approximation (along with several other such approximations) to calibrate the radio transmitters on GPS satellites. (The satellites transmit at a slightly offset frequency.)</p>
+
+<h2 id="quadratic-approximations">Quadratic Approximations</h2>
+
+<p>These are more complicated. They are only used when higher accuracy is needed.</p>
+
+\[f(x) \approx f(x_0) + f'(x_0)(x - x_0) + \frac{f''(x_0)}{2} (x - x_0)^2\]
+
+<p><strong>Geometric picture:</strong>
+A quadratic approximation gives a best-fit parabola to a function. For example, consider $f(x) = \cos(x)$. If $x_0 = 0$, then:</p>
+
+<p>\(f(0) = \cos(0) = 1\)
+\(f'(x) = -\sin(x) \quad \Rightarrow \quad f'(0) = 0\)
+\(f''(x) = -\cos(x) \quad \Rightarrow \quad f''(0) = -\cos(0) = -1\)</p>
+
+\[\cos(x) \approx 1 + 0 \cdot x - \frac{1}{2} x^2 = 1 - \frac{1}{2} x^2\]
+
+<h2 id="basic-quadratic-approximations">Basic Quadratic Approximations:</h2>
+<p>\(f(x) \approx f(0) + f'(0)x + \frac{f''(0)}{2} x^2\)</p>
+
+<ol>
+  <li>$\sin x \approx x$</li>
+  <li>$\cos x \approx 1 - \frac{1}{2} x^2$</li>
+  <li>$e^x \approx 1 + x + \frac{x^2}{2}$</li>
+  <li>$\ln(1 + x) \approx x - \frac{x^2}{2}$</li>
+  <li>$(1 + x)^r \approx 1 + rx + \frac{r(r - 1)}{2} x^2$</li>
+</ol>
+
+<p><strong>Proofs:</strong>
+The proof of these is to evaluate $f(0)$, $f’(0)$, $f’‘(0)$ in each case.</p>
+
+<p><strong>Example:</strong>
+\(f(x) = \ln(1 + x)\)
+\(f(0) = \ln 1 = 0\)</p>
+
+\[f'(x) = \left( \ln(1 + x) \right)' = \frac{1}{1 + x} \quad \Rightarrow \quad f'(0) = 1\]
+
+\[f''(x) = \left( \frac{1}{1 + x} \right)' = -\frac{1}{(1 + x)^2} \quad \Rightarrow \quad f''(0) = -1\]
+
+\[\ln(1 + x) \approx x - \frac{1}{2} x^2\]
+
+<p>Let us apply a quadratic approximation to our Planet Quirk example and see where it gives.</p>
+
+\[\left[ 1 - \frac{v^2}{c^2} \right]^{-1/2} \approx 1 + \frac{1}{2} \frac{v^2}{c^2} + \left[ \frac{\left( -\frac{1}{2} \right)\left( -\frac{1}{2} - 1 \right)}{2} \right] \left( \frac{-v^2}{c^2} \right)^2\]
+
+<p>Since $\frac{v^2}{c^2} \approx 10^{-10}$, that last term will be of the order $\left( \frac{v^2}{c^2} \right)^2 \approx 10^{-20}$. Not even the best atomic clocks can measure time with this level of precision. Since the quadratic term is so small, we might as well ignore it and stick to the linear approximation in this case.</p>
+
+<p><strong>Example 5.</strong></p>
+
+<p>$f(x) = \frac{e^{-2x}}{\sqrt{1 + x}}$</p>
+
+<p>Let us find the quadratic approximation of this expression. We can rewrite it as $f(x) = e^{-2x}(1 + x)^{-1/2}$.</p>
+
+<p>Using the approximation of each factor gives:</p>
+
+\[f(x) \approx \left( 1 - 2x + \frac{1}{2}(-2x)^2 \right) \left( 1 - \frac{1}{2}x + \left( \frac{-1}{2} \right) \left( \frac{-1}{2} - 1 \right) \frac{x^2}{2} \right)\]
+
+\[f(x) \approx 1 - 2x - \frac{1}{2}x + (-2)\left(-\frac{1}{2}\right)x^2 + 2x^2 + \frac{3}{8}x^2 = 1 - \frac{5}{2}x + \frac{27}{8}x^2\]
+
+<p>(Note: we drop the $x^3$ and higher order terms. This is a quadratic approximation, so we don’t care about anything higher than $x^2$.)</p>
+
+<h3 id="curve-sketching">Curve Sketching</h3>
+
+<h2 id="goal">Goal</h2>
+<p>To draw the graph of $f$ using the behavior of $f’$ and $f’’$. We want the graph to be qualitatively correct, but not necessarily to scale.</p>
+
+<h2 id="typical-picture">Typical Picture</h2>
+<p>Here, $y_0$ is the minimum value, and $x_0$ is the point where that minimum occurs.</p>
+
+<h2 id="critical-point-of-a-function">Critical Point of a Function</h2>
+<p>Notice that for $x &lt; x_0$, $f’(x) &lt; 0$. In other words, $f$ is decreasing to the left of the critical point. For $x &gt; x_0$, $f’(x) &gt; 0$: $f$ is increasing to the right of the critical point.</p>
+
+<h2 id="concave-down-graph">Concave-Down Graph</h2>
+<p>Here, $y_0$ is the critical (maximum) value, and $x_0$ is the critical point. $f$ is decreasing on the right side of the critical point, and increasing to the left of $x_0$.</p>
+
+<h2 id="rubric-for-curve-sketching">Rubric for Curve-Sketching</h2>
+<ol>
+  <li><strong>Plot the discontinuities of $f$</strong> — especially the infinite ones!</li>
+  <li><strong>Find the critical points</strong>. These are the points at which $f’(x) = 0$ (usually where the slope changes from positive to negative, or vice versa.)</li>
+  <li>(a) Plot the critical points (and critical values), but only if it’s relatively easy to do so.
+ (b) Decide the sign of $f’(x)$ in between the critical points (if it’s not already obvious).</li>
+  <li><strong>Find and plot the zeros of $f$</strong>. These are the values of $x$ for which $f(x) = 0$. Only do this if it’s relatively easy.</li>
+  <li><strong>Determine the behavior at the endpoints (or at ±∞).</strong></li>
+</ol>
+
+<h2 id="example-1-y--3x---x3"><strong>Example 1:</strong> $y = 3x - x^3$</h2>
+<ol>
+  <li>No discontinuities.</li>
+  <li>$y’ = 3 - 3x^2 = 3(1 - x^2)$ so, $y’ = 0$ at $x = \pm1$.</li>
+  <li>(a) At $x = 1$, $y = 3 - 1 = 2$.
+ (b) At $x = -1$, $y = -3 + 1 = -2$. Mark these two points on the graph.</li>
+  <li>Find the zeros: $y = 3x - x^3 = x(3 - x^2) = 0$ so the zeros lie at $x = 0, \pm \sqrt{3}$.</li>
+  <li>Behavior of the function as $x \to \pm \infty$.
+ As $x \to \infty$, the $x^3$ term of $y$ dominates, so $y \to -\infty$. Likewise, as $x \to -\infty$, $y \to \infty$.</li>
+</ol>
+
+<p>Putting all of this information together gives us the graph. Let us do step 3b (the sign of $f’$) to double-check for consistency:
+\(y' = 3 - 3x^2 = 3(1 - x^2)\)
+\(y' &gt; 0 \text{ when } |x| &lt; 1; \quad y' &lt; 0 \text{ when } |x| &gt; 1\)
+Sure enough, $y$ is increasing between $x = -1$ and $x = 1$, and is decreasing everywhere else.</p>
+
+<h2 id="example-2-y--frac1x">Example 2: $y = \frac{1}{x}$</h2>
+<p>This example illustrates why it’s important to find a function’s discontinuities before looking at the properties of its derivative. We calculate:
+\(y' = -\frac{1}{x^2} &lt; 0\)
+Warning: The derivative is never positive, so you might think that $y$ is always decreasing, and its graph looks something like a monotonically decreasing function.</p>
+
+<p>But as you probably know, the graph of $y = \frac{1}{x}$ looks nothing like this! It actually looks like it has a jump from $-\infty$ to $+\infty$. In fact, $y = \frac{1}{x}$ is decreasing except at $x = 0$, where it jumps from $-\infty$ to $+\infty$. This is why we must watch out for discontinuities.</p>
+
+<h2 id="example-3-y--x3---3x2--3x"><strong>Example 3:</strong> $y = x^3 - 3x^2 + 3x$</h2>
+<p>\(y' = 3x^2 - 6x + 3 = 3(x^2 - 2x + 1) = 3(x - 1)^2\)
+There is a critical point at $x = 1$. $y’ &gt; 0$ on both sides of $x = 1$, so $y$ is increasing everywhere. In this case, the sign of $y’$ doesn’t change at the critical point, but the graph does level out.</p>
+
+<h2 id="example-4-y--fracln-xx-note-this-function-is-only-defined-for-x--0">Example 4: $y = \frac{\ln x}{x}$ (Note: this function is only defined for $x &gt; 0$)</h2>
+<p>What happens as $x$ decreases towards zero? Let $x = 2^{-n}$. Then,
+\(y = \frac{\ln 2^{-n}}{2^{-n}} = \frac{-n \ln 2}{2^n} \to -\infty \text{ as } n \to \infty\)
+In other words, $y$ decreases to $-\infty$ as $x$ approaches zero.</p>
+
+<p>Next, we want to find the critical points.
+\(y' = \left( \frac{\ln x}{x} \right)' = \frac{x(1/x) - \ln x(1)}{x^2} = \frac{1 - \ln x}{x^2}\)
+\(y' = 0 \Rightarrow 1 - \ln x = 0 \Rightarrow \ln x = 1 \Rightarrow x = e\)
+In other words, the critical point is $x = e$. The critical value is:
+\(y(x) |_{x=e} = \frac{\ln e}{e} = \frac{1}{e}\)</p>
+
+<p>Next, find the zeros of this function:
+\(y = 0 \Leftrightarrow \ln x = 0\)
+So $y = 0$ when $x = 1$.</p>
+
+<p>What happens as $x \to \infty$? This time, consider $x = 2^n$.
+\(y = \frac{\ln 2^n}{2^n} = \frac{n \ln 2}{2^n} \approx \frac{n(0.7)}{2^n}\)
+So, $y \to 0$ as $n \to \infty$.</p>
+
+<h2 id="2nd-derivative-information">2nd Derivative Information</h2>
+<p>When $f’’ &gt; 0$, $f’$ is increasing. When $f’’ &lt; 0$, $f’$ is decreasing.</p>
+
+<p>Therefore, the sign of the second derivative tells us about concavity/convexity of the graph. Thus the second derivative is good for two purposes:</p>
+<ol>
+  <li>Deciding whether a critical point is a maximum or a minimum. This is known as the second derivative test.
+    <ul>
+      <li>$f’(x_0) = 0$, $f’‘(x_0) &lt; 0$ : maximum</li>
+      <li>$f’(x_0) = 0$, $f’‘(x_0) &gt; 0$ : minimum</li>
+    </ul>
+  </li>
+  <li>Concave/convex “decoration.”</li>
+</ol>
+
+<p>The points where $f’’ = 0$ are called inflection points. Usually, at these points the graph changes from concave up to down, or vice versa.</p>
+
+<h3 id="maxmin-problems">Max/Min Problems</h3>
+
+<h2 id="example-1">Example 1</h2>
+<p>\(y = \frac{\ln x}{x}\), 
+$x_0 = e$</p>
+
+<p>What is the maximum value? Answer: $y = \frac{1}{e}$.</p>
+
+<p>Where (or at what point) is the maximum achieved? Answer: $x = e$.</p>
+
+<p>Beware: Some people will ask, “What is the maximum?” The answer is not $e$. You will get so used to finding the critical point $x = e$, the main calculus step, that you will forget to find the maximum value $y = \frac{1}{e}$. Both the critical point $x = e$ and critical value $y = \frac{1}{e}$ are important. Together, they form the point on the graph $(e, \frac{1}{e})$ where it turns around.</p>
+
+<h2 id="example-2">Example 2</h2>
+<p>Find the max and the min of the function.</p>
+
+<p>Answer: If you’ve already graphed the function, it’s obvious where the maximum and minimum values are. The point is to find the maximum and minimum without sketching the whole graph.</p>
+
+<p><strong>Idea</strong>: Look for the max and min among the critical points and endpoints. You can see that we only need to compare the heights or $y$-values corresponding to endpoints and critical points. (Watch out for discontinuities!)</p>
+
+<h2 id="example-3">Example 3</h2>
+<p>Find the open-topped can with the least surface area enclosing a fixed volume, $V$.</p>
+
+<ol>
+  <li>
+    <p><strong>Draw the picture.</strong></p>
+  </li>
+  <li>
+    <p><strong>Figure out what variables to use.</strong> In this case, $r$, $h$, $V$, and surface area $S$.</p>
+  </li>
+  <li>
+    <p><strong>Figure out the constraints</strong> in the problem, and express them using a formula. In this example, the constraint is:
+\(V = \pi r^2 h = \text{constant}\)
+We’re also looking for the surface area. So we need the formula for that, too:
+\(S = \pi r^2 + (2\pi r)h\)
+Now, in symbols, the problem is to minimize $S$ with $V$ constant.</p>
+  </li>
+  <li>
+    <p><strong>Use the constraint equation to express everything in terms of $r$</strong> (and the constant $V$):
+\(h = \frac{V}{\pi r^2}\)
+\(S = \pi r^2 + (2\pi r)\left(\frac{V}{\pi r^2}\right)\)</p>
+  </li>
+  <li>
+    <p><strong>Find the critical points</strong> (solve $\frac{dS}{dr} = 0$), as well as the endpoints. $S$ will achieve its max and min at one of these places.
+\(\frac{dS}{dr} = 2\pi r - \frac{2V}{r^2} = 0\)
+\(\pi r^3 - V = 0\)
+\(r = \left(\frac{V}{\pi}\right)^{1/3}\)</p>
+  </li>
+</ol>
+
+<p>We’re not done yet. We’ve still got to evaluate $S$ at the endpoints: $r = 0$ and $r = \infty$.
+\(S = \pi r^2 + \frac{2V}{r}, \quad 0 \leq r &lt; \infty\)</p>
+
+<p>As $r \to 0$, the second term $\frac{2V}{r}$ goes to infinity, so $S \to \infty$. As $r \to \infty$, the first term $\pi r^2$ goes to infinity, so $S \to \infty$. Since $S = \infty$ at each end, the minimum is achieved at the critical point $r = \left(\frac{V}{\pi}\right)^{1/3}$, not at either endpoint.</p>
+
+<p>We’re still not done. We want to find the minimum value of the surface area $S$, and the values of $h$.
+\(r = \left(\frac{V}{\pi}\right)^{1/3}\)
+\(h = \frac{V}{\pi r^2} = \left(\frac{V}{\pi}\right)^{1/3}\)
+\(S = \pi r^2 + \frac{2V}{r} = \pi \left(\frac{V}{\pi}\right)^{2/3} + 2\left(\frac{V}{\pi}\right)^{1/3} = 3\pi^{-1/3} V^{2/3}\)</p>
+
+<p>Finally, another, often better, way of answering that question is to find the proportions of the can. In other words, what is $\frac{h}{r}$?
+\(\frac{h}{r} = 1\)</p>
+
+<h2 id="example-4">Example 4</h2>
+<p>Consider a wire of length 1, cut into two pieces. Bend each piece into a square. We want to figure out where to cut the wire in order to enclose as much area in the two squares as possible.</p>
+
+<p>The first square will have sides of length $\frac{x}{4}$. Its area will be $\left(\frac{x}{4}\right)^2$. The second square will have sides of length $\frac{1 - x}{4}$. Its area will be $\left(\frac{1 - x}{4}\right)^2$. The total area is then:
+\(A = \left(\frac{x}{4}\right)^2 + \left(\frac{1 - x}{4}\right)^2\)</p>
+
+<p>\(A' = \frac{x}{8} - \frac{1 - x}{8} = \frac{2x - 1}{8} = 0\)
+\(x = \frac{1}{2}\)</p>
+
+<p>So, one extreme value of the area is:
+\(A = \left(\frac{1}{4}\right)^2 + \left(\frac{1}{4}\right)^2 = \frac{1}{16} + \frac{1}{16} = \frac{1}{8}\)</p>
+
+<p>We’re not done yet, though. We still need to check the endpoints! At $x = 0$,
+\(A = 0^2 + \left(\frac{1}{4}\right)^2 = \frac{1}{16}\)</p>
+
+<p>At $x = 1$,
+\(A = \left(\frac{1}{4}\right)^2 + 0^2 = \frac{1}{16}\)</p>
+
+<p>By checking the endpoints, we see that the minimum area was achieved at $x = \frac{1}{2}$. The maximum area is not achieved in $0 &lt; x &lt; 1$, but it is achieved at $x = 0$ or $x = 1$. The maximum corresponds to using the whole length of wire for one square.</p>
+
+<h2 id="moral">Moral</h2>
+<p>Don’t forget endpoints. If you only look at critical points you may find the worst answer, rather than the best one.</p>
+
+<h3 id="related-rates">Related Rates</h3>
+
+<h2 id="example-1-1">Example 1</h2>
+<p>Police are 30 feet from the side of the road. Their radar sees your car approaching at 80 feet per second when your car is 50 feet away from the radar gun. The speed limit is 65 miles per hour (which translates to 95 feet per second). Are you speeding?</p>
+
+<p>At $D = 50$, $x = 40$. (We know this because it’s a 3-4-5 right triangle.) In addition,</p>
+
+\[\frac{dD}{dt} = D' = -80\]
+
+<p>$D’$ is negative because the car is moving in the $-x$ direction. Don’t plug in the value for $D$ yet! $D$ is changing, and it depends on $x$.The Pythagorean theorem says:\(30^2 + x^2 = D^2\)</p>
+
+<p>Next, give the variables names. The important thing to figure out is which variables are changing. At $D = 50$, $x = 40$. (We know this because it’s a 3-4-5 right triangle.) In addition, $\frac{dD}{dt} = -80$. $\frac{dD}{dt}$ is negative because the car is moving in the $-x$ direction. Don’t plug in the value for $D$ yet! $D$ is changing, and it depends on $x$.</p>
+
+\[\frac{d}{dt} \left( 30^2 + x^2 = D^2 \right) \implies 2xx' = 2DD' \implies x' = \frac{2DD'}{2x}\]
+
+<p>Now, plug in the instantaneous numerical values:
+\(x' = \frac{50}{40}(-80) = -100 \ \text{feet/s}\)</p>
+
+<p>This exceeds the speed limit of 95 feet per second; you are, in fact, speeding.</p>
+
+<p>There is another, longer, way of solving this problem. Start with</p>
+
+\[D = \sqrt{30^2 + x^2} = (30^2 + x^2)^{1/2}\]
+
+\[\frac{d}{dt}D = \frac{1}{2}(30^2 + x^2)^{-1/2}(2x \frac{dx}{dt})\]
+
+<p>Plug in the values:</p>
+
+\[-80 = \frac{1}{2}(30^2 + 40^2)^{-1/2}(2)(40)\frac{dx}{dt}\]
+
+<p>and solve to find</p>
+
+\[\frac{dx}{dt} = -100 \frac{\text{feet}}{\text{s}}\]
+
+<p><strong>Example 2.</strong> Consider a conical tank. Its radius at the top is 4 feet, and it’s 10 feet high. It’s being filled with water at the rate of 2 cubic feet per minute. How fast is the water level rising when it is 5 feet high?</p>
+
+<p>From the figure:</p>
+
+\[\text{Volume of the tank: } V = \frac{1}{3} \pi r^2 h\]
+
+<p>Using similar triangles, we get the relationship between $r$ and $h$:</p>
+
+<p>From Fig. 3, we see that</p>
+
+\[\frac{r}{h} = \frac{4}{10}\]
+
+<p>or, in other words,</p>
+
+\[r = \frac{2}{5}h\]
+
+<p>Plug this expression for $ r $ back into $ V $ to get</p>
+
+\[V = \frac{1}{3}\pi \left(\frac{2}{5}h\right)^2 h = \frac{4}{3(25)}\pi h^3\]
+
+\[\frac{dV}{dt} = V' = \frac{4}{25} \pi h^2 h'\]
+
+<p>Now, plug in the numbers $\left(\frac{dV}{dt} = 2, h = 5\right)$:</p>
+
+\[2 = \left(\frac{4}{25}\right) \pi (5)^2 h'\]
+
+\[h' = \frac{1}{2\pi}\]
+
+<p>There’s a part II margin of error problem involving a satellite, where you’re asked to find $\Delta L / \Delta h$:</p>
+
+\[L^2 + c^2 = h^2\]
+
+\[2LL' = 2hh'\]
+
+<p>Hence,</p>
+
+\[\frac{\Delta L}{\Delta h} \approx \frac{L'}{h'} = \frac{h}{L}\]
+
+<p>There is also a parabolic mirror problem based on similar ideas:</p>
+
+<p>Here, you want to find either $\frac{\Delta a}{\Delta \theta}$ or $\frac{\Delta \theta}{\Delta a}$. This type of sensitivity of measurement problem matters in every measurement problem, for instance predicting whether asteroids will hit Earth.</p>
+
+<h3 id="newtons-method-and-other-applications">Newton’s Method and Other Applications</h3>
+
+<p><strong>Newton’s Method</strong></p>
+
+<p>Newton’s method is a powerful tool for solving equations of the form $f(x) = 0$.</p>
+
+<p><strong>Example 1.</strong> $f(x) = x^2 - 3$. In other words, solve $x^2 - 3 = 0$. We already know that the solution to this is $x = \sqrt{3}$. Newton’s method gives a good numerical approximation to the answer. The method uses tangent lines.</p>
+
+<p><img src="image-link" alt="Newton's Method Example" /></p>
+
+<p>The goal is to find where the graph crosses the x-axis. We start with a guess of $x_0 = 1$. Plugging that back into the equation for $y$, we get $y_0 = 1^2 - 3 = -2$, which isn’t very close to 0. Our next guess is $x_1$, where the tangent line to the function at $x_0$ crosses the x-axis. The equation for the tangent line is:</p>
+
+\[y - y_0 = m(x - x_0)\]
+
+<p>In our example, $f(x) = x^2 - 3$, $f’(x) = 2x$. Thus,</p>
+
+\[x_1 = x_0 - \frac{(x_0^2 - 3)}{2x} = x_0 - \frac{1}{2}x_0 + \frac{3}{2x_0}\]
+
+\[x_1 = \frac{1}{2}x_0 + \frac{3}{2x_0}\]
+
+<p>The main idea is to repeat (iterate) this process:</p>
+
+\[x_2 = \frac{1}{2}x_1 + \frac{3}{2x_1}\]
+
+\[x_3 = \frac{1}{2}x_2 + \frac{3}{2x_2}\]
+
+<p>and so on. The procedure approximates $\sqrt{3}$ extremely well.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>x</th>
+      <th>y</th>
+      <th>accuracy: abs(y - √3)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>x₀</td>
+      <td>1</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>x₁</td>
+      <td>2</td>
+      <td>3 × 10⁻¹</td>
+    </tr>
+    <tr>
+      <td>x₂</td>
+      <td>7/4</td>
+      <td>2 × 10⁻²</td>
+    </tr>
+    <tr>
+      <td>x₃</td>
+      <td>7/8 + 6/7</td>
+      <td>10⁻⁴</td>
+    </tr>
+    <tr>
+      <td>x₄</td>
+      <td>18,817 / 10,864</td>
+      <td>3 × 10⁻⁹</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Notice that the number of digits of accuracy doubles with each iteration.</p>
+
+<p><strong>Summary</strong></p>
+
+<p>Newton’s Method is illustrated and can be summarized as follows:</p>
+
+\[x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}\]
+
+<p>where $x_k$ is the $k$-th iterate.</p>
+
+<p>Example 1 considered the particular case of</p>
+
+\[f(x) = x^2 - 3\]
+
+\[x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)} = ... = \frac{1}{2}x_k + \frac{3}{2x_k}\]
+
+<p>Now, we define</p>
+
+<p>$\bar{x} = \lim_{k \to \infty} x_k \quad (x_k \to \bar{x} \text{ as } k \to \infty)$</p>
+
+<p>To evaluate $\bar{x}$ in Example 1, take the limit as $k \to \infty$ in the equation</p>
+
+\[x_{k+1} = \frac{1}{2}x_k + \frac{3}{2x_k}\]
+
+<p>This yields</p>
+
+\[\bar{x} = \frac{1}{2}\bar{x} + \frac{3}{2\bar{x}} \implies \bar{x} - \frac{1}{2}\bar{x} = \frac{3}{2\bar{x}} \implies \frac{1}{2}\bar{x} = \frac{3}{2\bar{x}} \implies \bar{x}^2 = 3\]
+
+<p>which is just what we hoped: $\bar{x} = \sqrt{3}$.</p>
+
+<p><strong>Warnings:</strong></p>
+
+<ol>
+  <li>Newton’s Method can find an unexpected root.</li>
+  <li>Newton’s Method can fail completely.</li>
+</ol>
+
+<hr />
+
+<h1 id="ring-on-a-string">Ring on a String</h1>
+
+<p>Consider a ring on a string held fixed at two ends at $(0, 0)$ and $(a, b)$. The ring is free to slide to any point. Find the position $(x, y)$ of the string.</p>
+
+<p><img src="image-link" alt="Ring on a String" /></p>
+
+<p><strong>Physical Principle:</strong> The ring settles at the lowest height (lowest potential energy), so the problem is to minimize $y$ subject to the constraint that $(x, y)$ is on the string.</p>
+
+<p><strong>Constraint:</strong> The length $L$ of the string is fixed:</p>
+
+\[\sqrt{x^2 + y^2} + \sqrt{(x - a)^2 + (y - b)^2} = L\]
+
+<p>The function $y = y(x)$ is determined implicitly by the constraint equation above. This curve is an ellipse with foci at $(0, 0)$ and $(a, b)$.</p>
+
+<p><strong>Finding the Critical Point:</strong></p>
+
+<p>To find the critical point, differentiate the constraint equation implicitly with respect to $ x $,</p>
+
+\[\frac{x + yy'}{\sqrt{x^2 + y^2}} + \frac{x - a + (y - b)y'}{\sqrt{(x - a)^2 + (y - b)^2}} = 0\]
+
+<p>Since $ y’ = 0 $ at the critical point, the equation can be rewritten as</p>
+
+\[\frac{x}{\sqrt{x^2 + y^2}} = \frac{a - x}{\sqrt{(x - a)^2 + (y - b)^2}}\]
+
+<p>The last equation can be interpreted geometrically as saying that $\sin \alpha = \sin \beta$, where $\alpha$ and $\beta$ are the angles the left and right portions of the string make with the vertical.</p>
+
+<h2 id="formulae-for-x-and-y">Formulae for $x$ and $y$</h2>
+
+<p>We did not yet find the location of $(x,y)$. We will now show that</p>
+
+\[x = \frac{a}{2} \left(1 - \frac{b}{\sqrt{L^2 - a^2}}\right), \quad y = \frac{1}{2} \left(b - \sqrt{L^2 - a^2}\right)\]
+
+<p>Because $\alpha = \beta$,</p>
+
+\[x = \sqrt{x^2 + y^2} \sin \alpha; \quad a - x = \sqrt{(x - a)^2 + (y - b)^2} \sin \alpha\]
+
+<p>Adding these two equations,</p>
+
+\[a = \left(\sqrt{x^2 + y^2} + \sqrt{(x - a)^2 + (y - b)^2}\right) \sin \alpha = L \sin \alpha \implies \sin \alpha = \frac{a}{L}\]
+
+<p>The equations for the vertical legs of the right triangles are (note that $y &lt; 0$):</p>
+
+\[-y = \sqrt{x^2 + y^2} \cos \alpha; \quad b - y = \sqrt{(x - a)^2 + (y - b)^2} \cos \beta\]
+
+<p>Adding these two equations, and using $\alpha = \beta$,</p>
+
+\[b - 2y = \left(\sqrt{x^2 + y^2} + \sqrt{(x - a)^2 + (y - b)^2}\right) \cos \alpha = L \cos \alpha \implies y = \frac{1}{2} (b - L \cos \alpha)\]
+
+<p>Use the relation $\sin \alpha = \frac{a}{L}$ to write $L \cos \alpha = L \sqrt{1 - \sin^2 \alpha} = \sqrt{L^2 - a^2}$. Then the formula for $y$ is</p>
+
+\[y = \frac{1}{2} \left(b - \sqrt{L^2 - a^2}\right)\]
+
+<p>Finally, to find the formula for $x$, use the similar right triangles</p>
+
+\[\tan \alpha = \frac{x}{-y} = \frac{a - x}{b - y} \implies x(b - y) = (-y)(a - x) \implies (b - 2y)x = -ay\]
+
+<p>Therefore,</p>
+
+\[x = \frac{-ay}{b - 2y} = \frac{a}{2} \left(1 - \frac{b}{\sqrt{L^2 - a^2}}\right)\]
+
+<p>Thus we have formulae for $x$ and $y$ in terms of $a$, $b$, and $L$.</p>
+
+<h3 id="mean-value-theorem">Mean-Value Theorem</h3>
+
+<p>The Mean-Value Theorem (MVT) is the underpinning of calculus. It says:</p>
+
+<p>If $f$ is differentiable on $a &lt; x &lt; b$, and continuous on $a \le x \le b$, then</p>
+
+\[\frac{f(b) - f(a)}{b - a} = f'(c) \text{ for some } c, \, a &lt; c &lt; b\]
+
+<p>Here, $\frac{f(b) - f(a)}{b - a}$ is the slope of a secant line, while $f’(c)$ is the slope of a tangent line.</p>
+
+<h2 id="geometric-proof">Geometric Proof</h2>
+
+<p>Take dotted lines parallel to the secant line and shift them up from below the graph until one of them first touches the graph. Alternatively, one may have to start with a dotted line above the graph and move it down until it touches.</p>
+
+<p>If the function isn’t differentiable, this approach goes wrong. For instance, it breaks down for the function f(x) = abs(x). The dotted line always touches the graph first at $x = 0$, no matter what its slope is, and f’(0) is undefined.</p>
+
+<h2 id="interpretation-of-the-mean-value-theorem">Interpretation of the Mean Value Theorem</h2>
+
+<p>You travel from Boston to Chicago (which we’ll assume is a 1,000 mile trip) in exactly 3 hours. At some time in between the two cities, you must have been going at exactly:</p>
+
+\[\frac{1000}{3} \text{ miles per hour}\]
+
+<p>Let $f(t)$ be the position, measured as the distance from Boston.</p>
+
+\[f(3) = 1000, \, f(0) = 0, \, a = 0, \, b = 3\]
+
+<p>Then,</p>
+
+\[\frac{1000}{3} = \frac{f(b) - f(a)}{b - a} = f'(c)\]
+
+<p>where $f’(c)$ is your speed at some time, $c$.</p>
+
+<h2 id="versions-of-the-mean-value-theorem">Versions of the Mean Value Theorem</h2>
+
+<p>There is a second way of writing the MVT:</p>
+
+\[f(b) - f(a) = f'(c)(b - a)\]
+
+\[f(b) = f(a) + f'(c)(b - a) \text{ (for some } c, \, a &lt; c &lt; b \text{)}\]
+
+<p>There is also a third way of writing the MVT: change the name of $b$ to $x$.</p>
+
+\[f(x) = f(a) + f'(c)(x - a) \text{ for some } c, \, a &lt; c &lt; x\]
+
+<p>The theorem does not say what $c$ is. It depends on $f$, $a$, and $x$.</p>
+
+<p>This version of the MVT should be compared with linear approximation:</p>
+
+\[f(x) \approx f(a) + f'(a)(x - a) \text{ for } x \text{ near } a\]
+
+<p>The tangent line in the linear approximation has a definite slope $f’(a)$. By contrast, the formula is an exact formula. It conceals its lack of specificity in the slope $f’(c)$, which could be the slope of $f$ at any point between $a$ and $x$.</p>
+
+<h2 id="uses-of-the-mean-value-theorem">Uses of the Mean Value Theorem</h2>
+
+<p>Key conclusions:</p>
+
+<ol>
+  <li>If $f’(x) &gt; 0$, then $f$ is increasing.</li>
+  <li>If $f’(x) &lt; 0$, then $f$ is decreasing.</li>
+  <li>If $f’(x) = 0$ for all $x$, then $f$ is constant.</li>
+</ol>
+
+<p>Definition of increasing/decreasing:</p>
+
+<p>Increasing means $a &lt; b \implies f(a) &lt; f(b)$. Decreasing means $a &lt; b \implies f(a) &gt; f(b)$.</p>
+
+<p><strong>Proof of 1:</strong></p>
+
+\[a &lt; b\]
+
+\[f(b) = f(a) + f'(c)(b - a)\]
+
+<p>Because $f’(c)$ and $(b - a)$ are both positive,</p>
+
+\[f(b) = f(a) + f'(c)(b - a) &gt; f(a)\]
+
+<p><strong>Proof of 3:</strong></p>
+
+\[f(b) = f(a) + f'(c)(b - a) = f(a) + 0(b - a) = f(a)\]
+
+<h3 id="inequalities">Inequalities</h3>
+
+<p>The fundamental property $f’ &gt; 0 \implies f \text{ is increasing}$ can be used to deduce many other inequalities.</p>
+
+<h2 id="example">Example</h2>
+
+<p>\(e^x &gt; 0\)
+\(e^x &gt; 1 \text{ for } x &gt; 0\)
+\(e^x &gt; 1 + x\)</p>
+
+<h2 id="proofs">Proofs</h2>
+
+<p>We will take property 1 ($e^x &gt; 0$) for granted. Proofs of the other two properties follow:</p>
+
+<p><strong>Proof of 2:</strong></p>
+
+<p>Define $f_1(x) = e^x - 1$. Then, $f_1(0) = e^0 - 1 = 0$, and $f_1’(x) = e^x &gt; 0$. Hence, $f_1(x)$ is increasing, so $f_1(x) &gt; f_1(0)$ for $x &gt; 0$. That is:</p>
+
+\[e^x &gt; 1 \text{ for } x &gt; 0\]
+
+<p><strong>Proof of 3:</strong></p>
+
+<p>Let $f_2(x) = e^x - (1 + x)$.</p>
+
+\[f_2'(x) = e^x - 1 = f_1(x) &gt; 0 \text{ (if } x &gt; 0 \text{)}\]
+
+<p>Hence, $f_2(x) &gt; 0 \text{ for } x &gt; 0$. In other words,</p>
+
+\[e^x &gt; 1 + x\]
+
+<p>Similarly,</p>
+
+\[e^x &gt; 1 + x + \frac{x^2}{2}\]
+
+<p>(proved using $f_3(x) = e^x - (1 + x + \frac{x^2}{2})$). One can keep on going:</p>
+
+\[e^x &gt; 1 + x + \frac{x^2}{2} + \frac{x^3}{3!} \text{ for } x &gt; 0\]
+
+<p>Eventually, it turns out that</p>
+
+\[e^x = 1 + x + \frac{x^2}{2} + \frac{x^3}{3!} + \cdots\]
+
+<p>We will be discussing this when we get to Taylor series near the end of the course.</p>
+
+<h3 id="differentials-and-antiderivatives">Differentials and Antiderivatives</h3>
+
+<h2 id="differentials">Differentials</h2>
+<p>New notation:
+\(dy = f'(x)dx \quad (y = f(x))\)
+Both $dy$ and $f’(x)dx$ are called differentials. You can think of:
+\(\frac{dy}{dx} = f'(x)\)
+as a quotient of differentials. One way this is used is for linear approximations.
+\(\frac{\Delta y}{\Delta x} \approx \frac{dy}{dx}\)</p>
+
+<h2 id="example-1-approximate-6513">Example 1. Approximate $65^{1/3}$</h2>
+<p><strong>Method 1 (review of linear approximation method)</strong>
+\(f(x) = x^{1/3}\)
+\(f'(x) = \frac{1}{3}x^{-2/3}\)
+\(f(x) \approx f(a) + f'(a)(x - a)\)
+\(x^{1/3} \approx a^{1/3} + \frac{1}{3}a^{-2/3}(x - a)\)
+A good base point is $a = 64$, because $64^{1/3} = 4$.
+Let $x = 65$.
+\(65^{1/3} = 64^{1/3} + \frac{1}{3}64^{-2/3}(65 - 64) = 4 + \frac{1}{48} = 4.02\)</p>
+
+<p>Similarly,
+\((64.1)^{1/3} \approx 4 + \frac{0.1}{48}\)</p>
+
+<p><strong>Method 2 (review)</strong>
+\(65^{1/3} = (64 + 1)^{1/3} = \left[64\left(1 + \frac{1}{64}\right)\right]^{1/3} = 64^{1/3}\left(1 + \frac{1}{64}\right)^{1/3} = 4 \left(1 + \frac{1}{64}\right)^{1/3}\)
+Next, use the approximation $(1 + x)^r \approx 1 + rx$ with $r = \frac{1}{3}$ and $x = \frac{1}{64}$.
+\(65^{1/3} \approx 4\left(1 + \frac{1}{192}\right) = 4 + \frac{1}{48}\)
+This is the same result that we got from Method 1.</p>
+
+<p><strong>Method 3 (with differential notation)</strong>
+\(y = x^{1/3} \big|_{x=64} = 4\)
+\(dy = \frac{1}{3} x^{-2/3} dx \big|_{x=64} = \frac{1}{48} dx\)
+We want $dx = 1$, since $x + dx = 65$. $dy = \frac{1}{48}$ when $dx = 1$.
+\((65)^{1/3} = 4 + \frac{1}{48}\)
+What underlies all three of these methods is:
+\(y = x^{1/3}\)
+\(dy = \frac{1}{3} x^{-2/3} dx \big|_{x=64}\)</p>
+
+<h2 id="antiderivatives">Antiderivatives</h2>
+<p>\(\int f(x) dx = F(x)\)
+means that $F$ is the antiderivative of $f$.
+Other ways of saying this are:
+\(F'(x) = f(x)\)
+or,
+\(dF = f(x) dx\)</p>
+
+<h2 id="examples">Examples:</h2>
+<ol>
+  <li>$\int \sin x \, dx = -\cos x + c$ where $c$ is any constant.</li>
+  <li>$\int x^n \, dx = \frac{x^{n+1}}{n + 1} + c$ for $n \neq -1$.</li>
+  <li>$\int \frac{dx}{x} = \ln abs(x) + c$ (This takes care of the exceptional case n = -1 in 2.)</li>
+  <li>$\int \sec^2 x \, dx = \tan x + c$</li>
+  <li>$\int \frac{1}{\sqrt{1 - x^2}} \, dx = \sin^{-1} x + c$ (where $\sin^{-1} x$ denotes “inverse sin” or arcsin, and not $\frac{dx}{\sin x}$)</li>
+  <li>$\int \frac{1}{1 + x^2} \, dx = \tan^{-1}(x) + c$</li>
+</ol>
+
+<h2 id="proof-of-property-2">Proof of Property 2:</h2>
+<p>The absolute value $|x|$ gives the correct answer for both positive and negative $x$. We will double check this now for the case $x &lt; 0$:
+\(\frac{d}{dx} \ln |x| = \frac{d}{dx} \ln(-x) = \ln(-x)\)
+\(\frac{d}{dx} \ln(-x) = \frac{1}{u} \cdot \frac{du}{dx}\)
+where $u = -x$.
+\(\frac{d}{dx} \ln(-x) = \frac{1}{-x} \cdot (-1) = \frac{1}{x}\)</p>
+
+<h2 id="uniqueness-of-the-antiderivative-up-to-an-additive-constant">Uniqueness of the Antiderivative Up to an Additive Constant</h2>
+<p>If $F’(x) = f(x)$, and $G’(x) = f(x)$, then $G(x) = F(x) + c$ for some constant factor $c$.</p>
+
+<h2 id="proof">Proof:</h2>
+<p>\((G - F)' = f - f = 0\)
+Recall that we proved as a corollary of the Mean Value Theorem that if a function has a derivative zero then it is constant. Hence $G(x) - F(x) = c$ (for some constant $c$). That is, $G(x) = F(x) + c$.</p>
+
+<h2 id="method-of-substitution">Method of Substitution</h2>
+<h2 id="example-1-int-x3-x4--25-dx"><strong>Example 1:</strong> $\int x^3 (x^4 + 2)^5 dx$</h2>
+<p>Substitution:
+\(u = x^4 + 2, \, du = 4x^3 dx, \, (x^4 + 2)^5 = u^5, \, x^3 dx = \frac{du}{4}\)
+Hence,
+\(\int x^3 (x^4 + 2)^5 dx = \int u^5 \frac{du}{4} = \frac{1}{4} \int u^5 du = \frac{u^6}{24} + c = \frac{(x^4 + 2)^6}{24} + c\)</p>
+
+<h2 id="example-2-int-fracxsqrt1--x2-dx">Example 2: $\int \frac{x}{\sqrt{1 + x^2}} dx$</h2>
+<p>Another way to find an antiderivative is “advanced guessing.” First write:
+\(\int \frac{x}{\sqrt{1 + x^2}} dx = \int x (1 + x^2)^{-1/2} dx\)
+Guess: $(1 + x^2)^{1/2}$. Check this.
+\(\frac{d}{dx} (1 + x^2)^{1/2} = \frac{1}{2}(1 + x^2)^{-1/2} (2x) = x (1 + x^2)^{-1/2}\)
+Therefore,
+\(\int x (1 + x^2)^{-1/2} dx = (1 + x^2)^{1/2} + c\)</p>
+
+<h2 id="example-3-int-e6x-dx"><strong>Example 3:</strong> $\int e^{6x} dx$</h2>
+<p>Guess: $e^{6x}$. Check this:
+\(\frac{d}{dx} e^{6x} = 6e^{6x}\)
+Therefore,
+\(\int e^{6x} dx = \frac{1}{6} e^{6x} + c\)</p>
+
+<h2 id="example-4-int-x-e-x2-dx">Example 4: $\int x e^{-x^2} dx$</h2>
+<p>Guess: $e^{-x^2}$. Again, take the derivative to check:
+\(\frac{d}{dx} e^{-x^2} = -2x e^{-x^2}\)
+Therefore,
+\(\int x e^{-x^2} dx = -\frac{1}{2} e^{-x^2} + c\)</p>
+
+<h2 id="example-5-int-sin-x-cos-x--dx--frac12-sin2-x--c"><strong>Example 5.</strong> $\int \sin x \cos x \, dx = \frac{1}{2} \sin^2 x + c$</h2>
+
+<p>Another, equally acceptable answer is
+\(\int \sin x \cos x \, dx = -\frac{1}{2} \cos^2 x + c\)</p>
+
+<p>This seems like a contradiction, so let’s check our answers:
+\(\frac{d}{dx} \left(\frac{1}{2} \sin^2 x\right) = \sin x \cos x\)
+and
+\(\frac{d}{dx} \left(-\frac{1}{2} \cos^2 x\right) = \sin x \cos x\)</p>
+
+<p>So both of these are correct. Here’s how we resolve this apparent paradox: the difference between the two answers is a constant.
+\(\frac{1}{2} \sin^2 x - \left(-\frac{1}{2} \cos^2 x\right) = \frac{1}{2} (\sin^2 x + \cos^2 x) = \frac{1}{2}\)</p>
+
+<p>So,
+\(\frac{1}{2} \sin^2 x - \frac{1}{2} = -\frac{1}{2} \cos^2 x\)</p>
+
+<p>The two answers are, in fact, equivalent. The constant $c$ is shifted by $\frac{1}{2}$ from one answer to the other.</p>
+
+<h2 id="example-6-we-will-assume-x--0">Example 6. (We will assume $x &gt; 0$)</h2>
+<p>\(\int \frac{dx}{x \ln x}\)</p>
+
+<p>Let $u = \ln x$. This means $du = \frac{dx}{x}$. Substitute these into the integral to get
+\(\int \frac{dx}{x \ln x} = \int \frac{1}{u} du = \ln u + c = \ln (\ln(x)) + c\)</p>
+
+<h3 id="differential-equations-and-separation-of-variables">Differential Equations and Separation of Variables</h3>
+
+<h2 id="ordinary-differential-equations-odes">Ordinary Differential Equations (ODEs)</h2>
+
+<p><strong>Example 1:</strong>
+\(\frac{dy}{dx} = f(x)\)
+<strong>Solution:</strong> $y = \int f(x) \, dx$. We consider these types of equations as solved.</p>
+
+<p><strong>Example 2:</strong>
+\(\frac{d}{dx} + x y = 0 \quad \text{or} \quad \frac{dy}{dx} + xy = 0\)
+$\frac{d}{dx} + x$ is known in quantum mechanics as the annihilation operator.</p>
+
+<p>Besides integration, we have only one method of solving this so far, namely, substitution. Solving for $\frac{dy}{dx}$ gives:
+\(\frac{dy}{dx} = -xy\)</p>
+
+<p>The key step is to separate variables:
+\(\frac{dy}{y} = -x \, dx\)</p>
+
+<p>Note that all $y$-dependence is on the left and all $x$-dependence is on the right.</p>
+
+<p>Next, take the antiderivative of both sides:
+\(\int \frac{dy}{y} = - \int x \, dx\)
+\(\ln |y| = -\frac{x^2}{2} + c \quad \text{(only need one constant $c$)}\)
+\(|y| = e^c e^{-x^2/2} \quad \text{(exponentiate)}\)
+\(y = ae^{-x^2/2} \quad \text{(where $a = \pm e^c$)}\)</p>
+
+<p>Despite the fact that $e^c \neq 0$, $a = 0$ is possible along with all $a \neq 0$, depending on the initial conditions. For instance, if $y(0) = 1$, then $y = e^{-x^2/2}$. If $y(0) = a$, then $y = ae^{-x^2/2}$ (See Fig. 1).</p>
+
+<p>In general:
+\(\frac{dy}{dx} = f(x)g(y)\)
+\(\frac{dy}{g(y)} = f(x) \, dx\)</p>
+
+<p>which we can write as
+\(\int \frac{1}{g(y)} \, dy = \int f(x) \, dx\)</p>
+
+<p>Now, we get an implicit formula for $y$:
+\(H(y) = F(x) + c\)
+where $H(y) = \int \frac{1}{g(y)} \, dy$ and $F(x) = \int f(x) \, dx$,
+\(y = H^{-1}(F(x) + c)\)
+where $H^{-1}$ is the inverse function.</p>
+
+<p>In the previous example:
+\(f(x) = x\)
+\(F(x) = -\frac{x^2}{2}\)
+\(g(y) = y\)
+\(h(y) = \frac{1}{y}\)
+\(H(y) = \ln |y|\)</p>
+
+<p><strong>Example 3 (Geometric Example):</strong>
+\(\frac{dy}{dx} = \frac{2y}{x}\)</p>
+
+<p>Find a graph such that the slope of the tangent line is twice the slope of the ray from $(0,0)$ to $(x,y)$.</p>
+
+<p><img src="file-XghwlkssV2ztJtsb4VtZC3tr" alt="Figure 2: The slope of the tangent line (red) is twice the slope of the ray from the origin to the point (x,y)" /></p>
+
+<p>Separate variables:</p>
+
+\[\frac{dy}{y} = 2 \frac{dx}{x}\]
+
+\[\int \frac{dy}{y} = 2 \int \frac{dx}{x}\]
+
+\[\ln |y| = 2 \ln |x| + c\]
+
+\[|y| = e^c x^2\]
+
+<p>Thus,
+\(y = ax^2\)</p>
+
+<p>Again, $a &lt; 0$, $a &gt; 0$, and $a = 0$ are all acceptable. Possible solutions include, for example:</p>
+<ul>
+  <li>$y = x^2$ $(a = 1)$</li>
+  <li>$y = 2x^2$ $(a = 2)$</li>
+  <li>$y = -x^2$ $(a = -1)$</li>
+  <li>$y = 0x^2 = 0$ $(a = 0)$</li>
+  <li>$y = -2x^2$ $(a = -2)$</li>
+  <li>$y = 100x^2$ $(a = 100)$</li>
+</ul>
+
+<p><strong>Example 4:</strong> Find the curves that are perpendicular to the parabolas in Example 3.</p>
+
+<p>We know that their slopes,
+\(\frac{dy}{dx} = -\frac{x}{2y}\)</p>
+
+<p>Separate variables:
+\(ydy = -x \, dx\)</p>
+
+<p>Take the antiderivative:
+\(\int ydy = - \int x \, dx\)
+\(\frac{y^2}{2} = -\frac{x^2}{2} + c\)
+\(y^2 + x^2 = c\)</p>
+
+<p>This is an equation for a family of ellipses. For these ellipses, the ratio of the $x$-semi-major axis to the $y$-semi-minor axis is $\sqrt{2}$ (see Fig. 3).</p>
+
+<p><img src="file-2E5mUVmRYYdro0ieedVUJAvG" alt="Figure 3: The ellipses are perpendicular to the parabolas." /></p>
+
+<p>Separation of variables leads to implicit formulas for $y$, but in this case, you can solve for $y$:</p>
+
+\[y = \pm \sqrt{2(c - \frac{x^2}{2})}\]
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

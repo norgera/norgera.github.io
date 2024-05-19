@@ -1,0 +1,883 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Derivatives | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Derivatives" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/calculus/derivatives.html" />
+<meta property="og:url" content="http://localhost:4000/notes/calculus/derivatives.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Derivatives" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Derivatives","url":"http://localhost:4000/notes/calculus/derivatives.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=28694a1b72268c139baf770f3fd9c5dd5ccf61f6">
+    <link rel="stylesheet" href="/assets/css/style.css?v=28694a1b72268c139baf770f3fd9c5dd5ccf61f6">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#derivatives">Derivatives</a></li><li><a href="#derivative-formulas">Derivative Formulas</a></li><li><a href="#chain-rule-and-higher-derivatives">Chain Rule and Higher Derivatives</a></li><li><a href="#implicit-differentiation-and-inverses">Implicit Differentiation and Inverses</a></li><li><a href="#exponential-and-logarithmic-differentiation-hyperbolic-functions">Exponential and Logarithmic Differentiation, Hyperbolic Functions</a></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h2 id="derivatives">Derivatives</h2>
+
+<p><strong>A. What is a derivative?</strong></p>
+<ul>
+  <li><strong>Geometric interpretation</strong></li>
+  <li><strong>Physical interpretation</strong></li>
+  <li><strong>Important for any measurement (economics, political science, finance, physics, etc.)</strong></li>
+</ul>
+
+<p><strong>B. How to differentiate any function you know</strong></p>
+<ul>
+  <li>Example: $\frac{d}{dx} e^x \arctan x$</li>
+</ul>
+
+<p>Geometric Viewpoint on Derivatives</p>
+
+<p><strong>Tangent Line and Secant Line</strong>
+The derivative is the slope of the line tangent to the graph of $f(x)$. But what is a tangent line, exactly?</p>
+<ul>
+  <li>It is <strong>NOT</strong> just a line that meets the graph at one point.</li>
+  <li>It is the limit of the secant line (a line drawn between two points on the graph) as the distance between the two points goes to zero.</li>
+</ul>
+
+<p>Geometric Definition of the Derivative
+Limit of slopes of secant lines $PQ$ as $Q \rightarrow P$ (with $P$ fixed). The slope of $PQ$:
+$\text{Slope of PQ} = \frac{\Delta f}{\Delta x} = \frac{f(x_0 + \Delta x) - f(x_0)}{\Delta x}$</p>
+
+<p>$\lim_{\Delta x \to 0} \frac{f(x_0 + \Delta x) - f(x_0)}{\Delta x} = f’(x_0)$</p>
+<ul>
+  <li>This limit is called the <strong>difference quotient</strong>, and $f’(x_0)$ is the <strong>derivative of $f$ at $x_0$</strong>.</li>
+</ul>
+
+<p><strong>Example 1:</strong> $f(x) = \frac{1}{x}$</p>
+
+<p>To find the derivative:
+$\frac{\Delta f}{\Delta x} = \frac{\frac{1}{x_0 + \Delta x} - \frac{1}{x_0}}{\Delta x}$
+$= \frac{x_0 - (x_0 + \Delta x)}{\Delta x \cdot x_0 \cdot (x_0 + \Delta x)} = \frac{-\Delta x}{\Delta x \cdot x_0 \cdot (x_0 + \Delta x)} = -\frac{1}{x_0^2}$
+Taking the limit as $\Delta x \rightarrow 0$:
+$\lim_{\Delta x \to 0} -\frac{1}{x_0^2} = -\frac{1}{x_0^2}$
+Thus,
+$f’(x_0) = -\frac{1}{x_0^2}$</p>
+
+<p><strong>Finding the Tangent Line</strong>
+Using the equation for a line $y - y_0 = f’(x_0)(x - x_0)$:
+$y - \frac{1}{x_0} = -\frac{1}{x_0^2}(x - x_0)$</p>
+
+<p><strong>Area of the Triangle Formed by the Tangent Line</strong></p>
+<ul>
+  <li><strong>X-intercept</strong>: Where $y = 0$:
+$0 - \frac{1}{x_0} = -\frac{1}{x_0^2}(x - x_0)$
+$x = 2x_0$</li>
+  <li><strong>Y-intercept</strong>: By symmetry, $y = 2y_0 = 2 \cdot \frac{1}{x_0} = \frac{2}{x_0}$</li>
+  <li><strong>Area</strong>:
+$\text{Area} = \frac{1}{2} \cdot 2x_0 \cdot \frac{2}{x_0} = 2$</li>
+</ul>
+
+<p><strong>Notations for the Derivative</strong></p>
+
+<p>Since $y = f(x)$:
+$\Delta y = \Delta f = f(x) - f(x_0) = f(x_0 + \Delta x) - f(x_0)$
+$\frac{\Delta y}{\Delta x} = \frac{\Delta f}{\Delta x}$
+Taking the limit as $\Delta x \to 0$:
+$\frac{\Delta y}{\Delta x} \to \frac{dy}{dx} \quad \text{(Leibniz’ notation)}$
+$\frac{\Delta f}{\Delta x} \to f’(x_0) \quad \text{(Newton’s notation)}$</p>
+
+<p>Other notations for the derivative of a function $f$ include:
+$\frac{df}{dx}, \ f’, \ Df$</p>
+
+<p><strong>Example 2:</strong> $f(x) = x^n$ where $n = 1, 2, 3, \ldots$
+Using the definition of the difference quotient:
+$\frac{\Delta y}{\Delta x} = \frac{(x + \Delta x)^n - x^n}{\Delta x}$
+Expanding using the binomial theorem:
+$(x + \Delta x)^n = x^n + nx^{n-1}\Delta x + O((\Delta x)^2)$
+$\frac{\Delta y}{\Delta x} = nx^{n-1} + O(\Delta x)$
+Taking the limit:
+$\lim_{\Delta x \to 0} nx^{n-1} = nx^{n-1}$
+Thus,
+$\frac{d}{dx} x^n = nx^{n-1}$</p>
+
+<p>This result extends to polynomials. For example:
+$\frac{d}{dx} (x^2 + 3x^{10}) = 2x + 30x^9$</p>
+
+<p>Physical Interpretation of Derivatives
+The derivative represents a rate of change (e.g., speed).</p>
+
+<p>Example: Dropping a pumpkin from a 400-foot building:
+$y = 400 - 16t^2$
+Average speed when the pumpkin hits the ground ($y = 0$):
+$400 - 16t^2 = 0 \implies t = 5 \ \text{seconds}$
+$\text{Average speed} = \frac{400 \ \text{ft}}{5 \ \text{sec}} = 80 \ \text{ft/s}$</p>
+
+<p>Instantaneous velocity at $t = 5$:</p>
+
+<p>$y’ = -32t \implies y’(5) = -160 \ \text{ft/s} \ (\text{about 110 mph})$</p>
+
+<p>$y’$ is negative because the pumpkin is moving downward.</p>
+
+<p>Here is the lecture material rewritten in a Markdown code block, including all math notations:</p>
+
+<p>More about the “rate of change” interpretation of the derivative</p>
+
+<p>$y = f(x)$
+$
+\Delta x \quad \Delta y
+$
+Figure 1: Graph of a generic function, with $\Delta x$ and $\Delta y$ marked on the graph</p>
+
+<p>$
+\frac{\Delta y}{\Delta x} \rightarrow \frac{dy}{dx} \text{ as } \Delta x \rightarrow 0
+$</p>
+<ul>
+  <li>Average rate of change (\rightarrow) Instantaneous rate of change</li>
+</ul>
+
+<p>Examples</p>
+<ol>
+  <li>$q = \text{charge} \quad \frac{dq}{dt} = \text{electrical current}$</li>
+  <li>$s = \text{distance} \quad \frac{ds}{dt} = \text{speed}$</li>
+  <li>$T = \text{temperature gradient} \quad \frac{dT}{dx}$</li>
+</ol>
+
+<p>Sensitivity of measurements
+An example is carried out on Problem Set 1. In GPS, radio signals give us $h$ up to a certain measurement error. The question is how accurately we can measure $L$.</p>
+
+<p>$\frac{\Delta L}{\Delta h} $</p>
+
+<p>Figures</p>
+<ul>
+  <li><strong>Figure 2</strong>: The Global Positioning System Problem (GPS)</li>
+  <li><strong>Figure 3</strong>: On problem set 1, you will look at this simplified “flat earth” model</li>
+</ul>
+
+<p>Limits and Continuity</p>
+
+<p>Easy Limits
+$\lim_{x \to 3} \frac{x^2 + x}{x + 1} = \frac{3^2 + 3}{3 + 1} = \frac{12}{4} = 3 $</p>
+
+<p>With an easy limit, you can get a meaningful answer just by plugging in the limiting value.</p>
+
+<p>$\lim_{\Delta x \to 0} \frac{f(x_0 + \Delta x) - f(x_0)}{\Delta x} $</p>
+
+<p>is never an easy limit, because the denominator $\Delta x = 0$ is not allowed. (The limit $x \rightarrow x_0$ is computed under the implicit assumption that $x \neq x_0$).</p>
+
+<p>Continuity
+We say $f(x)$ is continuous at $x_0$ when:
+$\lim_{x \to x_0} f(x) = f(x_0) $</p>
+
+<p>Discontinuities</p>
+<ul>
+  <li><strong>Figure 4</strong>: Graph of a discontinuous function</li>
+</ul>
+
+<p>$f(x) = \begin{cases} 
+x + 1 &amp; x &gt; 0 <br />
+-x &amp; x \ge 0 
+\end{cases} $</p>
+
+<p>For $x &gt; 0$:
+$\lim_{x \to 0} f(x) = 1 $
+but $f(0) = 0$. (One can also say $f$ is continuous from the left at 0, not the right.)</p>
+
+<ol>
+  <li><strong>Removable Discontinuity</strong>
+    <ul>
+      <li><strong>Figure 5</strong>: A removable discontinuity: function is continuous everywhere except for one point.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Right-hand limit: $\lim_{x \to x_0^+} f(x)$
+Left-hand limit: $\lim_{x \to x_0^-} f(x)$</p>
+
+<p>If $\lim_{x \to x_0} f(x)$ exists but is not $f(x_0)$, or if $f(x_0)$ is undefined, the discontinuity is removable.</p>
+
+<p>For example, $\frac{\sin x}{x}$ is defined for $x \neq 0$. We will see later how to evaluate the limit as $x \to 0$.</p>
+
+<ol>
+  <li><strong>Jump Discontinuity</strong>
+    <ul>
+      <li><strong>Figure 6</strong>: An example of a jump discontinuity.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>$\lim_{x \to x_0^-} f(x) \text{ and } \lim_{x \to x_0^+} f(x) $
+both exist, but are NOT equal.</p>
+
+<ol>
+  <li><strong>Infinite Discontinuity</strong>
+    <ul>
+      <li><strong>Figure 7</strong>: An example of an infinite discontinuity.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>$\lim_{x \to 0^+} \frac{1}{x} = \infty $
+$\lim_{x \to 0^-} \frac{1}{x} = -\infty $</p>
+
+<ol>
+  <li><strong>Other (ugly) discontinuities</strong>
+    <ul>
+      <li><strong>Figure 8</strong>: An example of an ugly discontinuity: a function that oscillates a lot as it approaches the origin.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>This function doesn’t even go to $\pm \infty$ — it doesn’t make sense to say it goes to anything. For something like this, we say the limit does not exist.</p>
+
+<p>Picturing the Derivative</p>
+<ul>
+  <li><strong>Figure 9</strong>:
+    <ul>
+      <li>Top: graph of $f(x) = \frac{1}{x}$</li>
+      <li>Bottom: graph of $f’(x) = -\frac{1}{x^2}$</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Notice that the graph of $f(x)$ does NOT look like the graph of $f’(x)$! (You might also notice that $f(x)$ is an odd function, while $f’(x)$ is an even function. The derivative of an odd function is always even, and vice versa.)</p>
+
+<p>Pumpkin Drop, Part II
+This time, someone throws a pumpkin over the tallest building on campus.</p>
+<ul>
+  <li><strong>Figure 10</strong>: $y = 400 - 16t^2, -5 \leq t \leq 5$</li>
+  <li><strong>Figure 11</strong>:
+    <ul>
+      <li>Top: graph of $y(t) = 400 - 16t^2$</li>
+      <li>Bottom: the derivative, $y’(t)$</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Two Trig Limits
+Note: In the expressions below, $\theta$ is in radians— NOT degrees!</p>
+
+<p>$\lim_{\theta \to 0} \frac{\sin \theta}{\theta} = 1 $
+$\lim_{\theta \to 0} \frac{1 - \cos \theta}{\theta} = 0 $</p>
+
+<p>Geometric Proof for the First Limit:</p>
+<ul>
+  <li><strong>Figure 12</strong>: A circle of radius 1 with an arc of angle $\theta$</li>
+</ul>
+
+<p>$\frac{\sin \theta}{\theta} \rightarrow 1 \text{ as } \theta \rightarrow 0 $</p>
+
+<p>Proof for the Second Limit:</p>
+<ul>
+  <li><strong>Figure 14</strong>: Same picture as Fig. 12 except that the horizontal distance between the edge of the triangle and the perimeter of the circle is marked.</li>
+  <li><strong>Figure 15</strong>: As $\theta \rightarrow 0$, the length $1 - \cos \theta$ of the short segment gets much smaller than the vertical distance $\theta$ along the arc.</li>
+</ul>
+
+<p>Hence,
+$\frac{1 - \cos \theta}{\theta} \rightarrow 0 $</p>
+
+<p>Theorem: Differentiable Implies Continuous
+If $f$ is differentiable at $x_0$, then $f$ is continuous at $x_0$.</p>
+
+<p><strong>Proof</strong>:
+$\lim_{x \to x_0} (f(x) - f(x_0)) = \lim_{x \to x_0} \left( \frac{f(x) - f(x_0)}{x - x_0} \cdot (x - x_0) \right) = f’(x_0) \cdot 0 = 0 $</p>
+
+<p>Remember: you can never divide by zero! The first step was to multiply by $\frac{x - x_0}{x - x_0}$. It looks as if this is illegal because when $x = x_0$, we are multiplying by $\frac{0}{0}$. But when computing the limit as $x \rightarrow x_0$ we always assume $x \neq x_0$. In other words $x - x_0 \neq 0$. So the proof is valid.</p>
+
+<p>Here is the lecture material rewritten in a Markdown code block, with explanations included:</p>
+
+<h2 id="derivative-formulas">Derivative Formulas</h2>
+
+<p>Types of Derivative Formulas</p>
+
+<ol>
+  <li>Specific Examples
+    <ul>
+      <li>Example: $\frac{d}{dx} x^n$</li>
+      <li>Example: $\frac{d}{dx} \frac{1}{x}$</li>
+    </ul>
+  </li>
+  <li>General Examples
+    <ul>
+      <li>$(u + v)’ = u’ + v’$</li>
+      <li>$(cu)’ = cu’$ (where $c$ is a constant)</li>
+    </ul>
+  </li>
+</ol>
+
+<p>A notational convention we will use today is:</p>
+<ul>
+  <li>$(u + v)(x) = u(x) + v(x)$</li>
+  <li>$(uv)(x) = u(x)v(x)$</li>
+</ul>
+
+<p>Proof of $(u + v)’ = u’ + v’$ (General)
+Start by using the definition of the derivative:
+$(u + v)’(x) = \lim_{\Delta x \to 0} \frac{(u + v)(x + \Delta x) - (u + v)(x)}{\Delta x}$
+$= \lim_{\Delta x \to 0} \frac{u(x + \Delta x) + v(x + \Delta x) - u(x) - v(x)}{\Delta x}$
+$= \lim_{\Delta x \to 0} \left( \frac{u(x + \Delta x) - u(x)}{\Delta x} + \frac{v(x + \Delta x) - v(x)}{\Delta x} \right)$
+$(u + v)’(x) = u’(x) + v’(x)$</p>
+
+<p>Follow the same procedure to prove that $(cu)’ = cu’$.</p>
+
+<p>Derivatives of $\sin x$ and $\cos x$ (Specific)
+Using trigonometric limits:
+$\lim_{x \to 0} \frac{\sin x}{x} = 1$</p>
+
+<p><strong>Last time, we computed</strong></p>
+
+\[\lim_{x \to 0} \frac{\sin x}{x} = 1\]
+
+\[\left. \frac{d}{dx} (\sin x) \right|_{x=0} = \lim_{\Delta x \to 0} \frac{\sin(0 + \Delta x) - \sin(0)}{\Delta x} = \lim_{\Delta x \to 0} \frac{\sin(\Delta x)}{\Delta x} = 1\]
+
+\[\left. \frac{d}{dx} (\cos x) \right|_{x=0} = \lim_{\Delta x \to 0} \frac{\cos(0 + \Delta x) - \cos(0)}{\Delta x} = \lim_{\Delta x \to 0} \frac{\cos(\Delta x) - 1}{\Delta x} = 0\]
+
+<p>So, we know the value of $\frac{d}{dx} \sin x$ and $\frac{d}{dx} \cos x$ at $x = 0$. Let us find these for arbitrary $x$.</p>
+
+\[\frac{d}{dx} \sin x = \lim_{\Delta x \to 0} \frac{\sin(x + \Delta x) - \sin(x)}{\Delta x}\]
+
+<p>So, we know the value of $\frac{d}{dx} \sin x$ and $\frac{d}{dx} \cos x$ at $x = 0$. Let us find these for arbitrary $x$.</p>
+
+<p>$
+\frac{d}{dx} \sin x = \lim_{\Delta x \to 0} \frac{\sin(x + \Delta x) - \sin(x)}{\Delta x}
+$</p>
+
+<p>Recall:
+$ \sin(a + b) = \sin(a) \cos(b) + \sin(b) \cos(a) $</p>
+
+<p>So,
+$ \frac{d}{dx} \sin x = \lim_{\Delta x \to 0} \frac{\sin x \cos \Delta x + \cos x \sin \Delta x - \sin(x)}{\Delta x} $
+$ = \lim_{\Delta x \to 0} \left[ \sin x \left( \frac{\cos \Delta x - 1}{\Delta x} \right) + \cos x \left( \frac{\sin \Delta x}{\Delta x} \right) \right] $
+$ = \lim_{\Delta x \to 0} \sin x \left( \frac{\cos \Delta x - 1}{\Delta x} \right) + \lim_{\Delta x \to 0} \cos x \left( \frac{\sin \Delta x}{\Delta x} \right) $</p>
+
+<p>Since
+$ \frac{\cos \Delta x - 1}{\Delta x} \to 0 $
+and
+$ \frac{\sin \Delta x}{\Delta x} \to 1 $
+the equation above simplifies to:
+$ \frac{d}{dx} \sin x = \cos x $</p>
+
+<p>A similar calculation gives:
+$ \frac{d}{dx} \cos x = -\sin x $</p>
+
+<p>Product Formula (General)
+$(uv)’ = u’v + uv’$</p>
+
+<p>Proof:
+$(uv)’ = \lim_{\Delta x \to 0} \frac{(uv)(x + \Delta x) - (uv)(x)}{\Delta x}$
+$= \lim_{\Delta x \to 0} \frac{u(x + \Delta x)v(x + \Delta x) - u(x)v(x)}{\Delta x}$</p>
+
+<p>By adding and subtracting $u(x + \Delta x)v(x)$:
+$(uv)’ = \lim_{\Delta x \to 0} \frac{u(x + \Delta x)v(x + \Delta x) - u(x + \Delta x)v(x) + u(x + \Delta x)v(x) - u(x)v(x)}{\Delta x}$
+$= \lim_{\Delta x \to 0} \left( \frac{u(x + \Delta x) - u(x)}{\Delta x}\right) v(x) + u(x + \Delta x) \left( \frac{v(x + \Delta x) - v(x)}{\Delta x} \right)$</p>
+
+<p>The limit of a sum is the sum of the limits.
+\(\left[ \lim_{\Delta x \to 0} \frac{u(x + \Delta x) - u(x)}{\Delta x} \right] v(x) + \lim_{\Delta x \to 0} \left( u(x + \Delta x) \left[ \frac{v(x + \Delta x) - v(x)}{\Delta x} \right] \right)\)</p>
+
+<p>$= u’(x)v(x) + u(x)v’(x)$</p>
+
+<p>This proof assumes that $u$ and $v$ have derivatives, which implies both functions are continuous.</p>
+
+<p><strong>Quotient Formula (General)</strong>
+To calculate the derivative of $\frac{u}{v}$, use the same notations for $\Delta u$ and $\Delta v$:</p>
+
+<p>$\frac{u(x + \Delta x)}{v(x + \Delta x)} - \frac{u(x)}{v(x)} = \frac{(u + \Delta u)v - u(v + \Delta v)}{(v + \Delta v)v} = \frac{(\Delta u)v - u(\Delta v)}{(v + \Delta v)v}$</p>
+
+<p>Divide by $\Delta x$ and take the limit as $\Delta x \to 0$:
+$\frac{\Delta u}{\Delta x} v - u \frac{\Delta v}{\Delta x} = \frac{u’v - uv’}{v^2}$</p>
+
+<p>Therefore,
+$\left( \frac{u}{v} \right)’ = \frac{u’v - uv’}{v^2}$</p>
+
+<p>Here is the lecture material rewritten in a Markdown code block, with explanations included:</p>
+
+<h2 id="chain-rule-and-higher-derivatives">Chain Rule and Higher Derivatives</h2>
+
+<p>Chain Rule
+We’ve covered differentiation procedures for addition, subtraction, and multiplication. Now, we’ll discuss the differentiation of compositions of functions.</p>
+
+<p><strong>Example 1:</strong>
+Given:
+$y = f(x) = \sin x, \quad x = g(t) = t^2$
+So,
+$y = f(g(t)) = \sin(t^2)$</p>
+
+<p>To find $\frac{dy}{dt}$:
+$t = t_0 + \Delta t$
+$x = x_0 + \Delta x$
+$y = y_0 + \Delta y$
+$\frac{\Delta y}{\Delta t} = \frac{\Delta y}{\Delta x} \cdot \frac{\Delta x}{\Delta t}$</p>
+
+<p>As $\Delta t \rightarrow 0$, $\Delta x \rightarrow 0$ due to continuity, thus:
+$\frac{dy}{dt} = \frac{dy}{dx} \cdot \frac{dx}{dt}$</p>
+
+<p>In this example:
+$\frac{dx}{dt} = 2t$
+$\frac{dy}{dx} = \cos x$</p>
+
+<p>So,
+$\frac{d}{dt} \left( \sin(t^2) \right) = \frac{dy}{dx} \cdot \frac{dx}{dt} = \cos(t^2) \cdot 2t$</p>
+
+<p>Another notation for the chain rule:
+$\frac{d}{dt} f(g(t)) = f’(g(t)) \cdot g’(t)$
+or
+$\frac{d}{dx} f(g(x)) = f’(g(x)) \cdot g’(x)$</p>
+
+<p>Example 1 (continued):
+Composition of functions:
+$f(x) = \sin x$
+$g(x) = x^2$
+$(f \circ g)(x) = f(g(x)) = \sin(x^2)$
+$(g \circ f)(x) = g(f(x)) = \sin^2(x)$</p>
+
+<p>Note: $f \circ g \neq g \circ f$. Composition is not commutative.</p>
+
+<p><strong>Example 2:</strong>
+$\frac{d}{dx} \cos \left( \frac{1}{x} \right)$</p>
+
+<p>Let $u = \frac{1}{x}$,
+$\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}$</p>
+
+<p>$\frac{dy}{du} = -\sin(u)$
+$\frac{du}{dx} = -\frac{1}{x^2}$</p>
+
+<p>So,
+$\frac{d}{dx} \cos \left( \frac{1}{x} \right) = -\sin \left( \frac{1}{x} \right) \cdot \left( -\frac{1}{x^2} \right) = \frac{\sin \left( \frac{1}{x} \right)}{x^2}$</p>
+
+<p>Example 3:
+$\frac{d}{dx} x^{-n}$</p>
+
+<p>There are two ways to proceed:
+$x^{-n} = \frac{1}{x^n}$</p>
+
+<ol>
+  <li>
+    <p>Using the power rule:
+$\frac{d}{dx} x^{-n} = \frac{d}{dx} \left( \frac{1}{x^n} \right) = -nx^{-n-1}$</p>
+  </li>
+  <li>
+    <p>Using the chain rule:
+$x^{-n} = \left( x^n \right)^{-1}$
+$\frac{d}{dx} x^{-n} = \frac{d}{dx} \left( \left( x^n \right)^{-1} \right) = -n x^{-n-1}$</p>
+  </li>
+</ol>
+
+<p>Higher Derivatives
+Higher derivatives are derivatives of derivatives. For instance, if $g = f’$, then $h = g’$ is the second derivative of $f$. We write $h = (f’)’ = f’’$.</p>
+
+<p>Notations:</p>
+<ul>
+  <li>$f’(x)$</li>
+  <li>$f’‘(x)$</li>
+  <li>$f’’‘(x)$</li>
+  <li>$f^{(n)}(x)$</li>
+  <li>$Df$</li>
+  <li>$D^2 f$</li>
+  <li>$D^3 f$</li>
+  <li>$D^n f$</li>
+  <li>$\frac{df}{dx}$</li>
+  <li>$\frac{d^2 f}{dx^2}$</li>
+  <li>$\frac{d^3 f}{dx^3}$</li>
+  <li>$\frac{d^n f}{dx^n}$</li>
+</ul>
+
+<p>Higher derivatives are straightforward: keep taking the derivative.</p>
+
+<p>Example:
+$D^n x = ?$</p>
+
+<p>Start small and look for a pattern:
+$D x = 1$
+$D^2 x = D (2x) = 2$
+$D^3 x = D^2 (3x^2) = D (6x) = 6$
+$D^4 x = D^3 (4x^3) = D^2 (12x^2) = D (24x) = 24$</p>
+
+<p>So,
+$D^n x^n = n!$</p>
+
+<p>The notation $n!$ (n factorial) is defined by $n! = n (n-1) \cdots 2 \cdot 1$.</p>
+
+<p>Proof by Induction:
+We’ve checked the base case ($n = 1$).</p>
+
+<p><strong>Induction step</strong>: Suppose we know $D^n x^n = n!$ (n-th case). Show it holds for the (n+1)-st case:
+$D^{n+1} x^{n+1} = D^n (D x^{n+1}) = D^n ((n+1) x^n) = (n+1) D^n x^n = (n+1)(n!)$
+So,
+$D^{n+1} x^{n+1} = (n+1)!$</p>
+
+<p>Proved!</p>
+
+<p>Here is the lecture material rewritten in a Markdown code block, with explanations included:</p>
+
+<h2 id="implicit-differentiation-and-inverses">Implicit Differentiation and Inverses</h2>
+
+<p>Implicit Differentiation</p>
+
+<p><strong>Example 1:</strong>
+To differentiate $x^a$:
+$\frac{d}{dx} (x^a) = ax^{a-1}$</p>
+
+<p>We proved this for $a = 0, 1, 2, \ldots$ and extended it to $a = -1, -2, \ldots$. Let’s extend this to rational numbers as well:</p>
+
+<p>$y = x^{m/n}$
+To compute $\frac{dy}{dx}$:
+$y^n = x^m$
+$n y^{n-1} \frac{dy}{dx} = m x^{m-1}$
+$\frac{dy}{dx} = \frac{m x^{m-1}}{n y^{n-1}}$</p>
+
+<p>Since $y = x^{m/n}$:
+$\frac{dy}{dx} = \frac{m x^{m-1}}{n x^{(m/n)(n-1)}} = \frac{m x^{m-1}}{n x^{m - m/n}} = \frac{m x^{m-1}}{n x^{m - m/n}} = \frac{m}{n} x^{m/n - 1}$</p>
+
+<p>This is the same result we hoped to get.</p>
+
+<p><strong>Example 2:</strong>
+Equation of a circle with radius 1: $x^2 + y^2 = 1$
+$y^2 = 1 - x^2$
+$y = \pm \sqrt{1 - x^2}$</p>
+
+<p>For the positive case:
+$y = \sqrt{1 - x^2}$
+$\frac{dy}{dx} = \frac{1}{2}(1 - x^2)^{-1/2}(-2x) = -\frac{x}{\sqrt{1 - x^2}}$</p>
+
+<p>Using implicit differentiation:
+$x^2 + y^2 = 1$
+Differentiating both sides:
+$2x + 2y \frac{dy}{dx} = 0$
+$2y \frac{dy}{dx} = -2x$
+$\frac{dy}{dx} = -\frac{x}{y}$</p>
+
+<p>Same answer!</p>
+
+<p>Example 3:
+$y^3 + xy^2 + 1 = 0$</p>
+
+<p>Implicit differentiation:
+$3y^2 \frac{dy}{dx} + y^2 + 2xy \frac{dy}{dx} = 0$
+Solving for $\frac{dy}{dx}$:
+$\frac{dy}{dx} (3y^2 + 2xy) = -y^2$
+$\frac{dy}{dx} = \frac{-y^2}{3y^2 + 2xy}$</p>
+
+<p>Inverse Functions
+If $y = f(x)$ and $g(y) = x$, then $g$ is the inverse function of $f$, denoted $f^{-1}$:
+$x = g(y) = f^{-1}(y)$</p>
+
+<p>Using implicit differentiation to find the derivative of the inverse function:
+$y = f(x)$
+$f^{-1}(y) = x$
+Differentiating both sides:
+$\frac{d}{dx} (f^{-1}(y)) = \frac{d}{dx} (x) = 1$
+By the chain rule:
+$\frac{d}{dy} (f^{-1}(y)) \frac{dy}{dx} = 1$
+So,
+$\frac{d}{dy} (f^{-1}(y)) = \frac{1}{\frac{dx}{dy}}$</p>
+
+<p>Example:
+$y = \arctan(x)$
+$\tan(y) = x$
+Differentiating both sides:
+$\frac{d}{dx} [\tan(y)] = \frac{d}{dx} (x) = 1$
+$\sec^2(y) \frac{dy}{dx} = 1$
+$\frac{dy}{dx} = \cos^2(y)$</p>
+
+<p>Using geometry to simplify:
+$\tan(y) = x$
+$\sec^2(y) = 1 + \tan^2(y) = 1 + x^2$
+$\cos^2(y) = \frac{1}{1 + x^2}$</p>
+
+<p>Thus,
+$\frac{dy}{dx} = \frac{1}{1 + x^2}$</p>
+
+<p>Graphing an Inverse Function
+If $y = f(x)$ and $g(y) = f^{-1}(y) = x$, to graph $g$ and $f$ together, we write $g$ as a function of $x$. Swapping the variables $x$ and $y$ illustrates the inverse relationship:
+$f^{-1}(f(x)) = x$
+$f(f^{-1}(x)) = x$</p>
+
+<p>Visualize $f^{-1}$ as the graph of $f$ reflected about the line $y = x$.</p>
+
+<p>Here is the lecture material rewritten in a Markdown code block, with explanations included:</p>
+
+<h2 id="exponential-and-logarithmic-differentiation-hyperbolic-functions">Exponential and Logarithmic Differentiation, Hyperbolic Functions</h2>
+
+<p>Taking the Derivatives of Exponentials and Logarithms</p>
+
+<p>Background
+We always assume the base $a$ is greater than 1.
+$a^0 = 1; \quad a^1 = a; \quad a^2 = a \cdot a$
+$a^{x_1 + x_2} = a^{x_1} a^{x_2}$
+$(a^{x_1})^{x_2} = a^{x_1 x_2}$
+$a^{\frac{p}{q}} = \sqrt[q]{a^p} \quad \text{(where p and q are integers)}$</p>
+
+<p>To define $a^r$ for real numbers $r$, fill in by continuity.</p>
+
+<p>Today’s Main Task: Find $\frac{d}{dx} a^x$</p>
+
+<p>We can write:
+$\frac{d}{dx} a^x = \lim_{\Delta x \to 0} \frac{a^{x + \Delta x} - a^x}{\Delta x}$</p>
+
+<p>We can factor out $a^x$:
+$\frac{d}{dx} a^x = a^x \lim_{\Delta x \to 0} \frac{a^{\Delta x} - 1}{\Delta x}$</p>
+
+<p>Let’s call:
+$M(a) \equiv \lim_{\Delta x \to 0} \frac{a^{\Delta x} - 1}{\Delta x}$</p>
+
+<p>We don’t yet know what $M(a)$ is, but we can say:
+$\frac{d}{dx} a^x = M(a) a^x$</p>
+
+<p>Two Descriptions of $M(a)$</p>
+
+<ol>
+  <li>Analytically
+$M(a) = \left. \frac{d}{dx} a^x \right|_{x=0}$</li>
+</ol>
+
+<p>Indeed, 
+$M(a) = \lim_{\Delta x \to 0} \frac{a^{0 + \Delta x} - a^0}{\Delta x} = \left. \frac{d}{dx} a^x \right|_{x=0}$</p>
+
+<ol>
+  <li>Geometrically
+$M(a)$ is the slope of the graph $y = a^x$ at $x = 0$.</li>
+</ol>
+
+<p>The trick to figuring out $M(a)$ is to define $e$ as the number such that $M(e) = 1$.</p>
+
+<p>We can estimate the slope $M(a)$ for $a = 2$ and $a = 4$:</p>
+<ul>
+  <li>The secant line from ((0, 1)) to ((1, 2)) on the graph $y = 2^x$ has a slope less than 1, so $M(2) &lt; 1$.</li>
+  <li>The secant line from ((-1/2, 1/2)) to ((1, 4)) on the graph $y = 4^x$ has a slope greater than 1, so $M(4) &gt; 1$.</li>
+</ul>
+
+<p>Somewhere between 2 and 4, there is a base whose slope at $x = 0$ is 1.</p>
+
+<p>Thus, we define $e$ as the unique number such that:
+$M(e) = 1$
+$\lim_{h \to 0} \frac{e^h - 1}{h} = 1$
+$\left. \frac{d}{dx} e^x \right|_{x=0} = 1$</p>
+
+<p>So:
+$\frac{d}{dx} e^x = e^x$</p>
+
+<p>Natural Logarithm (Inverse Function of $e^x$)
+To understand $M(a)$ better, we study the natural log function $\ln(x)$. This function is defined as follows:</p>
+<ul>
+  <li>If $y = e^x$, then $\ln(y) = x$</li>
+  <li>If $w = \ln(x)$, then $e^w = x$</li>
+</ul>
+
+<p>Note:</p>
+<ul>
+  <li>$\ln(1) = 0$</li>
+  <li>$\ln(x) &lt; 0$ for $0 &lt; x &lt; 1$</li>
+  <li>$\ln(x) &gt; 0$ for $x &gt; 1$</li>
+  <li>$\ln(x_1 x_2) = \ln(x_1) + \ln(x_2)$</li>
+</ul>
+
+<p>Use implicit differentiation to find $\frac{d}{dx} \ln(x)$:
+$w = \ln(x)$
+$e^w = x$
+$\frac{d}{dx} (e^w) = \frac{d}{dx} (x)$
+$e^w \frac{dw}{dx} = 1$
+$\frac{dw}{dx} = \frac{1}{e^w} = \frac{1}{x}$</p>
+
+<p>So:
+$\frac{d}{dx} \ln(x) = \frac{1}{x}$</p>
+
+<p>General Exponential Functions
+Finally, what about $\frac{d}{dx} a^x$?</p>
+
+<p>Method 1: Write in Base $e$ and Use Chain Rule
+Rewrite $a$ as $e^{\ln(a)}$:
+$a^x = (e^{\ln(a)})^x = e^{x \ln(a)}$</p>
+
+<p>Using the chain rule:
+$\frac{d}{dx} e^{x \ln(a)} = \ln(a) e^{x \ln(a)} = \ln(a) a^x$</p>
+
+<p>Recall:
+$\frac{d}{dx} a^x = M(a) a^x$
+So $M(a) = \ln(a)$.</p>
+
+<p>Even if starting with another base like 10, the natural logarithm appears:
+$\frac{d}{dx} 10^x = (\ln 10) 10^x$</p>
+
+<p>Method 2: Logarithmic Differentiation
+The idea is to find $f(x)$ by finding $\ln(f(x))$:
+$u = f(x)$
+$\frac{d}{dx} \ln(u) = \frac{1}{u} \frac{du}{dx}$
+$\frac{du}{dx} = u \frac{d}{dx} \ln(u)$</p>
+
+<p>Apply this to $f(x) = a^x$:
+$\ln(f(x)) = x \ln(a)$
+$\frac{d}{dx} \ln(f(x)) = \ln(a)$</p>
+
+<p>So:
+$\frac{du}{dx} = f(x) \ln(a) = a^x \ln(a)$</p>
+
+<p><strong>Example 1:</strong>
+$\frac{d}{dx} (x^x)$</p>
+
+<p>Use logarithmic differentiation:
+$f = x^x$
+$\ln(f) = x \ln(x)$</p>
+
+<p>Differentiate:
+$\frac{d}{dx} \ln(f) = \frac{d}{dx} (x \ln(x)) = \ln(x) + 1$</p>
+
+<p>So:
+$\frac{du}{dx} = x^x (\ln(x) + 1)$</p>
+
+<p><strong>Example 2:</strong>
+Evaluate $\lim_{k \to \infty} \left(1 + \frac{1}{k}\right)^k$</p>
+
+<p>Find the limit of the logarithm:
+$\lim_{k \to \infty} \ln \left(1 + \frac{1}{k}\right)^k = \lim_{k \to \infty} k \ln \left(1 + \frac{1}{k}\right)$</p>
+
+<p>This expression has two parts:</p>
+<ul>
+  <li>$k \to \infty$</li>
+  <li>$\ln \left(1 + \frac{1}{k}\right) \to 0$</li>
+</ul>
+
+<p>So:
+$\lim_{k \to \infty} k \ln \left(1 + \frac{1}{k}\right) = \lim_{h \to 0} \frac{\ln(1 + h)}{h} = \left. \frac{d}{dx} \ln(x) \right|_{x=1} = 1$</p>
+
+<p>Thus:
+$\lim_{k \to \infty} \left(1 + \frac{1}{k}\right)^k = e$</p>
+
+<p>Remarks:</p>
+<ol>
+  <li>We can use this limit formula to approximate $e$.</li>
+  <li>Logarithms are used in many sciences and finance. For instance, the stock market’s percent change is more informative than the absolute point change.</li>
+</ol>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

@@ -1,0 +1,998 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Integration | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Integration" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/calculus/integration.html" />
+<meta property="og:url" content="http://localhost:4000/notes/calculus/integration.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Integration" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Integration","url":"http://localhost:4000/notes/calculus/integration.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=28694a1b72268c139baf770f3fd9c5dd5ccf61f6">
+    <link rel="stylesheet" href="/assets/css/style.css?v=28694a1b72268c139baf770f3fd9c5dd5ccf61f6">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#definite-integrals">Definite Integrals</a></li><li><a href="#first-fundamental-theorem-of-calculus">First Fundamental Theorem of Calculus</a></li><li><a href="#second-fundamental-theorem">Second Fundamental Theorem</a></li><li><a href="#application-of-ftc-2-to-logarithms">Application of FTC 2 to Logarithms</a></li><li><a href="#application-of-ftcs-to-geometry-volumes-and-areas">Application of FTCs to Geometry (Volumes and Areas)</a></li><li><a href="#application-of-ftc-2-to-logarithms-1">Application of FTC 2 to Logarithms</a></li><li><a href="#application-of-ftcs-to-geometry-volumes-and-areas-1">Application of FTCs to Geometry (Volumes and Areas)</a></li><li><a href="#numerical-integration">Numerical Integration</a></li><li><a href="#1-riemann-sum">1. Riemann Sum</a></li><li><a href="#2-trapezoidal-rule">2. Trapezoidal Rule</a></li><li><a href="#3-simpsons-rule">3. Simpson’s Rule</a></li><li><a href="#example-1-evaluate-int_01-fracdx1--x2-using-two-methods-trapezoidal-and-simpsons-of-numerical-integration">Example 1. Evaluate $\int_0^1 \frac{dx}{1 + x^2}$ using two methods (trapezoidal and Simpson’s) of numerical integration.</a></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="integration">Integration</h1>
+
+<h3 id="definite-integrals">Definite Integrals</h3>
+
+<p>Integrals are used to calculate cumulative totals, averages, and areas.</p>
+
+<p><strong>Area under a curve:</strong></p>
+<ol>
+  <li>Divide the region into rectangles.</li>
+  <li>Add up the areas of the rectangles.</li>
+  <li>Take the limit as the rectangles become thin.</li>
+</ol>
+
+<p><strong>Example 1:</strong> $f(x) = x^2$, $a = 0$, $b$ arbitrary</p>
+<ol>
+  <li>Divide into $n$ intervals.
+    <ul>
+      <li>Length $\frac{b}{n}$ = base of rectangle</li>
+    </ul>
+  </li>
+  <li>Heights:
+    <ul>
+      <li>$x = \frac{b}{n}$, height = $\left( \frac{b}{n} \right)^2$</li>
+      <li>$x = \frac{2b}{n}$, height = $\left( \frac{2b}{n} \right)^2$</li>
+      <li>Sum of areas of rectangles:
+\(\sum_{i=1}^n \left( \frac{ib}{n} \right)^2 = \frac{b^3}{n^3} \sum_{i=1}^n i^2 = \frac{b^3}{n^3} \cdot \frac{n(n+1)(2n+1)}{6} \approx \frac{b^3}{3}\)
+as $n \to \infty$.</li>
+    </ul>
+  </li>
+</ol>
+
+<p><strong>Example 2:</strong> $f(x) = x$; area under $x$ above $[0, b]$.</p>
+<ul>
+  <li>Reasoning similar to Example 1, but easier, gives a sum of areas:
+\(\sum_{i=1}^n \left( \frac{ib}{n} \right) = \frac{b^2}{n^2} \sum_{i=1}^n i = \frac{b^2}{n^2} \cdot \frac{n(n+1)}{2} \approx \frac{b^2}{2}\)
+as $n \to \infty$.</li>
+</ul>
+
+<p><strong>Pattern:</strong>
+\(\frac{d}{db} \left( \frac{b^3}{3} \right) = b^2 \quad \text{and} \quad \frac{d}{db} \left( \frac{b^2}{2} \right) = b\)
+The area $A(b)$ under $f(x)$ should satisfy $A’(b) = f(b)$.</p>
+
+<p><strong>General Picture:</strong></p>
+<ul>
+  <li>Divide into $n$ equal pieces of length $\Delta x = \frac{b-a}{n}$.</li>
+  <li>Pick any $c_i$ in the interval; use $f(c_i)$ as the height of the rectangle.</li>
+  <li>Sum of areas: $\sum_{i=1}^n f(c_i) \Delta x$.</li>
+</ul>
+
+<p>In summation notation: $\sum_{i=1}^n f(c_i) \Delta x$ is called a Riemann sum.</p>
+
+<p><strong>Definition:</strong>
+\(\lim_{n \to \infty} \sum_{i=1}^n f(c_i) \Delta x = \int_a^b f(x) \, dx \quad \text{(called a definite integral)}\)
+This definite integral represents the area under the curve $y = f(x)$ above $[a, b]$.</p>
+
+<p><strong>Example 3:</strong> (Integrals applied to quantities besides area.) Student borrows from parents.</p>
+<ul>
+  <li>$P$ = principal in dollars, $t$ = time in years, $r$ = interest rate (e.g., 6% is $r = 0.06/\text{year}$).</li>
+  <li>After time $t$, you owe $P(1 + rt) = P + Prt$.</li>
+</ul>
+
+<p>The integral can be used to represent the total amount borrowed as follows. Consider a function $f(t)$, the “borrowing function” in dollars per year. For instance, if you borrow 1000/month, then $f(t)$ = 12,000/year. Allow $f$ to vary over time.</p>
+<ul>
+  <li>Say $\Delta t = \frac{1}{12} \text{year} = 1 \text{month}$.</li>
+  <li>$t_i = \frac{i}{12}$ for $i = 1, \ldots, 12$.</li>
+  <li>$f(t_i)$ is the borrowing rate during the $i$-th month, so the amount borrowed is $f(t_i) \Delta t$. The total is:
+\(\sum_{i=1}^{12} f(t_i) \Delta t\)</li>
+  <li>In the limit as $\Delta t \to 0$, we have:
+\(\int_0^1 f(t) \, dt\)
+which represents the total borrowed in one year in dollars per year.</li>
+</ul>
+
+<p>The integral can also be used to represent the total amount owed. The amount owed depends on the interest rate. You owe:
+\(f(t_i)(1 + r(1 - t_i)) \Delta t\)
+for the amount borrowed at time $t_i$. The total owed for borrowing at the end of the year is:
+\(\int_0^1 f(t)(1 + r(1 - t)) \, dt\)</p>
+
+<h3 id="first-fundamental-theorem-of-calculus">First Fundamental Theorem of Calculus</h3>
+
+<p>If $f(x)$ is continuous and $F’(x) = f(x)$, then:
+\(\int_a^b f(x) \, dx = F(b) - F(a)\)</p>
+
+<p><strong>Notation:</strong>
+\(F(x) \Big|_a^b = F(x) \Big|_{x=a}^{x=b} = F(b) - F(a)\)</p>
+
+<p><strong>Example 1</strong>
+\(F(x) = \frac{x^3}{3}, \quad F'(x) = x^2; \quad \int_a^b x^2 dx = \left. \frac{x^3}{3} \right|_a^b = \frac{b^3}{3} - \frac{a^3}{3}\)</p>
+
+<p><strong>Example 2</strong>
+Area under one hump of $\sin x$ (See Figure 1):
+\(\int_0^\pi \sin x \, dx = \left. -\cos x \right|_0^\pi = -\cos \pi - (-\cos 0) = -(-1) - (-1) = 2\)</p>
+
+<p><strong>Example 3:</strong>
+\(\int_0^1 x^5 \, dx = \left. \frac{x^6}{6} \right|_0^1 = \frac{1}{6} - 0 = \frac{1}{6}\)</p>
+
+<p><strong>Intuitive Interpretation of FTC:</strong></p>
+<ul>
+  <li>$x(t)$ is a position; $v(t) = x’(t)$ is the speed or rate of change of $x$.
+\(\int_a^b v(t) \, dt = x(b) - x(a)\)</li>
+  <li>The RHS is how far $x(t)$ went from time $t = a$ to time $t = b$ (difference between two odometer readings).</li>
+  <li>The LHS represents speedometer readings.</li>
+</ul>
+
+<p><strong>Example 4:</strong>
+\(\int_0^{2\pi} \sin x \, dx = \left. -\cos x \right|_0^{2\pi} = -\cos(2\pi) - (-\cos(0)) = 0\)</p>
+<ul>
+  <li>The integral represents the sum of areas under the curve, above the x-axis minus the areas below the x-axis.</li>
+</ul>
+
+<p><strong>Additive Property of Integrals:</strong>
+\(\int_a^b f(x) \, dx + \int_b^c f(x) \, dx = \int_a^c f(x) \, dx\)</p>
+
+<p><strong>New Definition:</strong>
+\(\int_b^a f(x) \, dx = -\int_a^b f(x) \, dx\)</p>
+<ul>
+  <li>This definition is used so that the fundamental theorem is valid no matter if $a &lt; b$ or $b &lt; a$. It also makes the additive property work for $a, b, c$ in any order.</li>
+</ul>
+
+<p><strong>Estimation:</strong>
+\(\text{If } f(x) \leq g(x), \text{ then } \int_a^b f(x) \, dx \leq \int_a^b g(x) \, dx\)</p>
+
+<p><strong>Example 5:</strong>
+\(\text{Estimation of } e^x\)
+\(\text{Since } 1 \leq e^x \text{ for } x \geq 0,\)</p>
+
+\[\int_0^1 1 \, dx \leq \int_0^1 e^x \, dx\]
+
+\[\int_0^1 e^x \, dx = \left. e^x \right|_0^1 = e^1 - e^0 = e - 1\]
+
+\[\text{Thus, } 1 \leq e - 1 \text{ or } e \geq 2\]
+
+<p><strong>Example 6:</strong>
+\(\text{We showed earlier that } 1 + x \leq e^x.\)</p>
+
+\[\text{It follows that:}\]
+
+\[\int_0^1 (1 + x) \, dx \leq \int_0^1 e^x \, dx = e - 1\]
+
+\[\int_0^1 (1 + x) \, dx = \left. \left( x + \frac{x^2}{2} \right) \right|_0^1 = \frac{3}{2}\]
+
+\[\text{Hence, } \frac{3}{2} \leq e - 1 \text{ or } e \geq \frac{5}{3}\]
+
+<p><strong>Change of Variable:</strong></p>
+<ul>
+  <li>If $f(x) = g(u(x))$, then we write $du = u’(x) \, dx$</li>
+</ul>
+
+<p>and:</p>
+
+\[\int g(u) \, du = \int g(u(x))u'(x) \, dx = \int f(x)u'(x) \, dx\]
+
+<p><strong>For definite integrals:</strong></p>
+
+\[\int_{x1}^{x2} f(x)u'(x) \, dx = \int_{u1}^{u2} g(u) \, du \text{ where } u1 = u(x1), u2 = u(x2)\]
+
+<p><strong>Example 7.</strong></p>
+
+\[\int_{1}^{2} (x^3 + 2)^4 x^2 dx\]
+
+<p>Let $u = x^3 + 2$. Then $du = 3x^2dx \implies x^2dx = \frac{du}{3}$;</p>
+
+\[x_1 = 1, x_2 = 2 \implies u_1 = 1^3 + 2 = 3, u_2 = 2^3 + 2 = 10, and\]
+
+\[\int_{1}^{2} (x^3 + 2)^4 x^2 dx = \int_{3}^{10} u^4 \frac{du}{3} = \frac{1}{3} \int_{3}^{10} u^4 du = \frac{u^5}{15} \Bigg|_{3}^{10} = \frac{10^5 - 3^5}{15}\]
+
+<h3 id="second-fundamental-theorem">Second Fundamental Theorem</h3>
+
+<p>Recall: First Fundamental Theorem of Calculus (FTC 1)
+If $f$ is continuous and $F’ = f$, then</p>
+
+\[\int_a^b f(x)\,dx = F(b) - F(a)\]
+
+<p>We can also write that as</p>
+
+\[\int_a^b f(x)\,dx = \left[ F(x) \right]_a^b = F(b) - F(a)\]
+
+<p>Do all continuous functions have antiderivatives? Yes. However…
+What about a function like this?</p>
+
+\[\int e^{-x^2}\,dx =??\]
+
+<p>Yes, this antiderivative exists. No, it’s not a function we’ve met before: it’s a new function.
+The new function is defined as an integral:</p>
+
+\[F(x) = \int_0^x e^{-t^2}\,dt\]
+
+<p>It will have the property that $F’(x) = e^{-x^2}$.</p>
+
+<p>Other new functions include antiderivatives of $e^{-x^2}$, $x e^{-x^2}$, $\frac{\sin x}{x}$, $\sin(x^2)$, $\cos(x^2)$,…</p>
+
+<h2 id="second-fundamental-theorem-of-calculus-ftc-2">Second Fundamental Theorem of Calculus (FTC 2)</h2>
+
+<p>If $F(x) = \int_a^x f(t)\,dt$ and $f$ is continuous, then</p>
+
+\[F'(x) = f(x)\]
+
+<p><strong>Geometric Proof of FTC 2:</strong></p>
+
+<p>Use the area interpretation: $F(x)$ equals the area under the curve between $a$ and $x$.</p>
+
+\[\Delta F = F(x + \Delta x) - F(x)\]
+
+\[\Delta F \approx (\text{base})(\text{height}) \approx (\Delta x)f(x)\]
+
+\[\frac{\Delta F}{\Delta x} \approx f(x)\]
+
+<p>Hence</p>
+
+\[\lim_{\Delta x \to 0} \frac{\Delta F}{\Delta x} = f(x)\]
+
+<p>But, by the definition of the derivative:</p>
+
+\[\lim_{\Delta x \to 0} \frac{\Delta F}{\Delta x} = F'(x)\]
+
+<p>Therefore,</p>
+
+\[F'(x) = f(x)\]
+
+<p>Another way to prove FTC 2 is as follows:</p>
+
+\[\frac{\Delta F}{\Delta x} = \frac{1}{\Delta x} \left( \int_a^{x+\Delta x} f(t)\,dt - \int_a^x f(t)\,dt \right)\]
+
+\[= \frac{1}{\Delta x} \int_x^{x+\Delta x} f(t)\,dt \quad\]
+
+<p>$\text{which is the “average value” of } f \text{ on the interval } x \leq t \leq x + \Delta x.$</p>
+
+<p>As the length $\Delta x$ of the interval tends to 0, this average tends to $f(x)$.</p>
+
+<h2 id="proof-of-ftc-1-using-ftc-2">Proof of FTC 1 (using FTC 2)</h2>
+
+<p>Start with $F’ = f$ (we assume that $f$ is continuous). Next, define $G(x) = \int_a^x f(t)\,dt$. By FTC2,</p>
+
+\[G'(x) = f(x)\]
+
+<p>Therefore, $(F - G)’ = F’ - G’ = f - f = 0$. Thus, $F - G = \text{constant}$. (Recall we used the Mean Value Theorem to show this).
+Hence, $F(x) = G(x) + c$. Finally, since $G(a) = 0$,</p>
+
+\[\int_a^b f(t)\,dt = G(b) = G(b) - G(a) = [F(b) - c] - [F(a) - c] = F(b) - F(a)\]
+
+<p>which is FTC 1.</p>
+
+<h2 id="examples-of-new-functions">Examples of “new” functions</h2>
+
+<p>The error function, which is often used in statistics and probability, is defined as</p>
+
+\[\text{erf}(x) = \frac{2}{\sqrt{\pi}} \int_0^x e^{-t^2}\,dt\]
+
+<p>and</p>
+
+\[\lim_{x \to \infty} \text{erf}(x) = 1\]
+
+<p>Another “new” function of this type, called the logarithmic integral, is defined as</p>
+
+\[\text{Li}(x) = \int_2^x \frac{dt}{\ln t}\]
+
+<p>This function gives the approximate number of prime numbers less than $x$.</p>
+
+<h2 id="bessel-functions">Bessel functions</h2>
+
+<p>Bessel functions often arise in problems with circular symmetry:</p>
+
+\[J_0(x) = \frac{1}{\pi} \int_0^\pi \cos(x \sin \theta)\,d\theta\]
+
+\[C'(x) = \cos(x^2)\]
+
+<p>We will use FTC 2 to discuss the function $L(x) = \int_1^x \frac{dt}{t}$ from first principles.</p>
+
+<p>Lecture 21: Applications to Logarithms and Geometry</p>
+
+<h3 id="application-of-ftc-2-to-logarithms">Application of FTC 2 to Logarithms</h3>
+<p>The integral definition of functions like $C(x)$, $S(x)$ of Fresnel makes them nearly as easy to use as elementary functions. It is possible to draw their graphs and tabulate values. You are asked to carry out an example or two of this on your problem set. To get used to using definite integrals and FTC2, we will discuss in detail the simplest integral that gives rise to a relatively new function, namely the logarithm.</p>
+
+<p>Recall that
+\(\int x^n dx = \frac{x^{n+1}}{n+1} + c\)
+except when $n = -1$. It follows that the antiderivative of $\frac{1}{x}$ is not a power, but something else. So let us define a function $L(x)$ by
+\(L(x) = \int_1^x \frac{dt}{t}\)</p>
+
+<p>(This function turns out to be the logarithm. But recall that our approach to the logarithm was fairly involved. We first analyzed $a^x$, and then defined the number $e$, and finally defined the logarithm as the inverse function to $e^x$. The direct approach using this integral formula will be easier.)</p>
+
+<p>All the basic properties of $L(x)$ follow directly from its definition. Note that $L(x)$ is defined for $0 &lt; x &lt; \infty$. (We will not extend the definition past $x = 0$ because $\frac{1}{t}$ is infinite at $t = 0$.) Next, the fundamental theorem of calculus (FTC2) implies
+\(L'(x) = \frac{1}{x}\)</p>
+
+<p>Also, because we have started the integration with lower limit 1, we see that
+\(L(1) = \int_1^1 \frac{dt}{t} = 0\)</p>
+
+<p>Thus $L$ is increasing and crosses the x-axis at $x = 1$: $L(x) &lt; 0$ for $0 &lt; x &lt; 1$ and $L(x) &gt; 0$ for $x &gt; 1$. Differentiating a second time,
+\(L''(x) = -\frac{1}{x^2}\)</p>
+
+<p>It follows that $L$ is concave down.</p>
+
+<p>The key property of $L(x)$ (showing that it is, indeed, a logarithm) is that it converts multiplication into addition:</p>
+
+<p><strong>Claim 1:</strong> $L(ab) = L(a) + L(b)$</p>
+
+<p><strong>Proof:</strong> By definition of $L(ab)$ and $L(a)$,
+\(L(ab) = \int_1^{ab} \frac{dt}{t} = \int_1^a \frac{dt}{t} + \int_a^{ab} \frac{dt}{t} = L(a) + \int_a^{ab} \frac{dt}{t}\)</p>
+
+<p>To handle $\int_a^{ab} \frac{dt}{t}$, make the substitution $t = au$. Then,
+\(dt = a\,du; \quad a &lt; t &lt; ab \quad \text{implies} \quad 1 &lt; u &lt; b\)</p>
+
+<p>Therefore,
+\(\int_a^{ab} \frac{dt}{t} = \int_1^b \frac{a\,du}{au} = \int_1^b \frac{du}{u} = L(b)\)</p>
+
+<p>This confirms $L(ab) = L(a) + L(b)$.</p>
+
+<p>Two more properties, the end values, complete the general picture of the graph.</p>
+
+<p><strong>Claim 2:</strong> $L(x) \to \infty$ as $x \to \infty$.</p>
+
+<p><strong>Proof:</strong> It suffices to show that $L(2^n) \to \infty$ as $n \to \infty$, because the fact that $L$ is increasing fills in all the values in between the powers of 2.</p>
+
+<p>\(L(2^n) = L(2 \cdot 2^{n-1}) = L(2) + L(2^{n-1})\)
+\(= L(2) + L(2) + \cdots + L(2) \quad (n \text{ times})\)</p>
+
+<p>Consequently, $L(2^n) = nL(2) \to \infty$ as $n \to \infty$. (In more familiar notation, $\ln 2^n = n \ln 2$.)</p>
+
+<p><strong>Claim 3:</strong> $L(x) \to -\infty$ as $x \to 0^+$.</p>
+
+<p><strong>Proof:</strong> 
+\(0 = L(1) = L\left( x \cdot \frac{1}{x} \right) = L(x) + L\left( \frac{1}{x} \right)\)</p>
+
+<p>As $x \to 0^+$, $\frac{1}{x} \to +\infty$, so Claim 2 implies $L\left( \frac{1}{x} \right) \to \infty$. Hence,
+\(L(x) = -L\left( \frac{1}{x} \right) \to -\infty \, \text{as}\, x \to 0^+\)</p>
+
+<p>Thus $L(x)$, defined on $0 &lt; x &lt; \infty$, increases from $-\infty$ to $\infty$, crossing the x-axis at $x = 1$. It is concave down and its graph can be drawn as in Fig. 1.</p>
+
+<p>This provides an alternative to our previous approach to the exponential and log functions. Starting from $L(x)$, we can define the log function by $\ln x = L(x)$, define $e$ as the number such that $L(e) = 1$, define $e^x$ as the inverse function of $L(x)$, and define $a^x = e^{xL(a)}$.</p>
+
+<h3 id="application-of-ftcs-to-geometry-volumes-and-areas">Application of FTCs to Geometry (Volumes and Areas)</h3>
+<ol>
+  <li><strong>Areas between two curves</strong></li>
+</ol>
+
+<p>Refer to Figure 2. Find the crossing points $a$ and $b$. The area, $A$, between the curves is
+\(A = \int_a^b (f(x) - g(x)) \, dx\)</p>
+
+<p><strong>Example 1:</strong> Find the area in the region between $x = y^2$ and $y = x - 2$.</p>
+
+<p>\(x = y^2\)
+\(y = x - 2\)</p>
+
+<p>First, graph these functions and find the crossing points:
+\(y + 2 = x = y^2\)
+\(y^2 - y - 2 = 0\)
+\((y - 2)(y + 1) = 0\)</p>
+
+<p>Crossing points at $y = -1$, $2$. Plug these back in to find the associated x values, $x = 1$ and $x = 4$. Thus the curves meet at $(1, -1)$ and $(4, 2)$.</p>
+
+<p>There are two ways of finding the area between these two curves, a hard way and an easy way.</p>
+
+<p><strong>Hard Way:</strong> Vertical Slices</p>
+
+<p>If we slice the region between the two curves vertically, we need to consider two different regions.
+Where $x &gt; 1$, the region’s lower bound is the straight line. For $x &lt; 1$, however, the region’s lower bound is the lower half of the sideways parabola. We find the area, $A$, between the two curves by integrating the difference between the top curve and the bottom curve in each region:
+\(A = \int_0^1 (\sqrt{x} - (-\sqrt{x})) \, dx + \int_1^4 (\sqrt{x} - (x - 2)) \, dx = \int (\text{top curve} - \text{bottom curve}) \, dx\)</p>
+
+<p><strong>Easy Way:</strong> Horizontal Slices</p>
+
+<p>Here, instead of subtracting the bottom curve from the top curve, we subtract the right curve from the left one.
+\(A = \int_{-1}^2 \left( (y + 2) - y^2 \right) \, dy = \left[ y + 2y - \frac{y^3}{3} \right]_{-1}^2 = 2 + 4 - \frac{8}{3} - \left( 2 - 2 + \frac{1}{3} \right) = \frac{9}{2}\)</p>
+
+<ol>
+  <li><strong>Volumes of solids of revolution</strong></li>
+</ol>
+
+<p>Rotate $f(x)$ about the x-axis, coming out of the page, to get:
+\(dV = \pi y^2 dx \, \text{(for a solid of revolution around the x-axis)}\)</p>
+
+<p>Integrate with respect to $x$ to find the total volume of the solid of revolution.</p>
+
+<p><strong>Example 2:</strong> Find the volume of a ball of radius $a$.</p>
+
+<p>The equation for the upper half of the circle is:
+\(y = \sqrt{a^2 - x^2}\)</p>
+
+<p>If we spin the upper part of the curve about the x-axis,```markdown
+Lecture 21: Applications to Logarithms and Geometry</p>
+
+<h3 id="application-of-ftc-2-to-logarithms-1">Application of FTC 2 to Logarithms</h3>
+<p>The integral definition of functions like $C(x)$, $S(x)$ of Fresnel makes them nearly as easy to use as elementary functions. It is possible to draw their graphs and tabulate values. You are asked to carry out an example or two of this on your problem set. To get used to using definite integrals and FTC2, we will discuss in detail the simplest integral that gives rise to a relatively new function, namely the logarithm.</p>
+
+<p>Recall that
+\(\int x^n \, dx = \frac{x^{n+1}}{n+1} + c\)
+except when $n = -1$. It follows that the antiderivative of $\frac{1}{x}$ is not a power, but something else. So let us define a function $L(x)$ by
+\(L(x) = \int_1^x \frac{dt}{t}\)</p>
+
+<p>(This function turns out to be the logarithm. But recall that our approach to the logarithm was fairly involved. We first analyzed $a^x$, and then defined the number $e$, and finally defined the logarithm as the inverse function to $e^x$. The direct approach using this integral formula will be easier.)</p>
+
+<p>All the basic properties of $L(x)$ follow directly from its definition. Note that $L(x)$ is defined for $0 &lt; x &lt; \infty$. (We will not extend the definition past $x = 0$ because $\frac{1}{t}$ is infinite at $t = 0$.) Next, the fundamental theorem of calculus (FTC2) implies
+\(L'(x) = \frac{1}{x}\)</p>
+
+<p>Also, because we have started the integration with lower limit 1, we see that
+\(L(1) = \int_1^1 \frac{dt}{t} = 0\)</p>
+
+<p>Thus $L$ is increasing and crosses the x-axis at $x = 1$: $L(x) &lt; 0$ for $0 &lt; x &lt; 1$ and $L(x) &gt; 0$ for $x &gt; 1$. Differentiating a second time,
+\(L''(x) = -\frac{1}{x^2}\)</p>
+
+<p>It follows that $L$ is concave down.</p>
+
+<p>The key property of $L(x)$ (showing that it is, indeed, a logarithm) is that it converts multiplication into addition:</p>
+
+<p><strong>Claim 1:</strong> $L(ab) = L(a) + L(b)$</p>
+
+<p><strong>Proof:</strong> By definition of $L(ab)$ and $L(a)$,
+\(L(ab) = \int_1^{ab} \frac{dt}{t} = \int_1^a \frac{dt}{t} + \int_a^{ab} \frac{dt}{t} = L(a) + \int_a^{ab} \frac{dt}{t}\)</p>
+
+<p>To handle $\int_a^{ab} \frac{dt}{t}$, make the substitution $t = au$. Then,
+\(dt = a\,du; \quad a &lt; t &lt; ab \quad \text{implies} \quad 1 &lt; u &lt; b\)</p>
+
+<p>Therefore,
+\(\int_a^{ab} \frac{dt}{t} = \int_1^b \frac{a\,du}{au} = \int_1^b \frac{du}{u} = L(b)\)</p>
+
+<p>This confirms $L(ab) = L(a) + L(b)$.</p>
+
+<p>Two more properties, the end values, complete the general picture of the graph.</p>
+
+<p><strong>Claim 2:</strong> $L(x) \to \infty$ as $x \to \infty$.</p>
+
+<p><strong>Proof:</strong> It suffices to show that $L(2^n) \to \infty$ as $n \to \infty$, because the fact that $L$ is increasing fills in all the values in between the powers of 2.</p>
+
+<p>\(L(2^n) = L(2 \cdot 2^{n-1}) = L(2) + L(2^{n-1})\)
+\(= L(2) + L(2) + \cdots + L(2) \quad (n \text{ times})\)</p>
+
+<p>Consequently, $L(2^n) = nL(2) \to \infty$ as $n \to \infty$. (In more familiar notation, $\ln 2^n = n \ln 2$.)</p>
+
+<p><strong>Claim 3:</strong> $L(x) \to -\infty$ as $x \to 0^+$.</p>
+
+<p><strong>Proof:</strong> 
+\(0 = L(1) = L\left( x \cdot \frac{1}{x} \right) = L(x) + L\left( \frac{1}{x} \right)\)</p>
+
+<p>As $x \to 0^+$, $\frac{1}{x} \to +\infty$, so Claim 2 implies $L\left( \frac{1}{x} \right) \to \infty$. Hence,
+\(L(x) = -L\left( \frac{1}{x} \right) \to -\infty \, \text{as}\, x \to 0^+\)</p>
+
+<p>Thus $L(x)$, defined on $0 &lt; x &lt; \infty$, increases from $-\infty$ to $\infty$, crossing the x-axis at $x = 1$. It is concave down and its graph can be drawn as in Fig. 1.</p>
+
+<p>This provides an alternative to our previous approach to the exponential and log functions. Starting from $L(x)$, we can define the log function by $\ln x = L(x)$, define $e$ as the number such that $L(e) = 1$, define $e^x$ as the inverse function of $L(x)$, and define $a^x = e^{xL(a)}$.</p>
+
+<h3 id="application-of-ftcs-to-geometry-volumes-and-areas-1">Application of FTCs to Geometry (Volumes and Areas)</h3>
+<ol>
+  <li><strong>Areas between two curves</strong></li>
+</ol>
+
+<p>Find the crossing points $a$ and $b$. The area, $A$, between the curves is
+\(A = \int_a^b (f(x) - g(x)) \, dx\)</p>
+
+<p><strong>Example 1:</strong> Find the area in the region between $x = y^2$ and $y = x - 2$.</p>
+
+<p>\(x = y^2\)
+\(y = x - 2\)</p>
+
+<p>First, graph these functions and find the crossing points:
+\(y + 2 = x = y^2\)
+\(y^2 - y - 2 = 0\)
+\((y - 2)(y + 1) = 0\)</p>
+
+<p>Crossing points at $y = -1$, $2$. Plug these back in to find the associated x values, $x = 1$ and $x = 4$. Thus the curves meet at $(1, -1)$ and $(4, 2)$.</p>
+
+<p>There are two ways of finding the area between these two curves, a hard way and an easy way.</p>
+
+<p><strong>Hard Way:</strong> Vertical Slices</p>
+
+<p>If we slice the region between the two curves vertically, we need to consider two different regions. Where $x &gt; 1$, the region’s lower bound is the straight line. For $x &lt; 1$, however, the region’s lower bound is the lower half of the sideways parabola. We find the area, $A$, between the two curves by integrating the difference between the top curve and the bottom curve in each region:
+\(A = \int_0^1 (\sqrt{x} - (-\sqrt{x})) \, dx + \int_1^4 (\sqrt{x} - (x - 2)) \, dx = \int (\text{top curve} - \text{bottom curve}) \, dx\)</p>
+
+<p><strong>Easy Way:</strong> Horizontal Slices</p>
+
+<p>Here, instead of subtracting the bottom curve from the top curve, we subtract the right curve from the left one.
+\(A = \int_{-1}^2 \left( (y + 2) - y^2 \right) \, dy = \left[ y + 2y - \frac{y^3}{3} \right]_{-1}^2 = 2 + 4 - \frac{8}{3} - \left( 2 - 2 + \frac{1}{3} \right) = \frac{9}{2}\)</p>
+
+<h2 id="volumes-by-disks-and-shells">Volumes by Disks and Shells</h2>
+<p><strong>Disks</strong></p>
+
+\[V = \int_{0}^{a} \pi x^2 \, dy \quad \text{(substitute } y = x^2 \text{)}\]
+
+\[V = \int_{0}^{a} \pi y \, dy = \pi \frac{y^2}{2} \Bigg|_{0}^{a} = \frac{\pi a^2}{2}\]
+
+<p>If $a = 1$ meter, then $V = \frac{\pi}{2} a^2$ gives</p>
+
+\[V = \frac{\pi}{2} \text{m}^3 = \frac{\pi}{2} (100 \text{cm})^3 = \frac{\pi}{2} 10^6 \text{ cm}^3 \approx 1600 \text{ liters} \quad (\text{a huge cauldron})\]
+
+<p><strong>Warning about units.</strong></p>
+
+<p>If $a = 100 \text{cm}$, then</p>
+
+\[V = \frac{\pi}{2}(100)^2 = \frac{\pi}{2} \cdot 10^4 \, \text{cm}^3 = \frac{\pi}{2} \cdot 10 \sim 16 \, \text{liters}\]
+
+<p>Why is this answer different? The resolution of this paradox is in the equation.</p>
+
+<p>Given $y = x^2$:
+\(100 = x^2\)
+\(x = 10 \, \text{cm}\)</p>
+
+<p>Thus, the second cauldron has a different shape, as illustrated in Figure 3. When $a = 1$ m, the top is ten times wider:
+\(1 = x^2\) or
+\(x = 1 \, \text{m}\)</p>
+
+<p>The equation $y = x^2$ is not scale-invariant. The shape depends on the units used.</p>
+
+<p><strong>Method 2: Shells</strong></p>
+
+<p>This really should be called the cylinder method.</p>
+
+<p>The thin shell/cylinder has height $a - x^2$, circumference $2\pi x$, and thickness $dx$.</p>
+
+\[dV = (a - x^2)(2\pi x)dx\]
+
+\[V = \int_{x=0}^{x=\sqrt{a}} (a - x^2)(2\pi x)dx = 2\pi \int_{0}^{\sqrt{a}} (ax - x^3)dx\]
+
+\[= 2\pi \left( \frac{a x^2}{2} - \frac{x^4}{4} \right) \Bigg|_{0}^{\sqrt{a}} = 2\pi \left( \frac{a^2}{2} - \frac{a^2}{4} \right) = 2\pi \left( \frac{a^2}{4} \right) = \frac{\pi a^2}{2}\]
+
+<p>(same as before)</p>
+
+<p><strong>Example 2: The Boiling Cauldron</strong></p>
+
+<p>Now, let’s fill this cauldron with water, and light a fire under it to get the water to boil (at $100^\circ C$). Let’s say it’s a cold day: the temperature of the air outside the cauldron is $0^\circ C$. How much energy does it take to boil this water, i.e. to raise the water’s temperature from $0^\circ C$ to $100^\circ C$? Assume the temperature decreases linearly between the top and the bottom ($y = 0$) of the cauldron:
+\(T = 100 - 30y \, (\text{degrees Celsius})\)</p>
+
+<p>Use the method of disks, because the water’s temperature is constant over each horizontal disk. The total heat required is:
+\(H = \int_{0}^{1} T(\pi x^2) dy \quad \text{(units are (degree)(cubic meters))}\)</p>
+
+\[= \int_{0}^{1} (100 - 30y) (\pi y) dy\]
+
+\[= \pi \int_{0}^{1} (100y - 30y^2) dy = \pi (50y^2 - 10y^3) \Big|_{0}^{1} = 40\pi \, \text{(deg.})(m^3)\]
+
+<p>How many calories is that?</p>
+
+\[\text{# of calories} = \left( \frac{1 \, \text{cal}}{\text{cm}^3 \cdot \text{deg}} \right) \left( 40\pi \right) \left( \frac{100 \, \text{cm}}{1 \, \text{m}} \right)^3 = \left( 40\pi \right) (10^6) \, \text{cal} = 125 \times 10^3 \, \text{kcal}\]
+
+<p>There are about 250 kcals in a candy bar, so there are about</p>
+
+\[\text{# of calories} = \left( \frac{1}{2} \, \text{candy bar} \right) \times 10^3 \approx 500 \, \text{candy bars}\]
+
+<p>So, it takes about 500 candy bars’ worth of energy to boil the water.</p>
+
+<p><strong>Example 3. Pipe Flow</strong></p>
+
+<p>Poiseuille was the first person to study fluid flow in pipes (arteries, capillaries). He figured out the velocity profile for fluid flowing in pipes is:
+\(v = c(R^2 - r^2)\)</p>
+
+<p>The flow through the “annulus” (a.k.a ring) is (area of ring)(flow rate)
+\(\text{area of ring} = 2\pi r \, dr\)</p>
+
+<p>Integrate with respect to $r$ to find the total flow through the pipe:</p>
+
+<p>total flow through pipe = \(\int_{0}^{R} v(2\pi r dr) = c \int_{0}^{R} (R^2 - r^2) 2 \pi r dr\)</p>
+
+<p>= 
+\(2\pi c \int_{0}^{R} (R^2 r - r^3) dr = 2 \pi c \left(\frac{R^2 r^2}{2} - \frac{r^4}{4}\right)\Bigg|_{0}^{R}\)</p>
+
+<p>flow through pipe = $\frac{\pi}{2} c R^4$</p>
+
+<p>Notice that the flow is proportional to $R^4$. This means there’s a big advantage to having thick pipes.</p>
+
+<p><strong>Example 4. Dart Board</strong></p>
+
+<p>You aim for the center of the board, but your aim’s not always perfect. Your number of hits, $N$, at radius $r$ is proportional to $e^{-r^2}$.
+\(N = c e^{-r^2}\)</p>
+
+<p>This looks like:
+\(y = c e^{-r^2}\)</p>
+
+<p>The number of hits within a given ring with $r_1 &lt; r &lt; r_2$ is:
+\(\int_{r_1}^{r_2} c e^{-r^2} (2\pi r \, dr)\)</p>
+
+<p>We will examine this problem more in the next lecture.</p>
+
+<h1 id="lecture-23-work-average-value-probability">Lecture 23: Work, Average Value, Probability</h1>
+
+<h2 id="application-of-integration-to-average-value">Application of Integration to Average Value</h2>
+
+<p>You already know how to take the average of a set of discrete numbers:</p>
+
+\[\frac{a_1 + a_2}{2} \quad \text{or} \quad \frac{a_1 + a_2 + a_3}{3}\]
+
+<p>Now, we want to find the average of a continuum.</p>
+
+\[\text{Average} \approx \frac{y_1 + y_2 + \cdots + y_n}{n}\]
+
+<p>where
+\(a = x_0 &lt; x_1 &lt; \cdots &lt; x_n = b\)
+\(y_0 = f(x_0), \, y_1 = f(x_1), \, \ldots, \, y_n = f(x_n)\)</p>
+
+<p>and
+\(n(\Delta x) = b - a \quad \Rightarrow \quad \Delta x = \frac{b - a}{n}\)</p>
+
+<p>The limit of the Riemann Sums is</p>
+
+\[\lim_{n \to \infty} \left( \frac{y_1 + \cdots + y_n}{n} \right) = \frac{1}{b - a} \int_{a}^{b} f(x) \, dx\]
+
+<h2 id="example-1">Example 1</h2>
+
+<p>Find the average of $y = \sqrt{1 - x^2}$ on the interval $[-1, 1]$.</p>
+
+\[\text{Average height} = \frac{1}{2} \int_{-1}^{1} \sqrt{1 - x^2} \, dx = \frac{\pi}{4}\]
+
+<h2 id="example-2">Example 2</h2>
+
+<p>The average of a constant is the same constant:</p>
+
+\[\frac{1}{b - a} \int_{a}^{b} 53 \, dx = 53\]
+
+<h2 id="example-3">Example 3</h2>
+
+<p>Find the average height $y$ on a semicircle, with respect to arclength. Use $d\theta$, not $dx$.</p>
+
+\[\text{Average} = \frac{1}{\pi} \int_{0}^{\pi} \sin \theta \, d\theta = \frac{2}{\pi}\]
+
+<h2 id="example-4">Example 4</h2>
+
+<p>Find the average temperature of water in the witches cauldron from last lecture.</p>
+
+<p>First, recall how to find the volume of the solid of revolution by disks.</p>
+
+\[V = \int_{0}^{1} (\pi x^2) \, dy = \int_{0}^{1} \pi y \, dy = \left. \frac{\pi y^2}{2} \right|_{0}^{1} = \frac{\pi}{2}\]
+
+<p>Recall that $T(y) = 100 - 30y$ and $T(0) = 100^\circ; T(1) = 70^\circ$. The average temperature per unit volume is computed by giving an importance or “weighting” $w(y) = \pi y$ to the disk at height $y$.</p>
+
+\[\frac{\int_{0}^{1} T(y) w(y) \, dy}{\int_{0}^{1} w(y) \, dy}\]
+
+<p>The numerator is</p>
+
+\[\int_{0}^{1} T \pi y \, dy = \pi \int_{0}^{1} (100 - 30y) y \, dy = \pi \left. ( 500y^2 - 10y^3) \right|_{0}^{1} = 40\pi\]
+
+<p>Thus, the average temperature is:</p>
+
+\[\frac{40\pi}{\frac{\pi}{2}} = 80^\circ \, C\]
+
+<p>Compare this with the average taken with respect to height $y$:</p>
+
+\[\frac{1}{1} \int_{0}^{1} T \, dy = \int_{0}^{1} (100 - 30y) \, dy = \left(100y - 15y^2\right) \Big|_{0}^{1} = 85^\circ C\]
+
+<p>$T$ is linear. Largest $T = 100^\circ \, C$, smallest $T = 70^\circ \, C$, and the average of the two is:</p>
+
+\[\frac{70 + 100}{2} = 85\]
+
+<p>The answer $85^\circ \, C$ is consistent with the ordinary average. The weighted average (integration with respect to $\pi y \, dy$) is lower ($80^\circ \, C$) because there is more water at cooler temperatures in the upper parts of the cauldron.</p>
+
+<h2 id="dart-board-revisited">Dart Board, Revisited</h2>
+
+<p>Last time, we said that the accuracy of your aim at a dart board follows a “normal distribution”:</p>
+
+\[ce^{-r^2}\]
+
+<p>Now, let’s pretend someone – say, your little brother – foolishly decides to stand close to the dart board. What is the chance that he’ll get hit by a stray dart?</p>
+
+<p>Figure 5: Shaded section is $2r_1 &lt; r &lt; 3r_1$ between 3 and 5 o’clock.</p>
+
+<p>To make our calculations easier, let’s approximate your brother as a sector (the shaded region in Fig. 5). Your brother doesn’t quite stand in front of the dart board. Let us say he stands at a distance $r$ from the center where $2r_1 &lt; r &lt; 3r_1$ and $r_1$ is the radius of the dart board. Note that your brother doesn’t surround the dart board. Let us say he covers the region between 3 o’clock and 5 o’clock, or $\frac{1}{6}$ of a ring.</p>
+
+<p>Remember that</p>
+
+\[\text{probability} = \frac{\text{part}}{\text{whole}}\]
+
+<p>Figure 6: Integrating over rings.</p>
+
+<p>The ring has weight $\left( ce^{-r^2} \right) (2\pi r)(dr)$ (see Figure 6). The probability of a dart hitting your brother is:</p>
+
+\[\text{Probability} = \frac{ \frac{1}{6} \int_{2r_1}^{3r_1} ce^{-r^2} 2\pi r \, dr }{ \int_0^\infty ce^{-r^2} 2\pi r \, dr }\]
+
+<p>Recall that $\frac{1}{6} = \frac{5 - 3}{12}$ is our approximation to the portion of the circumference where the little brother stands. (Note: $e^{-r^2} = e^{(-r^2)}$, not $(e^{-r})^2$)</p>
+
+\[\int_a^b re^{-r^2} dr = -\frac{1}{2} e^{-r^2} \Bigg|_a^b = -\frac{1}{2} e^{-b^2} + \frac{1}{2} e^{-a^2} \quad \left( \frac{d}{dr} e^{-r^2} = -2r e^{-r^2} \right)\]
+
+<p>Denominator:</p>
+
+\[\int_0^\infty e^{-r^2} r \, dr = -\frac{1}{2} e^{-r^2} \Bigg|_0^R \rightarrow -\frac{1}{2} e^{-R^2} + \frac{1}{2} e^{-0^2} = \frac{1}{2}\]
+
+<p>(Note that $e^{-R^2} \rightarrow 0$ as $R \rightarrow \infty$).</p>
+
+<hr />
+
+\[\text{Probability} = \frac{ \frac{1}{6} \int_{2r_1}^{3r_1} ce^{-r^2}2\pi r \, dr }{ \int_{0}^{\infty} ce^{-r^2}2\pi r \, dr } = \frac{ \frac{1}{6} \int_{2r_1}^{3r_1} e^{-r^2}r \, dr }{ \int_{0}^{\infty} e^{-r^2}r \, dr } = \frac{1}{3} \int_{2r_1}^{3r_1} e^{-r^2}r \, dr = \left. \frac{-e^{-r^2}}{6} \right|_{2r_1}^{3r_1}\]
+
+<p>$Probability = \frac{-e^{-9r^2} + e^{-4r^2}}{6}$</p>
+
+<p>Let’s assume that the person throwing the darts hits the dartboard $0 \leq r \leq r_1$ about half the time.
+(Based on personal experience with 7-year-olds, this is realistic.)</p>
+
+\[P(0 \leq r \leq r_1) = \frac{1}{2} = \int_{0}^{r_1} 2e^{-r^2}rdr = -e^{-r_1^2} + 1 \implies e^{-r_1^2} = \frac{1}{2}\]
+
+\[e^{-9r_1^2} = \left(e^{-r_1^2}\right)^9 = \left(\frac{1}{2}\right)^9 \approx 0\]
+
+\[e^{-4r_1^2} = \left(e^{-r_1^2}\right)^4 = \left(\frac{1}{2}\right)^4 = \frac{1}{16}\]
+
+<p>So, the probability that a stray dart will strike your little brother is</p>
+
+\[\left(\frac{1}{16}\right)\left(\frac{1}{6}\right) \approx \frac{1}{100}\]
+
+<p>In other words, there’s about a 1% chance he’ll get hit with each dart thrown.</p>
+
+<h2 id="volume-by-slices-an-important-example">Volume by Slices: An Important Example</h2>
+
+<p>Compute $Q = \int_{-\infty}^{\infty} e^{-x^2} \, dx$</p>
+
+<p>Figure 8: $Q =$ Area under curve $e^{-x^2}$.</p>
+
+<p>This is one of the most important integrals in all of calculus. It is especially important in probability and statistics. It’s an improper integral, but don’t let those ∞’s scare you. In this integral, they’re actually easier to work with than finite numbers would be. To find $Q$, we will first find a volume of revolution, namely,</p>
+
+\[V = \text{volume under } e^{-r^2} \ (r = \sqrt{x^2 + y^2})\]
+
+<p>We find this volume by the method of shells, which leads to the same integral as in the last problem.
+The shell or cylinder under $e^{-r^2}$ at radius sr has circumference $2\pi r$, thickness dr; (see Figure 9).</p>
+
+<p>Therefore $dV = e^{-r^2} 2\pi r \, dr$. In the range $0 \leq r \leq R$,</p>
+
+\[\int_{0}^{R} e^{-r^2} 2 \pi r \, dr = -\pi e^{-r^2} \bigg|_{0}^{R} = -\pi e^{-R^2} + \pi\]
+
+\[When R \to \infty$, e^{-R^2} \to 0,\]
+
+\[V = \int_{0}^{\infty} e^{-r^2} 2\pi r \, dr = \pi \quad \text{(same as in the darts problem)}\]
+
+<p>Next, we will find $V$ by a second method, the method of slices. Slice the solid along a plane where $y$ is fixed. (See Figure 10). Call $A(y)$ the cross-sectional area. Since the thickness is $dy$ (see Figure 11),</p>
+
+\[V = \int_{-\infty}^{\infty} A(y) \, dy\]
+
+<p>To compute $ A(y)$, note that it is an integral (with respect to $ dx$)</p>
+
+\[A(y) = \int_{-\infty}^{\infty} e^{-r^2} dx = \int_{-\infty}^{\infty} e^{-x^2 - y^2} dx = e^{-y^2} \int_{-\infty}^{\infty} e^{-x^2} dx = e^{-y^2} Q\]
+
+<p>Here, we have used $r^2 = x^2 + y^2$ and $e^{-x^2 - y^2} = e^{-x^2} e^{-y^2}$ and the fact that $y$ is a constant in the $A(y)$ slice (see Figure 12). In other words,</p>
+
+\[\int_{-\infty}^{\infty}c e^{-x^2} \, dx = c \int_{-\infty}^{\infty} e^{-x^2} \, dx\]
+
+<p>with $c = e^{-y^2}$.</p>
+
+<p>It follows that</p>
+
+\[V = \int_{-\infty}^{\infty} A(y) \, dy = \int_{-\infty}^{\infty} e^{-y^2} Q \, dy = Q \int_{-\infty}^{\infty} e^{-y^2} \, dy = Q^2\]
+
+<p>Indeed,</p>
+
+\[Q = \int_{-\infty}^{\infty} e^{-x^2} \, dx = \int_{-\infty}^{\infty} e^{-y^2} \, dy\]
+
+<p>because the name of the variable does not matter. To conclude the calculation read the equation backwards:</p>
+
+\[\pi = V = Q^2 \Rightarrow Q = \sqrt{\pi}\]
+
+<p>We can rewrite $Q = \sqrt{\pi}$ as</p>
+
+\[\frac{1}{\sqrt{\pi}} \int_{-\infty}^{\infty} e^{-x^2} \, dx = 1\]
+
+<p>An equivalent rescaled version of this formula (replacing $x$ with $x / \sqrt{2\sigma}$) is used:</p>
+
+\[\frac{1}{\sqrt{2\pi\sigma}} \int_{-\infty}^{\infty} e^{-x^2 / 2\sigma^2} \, dx = 1\]
+
+<p>This formula is central to probability and statistics. The probability distribution</p>
+
+\[\frac{1}{\sqrt{2\pi\sigma}} e^{-x^2 / 2\sigma^2}\]
+
+<p>on $-\infty &lt; x &lt; \infty$ is known as the normal distribution, and $\sigma &gt; 0$ is its standard deviation.</p>
+
+<h2 id="lecture-24-numerical-integration">Lecture 24: Numerical Integration</h2>
+
+<h3 id="numerical-integration">Numerical Integration</h3>
+
+<p>Numerical integration when an integral has no elementary antiderivative. For instance, there is no formula for</p>
+
+\[\int_0^x \cos(t^2) \, dt \text{ or } \int_0^3 e^{-x^2} \, dx\]
+
+<p>Numerical integration yields numbers rather than analytical expressions.</p>
+
+<p>We’ll talk about three techniques for numerical integration: Riemann sums, the trapezoidal rule, and Simpson’s rule.</p>
+
+<h3 id="1-riemann-sum">1. Riemann Sum</h3>
+
+<p>Here,</p>
+
+\[x_i - x_{i-1} = \Delta x\]
+
+<p>(or, $x_i = x_{i-1} + \Delta x$)</p>
+
+\[a = x_0 &lt; x_1 &lt; x_2 &lt; ... &lt; x_n = b\]
+
+\[y_0 = f(x_0), y_1 = f(x_1), ... y_n = f(x_n)\]
+
+<h3 id="2-trapezoidal-rule">2. Trapezoidal Rule</h3>
+
+<p>The trapezoidal rule divides up the area under the function into trapezoids, rather than rectangles. The area of a trapezoid is the height times the average of the parallel bases:</p>
+
+\[\text{Area} = \frac{\text{base}_1 + \text{base}_2}{2} \times \text{height}\]
+
+\[\text{Total Trapezoidal Area} = \Delta x \left(\frac{y_0}{2} + y_1 + y_2 + ... + y_{n-1} + \frac{y_n}{2}\right)\]
+
+<p>The trapezoidal rule gives a more symmetric treatment of the two ends (a and b) than a Riemann sum does — the average of left and right Riemann sums.</p>
+
+<h3 id="3-simpsons-rule">3. Simpson’s Rule</h3>
+
+<p>This approach often yields much more accurate results than the trapezoidal rule does. Here, we match quadratics (i.e. parabolas), instead of straight or slanted lines, to the graph. This approach requires an even number of intervals.</p>
+
+\[\text{Area under parabola} = (\text{base})(\text{weighted average height}) = (2\Delta x) \frac{y_0 + 4y_1 + y_2}{6}\]
+
+<p>Simpson’s rule for $n$ intervals (n must be even!):</p>
+
+\[\text{Area} = \frac{2\Delta x}{6} [(y_0 + 4y_1 + y_2) + (y_2 + 4y_3 + y_4) + (y_4 + 4y_5 + y_6) + \cdots + (y_{n-2} + 4y_{n-1} + y_n)]\]
+
+<p>Notice the following pattern in the coefficients:</p>
+
+\[1, 4, 1, \quad 1, 4, 2, 4, 1, \quad 1, 4, 2, 4, 2, 4, 1\]
+
+<p>Simpson’s rule:</p>
+
+\[\int_a^b f(x) \, dx \approx \frac{\Delta x}{3} \left( y_0 + 4y_1 + 2y_2 + 4y_3 + 2y_4 + \cdots + 4y_{n-1} + y_n \right)\]
+
+<p>The pattern of coefficients in parentheses is:</p>
+
+\[1, 4, 1 = \text{sum } 6\]
+
+\[1, 4, 2, 4, 1 = \text{sum } 12\]
+
+\[1, 4, 2, 4, 2, 4, 1 = \text{sum } 18\]
+
+<p>To double check – plug in $f(x) = 1$ (n even!).</p>
+
+\[\frac{\Delta x}{3} \left( 1 + 4 + 2 + 4 + 2 + \cdots + 2 + 4 + 1 \right) = \frac{\Delta x}{3} \left( 1 + 1 + 4 \left( \frac{n}{2} \right) + 2 \left( \frac{n}{2} - 1 \right) \right) = n \Delta x \quad (\text{n even})\]
+
+<p>Example:</p>
+
+<h3 id="example-1-evaluate-int_01-fracdx1--x2-using-two-methods-trapezoidal-and-simpsons-of-numerical-integration">Example 1. Evaluate $\int_0^1 \frac{dx}{1 + x^2}$ using two methods (trapezoidal and Simpson’s) of numerical integration.</h3>
+
+<p><strong>By the trapezoidal rule:</strong></p>
+
+\[\Delta x \left(\frac{1}{2} y_0 + y_1 + \frac{1}{2} y_2\right) = \frac{1}{2} \left(\frac{1}{2} (1) + \frac{4}{5} + \frac{1}{2}\right) = \frac{1}{2} \left(\frac{1}{2} + \frac{4}{5} + \frac{1}{2}\right) = 0.775\]
+
+<p><strong>By Simpson’s rule:</strong></p>
+
+\[\frac{\Delta x}{3} (y_0 + 4y_1 + y_2) = \frac{1/2}{3} \left(1 + 4\left(\frac{4}{5}\right) + \frac{1}{2}\right) = 0.78333...\]
+
+<p><strong>Exact answer:</strong></p>
+
+\[\int_0^1 \frac{1}{1 + x^2} dx = \tan^{-1} x \bigg|_0^1 = \tan^{-1} 1 - \tan^{-1} 0 = \frac{\pi}{4} - 0 = \frac{\pi}{4} \approx 0.785\]
+
+<table>
+  <tbody>
+    <tr>
+      <td>Roughly speaking, the error, $</td>
+      <td>\text{Simpson’s} - \text{Exact}</td>
+      <td>$, has order of magnitude $(\Delta x)^4$.</td>
+    </tr>
+  </tbody>
+</table>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

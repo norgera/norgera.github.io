@@ -10,3 +10,6 @@ permalink: /notes/
 ## Math
 
 * [Linear Algebra](linear-algebra)
+* [Discrete Structures](discrete-structures)
+* [Calculus](calculus)
+
