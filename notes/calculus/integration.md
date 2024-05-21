@@ -22,10 +22,11 @@ Integrals are used to calculate cumulative totals, averages, and areas.
    - $x = \frac{b}{n}$, height = $\left( \frac{b}{n} \right)^2$
    - $x = \frac{2b}{n}$, height = $\left( \frac{2b}{n} \right)^2$
    - Sum of areas of rectangles:
-     $$
-     \sum_{i=1}^n \left( \frac{ib}{n} \right)^2 = \frac{b^3}{n^3} \sum_{i=1}^n i^2 = \frac{b^3}{n^3} \cdot \frac{n(n+1)(2n+1)}{6} \approx \frac{b^3}{3}
-     $$
-     as $n \to \infty$.
+
+    $$
+    \left( \frac{b}{n} \right)^2 + \left( \frac{b}{n} \right)\left( \frac{2b}{n} \right)^2 + \left( \frac{b}{n} \right)\left( \frac{3b}{n} \right)^2 + \cdots + \left( \frac{b}{n} \right)\left( \frac{nb}{n} \right)^2 = \frac{b^3}{n^3}(1^2 + 2^2 + 3^2 + \cdots + n^2)
+    $$
+
 
 **Example 2:** $f(x) = x$; area under $x$ above $[0, b]$.
 - Reasoning similar to Example 1, but easier, gives a sum of areas:
@@ -309,9 +310,8 @@ $$
 We will use FTC 2 to discuss the function $L(x) = \int_1^x \frac{dt}{t}$ from first principles.
 
 
-Lecture 21: Applications to Logarithms and Geometry
+### Applications to Logarithms and Geometry
 
-### Application of FTC 2 to Logarithms
 The integral definition of functions like $C(x)$, $S(x)$ of Fresnel makes them nearly as easy to use as elementary functions. It is possible to draw their graphs and tabulate values. You are asked to carry out an example or two of this on your problem set. To get used to using definite integrals and FTC2, we will discuss in detail the simplest integral that gives rise to a relatively new function, namely the logarithm.
 
 Recall that
@@ -370,10 +370,10 @@ Thus $L(x)$, defined on $0 < x < \infty$, increases from $-\infty$ to $\infty$, 
 
 This provides an alternative to our previous approach to the exponential and log functions. Starting from $L(x)$, we can define the log function by $\ln x = L(x)$, define $e$ as the number such that $L(e) = 1$, define $e^x$ as the inverse function of $L(x)$, and define $a^x = e^{xL(a)}$.
 
-### Application of FTCs to Geometry (Volumes and Areas)
+## Application of FTCs to Geometry (Volumes and Areas)
 1. **Areas between two curves**
 
-Refer to Figure 2. Find the crossing points $a$ and $b$. The area, $A$, between the curves is
+Find the crossing points $a$ and $b$. The area, $A$, between the curves is
 $$A = \int_a^b (f(x) - g(x)) \, dx$$
 
 **Example 1:** Find the area in the region between $x = y^2$ and $y = x - 2$.
@@ -392,14 +392,17 @@ There are two ways of finding the area between these two curves, a hard way and 
 
 **Hard Way:** Vertical Slices
 
-If we slice the region between the two curves vertically, we need to consider two different regions.
-Where $x > 1$, the region’s lower bound is the straight line. For $x < 1$, however, the region’s lower bound is the lower half of the sideways parabola. We find the area, $A$, between the two curves by integrating the difference between the top curve and the bottom curve in each region:
+If we slice the region between the two curves vertically, we need to consider two different regions. Where $x > 1$, the region’s lower bound is the straight line. For $x < 1$, however, the region’s lower bound is the lower half of the sideways parabola. We find the area, $A$, between the two curves by integrating the difference between the top curve and the bottom curve in each region:
 $$A = \int_0^1 (\sqrt{x} - (-\sqrt{x})) \, dx + \int_1^4 (\sqrt{x} - (x - 2)) \, dx = \int (\text{top curve} - \text{bottom curve}) \, dx$$
 
 **Easy Way:** Horizontal Slices
 
 Here, instead of subtracting the bottom curve from the top curve, we subtract the right curve from the left one.
-$$A = \int_{-1}^2 \left( (y + 2) - y^2 \right) \, dy = \left[ y + 2y - \frac{y^3}{3} \right]_{-1}^2 = 2 + 4 - \frac{8}{3} - \left( 2 - 2 + \frac{1}{3} \right) = \frac{9}{2}$$
+
+$$
+A = \int_{y=-1}^{2} (x_{\text{left}} - x_{\text{right}}) \, dy = \int_{y=-1}^{2} \left[ (y + 2) - y^2 \right] \, dx = \left( \frac{y^2}{2} + 2y - \frac{y^3}{3} \right) \bigg|_{-1}^{2} = \left[ \frac{4}{2} + 4 - \frac{8}{3} \right] - \left[ \frac{1}{2} - 2 + \frac{1}{3} \right] = 4 + 4 - \frac{8}{3} - \left( \frac{1}{2} - 2 + \frac{1}{3} \right) = \frac{9}{2}
+$$
+
 
 2. **Volumes of solids of revolution**
 
@@ -416,7 +419,7 @@ $$y = \sqrt{a^2 - x^2}$$
 If we spin the upper part of the curve about the x-axis,```markdown
 Lecture 21: Applications to Logarithms and Geometry
 
-### Application of FTC 2 to Logarithms
+## Application of FTC 2 to Logarithms
 The integral definition of functions like $C(x)$, $S(x)$ of Fresnel makes them nearly as easy to use as elementary functions. It is possible to draw their graphs and tabulate values. You are asked to carry out an example or two of this on your problem set. To get used to using definite integrals and FTC2, we will discuss in detail the simplest integral that gives rise to a relatively new function, namely the logarithm.
 
 Recall that
@@ -475,37 +478,10 @@ Thus $L(x)$, defined on $0 < x < \infty$, increases from $-\infty$ to $\infty$, 
 
 This provides an alternative to our previous approach to the exponential and log functions. Starting from $L(x)$, we can define the log function by $\ln x = L(x)$, define $e$ as the number such that $L(e) = 1$, define $e^x$ as the inverse function of $L(x)$, and define $a^x = e^{xL(a)}$.
 
-### Application of FTCs to Geometry (Volumes and Areas)
-1. **Areas between two curves**
 
-Find the crossing points $a$ and $b$. The area, $A$, between the curves is
-$$A = \int_a^b (f(x) - g(x)) \, dx$$
 
-**Example 1:** Find the area in the region between $x = y^2$ and $y = x - 2$.
+### Volumes by Disks and Shells
 
-$$x = y^2$$
-$$y = x - 2$$
-
-First, graph these functions and find the crossing points:
-$$y + 2 = x = y^2$$
-$$y^2 - y - 2 = 0$$
-$$(y - 2)(y + 1) = 0$$
-
-Crossing points at $y = -1$, $2$. Plug these back in to find the associated x values, $x = 1$ and $x = 4$. Thus the curves meet at $(1, -1)$ and $(4, 2)$.
-
-There are two ways of finding the area between these two curves, a hard way and an easy way.
-
-**Hard Way:** Vertical Slices
-
-If we slice the region between the two curves vertically, we need to consider two different regions. Where $x > 1$, the region’s lower bound is the straight line. For $x < 1$, however, the region’s lower bound is the lower half of the sideways parabola. We find the area, $A$, between the two curves by integrating the difference between the top curve and the bottom curve in each region:
-$$A = \int_0^1 (\sqrt{x} - (-\sqrt{x})) \, dx + \int_1^4 (\sqrt{x} - (x - 2)) \, dx = \int (\text{top curve} - \text{bottom curve}) \, dx$$
-
-**Easy Way:** Horizontal Slices
-
-Here, instead of subtracting the bottom curve from the top curve, we subtract the right curve from the left one.
-$$A = \int_{-1}^2 \left( (y + 2) - y^2 \right) \, dy = \left[ y + 2y - \frac{y^3}{3} \right]_{-1}^2 = 2 + 4 - \frac{8}{3} - \left( 2 - 2 + \frac{1}{3} \right) = \frac{9}{2}$$
-
-## Volumes by Disks and Shells
 **Disks**
 
 $$
@@ -630,7 +606,7 @@ $$ \int_{r_1}^{r_2} c e^{-r^2} (2\pi r \, dr) $$
 We will examine this problem more in the next lecture.
 
 
-# Lecture 23: Work, Average Value, Probability
+### Work, Average Value, Probability
 
 ## Application of Integration to Average Value
 
@@ -872,8 +848,6 @@ $$ \frac{1}{\sqrt{2\pi\sigma}} e^{-x^2 / 2\sigma^2} $$
 on $-\infty < x < \infty$ is known as the normal distribution, and $\sigma > 0$ is its standard deviation.
 
 
-## Lecture 24: Numerical Integration
-
 ### Numerical Integration
 
 Numerical integration when an integral has no elementary antiderivative. For instance, there is no formula for
@@ -884,7 +858,7 @@ Numerical integration yields numbers rather than analytical expressions.
 
 We’ll talk about three techniques for numerical integration: Riemann sums, the trapezoidal rule, and Simpson’s rule.
 
-### 1. Riemann Sum
+## 1. Riemann Sum
 
 Here,
 
@@ -896,7 +870,7 @@ $$ a = x_0 < x_1 < x_2 < ... < x_n = b $$
 
 $$ y_0 = f(x_0), y_1 = f(x_1), ... y_n = f(x_n) $$
 
-### 2. Trapezoidal Rule
+## 2. Trapezoidal Rule
 
 The trapezoidal rule divides up the area under the function into trapezoids, rather than rectangles. The area of a trapezoid is the height times the average of the parallel bases:
 
@@ -906,7 +880,7 @@ $$ \text{Total Trapezoidal Area} = \Delta x \left(\frac{y_0}{2} + y_1 + y_2 + ..
 
 The trapezoidal rule gives a more symmetric treatment of the two ends (a and b) than a Riemann sum does — the average of left and right Riemann sums.
 
-### 3. Simpson’s Rule
+## 3. Simpson’s Rule
 
 This approach often yields much more accurate results than the trapezoidal rule does. Here, we match quadratics (i.e. parabolas), instead of straight or slanted lines, to the graph. This approach requires an even number of intervals.
 
@@ -940,7 +914,7 @@ $$
 
 Example:
 
-### Example 1. Evaluate $\int_0^1 \frac{dx}{1 + x^2}$ using two methods (trapezoidal and Simpson’s) of numerical integration.
+## Example 1. Evaluate $\int_0^1 \frac{dx}{1 + x^2}$ using two methods (trapezoidal and Simpson’s) of numerical integration.
 
 **By the trapezoidal rule:**
 
@@ -960,4 +934,4 @@ $$
 \int_0^1 \frac{1}{1 + x^2} dx = \tan^{-1} x \bigg|_0^1 = \tan^{-1} 1 - \tan^{-1} 0 = \frac{\pi}{4} - 0 = \frac{\pi}{4} \approx 0.785
 $$
 
-Roughly speaking, the error, $| \text{Simpson’s} - \text{Exact} |$, has order of magnitude $(\Delta x)^4$.
+Roughly speaking, the error, abs(Simpson's-Exact), has order of magnitude $(\Delta x)^4$.

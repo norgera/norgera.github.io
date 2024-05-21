@@ -61,8 +61,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Integration Techniques","url":"http://localhost:4000/notes/calculus/integration-techniques.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=28694a1b72268c139baf770f3fd9c5dd5ccf61f6">
-    <link rel="stylesheet" href="/assets/css/style.css?v=28694a1b72268c139baf770f3fd9c5dd5ccf61f6">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=9c10af3047a5c8df9f3f289bdf567699759ad2c8">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9c10af3047a5c8df9f3f289bdf567699759ad2c8">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -125,6 +125,11 @@
     <button class="theme-switch"><i class="far fa-moon"></i></button>
     
       
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#trigonometric-integrals-and-substitution">Trigonometric Integrals and Substitution</a></li><li><a href="#integration-by-inverse-substitution-completing-the-square">Integration by Inverse Substitution; Completing the Square</a></li><li><a href="#partial-fractions">Partial Fractions</a></li><li><a href="#integration-by-parts-reduction-formulae">Integration by Parts, Reduction Formulae</a></li><li><a href="#parametric-equations-arclength-surface-area">Parametric Equations, Arclength, Surface Area</a></li><li><a href="#polar-coordinates-area-in-polar-coordinates">Polar Coordinates, Area in Polar Coordinates</a></li><li><a href="#indeterminate-forms---lhôpitals-rule">Indeterminate Forms - L’Hôpital’s Rule</a></li><li><a href="#improper-integrals">Improper Integrals</a></li><li><a href="#infinite-series-and-convergence-tests">Infinite Series and Convergence Tests</a></li><li><a href="#taylor-series">Taylor Series</a></li></ul>
+            
     
   </div>
 
@@ -144,6 +149,1504 @@
       <section>
 
       <h1 id="integration-techniques">Integration Techniques</h1>
+
+<h3 id="trigonometric-integrals-and-substitution">Trigonometric Integrals and Substitution</h3>
+
+<h1 id="trigonometric-integrals">Trigonometric Integrals</h1>
+
+<p>How do you integrate an expression like $\int \sin^n x \cos^m x \, dx$? (n = 0, 1, 2, … and m = 0, 1, 2, …)</p>
+
+<p>We already know that:</p>
+
+\[\int \sin x \, dx = -\cos x + c \quad \text{and} \quad \int \cos x \, dx = \sin x + c\]
+
+<h2 id="method-a">Method A</h2>
+
+<p>Suppose either $n$ or $m$ is odd.</p>
+
+<h2 id="example-1">Example 1.</h2>
+
+\[\int \sin^3 x \cos^2 x \, dx\]
+
+<p>Our strategy is to use $\sin^2 x + \cos^2 x = 1$ to rewrite our integral in the form:</p>
+
+\[\int \sin^3 x \cos^2 x \, dx = \int f(\cos x) \sin x \, dx\]
+
+<p>Indeed,</p>
+
+\[\int \sin^3 x \cos^2 x \, dx = \int \sin^2 x \cos^2 x \sin x \, dx = \int (1 - \cos^2 x) \cos^2 x \sin x \, dx\]
+
+<p>Next, use the substitution</p>
+
+\[u = \cos x \quad \text{and} \quad du = -\sin x \, dx\]
+
+<p>Then,</p>
+
+\[\int (1 - \cos^2 x) \cos^2 x \sin x \, dx = \int (1 - u^2) u^2 (-du)\]
+
+\[= \int (-u^2 + u^4) du = -\frac{1}{3} u^3 + \frac{1}{5} u^5 + c = -\frac{1}{3} \cos^3 x + \frac{1}{5} \cos^5 x + c\]
+
+<h2 id="example-2">Example 2.</h2>
+
+\[\int \cos^3 x \, dx = \int f(\sin x) \cos x \, dx = \int (1 - \sin^2 x) \cos x \, dx\]
+
+<p>Again, use a substitution, namely</p>
+
+\[u = \sin x \quad \text{and} \quad du = \cos x \, dx\]
+
+\[\int \cos^3 x \, dx = \int (1 - u^2) du = u - \frac{u^3}{3} + c = \sin x - \frac{\sin^3 x}{3} + c\]
+
+<h2 id="method-b">Method B</h2>
+
+<p>This method requires both $m$ and $n$ to be even. It requires double-angle formulae such as</p>
+
+\[\cos^2 x = \frac{1 + \cos 2x}{2}\]
+
+<p>(Recall that $\cos 2x = \cos^2 x - \sin^2 x = \cos^2 x - (1 - \sin^2 x) = 2 \cos^2 x - 1$)
+Integrating gets us</p>
+
+\[\int \cos^2 x \, dx = \int \frac{1 + \cos 2x}{2} \, dx = \frac{x}{2} + \frac{\sin(2x)}{4} + c\]
+
+<p>We follow a similar process for integrating $\sin^2 x$.</p>
+
+\[\sin^2 x = \frac{1 - \cos(2x)}{2}\]
+
+\[\int \sin^2 x \, dx = \int \frac{1 - \cos(2x)}{2} \, dx = \frac{x}{2} - \frac{\sin(2x)}{4} + c\]
+
+<p>The full strategy for these types of problems is to keep applying Method B until you can apply Method A (when one of $m$ or $n$ is odd).</p>
+
+<h2 id="example-3">Example 3.</h2>
+
+\[\int \sin^2 x \cos^2 x \, dx\]
+
+<p>Applying Method B twice yields</p>
+
+\[\int \left(\frac{1 - \cos 2x}{2}\right) \left(\frac{1 + \cos 2x}{2}\right) \, dx = \int \left(\frac{1}{4} - \frac{1}{4} \cos 2x\right) \, dx\]
+
+\[= \int \left(\frac{1}{4} - \frac{1}{8}(1 + \cos 4x)\right) \, dx = \frac{1}{8} x - \frac{1}{32} \sin 4x + c\]
+
+<p>There is a shortcut for Example 3. Because $\sin 2x = 2 \sin x \cos x$,</p>
+
+\[\int \sin^2 x \cos^2 x \, dx = \int \left(\frac{1}{2} \sin 2x\right)^2 \, dx = \frac{1}{4} \int \frac{1 - \cos 4x}{2} \, dx = \text{same as above}\]
+
+<p>The next family of trig integrals, which we’ll start today, but will not finish is:</p>
+
+\[\int \sec^n x \tan^m x \, dx \quad \text{where} \, n = 0, 1, 2, \ldots \, \text{and} \, m = 0, 1, 2, \ldots\]
+
+<p>Remember that</p>
+
+\[\sec^2 x = 1 + \tan^2 x\]
+
+<p>which we double-check by writing</p>
+
+\[\frac{1}{\cos^2 x} = 1 + \frac{\sin^2 x}{\cos^2 x} = \frac{\cos^2 x + \sin^2 x}{\cos^2 x} = \sec^2 x\]
+
+\[\int \sec^2 x \, dx = \tan x + c \quad \text{and} \quad \int \sec x \tan x \, dx = \sec x + c\]
+
+<p>To calculate the integral of $\tan x$, write</p>
+
+\[\int \tan x \, dx = \int \frac{\sin x}{\cos x} \, dx\]
+
+<p>Let $u = \cos x$ and $du = -\sin x \, dx$, then</p>
+
+\[\int \tan x \, dx = \int \frac{\sin x}{\cos x} \, dx = \int \frac{-du}{u} = -\ln(u) + c\]
+
+\[\int \tan x \, dx = -\ln(\cos x) + c\]
+
+<p>(We’ll figure out what $\int \sec x \, dx$ is later.)</p>
+
+<p>Now, let’s see what happens when you have an even power of secant. (The case $n$ even.)</p>
+
+\[\int \sec^4 x \, dx = \int f(\tan x) \sec^2 x \, dx = \int (1 + \tan^2 x) \sec^2 x \, dx\]
+
+<p>Make the following substitution:</p>
+
+\[u = \tan x\]
+
+<p>and</p>
+
+\[du = \sec^2 x \, dx\]
+
+\[\int \sec^4 x \, dx = \int (1 + u^2) \, du = u + \frac{u^3}{3} + c = \tan x + \frac{\tan^3 x}{3} + c\]
+
+<p>What happens when you have an odd power of tan? (The case $m$ odd.)</p>
+
+\[\int \tan^3 x \sec x \, dx = \int f(\sec x) \, d(\sec x)\]
+
+\[= \int (\sec^2 x - 1) \sec x \, dx = \int (\sec^2 x - 1) \sec x \, dx\]
+
+<p>(Remember that $\sec^2 x - 1 = \tan^2 x$.)</p>
+
+<p>Use substitution:</p>
+
+\[u = \sec x\]
+
+<p>and</p>
+
+\[du = \sec x \tan x \, dx\]
+
+<p>Then,</p>
+
+\[\int \tan^3 x \sec x \, dx = \int (u^2 - 1) \, du = \frac{u^3}{3} - u + c = \frac{\sec^3 x}{3} - \sec x + c\]
+
+<p>We carry out one final case: $n = 1$, $m = 0$</p>
+
+\[\int \sec x \, dx = \ln (\tan x + \sec x) + c\]
+
+<p>We get the answer by “advanced guessing,” i.e., “knowing the answer ahead of time.”</p>
+
+\[\int \sec x \, dx = \sec x \left( \frac{\sec x + \tan x}{\sec x + \tan x} \right) \, dx = \int \frac{\sec^2 x + \sec x \tan x}{\tan x + \sec x} \, dx\]
+
+<p>Make the following substitutions:</p>
+
+\[u = \tan x + \sec x\]
+
+<p>and</p>
+
+\[du = (\sec^2 x + \sec x \tan x) \, dx\]
+
+<p>This gives</p>
+
+\[\int \sec x \, dx = \int \frac{du}{u} = \ln(u) + c = \ln(\tan x + \sec x) + c\]
+
+<p>Cases like $n = 3$, $m = 0$ or more generally $n$ odd and $m$ even are more complicated and will be discussed later.</p>
+
+<h2 id="trigonometric-substitution">Trigonometric Substitution</h2>
+
+<p>Knowing how to evaluate all of these trigonometric integrals turns out to be useful for evaluating integrals involving square roots.</p>
+
+<p><strong>Example 4.</strong> $y = \sqrt{a^2 - x^2}$</p>
+
+<p>We already know that the area of the top half of the disk is</p>
+
+\[\int_{-a}^{a} \sqrt{a^2 - x^2} \, dx = \frac{\pi a^2}{2}\]
+
+<p>To do so, you need to evaluate this integral:</p>
+
+\[\int_{t=0}^{t=x} \sqrt{a^2 - t^2} \, dt\]
+
+<p>Let $t = a \sin u$ and $dt = a \cos u \, du$. (Remember to change the limits of integration when you do a change of variables.) Then,</p>
+
+\[a^2 - t^2 = a^2 - a^2 \sin^2 u = a^2 \cos^2 u; \quad \sqrt{a^2 - t^2} = a \cos u\]
+
+<p>Plugging this into the integral gives us</p>
+
+\[\int_0^x \sqrt{a^2 - t^2} \, dt = \int_0^{u = \sin^{-1} \left( \frac{x}{a} \right)} (a \cos u) a \cos u \, du = a^2 \int_{u=0}^{u = \sin^{-1} \left( \frac{x}{a} \right)} \cos^2 u \, du\]
+
+<p>Here’s how we calculated the new limits of integration:</p>
+
+\[\int_0^x \sqrt{a^2 - t^2} \, dt = a^2 \int_0^{u = \sin^{-1} \left( \frac{x}{a} \right)} \cos^2 u \, du = a^2 \left( \frac{u}{2} + \frac{\sin 2u}{4} \right) \bigg|_0^{\sin^{-1} \left( \frac{x}{a} \right)}\]
+
+\[= \frac{a^2 \sin^{-1} \left( \frac{x}{a} \right)}{2} + \left( \frac{a^2}{4} \right) \left( 2 \sin \left( \sin^{-1} \left( \frac{x}{a} \right) \right) \cos \left( \sin^{-1} \left( \frac{x}{a} \right) \right) \right)\]
+
+<p>(Remember, $\sin 2u = 2 \sin u \cos u$.)</p>
+
+<h3 id="integration-by-inverse-substitution-completing-the-square">Integration by Inverse Substitution; Completing the Square</h3>
+
+<h2 id="trigonometric-substitutions-continued">Trigonometric Substitutions, continued</h2>
+
+<p>Figure 1: Find area of shaded portion of semicircle.</p>
+
+\[\int_{0}^{x} \sqrt{a^2 - t^2} \, dt\]
+
+\[t = a \sin u; \quad dt = a \cos u \, du\]
+
+\[a^2 - t^2 = a^2 - a^2 \sin^2 u = a^2 \cos^2 u \implies \sqrt{a^2 - t^2} = a \cos u \quad \text{(No more square root!)}\]
+
+<p>Start: $x = -a \iff u = -\pi/2$; Finish: $x = a \iff u = \pi/2$</p>
+
+\[\int \sqrt{a^2 - t^2} \, dt = \int a^2 \cos^2 u \, du = a^2 \int \frac{1 + \cos(2u)}{2} \, du = a^2 \left[ \frac{u}{2} + \frac{\sin(2u)}{4} \right] + c\]
+
+<p>(Recall, $\cos^2 u = \frac{1 + \cos(2u)}{2}$).</p>
+
+<p>We want to express this in terms of $x$, not $u$. When $t = 0$, $a \sin u = 0$, and therefore $u = 0$. When $t = x$, $a \sin u = x$, and therefore $u = \sin^{-1}(x/a)$.</p>
+
+\[\frac{\sin(2u)}{4} = \frac{2 \sin u \cos u}{4} = \frac{1}{2} \sin u \cos u\]
+
+<p>\(\sin u = \sin (\sin^{-1}(x/a)) = \frac{x}{a}\)
+From the diagram, we see</p>
+
+\[\cos u = \frac{\sqrt{a^2 - x^2}}{a}\]
+
+<p>And finally,</p>
+
+\[\int_{0}^{x} \sqrt{a^2 - t^2} \, dt = a^2 \left[ \frac{u}{4} + \frac{1}{2} \sin u \cos u \right] - 0 = a^2 \left[ \frac{\sin^{-1}(x/a)}{2} + \frac{1}{2} \left( \frac{x}{a} \right) \frac{\sqrt{a^2 - x^2}}{a} \right]\]
+
+\[\int_{0}^{x} \sqrt{a^2 - t^2} \, dt = \frac{a^2}{2} \sin^{-1}(x/a) + \frac{1}{2} x \sqrt{a^2 - x^2}\]
+
+<p>When the <em>answer</em> is this complicated, the route to getting there has to be rather complicated. There’s no way to avoid the complexity.</p>
+
+<p>Let’s double-check this answer. The area of the upper shaded sector in Figure 3 is $\frac{1}{2} a^2 u$. The area of the lower shaded region, which is a triangle of height $\sqrt{a^2 - x^2}$ and base $x$, is $\frac{1}{2} x \sqrt{a^2 - x^2}$.</p>
+
+<h2 id="integrals-using-trigonometric-substitution-and-identities">Integrals Using Trigonometric Substitution and Identities</h2>
+
+<p>Here is a list of integrals that can be computed using a trigonometric substitution and identity:</p>
+
+\[\int \frac{dx}{\sqrt{x^2 + 1}} \quad \text{with} \quad x = \tan u \quad \text{and} \quad \tan^2 u + 1 = \sec^2 u\]
+
+\[\int \frac{dx}{\sqrt{x^2 - 1}} \quad \text{with} \quad x = \sec u \quad \text{and} \quad \sec^2 u - 1 = \tan^2 u\]
+
+\[\int \frac{dx}{\sqrt{1 - x^2}} \quad \text{with} \quad x = \sin u \quad \text{and} \quad 1 - \sin^2 u = \cos^2 u\]
+
+<p>Let’s extend this further. How can we evaluate an integral like this?</p>
+
+\[\int \frac{dx}{\sqrt{x^2 + 4x}}\]
+
+<p>When you have a linear and a quadratic term under the square root, complete the square.</p>
+
+\[x^2 + 4x = (\text{something})^2 \pm \text{constant}\]
+
+<p>In this case,</p>
+
+\[(x + 2)^2 = x^2 + 4x + 4 \implies x^2 + 4x = (x + 2)^2 - 4\]
+
+<p>Now, we make a substitution.</p>
+
+\[v = x + 2 \quad \text{and} \quad dv = dx\]
+
+<p>Plugging these in gives us</p>
+
+\[\int \frac{dx}{\sqrt{(x + 2)^2 - 4}} = \int \frac{dv}{\sqrt{v^2 - 4}}\]
+
+<p>Now, let</p>
+
+\[v = 2 \sec u \quad \text{and} \quad dv = 2 \sec u \tan u \, du\]
+
+\[\int \frac{dv}{\sqrt{v^2 - 4}} = \int \frac{2 \sec u \tan u \, du}{2 \tan u} = \int \sec u \, du\]
+
+<p>Remember that</p>
+
+\[\int \sec u \, du = \ln|\sec u + \tan u| + c\]
+
+<p>Finally, rewrite everything in terms of $x$.</p>
+
+\[v = 2 \sec u \iff \cos u = \frac{2}{v}\]
+
+<p>Set up a right triangle as in Figure 4. Express $\tan u$ in terms of $v$.</p>
+
+<p>Just from looking at the triangle, we can read off</p>
+
+\[\sec u = \frac{v}{2} \quad \text{and} \quad \tan u = \frac{\sqrt{v^2 - 4}}{2}\]
+
+\[\int 2 \sec u \, du = \ln \left( \frac{v}{2} + \frac{\sqrt{v^2 - 4}}{2} \right) + c\]
+
+\[= \ln (v + \sqrt{v^2 - 4}) - \ln 2 + c\]
+
+<p>We can combine those last two terms into another constant, $\tilde{c}$.</p>
+
+\[\int \frac{dx}{\sqrt{x^2 + 4x}} = \ln (x + 2 + \sqrt{x^2 + 4x}) + \tilde{c}\]
+
+<p>Here’s a teaser for next time. In the next lecture, we’ll integrate all rational functions. By “rational functions,” we mean functions that are the ratios of polynomials:</p>
+
+\[\frac{P(x)}{Q(x)}\]
+
+<p>It’s easy to evaluate an expression like this:</p>
+
+\[\int \left( \frac{1}{x - 1} + \frac{3}{x + 2} \right) dx = \ln |x - 1| + 3 \ln |x + 2| + c\]
+
+<p>If we write it a bit differently, however, it becomes much harder to integrate:</p>
+
+\[\frac{1}{x - 1} + \frac{3}{x + 2} = \frac{x + 2 + 3(x - 1)}{(x - 1)(x + 2)} = \frac{4x - 1}{x^2 + x - 2}\]
+
+\[\int \frac{4x - 1}{x^2 + x - 2} \, dx = \text{???}\]
+
+<h3 id="partial-fractions">Partial Fractions</h3>
+
+<p>We continue the discussion we started last lecture about integrating rational functions. We defined a rational function as the ratio of two polynomials:</p>
+
+\[\frac{P(x)}{Q(x)}\]
+
+<p>We looked at the example</p>
+
+\[\int \left[ \frac{1}{x - 1} + \frac{3}{x + 2} \right] dx = \ln |x - 1| + 3 \ln |x + 2| + c\]
+
+<p>That same problem can be disguised:</p>
+
+\[\frac{1}{x - 1} + \frac{3}{x + 2} = \frac{(x + 2) + 3(x - 1)}{(x - 1)(x + 2)} = \frac{4x - 1}{x^2 + x - 2}\]
+
+<p>which leaves us to integrate this:</p>
+
+\[\int \frac{4x - 1}{x^2 + x - 2} \, dx = \text{???}\]
+
+<p><strong>Goal:</strong> we want to figure out a systematic way to split $\frac{P(x)}{Q(x)}$ into simpler pieces.</p>
+
+<p>First, we factor the denominator $Q(x)$.</p>
+
+\[\frac{4x - 1}{x^2 + x - 2} = \frac{4x - 1}{(x - 1)(x + 2)} = \frac{A}{x - 1} + \frac{B}{x + 2}\]
+
+<p>There’s a slow way to find $A$ and $B$. You can clear the denominator by multiplying through by $(x - 1)(x + 2)$:</p>
+
+\[(4x - 1) = A(x + 2) + B(x - 1)\]
+
+<p>From this, you find</p>
+
+\[4 = A + B \quad \text{and} \quad -1 = 2A - B\]
+
+<p>You can then solve these simultaneous linear equations for $A$ and $B$. This approach can take a very long time if you’re working with 3, 4, or more variables.</p>
+
+<p>There’s a faster way, which we call the “cover-up method.” Multiply both sides by $(x - 1)$:</p>
+
+\[\frac{4x - 1}{x + 2} = A + \frac{B}{x + 2}(x - 1)\]
+
+<p>Set $x = 1$ to make the $B$ term drop out:</p>
+
+\[\frac{4 - 1}{1 + 2} = A\]
+
+\[A = 1\]
+
+<p>The fastest way is to do this in your head or physically cover up the struck-through terms. For instance, to evaluate $B$:</p>
+
+\[\frac{4x - 1}{(x - 1)(x + 2)} = \frac{A}{x - 1} + \frac{B}{x + 2}\]
+
+<p>Implicitly, we are multiplying by $(x + 2)$ and setting $x = -2$. This gives us</p>
+
+\[\frac{4(-2) - 1}{-2 - 1} = B \implies B = 3\]
+
+<p>What we’ve described so far works when $Q(x)$ factors completely into distinct factors and the degree of $P$ is less than the degree of $Q$.</p>
+
+<p>If the factors of $Q$ repeat, we use a slightly different approach. For example:</p>
+
+\[\frac{x^2 + 2}{(x - 1)^2 (x + 2)} = \frac{A}{x - 1} + \frac{B}{(x - 1)^2} + \frac{C}{x + 2}\]
+
+<p>Use the cover-up method on the highest degree term in $(x - 1)$.</p>
+
+\[\frac{x^2 + 1}{x + 2} = B + [\text{stuff}](x - 1)^2 \implies \frac{1^2 + 2}{1 + 2} = B \implies B = 1\]
+
+<p>Implicitly, we multiplied by $(x - 1)^2$, then took the limit as $x \to 1$.</p>
+
+<p>$C$ can also be evaluated by the cover-up method. Set $x = -2$ to get</p>
+
+\[\frac{x^2 + 2}{(x - 1)} = C + [\text{stuff}](x + 2) \implies \frac{(-2)^2 + 2}{(-2 - 1)^2} = C \implies C = \frac{2}{3}\]
+
+<p>This yields</p>
+
+\[\frac{x^2 + 2}{(x - 1)^2 (x + 2)} = \frac{A}{x - 1} + \frac{1}{(x - 1)^2} + \frac{2}{3} \frac{1}{x + 2}\]
+
+<p>Cover-up can’t be used to evaluate $A$. Instead, plug in an easy value of $x: x = 0$.</p>
+
+\[\frac{2}{(-1)^2 (2)} = \frac{A}{-1} + 1 + \frac{1}{3} \implies 1 = 1 + \frac{1}{3} - A \implies A = \frac{1}{3}\]
+
+<p>Now we have a complete answer:</p>
+
+\[\frac{x^2 + 2}{(x - 1)^2 (x + 2)} = \frac{1}{3(x - 1)} + \frac{1}{(x - 1)^2} + \frac{2}{3(x + 2)}\]
+
+<p>Not all polynomials factor completely (without resorting to using complex numbers). For example:</p>
+
+\[\frac{1}{(x^2 + 1)(x - 1)} = \frac{A_1}{x - 1} + \frac{B_1 x + C_1}{x^2 + 1}\]
+
+<p>We find $A_1$, as usual, by the cover-up method.</p>
+
+\[\frac{1}{1^2 + 1} = A_1 \implies A_1 = \frac{1}{2}\]
+
+<p>Now, we have</p>
+
+\[\frac{1}{(x^2 + 1)(x - 1)} = \frac{1/2}{x - 1} + \frac{B_1 x + C_1}{x^2 + 1}\]
+
+<p>Plug in $x = 0$.</p>
+
+\[\frac{1}{1(-1)} = -\frac{1}{2} + \frac{C_1}{1} \implies C_1 = -\frac{1}{2}\]
+
+<p>Now, plug in any value other than $x = 0, 1$. For example, let’s use $x = -1$.</p>
+
+\[\frac{1}{2(-2)} = \frac{1/2}{-2} + \frac{B_1(-1) - 1/2}{2} \implies 0 = -\frac{B_1 - 1/2}{2} \implies B_1 = -\frac{1}{2}\]
+
+<p>Alternatively, you can multiply out to clear the denominators (not done here).</p>
+
+<p>Let’s try to integrate this function, now.</p>
+
+\[\int \frac{dx}{(x^2 + 1)(x - 1)} = \frac{1}{2} \int \frac{dx}{x - 1} - \frac{1}{2} \int \frac{x \, dx}{x^2 + 1} - \frac{1}{2} \int \frac{dx}{x^2 + 1}\]
+
+\[= \frac{1}{2} \ln |x - 1| - \frac{1}{4} \ln |x^2 + 1| + \frac{1}{2} \tan^{-1} x + c\]
+
+<p>What if we’re faced with something that looks like this?</p>
+
+\[\int \frac{dx}{(x - 1)^{10}}\]
+
+<p>This is actually quite simple to integrate:</p>
+
+\[\int \frac{dx}{(x - 1)^{10}} = -\frac{1}{9} (x - 1)^{-9} + c\]
+
+<p>What about this?</p>
+
+\[\int \frac{dx}{(x^2 + 1)^{10}}\]
+
+<p>Here, we would use trig substitution:</p>
+
+\[x = \tan u \quad \text{and} \quad dx = \sec^2 u \, du\]
+
+<p>and the trig identity</p>
+
+\[\tan^2 u + 1 = \sec^2 u\]
+
+<p>to get</p>
+
+\[\int \frac{\sec^2 u \, du}{(\sec^2 u)^{10}} = \int \cos^{18} u \, du\]
+
+<p>From here, we can evaluate this integral using the methods we introduced two lectures ago.</p>
+
+<h3 id="integration-by-parts-reduction-formulae">Integration by Parts, Reduction Formulae</h3>
+
+<h1 id="integration-by-parts">Integration by Parts</h1>
+
+<p>Remember the product rule:</p>
+
+\[(uv)' = u'v + uv'\]
+
+<p>We can rewrite that as</p>
+
+\[uv' = (uv)' - u'v\]
+
+<p>Integrate this to get the formula for integration by parts:</p>
+
+\[\int uv' \, dx = uv - \int u'v \, dx\]
+
+<p><strong>Example 1.</strong> $\int \tan^{-1} x \, dx$</p>
+
+<p>At first, it’s not clear how integration by parts helps. Write</p>
+
+\[\int \tan^{-1} x \, dx = \int \tan^{-1} x (1 \cdot dx) = \int uv' \, dx\]
+
+<p>with</p>
+
+\[u = \tan^{-1} x \quad \text{and} \quad v' = 1\]
+
+<p>Therefore,</p>
+
+\[v = x \quad \text{and} \quad u' = \frac{1}{1 + x^2}\]
+
+<p>Plug all of these into the formula for integration by parts to get:</p>
+
+\[\int \tan^{-1} x \, dx = \int uv' \, dx = (\tan^{-1} x) x - \int \frac{1}{1 + x^2} (x) \, dx\]
+
+\[= x \tan^{-1} x - \frac{1}{2} \ln |1 + x^2| + c\]
+
+<h2 id="alternative-approach-to-integration-by-parts">Alternative Approach to Integration by Parts</h2>
+
+<p>As above, the product rule:</p>
+
+\[(uv)' = u'v + uv'\]
+
+<p>can be rewritten as</p>
+
+\[uv' = (uv)' - u'v\]
+
+<p>This time, let’s take the <em>definite</em> integral:</p>
+
+\[\int_{a}^{b} uv' \, dx = \int_{a}^{b} (uv)' \, dx - \int_{a}^{b} u'v \, dx\]
+
+<p>By the fundamental theorem of calculus, we can say</p>
+
+\[\int_{a}^{b} uv' \, dx = uv \bigg|_{a}^{b} - \int_{a}^{b} u'v \, dx\]
+
+<p>Another notation in the indefinite case is</p>
+
+\[\int u \, dv = uv - \int v \, du\]
+
+<p>This is the same because</p>
+
+\[dv = v' \, dx \implies uv' \, dx = u \, dv \quad \text{and} \quad du = u' \, dx \implies u'v \, dx = v \, du\]
+
+<p><strong>Example 2.</strong> $\int (\ln x) \, dx$</p>
+
+\[u = \ln x; \quad du = \frac{1}{x} \, dx \quad \text{and} \quad dv = dx; \quad v = x\]
+
+\[\int (\ln x) \, dx = x \ln x - \int x \left( \frac{1}{x} \right) \, dx = x \ln x - \int dx = x \ln x - x + c\]
+
+<p>We can also use “advanced guessing” to solve this problem. We know that the derivative of something equals $\ln x$:</p>
+
+\[\frac{d}{dx} (??) = \ln x\]
+
+<p>Let’s try</p>
+
+\[\frac{d}{dx} (x \ln x) = \ln x + x \cdot \frac{1}{x} = \ln x + 1\]
+
+<p>That’s almost it, but not quite. Let’s repair this guess to get:</p>
+
+\[\frac{d}{dx} (x \ln x - x) = \ln x + 1 - 1 = \ln x\]
+
+<h2 id="reduction-formulas-recurrence-formulas">Reduction Formulas (Recurrence Formulas)</h2>
+
+<p><strong>Example 3.</strong> $\int (\ln x)^n \, dx$</p>
+
+<p>Let’s try:</p>
+
+\[u = (\ln x)^n \implies u' = n (\ln x)^{n-1} \left( \frac{1}{x} \right)\]
+
+\[v' = dx; \quad v = x\]
+
+<p>Plugging these into the formula for integration by parts gives us:</p>
+
+\[\int (\ln x)^n \, dx = x (\ln x)^n - \int n (\ln x)^{n-1} \left( \frac{1}{x} \right) x \, dx\]
+
+<p>Keep repeating integration by parts to get the full formula: $n \to (n-1) \to (n-2) \to (n-3) \to \text{etc.}$</p>
+
+<p><strong>Example 4.</strong> $\int x^n e^x \, dx$</p>
+
+<p>Let’s try:</p>
+
+\[u = x^n \implies u' = nx^{n-1}; \quad v' = e^x \implies v = e^x\]
+
+<p>Putting these into the integration by parts formula gives us:</p>
+
+\[\int x^n e^x \, dx = x^n e^x - \int n x^{n-1} e^x \, dx\]
+
+<p>Repeat, going from $n \to (n-1) \to (n-2) \to \text{etc.}$</p>
+
+<p><strong>Bad news:</strong> If you change the integrals just a little bit, they become impossible to evaluate:</p>
+
+\[\int (\tan^{-1} x)^2 \, dx = \text{impossible}\]
+
+\[\int \frac{e^x}{x} \, dx = \text{also impossible}\]
+
+<p><strong>Good news:</strong> When you can’t evaluate an integral, then</p>
+
+\[\int_{1}^{2} \frac{e^x}{x} \, dx\]
+
+<p>is an answer, not a question. This <em>is</em> the solution—you don’t have to integrate it!</p>
+
+<p>The most important thing is setting up the integral! (Once you’ve done that, you can always evaluate it numerically on a computer.) So, why bother to evaluate integrals by hand, then? Because you often get families of related integrals, such as</p>
+
+\[F(a) = \int_{1}^{\infty} \frac{e^x}{x^a} \, dx\]
+
+<p>where you want to find how the answer depends on, say, $a$.</p>
+
+<h1 id="arc-length">Arc Length</h1>
+
+<p>This is very useful to know for 18.02 (multi-variable calculus).</p>
+
+<p>In Figures 1 and 2, $s$ denotes arc length and $ds$ = the infinitesimal of arc length.
+\(ds = \sqrt{(dx)^2 + (dy)^2} = \sqrt{1 + \left(\frac{dy}{dx}\right)^2} \, dx\)</p>
+
+<p>Integrating with respect to $ds$ finds the length of a curve between two points.</p>
+
+<p>To find the length of the curve between $P_0$ and $P_1$, evaluate:
+\(\int_{P_0}^{P_1} ds\)</p>
+
+<p>We want to integrate with respect to $x$, not $s$, so we do the same algebra as above to find $ds$ in terms of $dx$:</p>
+
+\[\left( \frac{ds}{dx} \right)^2 = \frac{(dx)^2}{(dx)^2} + \frac{(dy)^2}{(dx)^2} = 1 + \left( \frac{dy}{dx} \right)^2\]
+
+<p>Therefore,</p>
+
+\[\int_{P_0}^{P_1} ds = \int_a^b \sqrt{1 + \left(\frac{dy}{dx}\right)^2} \, dx\]
+
+<h2 id="example-5-the-circle">Example 5: The Circle</h2>
+
+\[y = \sqrt{1 - x^2}\]
+
+\[\frac{dy}{dx} = \frac{-2x}{\sqrt{1 - x^2}} \left( \frac{1}{2} \right) = \frac{-x}{\sqrt{1 - x^2}}\]
+
+\[ds = \sqrt{1 + \left( \frac{-x}{\sqrt{1 - x^2}} \right)^2} \, dx\]
+
+\[1 + \left( \frac{-x}{\sqrt{1 - x^2}} \right)^2 = 1 + \frac{x^2}{1 - x^2} = \frac{1 - x^2 + x^2}{1 - x^2} = \frac{1}{1 - x^2}\]
+
+\[ds = \sqrt{\frac{1}{1 - x^2}} \, dx\]
+
+\[s = \int_{0}^{a} \frac{dx}{\sqrt{1 - x^2}} = \sin^{-1} x \bigg|_{0}^{a} = \sin^{-1} a - \sin^{-1} 0 = \sin^{-1} a\]
+
+\[\sin s = a\]
+
+<h1 id="parametric-equations">Parametric Equations</h1>
+
+<h2 id="example-6">Example 6</h2>
+
+<p>Given:
+\(x = a \cos t\)
+\(y = a \sin t\)</p>
+
+<p>Is there a relationship between $x$ and $y$? Yes:
+\(x^2 + y^2 = a^2 \cos^2 t + a^2 \sin^2 t = a^2\)</p>
+
+<h2 id="example-7-the-ellipse">Example 7: The Ellipse</h2>
+
+<p>Given:
+\(x = 2 \sin t\)
+\(y = \cos t\)</p>
+
+<p>Then,
+\(\frac{x^2}{4} + y^2 = 1\)</p>
+
+<h1 id="arc-length-for-parametric-equations">Arc Length for Parametric Equations</h1>
+
+<h2 id="example-6-1">Example 6</h2>
+
+<p>\(dx = -a \sin t \, dt\)
+\(dy = a \cos t \, dt\)
+\(ds = \sqrt{(dx)^2 + (dy)^2} = \sqrt{(a \sin t)^2 + (a \cos t)^2} \, dt = a \, dt\)</p>
+
+<h3 id="parametric-equations-arclength-surface-area">Parametric Equations, Arclength, Surface Area</h3>
+
+<h2 id="arclength-continued">Arclength, Continued</h2>
+
+<p><strong>Example 1.</strong> Consider this parametric equation:</p>
+
+\[x = t^2 \quad y = t^3 \quad \text{for} \ 0 \leq t \leq 1\]
+
+\[x^3 = (t^2)^3 = t^6; \quad y^2 = (t^3)^2 = t^6 \implies x^3 = y^2 \implies y = x^{2/3} \quad 0 \leq x \leq 1\]
+
+\[(ds)^2 = (dx)^2 + (dy)^2\]
+
+\[(ds)^2 = (2t \, dt)^2 + (3t^2 \, dt)^2 = (4t^2 + 9t^4)(dt)^2\]
+
+<p>Length $= \int_{t=0}^{t=1} ds = \int_{0}^{1} \sqrt{4t^2 + 9t^4} \, dt = \int_{0}^{1} t \sqrt{4 + 9t^2} \, dt$</p>
+
+\[= \left( \frac{(4 + 9t^2)^{3/2}}{27} \right) \bigg|_{0}^{1} = \frac{1}{27} \left( 13^{3/2} - 4^{3/2} \right)\]
+
+<p>Even if you can’t evaluate the integral analytically, you can always use numerical methods.</p>
+
+<h2 id="surface-area-surfaces-of-revolution">Surface Area (Surfaces of Revolution)</h2>
+
+<h2 id="example-2-revolve-example-1-x--t2-y--t3-0-le-t-le-1-around-the-x-axis">Example 2: Revolve Example 1 ($x = t^2$, $y = t^3$, $0 \le t \le 1$) around the x-axis.</h2>
+
+\[\text{Area} = \int_{0}^{1} 2\pi y \, ds = \int_{0}^{1} 2\pi t^3 t\sqrt{4 + 9t^2} \, dt = 2\pi \int_{0}^{1} t^4 \sqrt{4 + 9t^2} \, dt\]
+
+<p>Now, we discuss the method used to evaluate</p>
+
+\[\int t^4 (4 + 9t^2)^{1/2} \, dt\]
+
+<p>We’re going to ignore the factor of $2\pi$. You can reinsert it once you’re done evaluating the integral. We use the trigonometric substitution</p>
+
+\[t = \frac{2}{3} \tan u; \quad dt = \frac{2}{3} \sec^2 u \, du; \quad \tan^2 u + 1 = \sec^2 u\]
+
+<p>Putting all of this together gives us:</p>
+
+\[\int t^4 (4 + 9t^2)^{1/2} \, dt = \int \left( \frac{2}{3} \tan u \right)^4 \left( 4 + 9 \left( \frac{4}{9} \tan^2 u \right) \right)^{1/2} \left( \frac{2}{3} \sec^2 u \, du \right)\]
+
+\[= \left( \frac{2}{3} \right)^5 \int \tan^4 u (2 \sec u) (\sec^2 u \, du)\]
+
+<p>This is a tan–sec integral. It’s doable, but it will take a long time for you to work the whole thing out.</p>
+
+<h2 id="example-3-surface-area-of-the-unit-sphere">Example 3: Surface Area of the Unit Sphere</h2>
+
+<p>For the top half of the sphere,</p>
+
+\[y = \sqrt{1 - x^2}\]
+
+<p>We want to find the area of the spherical slice between $x = a$ and $x = b$. A spherical slice has area</p>
+
+\[A = \int_{x=a}^{x=b} 2\pi y \, ds\]
+
+<p>From last time,</p>
+
+\[ds = \frac{dx}{\sqrt{1 - x^2}}\]
+
+<p>Plugging that in yields a remarkably simple formula for $A$:</p>
+
+\[A = \int_{a}^{b} 2\pi \sqrt{1 - x^2} \cdot \frac{dx}{\sqrt{1 - x^2}} = \int_{a}^{b} 2\pi \, dx = 2\pi (b - a)\]
+
+<p><strong>Special Cases</strong></p>
+
+<p>For a whole sphere, $a = -1$, and $b = 1$.</p>
+
+\[2\pi (1 - (-1)) = 4\pi\]
+
+<p>is the surface area of a unit sphere.</p>
+
+<p>For a half sphere, $a = 0$ and $b = 1$.</p>
+
+\[2\pi (1 - 0) = 2\pi\]
+
+<h3 id="polar-coordinates-area-in-polar-coordinates">Polar Coordinates, Area in Polar Coordinates</h3>
+
+<h2 id="polar-coordinates">Polar Coordinates</h2>
+
+<p>In polar coordinates, we specify an object’s position in terms of its distance $r$ from the origin and the angle $\theta$ that the ray from the origin to the point makes with respect to the x-axis.</p>
+
+<h2 id="example-1-1">Example 1</h2>
+<p>What are the polar coordinates for the point specified by $(1, -1)$ in rectangular coordinates?</p>
+
+<p>\(r = \sqrt{1^2 + (-1)^2} = \sqrt{2}\)
+\(\theta = -\frac{\pi}{4}\)</p>
+
+<p>In most cases, we use the convention that $r \ge 0$ and $0 \le \theta \le 2\pi$. Another common convention is to say $r \ge 0$ and $-\pi \le \theta \le \pi$.</p>
+
+<h2 id="conversion-from-rectangular-to-polar-coordinates">Conversion from Rectangular to Polar Coordinates</h2>
+<p>Regardless of whether we allow positive or negative values of $r$ or $\theta$, what is always true is:</p>
+
+<p>\(x = r \cos \theta\)
+\(y = r \sin \theta\)</p>
+
+<p>For instance, $x = 1$, $y = -1$ can be represented by $r = -\sqrt{2}$, $\theta = \frac{3\pi}{4}$:</p>
+
+<p>\(1 = x = -\sqrt{2} \cos \frac{3\pi}{4}\)
+\(-1 = y = -\sqrt{2} \sin \frac{3\pi}{4}\)</p>
+
+<h2 id="example-2-1">Example 2</h2>
+<p>Consider a circle of radius $a$ with its center at $x = a$, $y = 0$. We want to find an equation that relates $r$ to $\theta$.</p>
+
+<p>The equation for the circle in rectangular coordinates is:</p>
+
+\[(x - a)^2 + y^2 = a^2\]
+
+<p>Start by plugging in:</p>
+
+<p>\(x = r \cos \theta\)
+\(y = r \sin \theta\)</p>
+
+<p>This gives us:</p>
+
+<p>\((r \cos \theta - a)^2 + (r \sin \theta)^2 = a^2\)
+\(r^2 \cos^2 \theta - 2ar \cos \theta + a^2 + r^2 \sin^2 \theta = a^2\)
+\(r^2 - 2ar \cos \theta = 0\)
+\(r = 2a \cos \theta\)</p>
+
+<p>The range of $0 \le \theta \le \frac{\pi}{2}$ traces out the top half of the circle, while $-\frac{\pi}{2} \le \theta \le 0$ traces out the bottom half.</p>
+
+<h2 id="area-in-polar-coordinates">Area in Polar Coordinates</h2>
+
+<p>Since radius is a function of angle ($r = f(\theta)$), we will integrate with respect to $\theta$.</p>
+
+\[\text{Area} = \int_{\theta_1}^{\theta_2} \frac{1}{2} r^2 \, d\theta\]
+
+<p><strong>Example 3.</strong> $r = 2a \cos \theta$, and $-\frac{\pi}{2} &lt; \theta &lt; \frac{\pi}{2}$ (the circle in Figure 5).</p>
+
+\[A = \text{area} = \int_{-\pi/2}^{\pi/2} \frac{1}{2} (2a \cos \theta)^2 d\theta = 2a^2 \int_{-\pi/2}^{\pi/2} \cos^2 \theta d\theta\]
+
+<p>Because $\cos^2 \theta = \frac{1}{2} + \frac{1}{2} \cos 2\theta$, we can rewrite this as</p>
+
+\[A = \text{area} = \int_{-\pi/2}^{\pi/2} (1 + \cos 2\theta) d\theta = a^2 \int_{-\pi/2}^{\pi/2} d\theta + a^2 \int_{-\pi/2}^{\pi/2} \cos 2\theta d\theta\]
+
+\[= \pi a^2 + \frac{1}{2} \sin 2\theta \bigg|_{-\pi/2}^{\pi/2} = \pi a^2 + \frac{1}{2} [\sin \pi - \sin (-\pi)] = \pi a^2\]
+
+<p><strong>Example 4:</strong> Circle centered at the Origin.</p>
+
+\[x = r \cos \theta; \ y = r \sin \theta\]
+
+\[x^2 + y^2 = r^2 \cos^2 \theta + r^2 \sin^2 \theta = r^2\]
+
+<p>The circle is $x^2 + y^2 = a^2$, so $r = a$ and</p>
+
+\[x = a \cos \theta; \ y = a \sin \theta\]
+
+\[A = \int_{0}^{2\pi} \frac{1}{2} a^2 d\theta = \frac{1}{2} a^2 \cdot 2\pi = \pi a^2\]
+
+<p><strong>Example 5:</strong> A Ray. In this case, $\theta = b$.</p>
+
+<p>The range of $r$ is $0 \leq r &lt; \infty$; $x = r \cos b$; $y = r \sin b$.</p>
+
+<p><strong>Example 6:</strong> Finding the Polar Formula, based on the Cartesian Formula</p>
+
+<p>Consider, in Cartesian coordinates, the line $y = 1$. To find the polar coordinate equation, plug in $y = r \sin \theta$ and $x = r \cos \theta$ and solve for $r$.</p>
+
+\[r \sin \theta = 1 \implies r = \frac{1}{\sin \theta} \quad \text{with} \quad 0 &lt; \theta &lt; \pi\]
+
+<p><strong>Example 7:</strong> Going back to $(x, y)$ coordinates from $r = f(\theta)$.</p>
+
+<p>Start with</p>
+
+\[r = \frac{1}{1 + \frac{1}{2} \sin \theta}.\]
+
+<p>Hence,</p>
+
+\[r + \frac{r}{2} \sin \theta = 1\]
+
+<p>Plug in $r = \sqrt{x^2 + y^2}$:</p>
+
+\[\sqrt{x^2 + y^2} + \frac{y}{2} = 1\]
+
+\[\sqrt{x^2 + y^2} = 1 - \frac{y}{2} \implies x^2 + y^2 = \left(1 - \frac{y}{2}\right)^2 = 1 - y + \frac{y^2}{4}\]
+
+<p>Finally,</p>
+
+\[x^2 + \frac{3y^2}{4} + y = 1\]
+
+<p>This is an equation for an ellipse, with the origin at one focus.</p>
+
+<p>Useful conversion formulas:</p>
+
+\[r = \sqrt{x^2 + y^2} \quad \text{and} \quad \theta = \tan^{-1} \left(\frac{y}{x}\right)\]
+
+<p><strong>Example 8:</strong> A Rose $r = \cos (2\theta)$</p>
+
+<p>The graph looks a bit like a flower:</p>
+
+<p>For the first “petal”</p>
+
+\[-\frac{\pi}{4} &lt; \theta &lt; \frac{\pi}{4}\]
+
+<p>Note: Next lecture is Lecture 34 as Lecture 33 is Exam 4.</p>
+
+<h3 id="indeterminate-forms---lhôpitals-rule">Indeterminate Forms - L’Hôpital’s Rule</h3>
+
+<h1 id="lhôpitals-rule">L’Hôpital’s Rule</h1>
+
+<p>(Two correct spellings: “L’Hôpital” and “L’Hospital”)</p>
+
+<p>Sometimes, we run into indeterminate forms. These are things like</p>
+
+\[\frac{0}{0}\]
+
+<p>and</p>
+
+\[\frac{\infty}{\infty}\]
+
+<p>For instance, how do you deal with the following?</p>
+
+\[\lim_{x \to 1} \frac{x^3 - 1}{x^2 - 1} = \frac{0}{0} \text{ ??}\]
+
+<p><strong>Example 0.</strong> One way of dealing with this is to use algebra to simplify things:</p>
+
+\[\lim_{x \to 1} \frac{x^3 - 1}{x^2 - 1} = \lim_{x \to 1} \frac{(x - 1)(x^2 + x + 1)}{(x - 1)(x + 1)} = \lim_{x \to 1} \frac{x^2 + x + 1}{x + 1} = \frac{3}{2}\]
+
+<p>In general, when $f(a) = g(a) = 0$,</p>
+
+\[\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f(x) - f(a)}{x - a} \bigg/ \frac{g(x) - g(a)}{x - a} = \frac{f'(a)}{g'(a)}\]
+
+<p>This is the easy version of L’Hôpital’s rule:</p>
+
+\[\lim_{x \to a} \frac{f(x)}{g(x)} = \frac{f'(a)}{g'(a)}\]
+
+<p><strong>Note:</strong> this only works when $g’(a) \neq 0$!</p>
+
+<p>In example 0,</p>
+
+\[f(x) = x^3 - 1; \quad g(x) = x^2 - 1\]
+
+\[f'(x) = 3x^2; \quad g'(x) = 2x \implies f'(1) = 3; \ g'(1) = 2\]
+
+<p>The limit is $f’(1) / g’(1) = 3 / 2$. Now, let’s go on to the full L’Hôpital rule.</p>
+
+<p><strong>Example 1.</strong> Apply L’Hôpital’s rule (a.k.a. “L’Hop”) to</p>
+
+\[\lim_{x \to 1} \frac{x^{15} - 1}{x^3 - 1}\]
+
+<p>to get</p>
+
+\[\lim_{x \to 1} \frac{x^{15} - 1}{x^3 - 1} = \lim_{x \to 1} \frac{15x^{14}}{3x^2} = \frac{15}{3} = 5\]
+
+<p>Let’s compare this with the answer we’d get if we used linear approximation techniques, instead of L’Hôpital’s rule:</p>
+
+\[x^{15} - 1 \approx 15(x - 1)\]
+
+<p>(Here, $f(x) = x^{15} - 1, a = 1, f(a) = b = 0, m = f’(1) = 15$, and $f(x) \approx m(x - a) + b.$)</p>
+
+<p>Similarly,</p>
+
+\[x^3 - 1 \approx 3(x - 1)\]
+
+<p>Therefore,</p>
+
+\[\frac{x^{15} - 1}{x^3 - 1} \approx \frac{15(x - 1)}{3(x - 1)} = 5\]
+
+<p><strong>Example 2.</strong> Apply L’Hop to</p>
+
+\[\lim_{x \to 0} \frac{\sin 3x}{x}\]
+
+<p>to get</p>
+
+\[\lim_{x \to 0} \frac{\sin 3x}{x} = 3\]
+
+<p>This is the same as</p>
+
+\[\frac{d}{dx} \left( \sin (3x) \right) \bigg|_{x=0} = 3 \cos (3x) \bigg|_{x=0} = 3\]
+
+<p><strong>Example 3.</strong></p>
+
+\[\lim_{x \to \frac{\pi}{4}} \frac{\sin x - \cos x}{x - \frac{\pi}{4}} = \lim_{x \to \frac{\pi}{4}} \frac{\cos x + \sin x}{1} = \frac{1}{\sqrt{2}} + \frac{1}{\sqrt{2}} = \sqrt{2}\]
+
+<p>$f(x) = \sin x - \cos x, \ f’(x) = \cos x + \sin x$</p>
+
+\[f'\left( \frac{\pi}{4} \right) = \sqrt{2}\]
+
+<p><strong>Remark:</strong> Derivatives $\lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x}$ are always a $\frac{0}{0}$ type of limit.</p>
+
+<p><strong>Example 4.</strong></p>
+
+\[\lim_{x \to 0} \frac{\cos x - 1}{x}\]
+
+<p>Use L’Hôpital’s rule to evaluate the limit:</p>
+
+\[\lim_{x \to 0} \frac{\cos x - 1}{x} = \lim_{x \to 0} \frac{-\sin x}{1} = 0\]
+
+<p><strong>Example 5.</strong></p>
+
+\[\lim_{x \to 0} \frac{\cos x - 1}{x^2}\]
+
+\[\lim_{x \to 0} \frac{\cos x - 1}{x^2} = \lim_{x \to 0} \frac{-\sin x}{2x} = \lim_{x \to 0} \frac{-\cos x}{2} = -\frac{1}{2}\]
+
+<p>Just to check, let’s compare that answer to the one we would get if we used quadratic approximation techniques. Remember that:</p>
+
+\[\cos x \approx 1 - \frac{1}{2} x^2 \quad (x \approx 0)\]
+
+\[\frac{\cos x - 1}{x^2} \approx \frac{1 - \frac{1}{2} x^2 - 1}{x^2} = \frac{\left( -\frac{1}{2} \right) x^2}{x^2} = -\frac{1}{2}\]
+
+<p><strong>Example 6.</strong></p>
+
+\[\lim_{x \to 0} \frac{\sin x}{x^2}\]
+
+\[\lim_{x \to 0} \frac{\sin x}{x^2} = \lim_{x \to 0} \frac{\cos x}{2x} \quad \text{By L'Hôpital's rule}\]
+
+<p>If we apply L’Hôpital again, we get</p>
+
+\[\lim_{x \to 0} \frac{-\sin x}{2} = 0\]
+
+<p>But this doesn’t agree with what we get from taking the linear approximation:</p>
+
+\[\frac{\sin x}{x^2} \approx \frac{x}{x^2} = \frac{1}{x} \to \infty \quad \text{as} \quad x \to 0^+\]
+
+<p>We can clear up this seeming paradox by noting that</p>
+
+\[\lim_{x \to 0} \frac{\cos x}{2x} = \frac{1}{0}\]
+
+<p>The limit is not of the form $\frac{0}{0}$, which means L’Hôpital’s rule cannot be used. The point is: look before you L’Hôp!</p>
+
+<h2 id="more-interesting-cases-that-work">More “interesting” cases that work.</h2>
+
+<p>It is also okay to use L’Hôpital’s rule on limits of the form $\frac{\infty}{\infty}$, or if $x \to \infty$, or $x \to -\infty$. Let’s apply this to rates of growth. Which function goes to $\infty$ faster: $x$, $e^{ax}$, or $\ln x$?</p>
+
+<p><strong>Example 7.</strong> For $a &gt; 0$,</p>
+
+\[\lim_{x \to \infty} \frac{e^{ax}}{x} = \lim_{x \to \infty} \frac{ae^{ax}}{1} = +\infty\]
+
+<p>So $e^{ax}$ grows faster than $x$ (for $a &gt; 0$).</p>
+
+<p><strong>Example 8.</strong></p>
+
+\[\lim_{x \to \infty} \frac{e^{ax}}{x^{10}} = \lim_{x \to \infty} \frac{ae^{ax}}{10x^9} = \lim_{x \to \infty} \frac{c^2 e^{ax}}{10 \cdot 9x^8} = \cdots = \lim_{x \to \infty} \frac{a^{10} e^{ax}}{10!} = \infty\]
+
+<p>You can apply L’Hôpital’s rule ten times. There’s a better way, though:</p>
+
+\[\lim_{x \to \infty} \left( \frac{e^{ax}}{x^{10}} \right)^{1/10} = \frac{e^{ax/10}}{x} = \lim_{x \to \infty} \frac{e^{ax}}{x^{10}} = \lim_{x \to \infty} \left( \frac{e^{ax/10}}{x} \right)^{10} = \infty^{10} = \infty\]
+
+<p><strong>Example 9.</strong></p>
+
+\[\lim_{x \to \infty} \frac{\ln x}{x^{1/3}} = \lim_{x \to \infty} \frac{1/x}{3x^{-2/3}} = \lim_{x \to \infty} 3x^{-1/3} = 0\]
+
+<p>Combining the preceding examples, $\ln x \ll x^{1/3} \ll x \ll x^{10} \ll e^{ax}$  ($x \to \infty, a &gt; 0$).</p>
+
+<p>L’Hôpital’s rule applies to $\frac{0}{0}$ and $\frac{\infty}{\infty}$. But, we sometimes face other indeterminate limits, such as $1^{\infty}, 0^{0}$, and $0 \cdot \infty$. Use algebra, exponentials, and logarithms to put these in L’Hôpital form.</p>
+
+<p><strong>Example 10.</strong></p>
+
+\[\lim_{x \to 0} x^x \text{ for } x &gt; 0.\]
+
+<p>Because the exponent is a variable, use base $e$:</p>
+
+\[\lim_{x \to 0} x^x = \lim_{x \to 0} e^{x \ln x}\]
+
+<p>First, we need to evaluate the limit of the exponent</p>
+
+\[\lim_{x \to 0} x \ln x\]
+
+<p>This limit has the form $0 \cdot \infty$. We want to put it in the form $\frac{0}{0}$ or $\frac{\infty}{\infty}$.</p>
+
+<p>Let’s try to put it into the $\frac{0}{0}$ form:</p>
+
+\[\frac{x}{1 / \ln x}\]
+
+<p>We don’t know how to find $\lim_{x \to 0} \frac{1}{\ln x}$, though, so that approach isn’t helpful.</p>
+
+<p>Instead, let’s try to put it into the $\frac{\infty}{\infty}$ form:</p>
+
+\[\frac{\ln x}{1 / x}\]
+
+<p>Using L’Hôpital’s rule, we find</p>
+
+\[\lim_{x \to 0} x \ln x = \lim_{x \to 0} \frac{\ln x}{1 / x} = \lim_{x \to 0} \frac{1 / x}{-1 / x^2} = \lim_{x \to 0} (-x) = 0\]
+
+<p>Therefore,</p>
+
+\[\lim_{x \to 0} x^x = \lim_{x \to 0} e^{x \ln x} = \lim_{x \to 0} e^0 = 1\]
+
+<h3 id="improper-integrals">Improper Integrals</h3>
+
+<p>An improper integral, defined by</p>
+
+\[\int_{a}^{\infty} f(x) dx = \lim_{M \to \infty} \int_{a}^{M} f(x) dx\]
+
+<p>is said to converge if the limit exists (diverges if the limit does not exist).</p>
+
+<p><strong>Example 1.</strong></p>
+
+\[\int_{0}^{\infty} e^{-kx} dx = 1/k \quad (k &gt; 0)\]
+
+\[\int_{0}^{M} e^{-kx} dx = (-1/k) e^{-kx} \bigg|_{0}^{M} = (1/k) (1 - e^{-kM})\]
+
+<p>Taking the limit as $M \to \infty$, we find $e^{-kM} \to 0$ and</p>
+
+\[\int_{0}^{\infty} e^{-kx} dx = 1/k\]
+
+<p>We rewrite this calculation more informally as follows,</p>
+
+\[\int_{0}^{\infty} e^{-kx} dx = (-1/k) e^{-kx} \bigg|_{0}^{\infty} = (1/k) (1 - e^{-k\infty}) = 1/k \quad (\text{since } k &gt; 0)\]
+
+<p>Note that the integral over the infinite interval $\int_{0}^{\infty} e^{-kx} dx = 1/k$ has an easier formula than the corresponding finite integral $\int_{0}^{M} e^{-kx} dx = (1/k) (1 - e^{-kM})$. As a practical matter, for large $M$, the term $e^{-kM}$ is negligible, so even the simpler formula $1/k$ serves as a good approximation to the finite integral. Infinite integrals are often easier than finite ones, just as infinitesimals and derivatives are easier than difference quotients.</p>
+
+<p><strong>Application:</strong> Replace $x$ by $t =$ time in seconds in Example 1. $R =$ rate of decay $=$ number of atoms that decay per second at time 0. At later times $t &gt; 0$ the decay rate is $Re^{-kt}$ (smaller by an exponential factor $e^{-kt}$).</p>
+
+<p>Eventually (over time $0 \leq t &lt; \infty$) every atom decays. So the total number of atoms $N$ is calculated using the formula we found in Example 1,</p>
+
+\[N = \int_{0}^{\infty} Re^{-kt} dt = R/k\]
+
+<p>The half life $H$ of a radioactive element is the time $H$ at which the decay rate is half what it was at the start. Thus</p>
+
+\[e^{-kH} = 1/2 \implies -kH = \ln(1/2) \implies k = (\ln 2)/H\]
+
+<p>Hence</p>
+
+\[R = Nk = N (\ln 2)/H\]
+
+<p>Let us illustrate with Polonium 210, which has been in the news lately. The half life is 138 days or</p>
+
+\[H = (138 \text{ days}) (24 \text{ hr/day}) (60^2 \text{ sec/hr}) = (138) (24) (60^2) \text{ seconds}\]
+
+<p>Using this value of $H$, we find that one gram of Polonium 210 emits $(1 \text{ gram}) (6 \times 10^{23} / 210 \text{ atoms/gram}) (\ln 2) / H = 1.6610^{14} \text{ decays/sec} \approx 4500 \text{ curies}$.</p>
+
+<p>At 5.3 MeV per decay, Polonium gives off 140 watts of radioactive energy per gram (white hot). Polonium emits alpha rays, which are blocked by skin but when ingested are 20 times more dangerous than gamma and X-rays. The lethal dose, when ingested, is about $10^{-7}$ grams.</p>
+
+<p><strong>Example 2.</strong></p>
+
+\[\int_{0}^{\infty} \frac{dx}{1 + x^2} = \pi / 2.\]
+
+<p>We calculate,</p>
+
+\[\int_{0}^{M} \frac{dx}{1 + x^2} = \tan^{-1} x \bigg|_{0}^{M} = \tan^{-1} M \to \pi / 2\]
+
+<p>as $M \to \infty$. (If $\theta = \tan^{-1} M$ then $\theta \to \pi / 2$ as $M \to \infty$.)</p>
+
+<p><strong>Example 3.</strong></p>
+
+\[\int_{0}^{\infty} e^{-x^2} dx = \sqrt{\pi}/2\]
+
+<p>Recall that we already computed this improper integral (by computing a volume in two ways, slices and the method of shells). This shows vividly that a finite integral can be harder to understand than its infinite counterpart:</p>
+
+\[\int_{0}^{M} e^{-x^2} dx\]
+
+<p>can only be evaluated numerically. It has no elementary formula. By contrast, we found an explicit formula when $M = \infty$.</p>
+
+<p><strong>Example 4.</strong></p>
+
+\[\int_{1}^{\infty} \frac{dx}{x}\]
+
+\[\int_{1}^{M} \frac{dx}{x} = \ln x \bigg|_{1}^{M} = \ln M - \ln 1 = \ln M \to \infty\]
+
+<p>as $M \to \infty$. This improper integral is infinite (called divergent or not convergent).</p>
+
+<p><strong>Example 5.</strong></p>
+
+\[\int_{1}^{\infty} \frac{dx}{x^p} \quad (p &gt; 1)\]
+
+\[\int_{1}^{M} \frac{dx}{x^p} = \left( \frac{1}{1-p} \right) x^{1-p} \bigg|_{1}^{M} = \left( \frac{1}{1-p} \right) (M^{1-p} - 1) \to \frac{1}{p-1}\]
+
+<p>as $M \to \infty$ because $1 - p &lt; 0$. Thus, this integral is convergent.</p>
+
+<p><strong>Example 6.</strong></p>
+
+\[\int_{1}^{\infty} \frac{dx}{x^p} \quad (0 &lt; p &lt; 1)\]
+
+<p>This is very similar to the previous example, but diverges</p>
+
+\[\int_{1}^{M} \frac{dx}{x^p} = \left( \frac{1}{1-p} \right) x^{1-p} \bigg|_{1}^{M} = \left( \frac{1}{1-p} \right) (M^{1-p} - 1) \to \infty\]
+
+<p>as $M \to \infty$ because $1 - p &gt; 0$.</p>
+
+<h2 id="determining-divergence-and-convergence">Determining Divergence and Convergence</h2>
+<p>To decide whether an integral converges or diverges, compare it to a simpler integral that can be evaluated.</p>
+
+<p><strong>Example 7.</strong></p>
+
+\[\int_{0}^{\infty} \frac{dx}{\sqrt{x^3 + 1}}\]
+
+<p>It is natural to try the comparison</p>
+
+\[\frac{1}{\sqrt{x^3 + 1}} \leq \frac{1}{x^{3/2}}\]
+
+<p>But the area under $x^{-3/2}$ on the interval $0 &lt; x &lt; \infty$,</p>
+
+\[\int_{0}^{\infty} \frac{dx}{x^{3/2}}\]
+
+<p>turns out to be infinite because of the infinite behavior as $x \to 0$. We can rescue this comparison by excluding an interval near 0.</p>
+
+\[\int_{0}^{\infty} \frac{dx}{\sqrt{x^3 + 1}} = \int_{0}^{1} \frac{dx}{\sqrt{x^3 + 1}} + \int_{1}^{\infty} \frac{dx}{\sqrt{x^3 + 1}}\]
+
+<p>The integral on $0 &lt; x &lt; 1$ is a finite integral and the second integral now works well with comparison,</p>
+
+\[\int_{1}^{\infty} \frac{dx}{\sqrt{x^3 + 1}} \leq \int_{1}^{\infty} \frac{dx}{x^{3/2}} &lt; \infty\]
+
+<p>because $3/2 &gt; 1$.</p>
+
+<p><strong>Example 8.</strong></p>
+
+\[\int_{0}^{\infty} e^{-x^3} dx\]
+
+<p>For $x \geq 1$, $x^3 \geq x$, so</p>
+
+\[\int_{1}^{\infty} e^{-x^3} dx \leq \int_{1}^{\infty} e^{-x} dx = 1 &lt; \infty\]
+
+<p>Thus the full integral from $0 \leq x &lt; \infty$ of $e^{-x^3}$ converges as well. We can ignore the interval $0 \leq x \leq 1$ because it has finite length and $e^{-x^3}$ does not tend to infinity there.</p>
+
+<p><strong>Limit comparison:</strong></p>
+
+<p>Suppose that $0 \leq f(x)$ and $\lim_{x \to \infty} \frac{f(x)}{g(x)} \leq 1$. Then $f(x) \leq 2g(x)$ for $x \geq a$ (some large $a$).</p>
+
+<p>Hence</p>
+
+\[\int_{a}^{\infty} f(x) \, dx \leq 2 \int_{a}^{\infty} g(x) \, dx.\]
+
+<p><strong>Example 9.</strong></p>
+
+\[\int_{0}^{\infty} \frac{(x + 10) \, dx}{x^2 + 1}\]
+
+<p>The limiting behavior as $x \to \infty$ is</p>
+
+\[\frac{(x + 10) \, dx}{x^2 + 1} \approx \frac{x}{x^2} = \frac{1}{x}\]
+
+<p>Since</p>
+
+\[\int_{0}^{\infty} \frac{dx}{x} = \infty,\]
+
+<p>the integral</p>
+
+\[\int_{0}^{\infty} \frac{(x + 10) \, dx}{x^2 + 1}\]
+
+<p>also diverges.</p>
+
+<p><strong>Example 10 (from PS8).</strong></p>
+
+\[\int_{0}^{\infty} x^n e^{-x} \, dx\]
+
+<p>This converges. To carry out a convenient comparison requires some experience with growth rates of functions.</p>
+
+\[x^n \ll e^x \text{ not enough. Instead use } \frac{x^n}{e^{x/2}} \to 0 \text{ (true by L'Hop). It follows that}\]
+
+\[x^n \ll e^{x/2} \implies x^n e^{-x} \ll e^{x/2} e^{-x} = e^{-x/2}\]
+
+<p>Now by limit comparison, since</p>
+
+\[\int_{0}^{\infty} e^{-x/2} dx\]
+
+<p>converges, so does our integral. You will deal with this integral on the problem set.</p>
+
+<p><strong>Improper Integrals of the Second Type</strong></p>
+
+\[\int_{0}^{1} \frac{dx}{\sqrt{x}}\]
+
+<p>We know that $\frac{1}{\sqrt{x}} \to \infty$ as $x \to 0$.</p>
+
+\[\int_{0}^{1} \frac{dx}{\sqrt{x}} = \lim_{a \to 0^+} \int_{a}^{1} x^{-1/2} dx\]
+
+\[\int_{a}^{1} x^{-1/2} dx = 2x^{1/2} \bigg|_{a}^{1} = 2 - 2a^{1/2}\]
+
+<p>As $a \to 0$, $2a^{1/2} \to 0$. So,</p>
+
+\[\int_{0}^{1} x^{-1/2} dx = 2\]
+
+<p>Similarly,</p>
+
+\[\int_{0}^{1} x^{-p} dx = \frac{1}{-p + 1}\]
+
+<p>for all $p &lt; 1$. For $p = \frac{1}{2}$,</p>
+
+\[\frac{1}{\left( -\frac{1}{2} \right) + 1} = 2\]
+
+<p>However, for $p \geq 1$, the integral diverges.</p>
+
+<h3 id="infinite-series-and-convergence-tests">Infinite Series and Convergence Tests</h3>
+
+<h2 id="infinite-series">Infinite Series</h2>
+
+<h2 id="geometric-series">Geometric Series</h2>
+<p>A geometric series looks like</p>
+
+\[1 + a + a^2 + a^3 + \ldots = S\]
+
+<p>There’s a trick to evaluate this: multiply both sides by $a$:</p>
+
+\[a + a^2 + a^3 + \ldots = aS\]
+
+<p>Subtracting,</p>
+
+\[(1 + a + a^2 + a^3 + \ldots) - (a + a^2 + a^3 + \ldots) = S - aS\]
+
+<p>In other words,</p>
+
+\[1 = S - aS \implies 1 = (1 - a)S \implies S = \frac{1}{1 - a}\]
+
+<table>
+  <tbody>
+    <tr>
+      <td>This only works when $</td>
+      <td>a</td>
+      <td>&lt; 1$, i.e. $-1 &lt; a &lt; 1$.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="notation">Notation</h2>
+<p>Here is some notation that’s useful for dealing with series or sums. An infinite sum is written:</p>
+
+\[\sum_{k=0}^{\infty} a_k = a_0 + a_1 + a_2 + \ldots\]
+
+<p>The finite sum</p>
+
+\[S_n = \sum_{k=0}^{n} a_k = a_0 + \ldots + a_n\]
+
+<p>is called the “nth partial sum” of the infinite series.</p>
+
+<h2 id="definition">Definition</h2>
+<p>\(\sum_{k=0}^{\infty} a_k = s\)</p>
+
+<p>means the same thing as</p>
+
+\[\lim_{n \to \infty} S_n = s, \text{ where } S_n = \sum_{k=0}^{n} a_k\]
+
+<p>We say the series converges to $s$, if the limit exists and is finite. The importance of convergence is illustrated here by the example of the geometric series. If $a = 1$, $S = 1 + 1 + 1 + \ldots = \infty$. But</p>
+
+\[S - aS = 1 \text{ or } \infty - \infty = 1\]
+
+<p>does not make sense and is not usable!</p>
+
+<h2 id="example-geometric-series">Example: Geometric Series</h2>
+<p>If $a = 1$:</p>
+
+\[S = 1 + 1 + 1 + \ldots = \infty\]
+
+<p>If $a = -1$:</p>
+
+\[S = 1 - 1 + 1 - 1 + \ldots = \frac{1}{1 - (-1)} = \frac{1}{2}\]
+
+<h2 id="harmonic-series">Harmonic Series</h2>
+
+\[\sum_{n=1}^{\infty} \frac{1}{n}\]
+
+<p>We can use integrals to decide if this type of series converges. First, turn the sum into an integral:</p>
+
+\[\sum_{n=1}^{\infty} \frac{1}{n^p} \sim \int_{1}^{\infty} \frac{dx}{x^p}\]
+
+<p>If that improper integral evaluates to a finite number, the series converges.</p>
+
+<p>Consider a positive, decreasing function $f(x) &gt; 0$. (For example, $f(x) = \frac{1}{x^p}$)</p>
+
+\[\left| \sum_{n=1}^{\infty} f(n) - \int_{1}^{\infty} f(x) \, dx \right| &lt; f(1)\]
+
+<p>So, either both of the terms converge, or they both diverge. This is what we mean when we say</p>
+
+\[\sum_{n=1}^{\infty} \frac{1}{n^p} \sim \int_{1}^{\infty} \frac{dx}{x^p}\]
+
+<p>Therefore, $\sum_{n=1}^{\infty} \frac{1}{n^p}$ diverges for $p \leq 1$ and converges for $p &gt; 1$.</p>
+
+<p>Lots of fudge room: in comparison.</p>
+
+\[\sum_{n=1}^{\infty} \frac{1}{\sqrt{n^2 + 10}}\]
+
+<p>diverges, because</p>
+
+\[\frac{1}{\sqrt{n^2 + 10}} \sim \frac{1}{(n^2)^{1/2}} = \frac{1}{n}\]
+
+<p><strong>Limit comparison:</strong></p>
+
+<p>If $f(x) \sim g(x)$ as $x \to \infty$, then $\sum f(n)$ and $\sum g(n)$ either both converge or both diverge.</p>
+
+<p>What, exactly, does $f(x) \sim g(x)$ mean? It means that</p>
+
+\[\lim_{x \to \infty} \frac{f(x)}{g(x)} = c\]
+
+<p>where $0 &lt; c &lt; \infty$.</p>
+
+<p>Let’s check: does the following series converge?</p>
+
+\[\sum_{n=1}^{\infty} \frac{n}{\sqrt{n^5 - 10}}\]
+
+\[\frac{n}{\sqrt{n^5 - 10}} \sim \frac{n}{\sqrt{n^5}} = n^{-3/2} = \frac{1}{n^{3/2}}\]
+
+<p>Since $\frac{3}{2} &gt; 1$, this series does converge.</p>
+
+<h2 id="playing-with-blocks">Playing with Blocks</h2>
+
+<p>At this point in the lecture, the professor brings out several long, identical building blocks. Do you think it’s possible to stack the blocks like this?</p>
+
+<p><em>Top block is farther out than the bottom block.</em></p>
+
+<p>In order for this to work, you want the collective center of mass of the upper blocks always to be over the base block. The professor successfully builds the stack. Is it possible to extend this stack clear across the room? The best strategy is to build from the top block down.</p>
+
+<p>Let $C_0$ be the left end of the first (top) block.
+Let $C_1$ be the center of mass of the first block (top block).
+Put the second block as far to the right as possible, namely, so that its left end is at $C_1$.</p>
+
+<p>Let $C_2$ be the center of mass of the top two blocks. The strategy is to put the left end of the next block underneath the center of mass of all the previous ones combined.</p>
+
+<p>\(C_0 = 0\)
+\(C_1 = 1\)
+\(C_2 = 1 + \frac{1}{2}\)
+\(C_{n+1} = \frac{nC_n + 1(C_{n+1})}{n+1} = C_n + \frac{1}{n+1}\)</p>
+
+<p>\(C_3 = 1 + \frac{1}{2} + \frac{1}{3}\)
+\(C_4 = 1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4}\)
+\(C_5 = 1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \frac{1}{5} &gt; 2\)</p>
+
+<p>So yes, you can extend this stack as far (horizontally) as you want — provided that you have enough blocks. Another way of looking at this problem is to say</p>
+
+\[\sum_{n=1}^{N} \frac{1}{n} = S_N\]
+
+<p>Recall the Riemann Sum estimation from the beginning of this lecture:</p>
+
+\[\ln N &lt; S_N &lt; (\ln N) + 1\]
+
+<p>As $N \to \infty$, $S_N \to \infty$.</p>
+
+<p>How high would this stack of blocks be if we extended it across the two lab tables here at the front of the lecture hall? The blocks are 30 cm by 3 cm. One lab table is 6.5 blocks, or 13 units, long. Two tables are 26 units long. There will be 26 - 2 = 24 units of overhang in the stack.</p>
+
+<p>If $\ln N = 24$, then $N = e^{24}$.</p>
+
+<p>Height = $3 \text{ cm} \cdot e^{24} \approx 8 \times 10^8 \text{ m}$</p>
+
+<p>That height is roughly twice the distance to the moon. If you want the stack to span this room (~30 ft.), it would have to be $10^{26}$ meters high. That’s about the diameter of the observable universe.</p>
+
+<h3 id="taylor-series">Taylor Series</h3>
+
+<h2 id="general-power-series">General Power Series</h2>
+
+<h2 id="what-is-cos-x-anyway">What is cos x anyway?</h2>
+<p>Recall: geometric series
+\(\frac{1}{1-a} = 1 + a + a^2 + a^3 + \cdots \quad \text{for} \ |a| &lt; 1\)</p>
+
+<p>A general power series is an infinite sum:
+\(f(x) = a_0 + a_1 x + a_2 x^2 + a_3 x^3 + \cdots\)
+This represents $f$ when $|x| &lt; R$, where $R$ is the radius of convergence. This means that for $|x| &lt; R$, $|a_n x^n| \to 0$ as $n \to \infty$ (“geometrically”). On the other hand, if $|x| &gt; R$, then $|a_n x^n|$ does not tend to 0. For example, in the case of the geometric series, if $|a| = \frac{1}{2}$, then $|a^n| = \left(\frac{1}{2}\right)^n$. Since the higher-order terms get increasingly small if $|a| &lt; 1$, the “tail” of the series is negligible.</p>
+
+<h2 id="example-1-2">Example 1</h2>
+<p>If $a = -1$, $|a^n| = 1$ does not tend to 0.
+\(1 - 1 + 1 - 1 + \cdots\)
+The sum bounces back and forth between 0 and 1. Therefore, it does not approach 0. Outside the interval $-1 &lt; a &lt; 1$, the series diverges.</p>
+
+<h2 id="basic-tools">Basic Tools</h2>
+
+<h2 id="substitutionalgebra">Substitution/Algebra</h2>
+<p>\(\frac{1}{1-x} = 1 + x + x^2 + \cdots\)</p>
+
+<h2 id="example-2-2">Example 2</h2>
+<p>If $x = -u$,
+\(\frac{1}{1+u} = 1 - u + u^2 - u^3 + \cdots\)</p>
+
+<h2 id="example-3-1">Example 3</h2>
+<p>If $x = -v^2$,
+\(\frac{1}{1+v^2} = 1 - v^2 + v^4 - v^6 + \cdots\)</p>
+
+<h2 id="example-4">Example 4</h2>
+<p>\(\left( \frac{1}{1-x} \right)^2 = (1 + x + x^2 + \cdots)(1 + x + x^2 + \cdots)\)
+Term-by-term multiplication gives:
+\(1 + 2x + 3x^2 + \cdots\)</p>
+
+<p>Differentiation (term by term)</p>
+
+\[\frac{d}{dx} \left[ \frac{1}{1-x} \right] = \frac{d}{dx} \left[ 1 + x + x^2 + x^3 + \cdots \right]\]
+
+\[\frac{1}{(1-x)^2} = 0 + 1 + 2x + 3x^2 + \cdots \quad \text{where 1 is } a_0, \ 2 \text{ is } a_1 \text{ and 3 is } a_2\]
+
+<p>Same answer as Example 4, but using a new method.</p>
+
+<p>Integration (term by term)</p>
+
+\[\int f(x) \, dx = c + \left( a_0 + \frac{a_1}{2} x^2 + \frac{a_2}{3} x^3 + \cdots \right)\]
+
+<p>where</p>
+
+\[f(x) = a_0 + a_1 x + a_2 x^2 + \cdots\]
+
+<p>Example 5. 
+\(\int \frac{du}{1+u}\)</p>
+
+\[\left( \frac{1}{1+u} = 1 - u + u^2 - u^3 + \cdots \right)\]
+
+\[\int \frac{du}{1+u} = c + u - \frac{u^2}{2} + \frac{u^3}{3} - \frac{u^4}{4} + \cdots\]
+
+\[\ln(1+x) = \int_0^x \frac{du}{1+u} = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \cdots\]
+
+<p>So now we know the series expansion of $\ln(1 + x)$.</p>
+
+<h2 id="example-6-2">Example 6</h2>
+<p>\(\frac{1}{1+v^2} = 1 - v^2 + v^4 - v^6 + \cdots\)</p>
+
+\[\int \frac{dv}{1+v^2} = c + \left( v - \frac{v^3}{3} + \frac{v^5}{5} - \frac{v^7}{7} + \cdots \right)\]
+
+\[\tan^{-1} x = \int_0^x \frac{dv}{1+v^2} = x - \frac{x^3}{3} + \frac{x^5}{5} - \frac{x^7}{7} + \cdots\]
+
+<h1 id="taylors-series-and-taylors-formula">Taylor’s Series and Taylor’s Formula</h1>
+
+<p>If $f(x) = a_0 + a_1 x + a_2 x^2 + \cdots$, we want to figure out what all these coefficients are.</p>
+
+<p>Differentiating,
+\(f'(x) = a_1 + 2a_2 x + 3a_3 x^2 + \cdots\)
+\(f''(x) = (2)(1) a_2 + (3)(2) a_3 x + (4)(3) a_4 x^2 + \cdots\)
+\(f'''(x) = (3)(2)(1) a_3 + (4)(3)(2) a_4 x + \cdots\)</p>
+
+<p>Let’s plug in $x = 0$ to all of these equations.
+\(f(0) = a_0\)
+\(f'(0) = a_1\)
+\(f''(0) = 2a_2\)
+\(f'''(0) = (3!) a_3\)</p>
+
+<p>Taylor’s Formula tells us what the coefficients are:
+\(f^{(n)}(0) = (n!) a_n\)</p>
+
+<p>Remember, $n! = n(n-1)(n-2) \cdots (2)(1)$ and $0! = 1$. Coefficients $a_n$ are given by:
+\(a_n = \frac{f^{(n)}(0)}{n!}\)</p>
+
+<h2 id="example-7-fx--ex">Example 7: $f(x) = e^x$</h2>
+<p>\(f'(x) = e^x\)
+\(f''(x) = e^x\)
+\(f^{(n)}(x) = e^x\)
+\(f^{(n)}(0) = e^0 = 1\)</p>
+
+<p>Therefore, by Taylor’s Formula,
+\(a_n = \frac{1}{n!}\)
+and
+\(e^x = \frac{1}{0!} + \frac{x}{1!} + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots\)
+Or in compact form,
+\(e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!}\)</p>
+
+<p>Now, we can calculate $e$ to any accuracy:
+\(e = 1 + 1 + \frac{1}{2!} + \frac{1}{3!} + \frac{1}{4!} + \frac{1}{5!} + \cdots\)</p>
+
+<h2 id="example-8-fx--cos-x">Example 8: $f(x) = \cos x$</h2>
+<p>\(f'(x) = -\sin x\)
+\(f''(x) = -\cos x\)
+\(f'''(x) = \sin x\)
+\(f^{(4)}(x) = \cos x\)</p>
+
+<p>\(f(0) = \cos(0) = 1\)
+\(f'(0) = -\sin(0) = 0\)
+\(f''(0) = -\cos(0) = -1\)
+\(f'''(0) = \sin(0) = 0\)</p>
+
+<p>Only even coefficients are non-zero, and their signs alternate. Therefore,
+\(\cos x = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots\)</p>
+
+<p>Note: $\cos(x)$ is an even function. So is this power series — as it contains only even powers of $x$.</p>
+
+<p>There are two ways of finding the Taylor Series for $\sin x$. Take the derivative of $\cos x$, or use Taylor’s formula. We will take the derivative:</p>
+
+\[-\sin x = \frac{d}{dx} \cos x = 0 - 2 \left(\frac{1}{2}\right)x + \frac{4}{4!}x^3 - \frac{6}{6!}x^5 + \frac{8}{8!}x^7 + \cdots\]
+
+\[= -x + \frac{x^3}{3!} - \frac{x^5}{5!} + \frac{x^7}{7!} + \cdots\]
+
+\[\boxed{\sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots}\]
+
+<p>Compare with quadratic approximation from earlier in the term:
+\(\cos x \approx 1 - \frac{1}{2} x^2\)</p>
+
+\[\sin x \approx x\]
+
+<p>We can also write:</p>
+
+\[\cos x = \sum_{k=0}^{\infty} \frac{x^{2k}}{(2k)!} (-1)^k = (-1)^0 \frac{x^0}{0!} + (-1)^2 \frac{x^2}{2!} + \cdots = 1 - \frac{1}{2} x^2 + \cdots\]
+
+\[\sin x = \sum_{k=0}^{\infty} \frac{x^{2k+1}}{(2k+1)!} (-1)^k \quad \text{where} \quad n = 2k + 1\]
+
+<h2 id="example-9-binomial-expansion">Example 9: Binomial Expansion</h2>
+<p>\(f(x) = (1 + x)^a\)</p>
+
+\[(1 + x)^a = 1 + \frac{a}{1}x + \frac{a(a - 1)}{2!}x^2 + \frac{a(a - 1)(a - 2)}{3!}x^3 + \cdots\]
+
+<h2 id="taylor-series-with-another-base-point">Taylor Series with Another Base Point</h2>
+
+<p>A Taylor series with its base point at $a$ (instead of at 0) looks like:</p>
+
+\[f(x) = f(b) + f'(b)(x - b) + \frac{f''(b)}{2} (x - b)^2 + \frac{f^{(3)}(b)}{3!} (x - b)^3 + \ldots\]
+
+<p>Taylor series for $\sqrt{x}$. It’s a bad idea to expand using $b = 0$ because $\sqrt{x}$ is not differentiable at $x = 0$. Instead use $b = 1$.</p>
+
+\[x^{1/2} = 1 + \frac{1}{2}(x - 1) + \frac{\left(\frac{1}{2}\right) \left(\frac{1}{2} - 1\right)}{2!}(x - 1)^2 + \ldots\]
 
 
       </section>

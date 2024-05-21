@@ -1,0 +1,836 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Chapter 6 - 8 | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Chapter 6 - 8" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/discrete-structures/6-8.html" />
+<meta property="og:url" content="http://localhost:4000/notes/discrete-structures/6-8.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Chapter 6 - 8" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Chapter 6 - 8","url":"http://localhost:4000/notes/discrete-structures/6-8.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=9c10af3047a5c8df9f3f289bdf567699759ad2c8">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9c10af3047a5c8df9f3f289bdf567699759ad2c8">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#chapter-6---8">Chapter 6 - 8</a></li><li><a href="#modular-arithmetic">Modular Arithmetic</a><ul><li><a href="#61-congruences">6.1 Congruences</a></li><li><a href="#62-modular-division">6.2 Modular Division</a></li></ul></li><li><a href="#chapter-7-relations-and-functions">Chapter 7: Relations and Functions</a><ul><li><a href="#71-ordered-pairs">7.1 Ordered pairs</a></li><li><a href="#72-relations">7.2 Relations</a></li><li><a href="#73-kinds-of-relations">7.3 Kinds of Relations</a></li><li><a href="#74-creating-relations">7.4 Creating relations</a></li><li><a href="#75-functions">7.5 Functions</a></li></ul></li><li><a href="#chapter-8-mathematical-logic">Chapter 8: Mathematical Logic</a><ul><li><a href="#81-propositions-and-predicates">8.1 Propositions and Predicates</a></li><li><a href="#82-quantifiers">8.2 Quantifiers</a></li><li><a href="#83-negations">8.3 Negations</a></li><li><a href="#84-logical-connectives">8.4 Logical Connectives</a></li><li><a href="#84-logical-connectives-1">8.4 Logical Connectives</a></li><li><a href="#85-tautologies-and-logical-inference">8.5 Tautologies and Logical Inference</a></li></ul></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h2 id="chapter-6---8">Chapter 6 - 8</h2>
+
+<h2 id="modular-arithmetic">Modular Arithmetic</h2>
+
+<h3 id="61-congruences">6.1 Congruences</h3>
+
+<p>We usually associate arithmetic with the infinite set of integer numbers. However, modular arithmetic on finite sets is commonly used in our daily life. As an example, if it is now 1 am and we let 1000 hours pass, what time will it be? We can use the division algorithm to see that $1000 = 41 \times 24 + 16$ and conclude that adding 1000 hours is like adding 16 hours, since the clock returns to the same position every 24 hours. So after 1000 hours it will be 5 pm (17 hours after midnight).</p>
+
+<p>There are many examples in which it is natural and useful to limit our number system to a finite range of integers, such as 0 through $n-1$, for some $n$. This number system is denoted by $\mathbb{Z}_n$. Days of the week, hours of the day, minutes in an hour are all familiar examples of finite number systems, as are numbers in microprocessor registers, commonly limited to 32 binary digits.</p>
+
+<p>Modular arithmetic allows us to add, subtract, multiply, and sometimes divide numbers while staying within the finite set $\mathbb{Z}_n$. The number $n$ is called the modulus. A central notion in modular arithmetic is congruence. We say that two integers are congruent modulo $n$ if they leave the same remainder when divided by $n$. Here is the formal definition:</p>
+
+<p><strong>Definition:</strong> Two integers $a, b \in \mathbb{Z}$ are said to be congruent modulo $n$, written as $a \equiv_n b$ or $a \equiv b \pmod{n}$, if and only if they leave the same remainder when divided by $n$, that is, $a \bmod n = b \bmod n$.</p>
+
+<p>This definition captures our intuition that the day of the week will be the same whether we let 10, 17, or 80 days pass. There is an equivalent definition of congruence that is often useful in proofs:</p>
+
+<p><strong>Lemma 6.1.1.</strong> $a \equiv_n b$ if and only if $n \mid (a - b)$.</p>
+
+<p><strong>Proof.</strong> If $a \equiv_n b$ then $a \bmod n = b \bmod n$. Put $r = a \bmod n = b \bmod n$. Then there exist two integers $q_1$ and $q_2$, such that $a = q_1 n + r$ and $b = q_2 n + r$. Subtracting the second equation from the first, we get $a - b = (q_1 - q_2) n$ and $n \mid (a - b)$.</p>
+
+<p>On the other hand, if $n \mid (a - b)$ then there exists an integer $d$, such that $a - b = nd$. By the division algorithm, there exist integers $q_1, q_2 \in \mathbb{Z}$, and $0 \leq r_1, r_2 &lt; n$, such that $a = q_1 n + r_1$ and $b = q_2 n + r_2$. Thus $(q_1 - q_2) n + (r_1 - r_2) = nd$, and $r_1 - r_2 = (q_2 - q_1 + d)n$. Thus $n \mid (r_1 - r_2)$. However, $|r_1 - r_2| &lt; n$, so necessarily $r_1 - r_2 = 0$, which implies that $a \bmod n = b \bmod n$, and $a \equiv_n b$.</p>
+
+<p>You should use the definition to verify that for any $a, b, c \in \mathbb{Z}$,</p>
+
+<ul>
+  <li>$a \equiv_n a$ (Reflexivity)</li>
+  <li>If $a \equiv_n b$ then $b \equiv_n a$ (Symmetry)</li>
+  <li>If $a \equiv_n b$ and $b \equiv_n c$ then $a \equiv_n c$ (Transitivity)</li>
+</ul>
+
+<p>The operations of addition, subtraction, and multiplication on $\mathbb{Z}_n$ are defined by first doing the corresponding operation in $\mathbb{Z}$ and then taking the remainder modulo $n$. That is, if we denote these respective operations by $+_n, -_n,$ and $\cdot_n$, then</p>
+
+\[a +_n b = (a + b) \bmod n\]
+
+\[a -_n b = (a - b) \bmod n\]
+
+\[a \cdot_n b = (ab) \bmod n\]
+
+<p>Exponentiation is defined through repeated multiplication.</p>
+
+<p><strong>Lemma 6.1.2. Properties of congruence:</strong></p>
+
+<p>(a) $(a \bmod n) \bmod n = a \bmod n$</p>
+
+<p>(b) $(a \bmod n) \equiv_n a$</p>
+
+<p>(c) $(ab) \bmod n = (a \bmod n)(b \bmod n) \bmod n$</p>
+
+<p>(d) $(a \bmod n)(b \bmod n) \equiv_n ab$</p>
+
+<p>(e) $\prod_{i=1}^k (a_i \bmod n) \equiv_n \prod_{i=1}^k a_i$</p>
+
+<p>(f) If $a_1 \equiv_n a_2$ and $b_1 \equiv_n b_2$ then</p>
+
+\[a_1 + b_1 \equiv_n a_2 + b_2\]
+
+\[a_1 - b_1 \equiv_n a_2 - b_2\]
+
+\[a_1 b_1 \equiv_n a_2 b_2\]
+
+<p><strong>Proof.</strong> (b) is just a restatement of (a). To prove these we need to show that $n \mid (a - (a \bmod n))$. Put $r = a \bmod n$. By the division algorithm, there exists $q \in \mathbb{Z}$, such that $a = qn + r$. Thus $a - r = qn$, which implies that $n \mid (a - r)$ and concludes the proof.</p>
+
+<p>(d) is a restatement of (c), and (e) can be proved from (d) by induction. To prove (c) we need to show that $n \mid (ab - (a \bmod n)(b \bmod n))$. Use the division algorithm to represent $a = q_1 n + r_1$ and $b = q_2 n + r_2$. Then</p>
+
+\[ab - (a \bmod n)(b \bmod n) = (q_1 n + r_1)(q_2 n + r_2) - r_1 r_2 = (q_1 q_2 n + r_1 q_2 + q_1 r_2)n,\]
+
+<p>which implies the claim.</p>
+
+<p>We now prove (f). We know that $n \mid (a_1 - a_2)$ and $n \mid (b_1 - b_2)$. That is, there exist integers $q$ and $s$, such that $a_1 - a_2 = qn$ and $b_1 - b_2 = sn$. Adding these equations gives $(a_1 + b_1) - (a_2 + b_2) = (q + s)n$, which yields the first part of the claim. Subtracting similarly gives the second part. Writing $a_1 = a_2 + qn$ and $b_1 = b_2 + sn$ and multiplying the equations gives</p>
+
+\[a_1 b_1 = a_2 b_2 + b_2 qn + a_2 sn + qsn^2\]
+
+\[a_1 b_1 - a_2 b_2 = (b_2 q + a_2 s + qsn)n,\]
+
+<p>which yields the third part.</p>
+
+<h3 id="62-modular-division">6.2 Modular Division</h3>
+
+<p>You might have noticed that we defined addition, subtraction, and multiplication, but not division. This might not be surprising, since the division operation is not defined for the integers in general: There is no integer that corresponds to 5 divided by 4, for instance. (In other words, there is no $x \in \mathbb{Z}$, such that $4x = 5$.) This distinguishes $\mathbb{Z}$ from sets like $\mathbb{Q}$ or $\mathbb{R}$ that are closed under division.</p>
+
+<p>Division in $\mathbb{Z}_n$ appears even more unruly. For example, in $\mathbb{Z}_6$, the equation $2x = 4$ is satisfied by both $x = 2$ and $x = 5$, while the equation $2x = 3$ has no solutions. So the notion of “b divided by a” can be undefined or even ambiguous in $\mathbb{Z}_n$. In particular, we cannot generally cancel a multiplier from both sides of a congruence, that is, if $ab \equiv_n ac$ we cannot reason that $b \equiv_n c$. To take the above illustration, $2 \cdot 2 \equiv_6 2 \cdot 5$, but $2 \not\equiv_6 5$.</p>
+
+<p>Quite remarkably, however, the division operation is well-defined when $n$ is a prime $p$. Thus $\mathbb{Z}_p$ is in a sense as well-behaved as the real numbers, despite being a finite set! After a small digression that explores what “well-behaved” actually means here, we will state an even more general result on modular division.</p>
+
+<p><strong>Digression (notions from abstract algebra):</strong> There is a way to precisely state what we mean by “well-behaved” above. Jumping the gun, I’ll say that $\mathbb{Z}_p$ is a field, not just a ring. Now let me tell you what this means. The notion of a ring in algebra is meant to abstract our intuition concerning the essential properties of the integers. Given a set $S$ equipped with two operations, $+$ (addition) and $\cdot$ (multiplication), we say that $S$ is a ring if the following all hold for any $a, b, c \in S$:</p>
+
+<ul>
+  <li>$a + b \in S$ and $a \cdot b \in S$.</li>
+  <li>$a + (b + c) = (a + b) + c$ and $a \cdot (b \cdot c) = (a \cdot b) \cdot c$.</li>
+  <li>$a + b = b + a$ and $a \cdot b = b \cdot a$.</li>
+  <li>$a \cdot (b + c) = a \cdot b + a \cdot c$.</li>
+  <li>There exists an additive identity element $0 \in S$ that satisfies $a + 0 = a$ and a multiplicative identity element $1 \in S$ that satisfies $a \cdot 1 = a$ for all $a \in S$.</li>
+  <li>For every $a \in S$ there exists an additive inverse $-a \in S$ for which $a + (-a) = 0$.</li>
+</ul>
+
+<p>All the number systems we have encountered so far are rings, including $\mathbb{Z}$, $\mathbb{Q}$, $\mathbb{R}$, and $\mathbb{Z}_n$. However, some of them possess additional structure that allows the division operation. Namely, a ring is said to be a field if, in addition to the above, the following holds:</p>
+
+<ul>
+  <li>For every $a \in S$, such that $a \neq 0$, there exists a multiplicative inverse $a^{-1} \in S$ for which $a \cdot a^{-1} = 1$.</li>
+</ul>
+
+<p>The number systems $\mathbb{R}$ and $\mathbb{Q}$, as well as $\mathbb{Z}_p$ when $p$ is prime, are fields. In fields the division operation is well-defined, and $b/a = b \cdot a^{-1}$, as can be verified by plugging $x = b \cdot a^{-1}$ into the equation $ax = b$. A field with a finite number of elements is called a Galois field, after the French mathematician Évariste Galois. (A feisty young man who died in a duel at the age of 20, after making significant enough contributions to mathematics to have a whole field (sic) named in his honor!) Anyway, now that we know what fields are, let’s see why $\mathbb{Z}_p$ is one. In fact, we prove something more general:</p>
+
+<p><strong>Theorem 6.2.1.</strong> If $a$ and $n$ are coprime then there exists exactly one $x \in \mathbb{Z}_n$ for which $ax \equiv_n b$, for any $b \in \mathbb{Z}$.</p>
+
+<p><strong>Proof.</strong> We need to prove existence and uniqueness of $x$ as described in the theorem. $ax \equiv_n b$ if and only if there exists $q \in \mathbb{Z}$, such that $ax - b = nq$, or $ax - nq = b$. Now, since $\gcd(a, n) = 1$, any integer, including $b$, is a linear combination of $a$ and $n$. This proves existence.</p>
+
+<p>To prove uniqueness, assume that for $x, y \in \mathbb{Z}_n$ it holds that $ax \equiv_n b$ and $ay \equiv_n b$. Thus $ax - ay \equiv_n 0$, or $n \mid a(x - y)$. As you proved in one of the homework assignments, since $n$ and $a$ are coprime, this implies that $n \mid (x - y)$, and therefore that $x - y \equiv_n 0$. Thus $x \equiv_n y$, which proves uniqueness.</p>
+
+<p><strong>Corollary 6.2.2.</strong> For a prime $p$ and any $a, b \in \mathbb{Z}$, such that $a \not\equiv_p 0$, there exists exactly one $x \in \mathbb{Z}_p$ for which $ax \equiv_p b$.</p>
+
+<p>The fact that division is well-defined in $\mathbb{Z}_p$ when $p$ is prime also means that cancellations become valid. Thus if $a \not\equiv_p 0$ and $ab \equiv_p ac$ we can safely conclude that $b \equiv_p c$.</p>
+
+<p>We now know that $b/a$ is well-defined in $\mathbb{Z}_p$, but how do we find it? That is, how do we find $x \in \mathbb{Z}_p$, for which $ax \equiv_p b$. This question is particularly important when $p$ is large and it takes too long to simply enumerate all the elements of $\mathbb{Z}_p$. Fortunately, the following result, known as Fermat’s Little Theorem, can help us:</p>
+
+<p><strong>Theorem 6.2.3.</strong> For a prime $p$ and any $a \not\equiv_p 0$,</p>
+
+\[a^{p-1} \equiv_p 1.\]
+
+<p><strong>Proof.</strong> Consider the set $S$, defined as $1 \cdot a, 2 \cdot a, \ldots, (p - 1) \cdot a$. None of these $p - 1$ integers are congruent modulo $p$, since we have seen that if $ia \equiv_p ja$ then $i \equiv_p j$. However, each element of $S$ is congruent to some element of $\mathbb{Z}_p$. Since there are $p - 1$ elements in $S$ and $p - 1$ nonzero elements in $\mathbb{Z}_p$, the elements of $S$ must be congruent to each of $1, 2, \ldots, (p - 1)$ in some order. Therefore,</p>
+
+\[1 \cdot 2 \cdot \ldots \cdot (p - 1) \equiv_p 1a \cdot 2a \cdot \ldots \cdot (p - 1)a,\]
+
+<p>or</p>
+
+\[1 \cdot 2 \cdot \ldots \cdot (p - 1) \equiv_p 1 \cdot 2 \cdot \ldots \cdot (p - 1) \cdot a^{p-1}.\]
+
+<p>We can cancel each of $1, 2, \ldots, (p - 1)$ from both sides of the congruence, obtaining</p>
+
+\[a^{p-1} \equiv_p 1.\]
+
+<p>Fermat’s Little Theorem allows us to quickly perform division in $\mathbb{Z}_p$. The element $x \in \mathbb{Z}_p$ for which $ax \equiv_p b$ is simply $(a^{p-2} b \bmod p)$.</p>
+
+<h2 id="chapter-7-relations-and-functions">Chapter 7: Relations and Functions</h2>
+
+<h3 id="71-ordered-pairs">7.1 Ordered pairs</h3>
+
+<p>The definition of a set explicitly disregards the order of the set elements, all that matters is who’s in, not who’s in first. However, sometimes the order is important. This leads to the notion of an ordered pair of two elements $x$ and $y$, denoted $(x, y)$. The crucial property is:</p>
+
+\[(x, y) = (u, v) \text{ if and only if } x = u \text{ and } y = v.\]
+
+<p>This notion can be extended naturally to define an ordered $n$-tuple as the ordered counterpart of a set with $n$ elements.</p>
+
+<p>Given two sets $A$ and $B$, their Cartesian product $A \times B$ is the set of all ordered pairs $(x, y)$, such that $x \in A$ and $y \in B$:</p>
+
+\[A \times B = \{(x, y) : x \in A, y \in B\}.\]
+
+<p>Here is a useful special case:</p>
+
+\[A^2 = A \times A = \{(x, y) : x, y \in A\}.\]
+
+<p>And here is a general definition: $A^1 = A$, and for $n \geq 2$,</p>
+
+\[A^n = \{(x_1, x_2, \ldots, x_n) : x_1, x_2, \ldots, x_n \in A\}.\]
+
+<p>For example, $\mathbb{R}^2$ is the familiar Cartesian plane, and $\mathbb{R}^n$ is often referred to as the $n$-dimensional Euclidean space. If we omit the parentheses and the commas, ${a, b}^4$ is comprised of child babble and a 70s pop band:</p>
+
+\[\{aaaa, baba, abab, baaa, baab, aaab, aaba, abaa, abba, bbaa, bbba, bbbb, aabb, abbb, babb, bbab\}.\]
+
+<p><strong>Proposition 7.1.1.</strong> $(A \cup B) \times C = (A \times C) \cup (B \times C)$</p>
+
+<p><strong>Proof.</strong> Recall that for two sets $X$ and $Y$, $X = Y$ if and only if $X \subseteq Y$ and $Y \subseteq X$. Consider any element $(u, v) \in (A \cup B) \times C$. By definition, $u \in A \cup B$ and $v \in C$.</p>
+
+<p>Thus, $u \in A$ or $u \in B$. If $u \in A$ then $(u, v) \in A \times C$ and if $u \in B$ then $(u, v) \in B \times C$. Thus $(u, v)$ is in $A \times C$ or in $B \times C$, and $(u, v) \in (A \times C) \cup (B \times C)$. This proves that $(A \cup B) \times C \subseteq (A \times C) \cup (B \times C)$.</p>
+
+<p>Now consider any element $(u, v) \in (A \times C) \cup (B \times C)$. This implies that $(u, v) \in A \times C$ or $(u, v) \in B \times C$. In the first case $u \in A$ and $v \in C$ and in the second case $u \in B$ and $v \in C$. Thus $u \in A \cup B$ and $v \in C$, which implies $(u, v) \in (A \cup B) \times C$.</p>
+
+<h3 id="72-relations">7.2 Relations</h3>
+
+<p>Given a set $A$, a relation on $A$ is some property that is either true or false for any ordered pair $(x, y) \in A^2$. For example, “greater than” is a relation on $\mathbb{Z}$, denoted by $&gt;$. It is true for the pair $(3, 2)$, but false for the pairs $(2, 2)$ and $(2, 3)$. In more generality,</p>
+
+<p><strong>Definition 7.2.1.</strong> Given sets $A$ and $B$, a relation between $A$ and $B$ is a subset of $A \times B$.</p>
+
+<p>By this definition, a relation $R$ is simply a specification of which pairs are related by $R$, that is, which pairs the relation $R$ is true for. For the relation $&gt;$ on the set ${1, 2, 3}$,</p>
+
+\[&gt; = \{(2, 1), (3, 1), (3, 2)\}.\]
+
+<p>This notation might look weird because we do not often regard the symbol “$&gt;$” as a meaningful entity in itself. It is, at least from the vantage point of the foundations of mathematics: This symbol is a particular relation.</p>
+
+<p>The common usage of the symbol “$&gt;$” (as in $3 &gt; 2$) is an instance of a useful notational convention: For a relation $R$, $(a, b) \in R$ can also be specified as $aRb$. Thus, in the above example, $(2, 1) \in &gt;$ can be written as $2 &gt; 1$. How convenient!</p>
+
+<p>Common mathematical relations that will concern us include</p>
+
+\[&lt;, &gt;, \leq, \geq, =, \neq, \|, \equiv_n, \subset, \subseteq, \text{ etc.}\]
+
+<p>For example, the relation $=$ on the set $\mathbb{Z}$ is precisely the set ${(n, n) : n \in \mathbb{Z}}$ and the relation $\leq$ on $\mathbb{R}$ is the set ${(x, x + |y|) : x, y \in \mathbb{R}}$.</p>
+
+<h3 id="73-kinds-of-relations">7.3 Kinds of Relations</h3>
+
+<p>A relation $R$ on a set $A$ is called:</p>
+
+<ul>
+  <li><strong>Reflexive</strong> if for all $a \in A$, $aRa$.</li>
+  <li><strong>Symmetric</strong> if for all $a, b \in A$, $aRb$ implies $bRa$.</li>
+  <li><strong>Antisymmetric</strong> if for all $a, b \in A$, $aRb$ and $bRa$ implies $a = b$.</li>
+  <li><strong>Transitive</strong> if for all $a, b, c \in A$, $aRb$ and $bRc$ implies $aRc$.</li>
+</ul>
+
+<p><strong>Equivalence relations.</strong> A relation that is reflexive, symmetric, and transitive is called an equivalence relation. Clearly, the common relation $=$ on the set $\mathbb{R}$, say, is an equivalence relation. Also, we have seen earlier that the congruence relation $\equiv_n$ on the set $\mathbb{Z}$ is reflexive, symmetric, and transitive, thus it is also an equivalence relation. The similarity relation on the set of triangles in the plane is another example.</p>
+
+<p>Equivalence relations are special in that they naturally partition the underlying set into equivalence classes. For example, the relation $\equiv_2$ partitions the integers into even and odd ones. These are, respectively, the integers that are related (by $\equiv_2$) to 0, and the ones related to 1. Let’s formalize these concepts.</p>
+
+<p><strong>Definition 7.3.1.</strong> A partition of a set $A$ is a set $X \subseteq 2^A \setminus {\emptyset}$, such that</p>
+
+<p>(a) Each $a \in A$ belongs to some $S \in X$.</p>
+
+<p>(b) If $S, T \in X$, either $S = T$ or $S \cap T = \emptyset$.</p>
+
+<p>Stated differently, this definition says that the set $A$ is the union of the members of $X$, and these members are disjoint. Now, given an equivalence relation $R$ on $A$, the equivalence class of $a \in A$ is defined as</p>
+
+\[R[a] = \{b \in A : aRb\}.\]
+
+<p><strong>Theorem 7.3.2.</strong> Let $R$ be an equivalence relation on a set $A$. Then ${R[a] : a \in A}$ is a partition of $A$.</p>
+
+<p><strong>Proof.</strong> Consider an equivalence relation $R$ on $A$. Due to reflexivity, every element $a \in A$ belongs to $R[a]$, which implies (a). Now, consider two equivalence classes $R[a]$ and $R[b]$. If $aRb$, then for any $c \in R[a]$, by transitivity and symmetry, $bRc$ and $c \in R[b]$. This shows $R[a] \subseteq R[b]$. We can symmetrically argue that $R[b] \subseteq R[a]$, which together implies $R[a] = R[b]$.</p>
+
+<p>Otherwise, if $a \not\in R[b]$ then consider some $c \in R[a]$. If $c \in R[b]$ then $aRc$ and $bRc$, which imply, by transitivity and reflexivity, $aRb$, leading to a contradiction. Thus no element of $R[a]$ belongs to $R[b]$ and $R[a] \cap R[b] = \emptyset$. This shows (b) and concludes the theorem.</p>
+
+<h3 id="74-creating-relations">7.4 Creating relations</h3>
+
+<p>There are a few ways to define new relations from existing ones, and we describe two important such ways below.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Restrictions of relations.</strong> Here is one notion that is sometimes useful: Given a relation $R$ on a set $A$, and a subset $S \subseteq A$, we can use $R$ to define a relation on $S$ called the restriction of $R$ to $S$. Denoted by $R</td>
+      <td>S$, it is defined as</td>
+    </tr>
+  </tbody>
+</table>
+
+\[R|S = \{(a, b) \in R : a, b \in S\}.\]
+
+<p><strong>Compositions of relations.</strong> For three sets $A$, $B$, $C$, consider a relation $R$ between $A$ and $B$, and a relation $S$ between $B$ and $C$. The composition of $R$ and $S$ is a relation $T$ between $A$ and $C$, defined as follows: $aTc$ if and only if there exists some $b \in B$, such that $aRb$ and $bSc$. The composition of $R$ and $S$ is commonly denoted by $R \circ S$.</p>
+
+<p>Note that by this definition, the composition of relations on the same set $A$ is always well-defined. In particular, given a relation $R$ on $A$ we can recursively define $R^1 = R$ and $R^n = R^{n-1} \circ R$ for all $n \geq 2$. Now consider the infinite union</p>
+
+\[T = \bigcup_{i \in \mathbb{N}^+} R^i.\]
+
+<p>This relation $T$ is called the transitive closure of $R$.</p>
+
+<p><strong>Proposition 7.4.1. Important properties of transitive closure:</strong></p>
+
+<p>(a) $T$ is transitive.</p>
+
+<p>(b) $T$ is the smallest transitive relation that contains $R$. (That is, if $U$ is a transitive relation on $A$ and $R \subseteq U$, then $T \subseteq U$.)</p>
+
+<p>(c) If $|A| = n$ then</p>
+
+\[T = \bigcup_{i=1}^n R^i.\]
+
+<h3 id="75-functions">7.5 Functions</h3>
+
+<p>The general concept of a function in mathematics is defined very similarly to relations. In fact, as far as the definitions go, functions are relations, of a special type:</p>
+
+<p><strong>Definition 7.5.1.</strong> Given two sets $A$ and $B$, a function $f: A \to B$ is a subset of $A \times B$ such that</p>
+
+<p>(a) If $x \in A$, there exists $y \in B$ such that $(x, y) \in f$.</p>
+
+<p>(b) If $(x, y) \in f$ and $(x, z) \in f$ then $y = z$.</p>
+
+<p>A function is sometimes called a map or mapping. The set $A$ in the above definition is the domain and $B$ is the codomain of $f$.</p>
+
+<p>A function $f: A \to B$ is effectively a special kind of relation between $A$ and $B$, which relates every $x \in A$ to exactly one element of $B$. That element is denoted by $f(x)$.</p>
+
+<p>If the above definition is followed rigidly, particular functions should be defined by specifying all the pairs $(x, f(x))$. This is often cumbersome and unnecessary, and we will mostly continue describing a function from $A$ to $B$ as we did before: as a rule for picking an element $f(x) \in B$ for every element $x \in A$. As in, “Consider a function $f: \mathbb{R} \to \mathbb{R}$, where $f(x) = x^2$ for all $x \in \mathbb{R}$.”</p>
+
+<p><strong>Kinds of Functions.</strong> For a function $f: A \to B$, the set $f(A) = {f(x) : x \in A}$ is called the range of $f$. The range is a subset of the codomain but may be different from it. If $f(A) = B$ then we say that $f$ is onto. More precisely, a function $f: A \to B$ is a surjection (or surjective), or onto if each element of $B$ is of the form $f(x)$ for at least one $x \in A$.</p>
+
+<p>Today is the day of weird names, so: A function $f: A \to B$ is an injection (or injective), or one-to-one if for all $x, y \in A$, $f(x) = f(y)$ implies $x = y$. Put differently, $f: A \to B$ is one-to-one if each element of $B$ is of the form $f(x)$ for at most one $x \in A$.</p>
+
+<p>As if this wasn’t enough: A function $f: A \to B$ is a bijection (or bijective), or a one-to-one correspondence if it is both one-to-one and onto. Alternatively, $f: A \to B$ is a bijection if each element of $B$ is of the form $f(x)$ for exactly one $x \in A$.</p>
+
+<p><strong>Compositions and Inverse Functions.</strong> Given two functions $f : A \to B$ and $g : B \to C$, we can define a new function $g \circ f : A \to C$ by $(g \circ f)(x) = g(f(x))$ for all $x \in A$. One useful function that can be defined for any set $A$ is the identity function $i_A : A \to A$, defined by $i_A(x) = x$ for all $x \in A$. We can use identity functions to define inverse functions. Specifically, if $f : A \to B$ is a bijection, then its inverse $f^{-1} : B \to A$ is defined so that $f^{-1} \circ f = i_A$ and $f \circ f^{-1} = i_B$. Of course, we haven’t shown that $f^{-1}$ even exists or that it is unique, but these properties do hold, assuming that $f : A \to B$ is a bijection. (This assumption is necessary.)</p>
+
+<p>Another result that is sometimes used is the following: If $f : A \to B$ and $g : B \to C$ are bijections then $g \circ f : A \to C$ is a bijection, and</p>
+
+\[(g \circ f)^{-1} = f^{-1} \circ g^{-1}.\]
+
+<p>We omit the proof.</p>
+
+<p><strong>Bijections and Cardinality.</strong> Bijections allow us to rigorously define when two sets are of the same cardinality:</p>
+
+<p><strong>Definition 7.5.2.</strong> Two sets $A$ and $B$ have the same number of elements if and only if there exists a bijection $f : A \to B$.</p>
+
+<h2 id="chapter-8-mathematical-logic">Chapter 8: Mathematical Logic</h2>
+
+<h3 id="81-propositions-and-predicates">8.1 Propositions and Predicates</h3>
+
+<p>A proposition is a statement that is either true or false. For example, “It will rain tomorrow” and “It will not rain tomorrow” are propositions, but “It will probably rain tomorrow” is not, pending a more precise definition of “probably”.</p>
+
+<p>A predicate is a statement that contains a variable, such that for any specific value of the variable, the statement is a proposition. Usually, the allowed values for the variable will come from a specific set, sometimes called the universe of the variable, which will be either explicitly mentioned or clear from context. A simple example of a predicate is $x \geq 2$ for $x \in \mathbb{R}$. Clearly, for any real value of $x$, this statement is either true or false. We denote predicates in a similar way to functions, as in $P(x)$. In fact, the connection to functions runs deep: A predicate $P(x)$ can be considered a function, $P: U \to {0, 1}$, where $U$ is the universe of the variable $x$, 1 represents truth, and 0 represents falsehood.</p>
+
+<p>A predicate may have more than one variable, in which case we speak of predicates in two variables, three variables, and so on, denoted as $Q(x, y)$, $S(x, y, z)$, etc.</p>
+
+<h3 id="82-quantifiers">8.2 Quantifiers</h3>
+
+<p>Given a predicate $P(x)$ that is defined for all elements in a set $A$, we can reason about whether $P(x)$ is true for all $x \in A$, or if it’s at least true for some $x \in A$. We can state propositions to this effect using the universal quantifier $\forall$ and the existential quantifier $\exists$.</p>
+
+<ul>
+  <li>$\forall x \in A: P(x)$ is true if and only if $P(x)$ is true for all $x \in A$. This proposition can be read “For all $x \in A$, $P(x)$.”</li>
+  <li>$\exists x \in A: P(x)$ is true if and only if $P(x)$ is true for at least one $x \in A$. This proposition can be read “There exists $x \in A$ such that $P(x)$.”</li>
+</ul>
+
+<p>Given a predicate in more than one variable, we can quantify each (or some) of the variables. For example, the statement “For every real $x$ and $y$, it holds that $x^2 - y^2 = (x - y)(x + y)$” can be formalized as</p>
+
+\[\forall x, y \in \mathbb{R} : x^2 - y^2 = (x - y)(x + y).\]
+
+<p>Somewhat more interestingly, the statement “There is no greatest integer” might be formulated as</p>
+
+\[\forall n \in \mathbb{Z} \, \exists m \in \mathbb{Z} : m &gt; n.\]
+
+<p>It is crucial to remember that the meaning of a statement may change if the existential and universal quantifiers are exchanged. For example, $\exists m \in \mathbb{Z} \, \forall n \in \mathbb{Z} : m &gt; n$ means “There is an integer strictly greater than all integers.” This is not only contrary to the spirit of the original statement, but is patently wrong as it asserts in particular that there is an integer that is strictly greater than itself.</p>
+
+<p>Exchanging the order of two quantifiers of the same type (either universal or existential) does not change the truth value of a statement. We do not prove this here.</p>
+
+<h3 id="83-negations">8.3 Negations</h3>
+
+<p>Given a proposition $P$, the negation of $P$ is the proposition “$P$ is false”. It is true if $P$ is false, and false if $P$ is true. The negation of $P$ is denoted by $\neg P$, read as “not $P$.” If we know the meaning of $P$, such as when $P$ stands for “It will rain tomorrow,” the proposition $\neg P$ can be stated more naturally than “not $P$,” as in “It will not rain tomorrow.” The truth-value of $\neg P$ can be represented by the following truth table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>$P$</th>
+      <th>$\neg P$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>true</td>
+      <td>false</td>
+    </tr>
+    <tr>
+      <td>false</td>
+      <td>true</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A truth table simply lists the truth values of particular statements in all possible cases. Something interesting can be observed if we consider the truth values of $\neg \neg Q$, which can be obtained by using the above table once with $P = Q$ and once with $P = \neg Q$:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>$Q$</th>
+      <th>$\neg Q$</th>
+      <th>$\neg \neg Q$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>true</td>
+      <td>false</td>
+      <td>true</td>
+    </tr>
+    <tr>
+      <td>false</td>
+      <td>true</td>
+      <td>false</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>We see that the statements $Q$ and $\neg \neg Q$ have the same truth values. In this case, we say that the two statements are equivalent, and write $Q \Leftrightarrow \neg \neg Q$. If $A \Leftrightarrow B$, we can freely use $B$ in the place of $A$, or $A$ instead of $B$ in our logical derivations.</p>
+
+<p>Negation gets really interesting when the negated proposition is quantified. Then we can assert that</p>
+
+\[\neg \forall x \in A : P(x) \Leftrightarrow \exists x \in A : \neg P(x)\]
+
+\[\neg \exists x \in A : P(x) \Leftrightarrow \forall x \in A : \neg P(x)\]
+
+<p>These can be interpreted as the claim that if $P(x)$ is not true for all $x \in A$ then it is false for some $x \in A$ and vice versa, and the claim that if $P(x)$ is not false for any $x \in A$ then it is true for all $x \in A$ and vice versa. What this means, in particular, is that if we want to disprove a statement that asserts something for all $x \in A$, it is sufficient to demonstrate one such $x$ for which the statement does not hold. On the other hand, if we need to disprove a statement that asserts the existence of an $x \in A$ with a certain property, we actually need to show that for all such $x$ this property does not hold.</p>
+
+<p>Looked at another way, the above equivalences imply that if we negate a quantified statement, the negation can be “pushed” all the way inside, so that no negated quantifiers are left. Indeed, leaving any negated quantifiers is often considered a mark of poor style. Here is how this elimination is done in a particular example:</p>
+
+\[\neg \forall n \in \mathbb{Z} \, \exists m \in \mathbb{Z} : m &gt; n \Leftrightarrow \exists n \in \mathbb{Z} \, \neg \exists m \in \mathbb{Z} : m &gt; n \Leftrightarrow \exists n \in \mathbb{Z} \, \forall m \in \mathbb{Z} : m \leq n\]
+
+<p>This can be read as “There exists an integer that is greater or equal to any other integer,” which is the proper negation of the original statement.</p>
+
+<h3 id="84-logical-connectives">8.4 Logical Connectives</h3>
+
+<p>The symbol $\neg$ is an example of a connective. Other connectives combine two propositions (or predicates) into one. The most common are $\land$, $\lor$, $\oplus$, $\rightarrow$ and $\leftrightarrow$. $P \land Q$ is read as “$P$ and $Q$”; $P \lor Q$ as “$P$ or $Q$”; $P \oplus Q$ as “$P$ xor $Q$”; $P \rightarrow Q$ as “$P$ implies $Q$” or “if $P$ then $Q$”; and $P \leftrightarrow Q$ as “$P$ if and only if $Q$”. The truth-value of these compound propositions (sometimes called sentences) depends on the truth values of $P$ and $Q$ (which are said to be the terms of these sentences), in a way that is made precise in the truth-table below.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>$P$</th>
+      <th>$Q$</th>
+      <th>$P \land Q$</th>
+      <th>$P \lor Q$</th>
+      <th>$P \oplus Q$</th>
+      <th>$P \rightarrow Q$</th>
+      <th>$P \leftrightarrow Q$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>T</td>
+      <td>T</td>
+      <td>T</td>
+      <td>T</td>
+      <td>F</td>
+      <td>T</td>
+      <td>T</td>
+    </tr>
+    <tr>
+      <td>T</td>
+      <td>F</td>
+      <td>F</td>
+      <td>T</td>
+      <td>T</td>
+      <td>F</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>T</td>
+      <td>F</td>
+      <td>T</td>
+      <td>T</td>
+      <td>T</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>F</td>
+      <td>F</td>
+      <td>F</td>
+      <td>F</td>
+      <td>T</td>
+      <td>T</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>We will not concern ourselves much with the $\oplus$ and $\leftrightarrow$ connectives, as they are encountered somewhat less frequently.</p>
+
+<p>One interesting thing about the above table is that the proposition $P \rightarrow Q$ is false only when $P$ is true and $Q$ is false. This is what we would expect: If $P$ is true but $Q$ is false then, clearly, $P$ does not imply $Q$. The important thing to remember is that if $P$ is false, then $P \rightarrow Q$ is true. One way this can be justified is by remembering that we expect a proposition to be either false or true. Now, $P \rightarrow Q$ being false says that $P$ does not imply $Q$, which means precisely that $P$ is true but $Q$ is still false. In all other cases we expect $P \rightarrow Q$ to be true.</p>
+
+<h3 id="84-logical-connectives-1">8.4 Logical Connectives</h3>
+
+<p>The symbol $\neg$ is an example of a connective. Other connectives combine two propositions (or predicates) into one. The most common are $\land$, $\lor$, $\oplus$, $\rightarrow$ and $\leftrightarrow$. $P \land Q$ is read as “$P$ and $Q$”; $P \lor Q$ as “$P$ or $Q$”; $P \oplus Q$ as “$P$ xor $Q$”; $P \rightarrow Q$ as “$P$ implies $Q$” or “if $P$ then $Q$”; and $P \leftrightarrow Q$ as “$P$ if and only if $Q$.” The truth-value of these compound propositions (sometimes called sentences) depends on the truth values of $P$ and $Q$ (which are said to be the terms of these sentences), in a way that is made precise in the truth-table below.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>$P$</th>
+      <th>$Q$</th>
+      <th>$P \land Q$</th>
+      <th>$P \lor Q$</th>
+      <th>$P \oplus Q$</th>
+      <th>$P \rightarrow Q$</th>
+      <th>$P \leftrightarrow Q$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>T</td>
+      <td>T</td>
+      <td>T</td>
+      <td>T</td>
+      <td>F</td>
+      <td>T</td>
+      <td>T</td>
+    </tr>
+    <tr>
+      <td>T</td>
+      <td>F</td>
+      <td>F</td>
+      <td>T</td>
+      <td>T</td>
+      <td>F</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>T</td>
+      <td>F</td>
+      <td>T</td>
+      <td>T</td>
+      <td>T</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>F</td>
+      <td>F</td>
+      <td>F</td>
+      <td>F</td>
+      <td>T</td>
+      <td>T</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>We will not concern ourselves much with the $\oplus$ and $\leftrightarrow$ connectives, as they are encountered somewhat less frequently.</p>
+
+<p>One interesting thing about the above table is that the proposition $P \rightarrow Q$ is false only when $P$ is true and $Q$ is false. This is what we would expect: If $P$ is true but $Q$ is false then, clearly, $P$ does not imply $Q$. The important thing to remember is that if $P$ is false, then $P \rightarrow Q$ is true. One way this can be justified is by remembering that we expect a proposition to be either false or true. Now, $P \rightarrow Q$ being false says that $P$ does not imply $Q$, which means precisely that $P$ is true but $Q$ is still false. In all other cases we expect $P \rightarrow Q$ to be true. (Did I succeed in turning something obvious into a confusing mess? Well, we all know what is paved with good intentions…)</p>
+
+<p>Now, there is another statement involving $P$ and $Q$ that is false precisely when $P$ is true and $Q$ is false. It is, of course, $\neg P \lor Q$. As the following truth table demonstrates, the proposition $\neg P \lor Q$ is equivalent to $P \rightarrow Q$:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>$P$</th>
+      <th>$Q$</th>
+      <th>$P \rightarrow Q$</th>
+      <th>$\neg P \lor Q$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>T</td>
+      <td>T</td>
+      <td>T</td>
+      <td>T</td>
+    </tr>
+    <tr>
+      <td>T</td>
+      <td>F</td>
+      <td>F</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>T</td>
+      <td>T</td>
+      <td>T</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>F</td>
+      <td>T</td>
+      <td>T</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>This means something rather interesting: We can replace a proposition that involves implication by an equivalent one that instead has negation ($\neg$) and disjunction ($\lor$). Also, since $P \rightarrow Q$ is false only when $P$ is true and $Q$ is false, the proposition $\neg (P \rightarrow Q)$ is equivalent to $P \land \neg Q$:</p>
+
+\[\neg (P \rightarrow Q) \Leftrightarrow P \land \neg Q.\]
+
+<p>This means that in a negated implication, the negation can be “pushed inside,” somewhat like with quantifiers. In fact, similar equivalences exist for other negated compound statements, as can be verified using truth tables (do it!):</p>
+
+\[\neg (P \lor Q) \Leftrightarrow \neg P \land \neg Q\]
+
+\[\neg (P \land Q) \Leftrightarrow \neg P \lor \neg Q\]
+
+<p>These are the famous DeMorgan’s laws. What they mean is that we can eliminate negated compounds (sounds like a military operation, doesn’t it?) just as we can eliminate negated quantifiers.</p>
+
+<p>Here is another important logical equivalence: The implication $P \rightarrow Q$ is equivalent to the contrapositive implication $\neg Q \rightarrow \neg P$:</p>
+
+\[(P \rightarrow Q) \Leftrightarrow (\neg Q \rightarrow \neg P).\]
+
+<p>This is demonstrated by the following truth table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>$P$</th>
+      <th>$Q$</th>
+      <th>$P \rightarrow Q$</th>
+      <th>$\neg Q$</th>
+      <th>$\neg P$</th>
+      <th>$\neg Q \rightarrow \neg P$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>T</td>
+      <td>T</td>
+      <td>T</td>
+      <td>F</td>
+      <td>F</td>
+      <td>T</td>
+    </tr>
+    <tr>
+      <td>T</td>
+      <td>F</td>
+      <td>F</td>
+      <td>T</td>
+      <td>F</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>T</td>
+      <td>T</td>
+      <td>F</td>
+      <td>T</td>
+      <td>T</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>F</td>
+      <td>T</td>
+      <td>T</td>
+      <td>T</td>
+      <td>T</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Indeed, an implication of the form “If $P$ then $Q$” is sometimes proved by assuming that $Q$ does not hold and showing that under this assumption $P$ does not hold. This is called a proof by contrapositive. (Despite the similarity, it is different from a proof by contradiction.)</p>
+
+<h3 id="85-tautologies-and-logical-inference">8.5 Tautologies and Logical Inference</h3>
+
+<p>A sentence that is true regardless of the values of its terms is called a tautology, while a statement that is always false is a contradiction. Another terminology says that tautologies are valid statements and contradictions are unsatisfiable statements. All other statements are said to be satisfiable, meaning they can be either true or false.</p>
+
+<p>Easy examples of a tautology and a contradiction are provided by $P \lor \neg P$ and $P \land \neg P$, as demonstrated by the following truth table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>$P$</th>
+      <th>$\neg P$</th>
+      <th>$P \lor \neg P$</th>
+      <th>$P \land \neg P$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>T</td>
+      <td>F</td>
+      <td>T</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>T</td>
+      <td>T</td>
+      <td>F</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Note that by our definition of logical equivalence, all tautologies are equivalent. It is sometimes useful to keep a “special” proposition $T$ that is always true, and a proposition $F$ that is always false. Thus any tautology is equivalent to $T$ and any contradiction is equivalent to $F$.</p>
+
+<p>Here is another tautology: $(P \land Q) \rightarrow P$:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>$P$</th>
+      <th>$Q$</th>
+      <th>$P \land Q$</th>
+      <th>$(P \land Q) \rightarrow P$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>T</td>
+      <td>T</td>
+      <td>T</td>
+      <td>T</td>
+    </tr>
+    <tr>
+      <td>T</td>
+      <td>F</td>
+      <td>F</td>
+      <td>T</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>T</td>
+      <td>F</td>
+      <td>T</td>
+    </tr>
+    <tr>
+      <td>F</td>
+      <td>F</td>
+      <td>F</td>
+      <td>T</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The statement $(P \land Q) \rightarrow P$ is read “$P$ and $Q$ implies $P$.” The fact that this is a tautology means that the implication is always true. Namely, if we know the truth of $P \land Q$, we can legitimately conclude the truth of $P$. In such cases, the symbol $\Rightarrow$ is used, and we can write $(P \land Q) \Rightarrow P$. There is a crucial difference between $(P \land Q) \rightarrow P$ and $(P \land Q) \Rightarrow P$. The former is a single statement, while the latter indicates a relationship between two statements. Such a relationship is called an inference rule. A similar inference rule, $P \Rightarrow P \lor Q$ can be established analogously.</p>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

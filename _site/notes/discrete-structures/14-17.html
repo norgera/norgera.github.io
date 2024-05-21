@@ -1,0 +1,636 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Chapter 14 - 17 | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Chapter 14 - 17" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/discrete-structures/14-17.html" />
+<meta property="og:url" content="http://localhost:4000/notes/discrete-structures/14-17.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Chapter 14 - 17" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Chapter 14 - 17","url":"http://localhost:4000/notes/discrete-structures/14-17.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=9c10af3047a5c8df9f3f289bdf567699759ad2c8">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9c10af3047a5c8df9f3f289bdf567699759ad2c8">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#chapter-14---17">Chapter 14 - 17</a></li><li><a href="#graphs">Graphs</a><ul><li><a href="#141-introduction">14.1 Introduction</a></li><li><a href="#142-common-graphs">14.2 Common Graphs</a></li><li><a href="#143-some-important-concepts">14.3 Some Important Concepts</a></li><li><a href="#144-kinds-of-graphs">14.4 Kinds of Graphs</a></li></ul></li><li><a href="#more-graphseulerian-bipartite-and-colored">More Graphs—Eulerian, Bipartite, and Colored</a><ul><li><a href="#151-eulerian-graphs">15.1 Eulerian Graphs</a></li><li><a href="#152-graph-coloring">15.2 Graph Coloring</a></li><li><a href="#153-bipartite-graphs-and-matchings">15.3 Bipartite Graphs and Matchings</a></li></ul></li><li><a href="#trees">Trees</a><ul><li><a href="#161-basic-properties-of-trees">16.1 Basic Properties of Trees</a></li><li><a href="#162-spanning-trees">16.2 Spanning Trees</a></li></ul></li><li><a href="#planar-graphs">Planar Graphs</a><ul><li><a href="#171-drawing-graphs-in-the-plane">17.1 Drawing Graphs in the Plane</a></li><li><a href="#172-eulers-formula">17.2 Euler’s Formula</a></li><li><a href="#173-coloring-planar-graphs">17.3 Coloring Planar Graphs</a></li></ul></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h2 id="chapter-14---17">Chapter 14 - 17</h2>
+
+<h2 id="graphs">Graphs</h2>
+
+<h3 id="141-introduction">14.1 Introduction</h3>
+
+<p>A graph $G$ is an ordered pair $(V, E)$, where $V$ is a set and $E$ is a set of two-element subsets of $V$. That is,</p>
+
+\[E \subseteq \{ \{x, y\} : x, y \in V, x \neq y \}.\]
+
+<p>Elements of $V$ are the vertices (sometimes called nodes) of the graph and elements of $E$ are the edges. If $e = {x, y} \in E$, we say that $x$ and $y$ are adjacent in the graph $G$, that $y$ is a neighbor of $x$ in $G$ and vice versa, and that the edge $e$ is incident to $x$ and $y$.</p>
+
+<p>What are graphs good for? Graphs are perhaps the most pervasive abstraction in computer science. It is hard to appreciate their tremendous usefulness at first, because the concept itself is so elementary. This appreciation comes through uncovering the deep and fascinating theory of graphs and its applications.</p>
+
+<p>Graphs are used to model and study transportation networks, such as the network of highways, the London Underground, the worldwide airline network, or the European railway network; the ‘connectivity’ properties of such networks are of great interest. Graphs can also be used to model the World Wide Web, with edges corresponding to hyperlinks; Google uses sophisticated ideas from graph theory to assign a PageRank to every vertex of this graph as a function of the graph’s global properties. In this course we will introduce the basic concepts and results in graph theory, which will allow you to study and understand more advanced techniques and applications in the future.</p>
+
+<h3 id="142-common-graphs">14.2 Common Graphs</h3>
+
+<p>A number of families of graphs are so common that they have special names that are worth remembering:</p>
+
+<p><strong>Cliques:</strong> A graph on $n$ vertices where every pair of vertices is connected is called a clique (or $n$-clique) and is denoted by $K_n$. Formally, $K_n = (V, E)$, where $V = {1, 2, \dots, n}$ and $E = {{i, j} : 1 \leq i &lt; j \leq n}$. The number of edges in $K_n$ is</p>
+
+\[\binom{n}{2}.\]
+
+<p><strong>Paths:</strong> A path on $n$ vertices, denoted by $P_n$, is the graph $P_n = (V, E)$, where $V = {1, 2, \dots, n}$ and $E = {{i, i+1} : 1 \leq i \leq n-1}$. The number of edges in $P_n$ is $n-1$. The vertices $1$ and $n$ are called the endpoints of $P_n$.</p>
+
+<p><strong>Cycles:</strong> A cycle on $n \geq 3$ vertices is the graph $C_n = (V, E)$, where $V = {1, 2, \dots, n}$ and $E = {{i, i+1} : 1 \leq i \leq n-1} \cup {{1, n}}$. The number of edges in $C_n$ is $n$.</p>
+
+<h3 id="143-some-important-concepts">14.3 Some Important Concepts</h3>
+
+<p><strong>Graph isomorphism:</strong> If the above definition of a cycle is followed to the letter, a graph is a cycle only if its vertices are natural numbers. So, for example, the graph $G = (V, E)$ with $V = {A, B, C}$ and $E = {{A, B}, {B, C}, {C, A}}$ would not be a cycle. This seems wrong, because $G$ “looks like” a cycle, and for all practical purposes it is exactly like $C_3$. The concept of graph isomorphism provides a way to formally say that $C_3$ and $G$ are “the same.”</p>
+
+<p><strong>Definition 14.3.1:</strong> Two graphs $G = (V, E)$ and $G’ = (V’, E’)$ are said to be isomorphic if there exists a bijection $f: V \rightarrow V’$ such that</p>
+
+\[\{x, y\} \in E \text{ if and only if } \{f(x), f(y)\} \in E'.\]
+
+<p>In this case we write $G \cong G’$ and the function $f$ is called an isomorphism of $G$ and $G’$.</p>
+
+<p>We generally regard isomorphic graphs to be essentially the same, and sometimes do not even draw the distinction. Hence graphs that are isomorphic to cliques, cycles, and paths are themselves said to be cliques, cycles, and paths, respectively.</p>
+
+<p><strong>Size:</strong> The number of edges of a graph is called its size. The size of an $n$-vertex graph is at most</p>
+
+\[\binom{n}{2},\]
+
+<p>achieved by the $n$-clique.</p>
+
+<p><strong>Degree:</strong> The degree (or valency) of a vertex $v$ in a graph $G = (V, E)$, denoted by $d_G(v)$, is the number of neighbors of $v$ in $G$. More formally, this degree is</p>
+
+\[d_G(v) = |\{u \in V : \{v, u\} \in E\}|.\]
+
+<p>A graph in which every vertex has degree $k$ is called $k$-regular and a graph is said to be regular if it is $k$-regular for some $k$.</p>
+
+<p>The following is sometimes called the Handshake lemma. It can be interpreted as saying that the number of people at a cocktail party who shake hands with an odd number of others is even.</p>
+
+<p><strong>Proposition 14.3.2:</strong> The number of odd-degree vertices in a graph is even.</p>
+
+<p><strong>Proof:</strong> For a graph $G = (V, E)$, consider the sum of the degrees of its vertices:</p>
+
+\[s = \sum_{v \in V} d_G(v).\]
+
+<p>Observe that this sum counts every edge $e$ twice, once for each of the vertices incident to $e$. Thus $s = 2|E|$, and, in particular, $s$ is even. Subtracting from $s$ the degrees of even-degree vertices of $G$, we see that the resulting quantity is the sum of the degrees of odd-degree vertices and is still even. This implies the proposition.</p>
+
+<p><strong>Subgraphs and Connectivity.</strong></p>
+
+<p><strong>Definition 14.3.3:</strong> Given a graph $G = (V, E)$,</p>
+
+<ul>
+  <li>A graph $G’ = (V’, E’)$ is said to be a subgraph of $G$ if and only if $V’ \subseteq V$ and $E’ \subseteq E$.</li>
+  <li>A graph $G’ = (V’, E’)$ is said to be an induced subgraph of $G$ if and only if $V’ \subseteq V$ and $E’ = {{u, v} \in E : u, v \in V’}$.</li>
+</ul>
+
+<p>Given a graph $G$, a path, cycle, or clique in $G$ is a subgraph of $G$ that is a path, cycle, or clique, respectively. Two vertices $v$ and $u$ of $G$ are said to be connected if and only if there is a path in $G$ with endpoints $u$ and $v$. A graph $G$ as a whole is said to be connected if and only if every pair of vertices in $G$ is connected.</p>
+
+<p>A subgraph $G’$ of $G$ is called a connected component of $G$ if it is connected and no other graph $G’’$, such that $G’ \subset G’’ \subseteq G$, is connected. Clearly, a graph is connected if and only if it has a single connected component.</p>
+
+<p>Finally, there is a related notion to a path that is also useful: Given a graph $G = (V, E)$, a walk $W$ in $G$ is a sequence $W = (v_1, e_1, v_2, e_2, \ldots, v_{n-1}, e_{n-1}, v_n)$ of vertices and edges in $G$ that are not necessarily distinct, such that ${v_1, v_2, \ldots, v_n} \subseteq V$, ${e_1, e_2, \ldots, e_{n-1}} \subseteq E$, and $e_i = {v_i, v_{i+1}}$ for all $1 \leq i \leq n-1$. A walk differs from a path in that vertices and edges can be repeated. The set of edges ${e_1, e_2, \ldots, e_{n-1}}$ covered by $W$ is denoted by $E(W)$. Similarly, the set of vertices covered by $W$ is $V(W) = {v_1, v_2, \ldots, v_n}$.</p>
+
+<h3 id="144-kinds-of-graphs">14.4 Kinds of Graphs</h3>
+
+<p>What we have been calling graph is actually only one of many kinds of graphs, namely an undirected, unweighted, simple graph. Let’s see how each of these qualities can differ and what other kinds of graphs there are.</p>
+
+<p>A <strong>directed (simple, unweighted) graph</strong> $G$ is an ordered pair $(V, E)$, where $V$ is a set and $E$ is a set of ordered pairs from $V$. That is,</p>
+
+\[E \subseteq \{ (x, y) : x, y \in V, x \neq y \}.\]
+
+<p>Directed graphs are suitable for modeling one-way streets, non-reflexive relations, hyperlinks in the World Wide Web, and so on. The notion of degree as defined above is no longer applicable to a directed graph. Instead, we speak of the <strong>indegree</strong> and the <strong>outdegree</strong> of a vertex $v$ in $G$, defined as $|{u \in V : (u, v) \in E}|$ and $|{u \in V : (v, u) \in E}|$, respectively.</p>
+
+<p>A graph that is <strong>not simple</strong> can have multi-edges and self-loops. <strong>Multi-edges</strong> are multiple edges between the same pair of vertices. (Their presence means that the collection of edges is no longer a set, but a so-called multiset.) A <strong>self-loop</strong> is an edge to and from a single vertex $v$.</p>
+
+<p>Finally, a graph can also be <strong>weighted</strong>, in the sense that numerical weights are associated with edges. Such weights are extremely useful for modeling distances in transportation networks, congestion in computer networks, etc. We will not dwell on weighted graphs in this course. In fact, unless specified otherwise, the word “graph” will continue to refer to undirected, unweighted, simple graphs.</p>
+
+<h1 id="chapter-15">Chapter 15</h1>
+
+<h2 id="more-graphseulerian-bipartite-and-colored">More Graphs—Eulerian, Bipartite, and Colored</h2>
+
+<h3 id="151-eulerian-graphs">15.1 Eulerian Graphs</h3>
+
+<p>Ever seen those puzzles that ask you to trace some shape without lifting the pencil off the paper? For graph theory initiates such questions present no difficulty, separating this select elite from the rest of the human race who are doomed to spend their Sunday afternoons hunched over, putting page after page out of commission, searching in vain for the ever-elusive drawing.</p>
+
+<p>Given a graph $G = (V, E)$, define a <strong>tour</strong> of $G$ as a walk $T = (v_1, e_1, v_2, e_2, \ldots, v_n, e_n, v_{n+1})$ in $G$, such that $T$ does not trace any edge more than once. (That is, $e_i \neq e_j$ for all $1 \leq i &lt; j \leq n$.) The tour is said to be <strong>Eulerian</strong> if, in addition, $v_{n+1} = v_1$, $V(T) = V$, and $E(T) = E$. Thus an Eulerian tour traverses all the edges of $G$, “walking along” each exactly once, eventually coming back to where it started. (Particular vertices may and generally will be visited more than once.) A graph is said to be <strong>Eulerian</strong> if and only if it has an Eulerian tour.</p>
+
+<p>Eulerian graphs were discussed by the great Leonhard Euler, the most prolific mathematician of all time. Euler’s analysis of these graphs, presented in 1736, marks the birth of graph theory.</p>
+
+<p><strong>Theorem 15.1.1:</strong> A graph is Eulerian if and only if it is connected and each of its vertices has even degree.</p>
+
+<p><strong>Proof:</strong> We first prove that if $G$ is Eulerian its vertices all have even degree. Indeed, trace an Eulerian tour of $G$ starting and ending at a vertex $v$. Every time the tour enters an intermediate vertex it also leaves it along a different edge. In the very first step the tour leaves $v$ and in the last step it enters $v$. Thus we can label the edges incident to any vertex as “entering” and “leaving,” such that there is a bijection between these two sets. This shows that the degree of every vertex is even.</p>
+
+<p>To prove that a graph $G = (V, E)$ with all vertex degrees being even is Eulerian, consider the longest tour $T = (v_1, e_1, v_2, e_2, \ldots, v_n, e_n, v_{n+1})$ in $G$. (The length of a tour is measured by its number of edges.) We prove below that $T$ is Eulerian. Namely, we prove that:</p>
+
+<ol>
+  <li>$v_1 = v_{n+1}$</li>
+  <li>$n = |E|$</li>
+</ol>
+
+<p><strong>Proof of (1):</strong> Assume for the sake of contradiction that $v_1 \neq v_{n+1}$. Then the number of edges of $T$ incident to $v_1$ is odd. (After $T$ first leaves $v_1$, it enters and leaves it an even number of times.) Since the degree of $v_1$ in $G$ is even, there is an edge $e$ of $G$ that is incident to $v_1$ but not part of $T$. We can extend $T$ by this edge, obtaining a contradiction.</p>
+
+<p><strong>Proof of (2):</strong> We can assume that $v_1 = v_{n+1}$. Suppose $V(T) \neq V$. Consider a vertex $v \in V \setminus V(T)$ and a vertex $u \in V(T)$. Since $G$ is connected, there is a path $P$ between $v$ and $u$ in $G$. Consider the first time a vertex of $T$ is encountered along $P$; this vertex is $v_i$ for some $1 \leq i \leq n$. Let $e’ = {v’, v_i}$ be the edge along which $P$ arrives at $v_i$ and note that $v’ \notin V(T)$. This implies that we can augment $T$ by $v’$ and $e’$, and obtain a longer tour $T’$, namely</p>
+
+\[T' = (v', e', v_i, e_i, \ldots, v_n, e_n, v_1, e_1, \ldots, v_{i-1}, e_{i-1}, v_i).\]
+
+<p>We have reached a contradiction and can therefore assume that $V(T) = V$. That is, $T$ visits all the vertices of $G$. Assume for the sake of contradiction that $E(T) \neq E$, so there exists an edge $e’ = {v_i, v_j}$ of $G$, for some $1 \leq i &lt; j \leq n$, that is not part of $T$. Then we can augment $T$ by the edge $e’$, and obtain a longer tour $T’$, namely</p>
+
+\[T' = (v_i, e', v_j, e_j, v_{j+1}, e_{j+1}, \ldots, v_n, e_n, v_1, e_1, \ldots, v_i, e_i, \ldots, v_{j-1}, e_{j-1}, v_j).\]
+
+<p>$T’$ is longer than $T$ by one edge, which is a contradiction that proves the theorem.</p>
+
+<p><strong>Proof technique: Considering an extremal configuration.</strong> In the above proof the crucial idea was to consider the longest tour in the graph. This is an instance of a common proof technique: If we need to prove that some configuration with particular properties exists (like an Eulerian tour), consider the extremal (longest, shortest, etc.) configuration of a related type (usually one that has some but not all of the required properties), and prove that this extremal configuration has to satisfy all of the required properties. Some steps in the proof usually proceed by contradiction: If the extremal configuration wasn’t of the required type we could find a “more extremal” one, which is a contradiction.</p>
+
+<h3 id="152-graph-coloring">15.2 Graph Coloring</h3>
+
+<p>Consider a wireless company that needs to allocate a transmitter wavelength to each of its users. Two users who are sufficiently close need to be assigned different wavelengths to prevent interference. How many different wavelengths do we need? Of course, we can just assign a new wavelength to every user, but that would be wasteful if some users are far apart. So what’s the least number of wavelengths we can get away with?</p>
+
+<p>We can model the users as vertices in a graph and connect two vertices by an edge if the corresponding users are sufficiently close. A coloring of this graph $G = (V, E)$ is an assignment of colors to vertices, such that no two adjacent vertices get the same color. The above question can now be restated as asking for the minimum number of colors that are needed for a coloring of $G$.</p>
+
+<p>Let us be a bit more precise in defining colorings: A $k$-coloring of $G$ is said to be a function $c: V \to {1, 2, \ldots, k}$, such that if ${v, u} \in E$ then $c(v) \neq c(u)$. The smallest $k \in \mathbb{N}$ for which a $k$-coloring of $G$ exists is called the <strong>chromatic number</strong> of $G$. If a $k$-coloring of $G$ exists, the graph is said to be $k$-colorable. There are many deep results concerning colorings and the chromatic number. At this point we only give the simplest one:</p>
+
+<p><strong>Proposition 15.2.1:</strong> If the degree of every vertex in a graph $G$ is at most $k$, then the chromatic number of $G$ is at most $k + 1$.</p>
+
+<p><strong>Proof:</strong> By induction on the number of vertices in $G$. (The degree bound $k$ is fixed throughout the proof.) If $G$ has a single vertex, then the maximal degree is 0 and the graph is 1-colorable. Since $1 \leq k + 1$, the proposition holds. Suppose every graph with at most $n$ vertices and all vertex degrees at most $k$ is $(k + 1)$-colorable. Consider a particular graph $G = (V, E)$ with $n + 1$ vertices, and all degrees at most $k$. Let $G’$ be the graph obtained from $G$ by deleting a particular vertex $v$ and all the edges incident to $v$. That is, $G’$ is the induced subgraph of $G$ on the vertices $V \setminus {v}$. $G’$ has $n$ vertices, all of degree at most $k$, and is thus $(k + 1)$-colorable. Let $c’$ be such a coloring of $G’$. We extend it to a coloring $c$ of $G$ as follows. For every vertex $u \in G$ such that $u \neq v$ we define $c(u) = $ $c’(u)$. The vertex $v$ has at most $k$ neighbors in $G$ and there is at least one color $i$ among ${1, 2, \ldots, k + 1}$ that has not been assigned to any of them. We define $c(u) = i$. This is a $(k + 1)$-coloring, and the proposition follows.</p>
+
+<h3 id="153-bipartite-graphs-and-matchings">15.3 Bipartite Graphs and Matchings</h3>
+
+<p>A <strong>bipartite graph</strong> is a graph that can be partitioned into two parts, such that edges of the graph only go between the parts, but not inside them. Formally, a graph $G = (V, E)$ is said to be bipartite if and only if there exist $U \subseteq V$, such that</p>
+
+\[E \subseteq \{\{u, u'\} : u \in U \text{ and } u' \in V \setminus U\}.\]
+
+<p>The sets $U$ and $V \setminus U$ are called the <strong>classes</strong> of $G$. A <strong>complete bipartite graph</strong> $K_{m,n}$ is a graph in which all the edges between the two classes are present. Namely, $K_{m,n} = (V, E)$, where $V = {1, 2, \ldots, m+n}$ and $E = {{i, j} : 1 \leq i \leq m, m+1 \leq j \leq m+n}$. The number of edges in $K_{m,n}$ is $mn$. From the definition of coloring, it follows that a graph is bipartite if and only if it is 2-colorable. (Check!) Here is another useful characterization of bipartite graphs:</p>
+
+<p><strong>Proposition 15.3.1:</strong> A graph is bipartite if and only if it contains no cycle of odd length.</p>
+
+<p><strong>Proof:</strong> For one direction of the claim, let $G$ be a bipartite graph and let $C = (v_1, v_2, \ldots, v_n, v_1)$ be a cycle in $G$. Suppose without loss of generality that $v_1 \in U$, where $U$ is as in the definition of bipartiteness. Then by simple induction that we omit, $v_i \in U$ for every odd $1 \leq i \leq n$. Since ${v_n, v_1} \in E$, $v_n \in V \setminus U$ and thus $n$ is even. It follows that the number of edges in $C$ is even.</p>
+
+<p>Before proving the other direction, we need a simple lemma.</p>
+
+<p><strong>Lemma 15.3.2:</strong> Given a graph $G = (V, E)$, let $P = (v_1, v_2, \ldots, v_n)$ be a shortest path between two vertices $v_1$ and $v_n$ in $G. Then for all $1 \leq i &lt; j \leq n$, $P_{i,j} = (v_i, v_{i+1}, \ldots, v_j)$ is a shortest path between $v_i$ and $v_j$.</p>
+
+<p><strong>Proof:</strong> Proof by contradiction. Let $Q_{i,j} = (v_i, u_1, u_2, \ldots, u_l, v_j)$ be a shortest path between $v_i$ and $v_j$. Assume for the sake of contradiction that $Q_{i,j}$ is shorter than $P_{i,j}$. Consider the walk</p>
+
+\[Q = (v_1, v_2, \ldots, v_i, u_1, u_2, \ldots, u_l, v_j, v_{j+1}, \ldots, v_n).\]
+
+<p>Since $Q_{i,j}$ is shorter than $P_{i,j}$, $Q$ is shorter than $P$. Now consider the graph $G’ = (V(Q), E(Q))$. This graph is connected, and thus there is a shortest path $P’$ between $v_1$ and $v_n$ in $G’$. The number of edges in this shortest path cannot exceed the total number of edges in $G’$, and thus $P’$ is shorter than $P$. Since $P’$ is also a path between $v_1$ and $v_n$ in $G$, we have reached a contradiction.</p>
+
+<p>We now turn to the other direction of the proposition. Assume that $G = (V, E)$ has no odd cycle. If $G$ has more than one connected component we look at every component separately. Clearly, if every component is bipartite, $G$ as a whole is bipartite. Thus assume that $G$ is connected. Pick an arbitrary vertex $v \in V$ and define a set $U \subseteq V$ as</p>
+
+\[U = \{x \in V : \text{the shortest paths from } v \text{ to } x \text{ have even length}\}.\]
+
+<p>Clearly, $V \setminus U$ is the set</p>
+
+\[V \setminus U = \{x \in V : \text{the shortest paths from } v \text{ to } x \text{ have odd length}\}.\]
+
+<p>We prove that no two vertices in $U$ are adjacent; the proof for $V \setminus U$ is similar. Consider for the sake of contradiction an edge $e = {u, u’} \in E$, such that $u, u’ \in U$. Denote a shortest path from $v$ to $u$ by $P_1$ and a shortest path from $v$ to $u’$ by $P_2$. Given two vertices $s$ and $t$ on a path $P$, let $P_{s,t}$ be the part of $P$ that connects $s$ and $t$.</p>
+
+<p>Consider a vertex $w$ that lies on both $P_1$ and $P_2$.</p>
+
+<p>The above lemma implies that $P_{v,w,1}$ and $P_{v,w,2}$ are shortest paths between $v$ and $w$ and thus have the same length, which we denote by $l(w)$.</p>
+
+<p>Consider the vertex $w^*$ shared by $P_1$ and $P_2$ that maximizes $l(w)$ among all such $w$.</p>
+
+<p>The paths $P_{w^*,u,1}$</p>
+
+<p>and $P_{w^*,u’,2}$</p>
+
+<p>share no vertex in common other than $w^*$.</p>
+
+<p>Furthermore, the length of $P_{w^*,u,1}$</p>
+
+<p>is the length of $P_1$</p>
+
+<p>minus $l(w^*)$</p>
+
+<p>and the length of $P_{w^*,u’,2}$</p>
+
+<p>is the length of $P_2$ minus</p>
+
+<p>$l(w^*)$.</p>
+
+<p>Since the lengths of $P_1$ and $P_2$ are both even, the lengths of</p>
+
+<p>$P_{w^*,u,1}$ and</p>
+
+<p>$P_{w^*,u’,2}$</p>
+
+<p>have the same parity (that is, they are either both even or both odd).</p>
+
+<p>Now consider the cycle $C$ composed of</p>
+
+<p>$P_{w^*,u,1}$, the edge</p>
+
+<p>${u, u’}$, and $P_{w^*,u’,2}$.</p>
+
+<p>Since $P_{w^*,u,1}$</p>
+
+<p>and $P_{w^*,u’,2}$</p>
+
+<p>share no vertex in common other than $w^*$, $C$ really is a cycle in $G$.</p>
+
+<p>Moreover, since the lengths of</p>
+
+<p>$P_{w^*,u,1}$</p>
+
+<p>and</p>
+
+<p>$P_{w^*,u’,2}$</p>
+
+<p>have the same parity, the number of edges in $C$ is odd!</p>
+
+<p>We have reached a contradiction that completes the proof.</p>
+
+<p>Bipartite graphs are particularly useful to model symmetric relations from one set to another. For example, given a collection of boys and girls, we could model the relation “wants to go to the prom with” by a bipartite graph. Given such preferences, an interesting question is whether we can pair the boys up with the girls, so that they all end up going to the prom with someone they actually want to go with. It turns out that this question has a very precise answer. To state the theorem we need to define the notion of matching:</p>
+
+<p><strong>Definition 15.3.3:</strong> Given a bipartite graph $G = (V, E)$, a <strong>matching</strong> $B$ in $G$ is a set of disjoint edges. Namely, $B \subseteq E$ and $e_1 \cap e_2 = \emptyset$ for any $e_1, e_2 \in $B. A matching is said to be <strong>perfect</strong> if</p>
+
+\[\bigcup_{e \in B} e = V.\]
+
+<p>Consider now a set $B$ of boys, a set $G$ of girls, and a symmetric relation $P$ from $B$ to $G$. Define a graph $W = (B \cup G, {{b, g} : (b, g) \in P})$. The above question simply asks to characterize when there exists a perfect matching in $W$. The below result, known as Hall’s theorem, provides such a characterization. To state the theorem, we use another piece of notation: Given a subset $S$ of the vertices of $W$, we let $N(S)$ be the set of vertices of $W$ adjacent to at least one of the vertices of $S$.</p>
+
+<p><strong>Theorem 15.3.4:</strong> A bipartite graph $W = (V, E)$ with classes $B$ and $G$ has a perfect matching if and only if $|B| = |G|$ and $|N(S)| \geq |S|$ for all $S \subseteq B$.</p>
+
+<p><strong>Proof:</strong> One direction is easy:</p>
+
+<p>Assume $W$ has a perfect matching and consider a set $S \subseteq B$.</p>
+
+<p>Every element of $S$ is matched to a distinct element of $G$ and hence $|N(S)| \geq |S|$.</p>
+
+<p>In particular, $|G| \geq |B|$. By a symmetric argument we get that $|B| \geq |G|$ and thus $|B| = |G|$.</p>
+
+<p>For the other direction, assume that $|B| = |G|$ and that $|N(S)| \geq |S|$ for all $S \subseteq B$.</p>
+
+<p>We prove that there exists a perfect matching in $W$ by strong induction on $|B|$.</p>
+
+<p>For the base case, if $|B| = |G| = 1$, the matching consists of the single edge of $W$.</p>
+
+<p>Assuming that the claim holds for all graphs with $|B| \leq k$, consider a graph $W$ as above with $|B| = k + 1$.</p>
+
+<p>We distinguish between two possibilities:</p>
+
+<ol>
+  <li>
+    <p>If for every $S \subseteq B$, $|N(S)| &gt; |S|$, we take an arbitrary $x \in B$ and match it with an adjacent $y \in G$. Then for every subset $S’$ of $B \setminus {x}$, it still holds that the number of vertices of $G \setminus {y}$ adjacent to at least one of the vertices of $S’$ is at least $|S’|$. We can thus match the vertices of $B \setminus {x}$ with the vertices of $G \setminus {y}$ by the induction hypothesis.</p>
+  </li>
+  <li>
+    <p>If for some $S \subseteq B$, $|N(S)| = |S|$, we note that for every $S’ \subseteq S$, the number of vertices in $N(S)$ adjacent to at least one of the vertices of $S’$ is at least $|S’|$. Thus we can match $S$ with $N(S)$ by the induction hypothesis. Now we need to show that we can match $B \setminus S$ with $G \setminus N(S)$. Consider a set $S’ \subseteq B \setminus S$ and the set $T’$ of its neighbors in $G \setminus N(S)$. Note that the set of neighbors of $S \cup S’$ in $G$ is $N(S) \cup T’$. Thus $|S \cup S’| \leq |N(S) \cup T’|$. Since $|S| = |N(S)|$, we get that $|S’| \leq |T’|$. Thus by the induction hypothesis we can also match $B \setminus S$ with $G \setminus N(S)$.</p>
+  </li>
+</ol>
+
+<p>This shows that in both cases all the vertices of $B$ can be matched with vertices of $G$ as required, and concludes the proof.</p>
+
+<h1 id="chapter-16">Chapter 16</h1>
+
+<h2 id="trees">Trees</h2>
+
+<h3 id="161-basic-properties-of-trees">16.1 Basic Properties of Trees</h3>
+
+<p>Trees in mathematics are graphs of a certain kind. In a sense, trees are the simplest interesting graphs, in that they have a very simple structure, but possess a rich variety of nontrivial properties. Trees have innumerable applications throughout computer science.</p>
+
+<p><strong>Definition 16.1.1:</strong> A tree is a connected graph with no cycles. A vertex of degree one in a tree is called a leaf.</p>
+
+<p>An extensive theory of trees has been developed, and we give the tip of the iceberg below: Four additional characterizations that each could have been used to define trees.</p>
+
+<p><strong>Theorem 16.1.2:</strong> Given a graph $G = (V, E)$, the following conditions are equivalent:</p>
+
+<ul>
+  <li>(a) $G$ is a connected graph with no cycles. (Thus $G$ is a tree by the above definition.)</li>
+  <li>(b) For every two vertices $u, v \in V$, there exists exactly one path from $u$ to $v$.</li>
+  <li>(c) $G$ is connected, and removing any edge from $G$ disconnects it. (Thus $G$ is a minimal connected graph.)</li>
+  <li>(d) $G$ has no cycles, and adding any edge to $G$ gives rise to a cycle. (Thus $G$ is a maximal acyclic graph.)</li>
+  <li>(e) $G$ is connected and $|E| = |V| - 1$.</li>
+</ul>
+
+<p><strong>Proof:</strong> We will prove for each of the conditions (b)–(e) in turn that it is equivalent to condition (a). This implies the equivalence of all the conditions. The proof proceeds by induction on the number of vertices</p>
+
+<p>$|V|$ in $G$, and we relate a tree with $n + 1$ vertices to a tree with $n$ vertices in the inductive step by “tearing off” a leaf. We begin by proving two lemmas that will be useful in this process.</p>
+
+<p><strong>Lemma 16.1.3:</strong> Each tree with at least 2 vertices contains at least 2 leaves.</p>
+
+<p><strong>Proof:</strong> Given a tree $T = (V, E)$, consider a path $P$ of maximum length in $T$. We claim that the two endpoints of $P$ are leaves of $T$. Indeed, assume for the sake of contradiction that an end-vertex $u$ of $P$ has degree greater than 1 in $T$. Thus there exists an edge ${u, u’} \in E$ that is not part of $P$. If $u’$ belongs to $P$ then $T$ contains a cycle. Otherwise, we can extend $P$ by the edge ${u, u’}$ and $P$ is not a longest path in $T$. This contradiction proves the lemma.</p>
+
+<p><strong>Lemma 16.1.4:</strong> Given a graph $G = (V, E)$ and a leaf $v \in V$ that is incident to an edge $e = {v, v’} \in E$, the graph $G$ is a tree if and only if $G’ = (V \setminus {v}, E \setminus {e})$ is a tree.</p>
+
+<p><strong>Proof:</strong> Assume that $G$ is a tree and consider two vertices $u, w \in V \setminus {v}$. $u$ and $w$ are connected by a path $P$ in $G$. Every vertex of $P$ other than $u$ and $w$ has degree at least 2, and thus $v$ cannot be a vertex of $P$. Therefore, $P$ is a path in $G’$, which proves that $G’$ is connected. Since $G$ does not contain a cycle, $G’$ cannot contain a cycle and is thus a tree.</p>
+
+<p>For the other direction, assume that $G’$ is a tree. Since a cycle only contains vertices with degree at least 2, a cycle in $G$ must also be a cycle in $G’$. Therefore, there are no cycles in $G$. Also, any two vertices of $G$ other than $v$ can be connected by the same path as in $G’$, and $v$ can be connected to any vertex $u$ in $G$ by a path that consists of the edge $e$ and a path in $G’$ between $v’$ and $u$. Thus $G$ is a tree.</p>
+
+<p>We are now ready to employ induction to prove that condition (a) implies each of (b)–(e).</p>
+
+<p>For the induction basis, all five conditions hold for the graph with a single vertex.</p>
+
+<p>Consider a graph $G = (V, E)$ with $|V| = n \geq 2$ and assume that (a) holds for $G$.</p>
+
+<p>By Lemma 16.1.3, $G$ has a leaf $v \in V$ that is incident to an edge $e = {v, v’} \in E$.</p>
+
+<p>By Lemma 16.1.4, condition (a) holds for $G’$.</p>
+
+<p>The inductive hypothesis states that condition (a) implies conditions (b)–(e) for the graph $G’ = (V \setminus {v}, E \setminus {e})$.</p>
+
+<p>We now need to prove that conditions (b)–(e) also hold for $G$.</p>
+
+<ul>
+  <li>Condition (b) holds for $G$ by a similar argument to the one employed in the proof of Lemma 16.1.4.</li>
+  <li>Condition (c) holds for $G$ since removing any edge other than $e$ disconnects $G$ by the induction hypothesis, and removing $e$ disconnects the vertex $v$ from the rest of the graph.</li>
+  <li>Condition (d) holds since $G$ cannot have cycles by an argument similar to the proof of Lemma 16.1.4; adding an edge that is not incident to $v$ creates a cycle by the inductive hypothesis, and adding an edge ${v, u}$, for some $u \in V \setminus {v}$ creates a cycle that consists of the edge ${v, u}$, the path from $u$ to $v’$, and the edge $e$.</li>
+  <li>Finally, condition (e) holds since $G$ is obtained from $G’$ by adding one vertex and one edge.</li>
+</ul>
+
+<p>We now prove that each of (b)–(d) imply (a). Conditions (b) and (c) on $G$ each imply connectedness of $G$. By contrapositive, assume that $G$ contains a cycle. Then taking two distinct vertices $u$ and $w$ on the cycle, there are two paths from $u$ to $w$ along the cycle, which implies (b) $\Rightarrow$ (a). Furthermore, removing one edge of the cycle does not disconnect $G$, which implies (c) $\Rightarrow$ (a). Condition (d) implies that $G$ does not contain a cycle. By contrapositive, assume that $G$ is disconnected. Then there are two vertices $u$ and $w$ that have no path connecting them and we can add the edge ${u, w}$ to $G$ without creating a cycle. This implies (d) $\Rightarrow$ (a).</p>
+
+<p>To prove (e) $\Rightarrow$ (a) we use induction on the number of vertices of $G$. The induction basis is the graph with one vertex and the claim trivially holds. For the induction hypothesis, assume that the claim holds for all graphs with $|V| - 1$ vertices. For the inductive step, assume that condition (e) holds for $G$ and hence $|E| = |V| - 1$. Therefore, the sum of the degrees of the vertices of $G$ is $2|V| - 2$, and thus there is some vertex $v \in V$ of degree 1. The graph $G’ = (V \setminus {v}, E \setminus {e})$ is connected and satisfies $|E \setminus {e}| = |V \setminus {v}| - 1$. By the induction hypothesis, $G’$ is a tree. Lemma 16.1.4 now implies that $G$ is a tree, which completes the proof.</p>
+
+<h3 id="162-spanning-trees">16.2 Spanning Trees</h3>
+
+<p>One of the reasons that trees are so pervasive is that every connected graph $G$ contains a subgraph that is a tree on all of the vertices of $G$. Such a subgraph is called a spanning tree of $G$.</p>
+
+<p><strong>Definition 16.2.1:</strong> Consider a graph $G = (V, E)$. A tree of the form $(V, E’)$, where $E’ \subseteq E$, is called a spanning tree of $G$.</p>
+
+<p><strong>Proposition 16.2.2:</strong> Every connected graph $G = (V, E)$ contains a spanning tree.</p>
+
+<p><strong>Proof:</strong> Consider a tree subgraph $T = (V’, E’)$ of $G$ with the largest number of vertices. Suppose for the sake of contradiction that $V’ \neq V$, and thus there exists $v \in V \setminus V’$. Take an arbitrary vertex $u \in V’$ and consider a path $P$ between $v$ and $u$. Let $u’$ be the first vertex along $P$ that belongs to $V’$, and let $v’$ be the vertex that immediately precedes $u’$ in $P$. Consider the graph $T’ = (V’ \cup {v’}, E’ \cup {v’, u’})$. Lemma 16.1.4 implies that $T’$ is a tree in $G$ with a greater number of vertices than $T$, which is a contradiction.</p>
+
+<h1 id="chapter-17">Chapter 17</h1>
+
+<h2 id="planar-graphs">Planar Graphs</h2>
+
+<h3 id="171-drawing-graphs-in-the-plane">17.1 Drawing Graphs in the Plane</h3>
+
+<p>As we have seen in class, graphs are often visualized by drawing them in the plane—vertices are drawn as points, and edges as curved segments (called arcs) that connect the corresponding points. A graph together with a drawing of it in the plane is called a topological graph.</p>
+
+<p>A graph is called <strong>planar</strong> if there exists a drawing of it in which the interior of any arc does not touch or intersect any other arc. That is, two distinct arcs are either disjoint or touch at endpoints that they share. A planar graph together with a planar drawing of it is called a plane graph.</p>
+
+<p>It is easy to verify that paths, cycles, and trees of any size are planar. Transportation networks often provide examples of planar graphs, and graph planarity became important in computer science due to a connection with VLSI circuit design. Planar drawings are often considered superior when visualizing graphs, as they have no edge crossings that can be mistaken for vertices. In fact, a whole subfield of computer science called graph drawing is devoted to the study of various kinds of drawings of graphs.</p>
+
+<p>It might not be obvious at first that there are any nonplanar graphs at all. There are, but we’ll have to do some work to prove this, and we’ll need two preliminary steps just to approach this issue. The first is to define the faces of a plane graph and the second is to mention the (in)famous Jordan curve theorem.</p>
+
+<p>Let us begin with faces. Define an equivalence relation on the plane as follows: Two points $a, b \in \mathbb{R}^2$ are equivalent if they can be connected by an arc that does not intersect the edges of a given plane graph $G$. Then the set of all points that belong to a particular equivalence class of this relation are said to be a <strong>face</strong> of $G$. Intuitively, if we draw $G$ on a white sheet of paper with a black pencil, the faces are the white regions; alternatively, if we cut the paper along the edges of the drawing, the faces are the resulting pieces. Note that faces are defined for plane graphs, but not for planar graphs without a drawing: Different drawings of the same graph can produce different sets of faces!</p>
+
+<p>The second piece of mathematical equipment we’ll need to study planar graphs is the Jordan curve theorem. It is a classical example of a mathematical statement that is intuitively obvious, but exceedingly difficult to prove. (Related specimens that arguably fall into this category are Kepler’s conjecture and the Kneser-Poulsen conjecture.)</p>
+
+<p><strong>Theorem 17.1.1 (Jordan curve theorem):</strong> Every closed non-self-intersecting curve $\gamma$ in the plane separates the plane into exactly two regions, one bounded and one unbounded, such that $\gamma$ is the boundary of both. Alternatively, a plane drawing of any cycle $C_i$, for $i \geq 3$, has exactly two faces.</p>
+
+<p>To see why the Jordan curve theorem is not so easy to prove recall that there are some crazy curves out there—just think about fractals like the Koch snowflake. How would you go about proving that such monsters have “interior” and “exterior”?</p>
+
+<p>The following corollary follows from the Jordan curve theorem by routine arguments.</p>
+
+<p><strong>Corollary 17.1.2:</strong> Consider a plane graph $G$ and an edge $e$ that is part of a cycle in $G$. Then $e$ lies on the boundary of exactly two faces of $G$.</p>
+
+<h3 id="172-eulers-formula">17.2 Euler’s Formula</h3>
+
+<p>The fundamental tool in the study of planar graphs is Euler’s formula, presented by Euler in 1752.</p>
+
+<p><strong>Theorem 17.2.1 (Euler’s formula):</strong> Let $G$ be a connected plane graph with $n$ vertices, $e$ edges, and $f$ faces. Then</p>
+
+\[n - e + f = 2.\]
+
+<p>Note that the theorem need not hold if the graph is not connected—just think of a collection of isolated vertices. On the other hand, the formula remains true even for (non-simple) graphs with multiple edges and self-loops.</p>
+
+<p><strong>Proof:</strong> The proof proceeds by induction on the number of edges. If there are none, the graph consists of a single vertex, the drawing has one face, and the formula holds as $1 - 0 + 1 = 2$. Assume that the formula holds for all plane graphs having $k$ edges. Consider a plane graph $G = (V, E)$ with $n$ vertices, $f$ faces, and $k + 1$ edges. We distinguish between two cases:</p>
+
+<ol>
+  <li><strong>G is a tree:</strong> In this case $n = k + 2$, due to a tree characterization we have seen previously, and $f = 1$ since any planar drawing of a tree has exactly one face. Then the formula holds as $(k + 2) - (k + 1) + 1 = 2$.</li>
+  <li><strong>G has a cycle $C$:</strong> Take an edge $e$ that lies on $C$ and consider a plane graph $G’ = (V, E \setminus {e})$, whose vertices and edges are drawn as in $G$. By Corollary 17.1.2, the edge $e$ is adjacent to two faces of $G$, and these faces “merge” into one in $G’$. Thus $G’$ has $n$ vertices, $f - 1$ faces, and $k$ edges. By the induction hypothesis, $n - k + (f - 1) = 2$, hence $n - (k + 1) + f = 2$.</li>
+</ol>
+
+<p>This completes the proof by induction.</p>
+
+<p>Euler’s formula implies that the number of faces of a plane graph does not depend on the drawing, so even though the faces themselves are only defined for a particular drawing, their number is fixed a priori for any planar graph! The formula has a number of other consequences that are frequently used in theoretical computer science. These consequences say that planar graphs have few edges and always have at least one low-degree vertex. As they make abundantly clear, not only are not all graphs planar, but most graphs aren’t. (Do you understand the sense in which the theorem below implies this?)</p>
+
+<p><strong>Theorem 17.2.2:</strong> For any simple planar graph $G$ with $n$ vertices and $e$ edges:</p>
+
+<ol>
+  <li>If $n \geq 3$ then $e \leq 3n - 6$. If $e = 3n - 6$ then every face of $G$ is a 3-cycle (a “triangle”) and $G$ is called a triangulation.</li>
+  <li>There is a vertex of $G$ that has degree at most 5.</li>
+</ol>
+
+<p><strong>Proof:</strong> The proofs of the two parts are similar in their clever use of Euler’s formula:</p>
+
+<ol>
+  <li>
+    <p><strong>Proof of (1):</strong> If $G$ is not connected, we can add edges to connect $G$ while maintaining its planarity. Assume therefore that $G$ is connected. Let $f$ be the number of faces of $G$. For such a face $t$, let $\alpha(t)$ be the number of edges adjacent to $t$ and consider the sum $\sum_{t} \alpha(t)$ that ranges over all faces $t$ of $G$. As each edge is adjacent to at most two faces, a particular edge is counted at most twice in the above sum. Hence</p>
+
+\[\sum_{t} \alpha(t) \leq 2e.\]
+
+    <p>On the other hand, each face has at least three edges on its boundary, so</p>
+
+\[\sum_{t} \alpha(t) \geq 3f.\]
+
+    <p>We get $3f \leq 2e$, and, using Euler’s formula, $3(2 - n + e) \leq 2e$ and</p>
+
+\[e \leq 3n - 6.\]
+
+    <p>Finally, if $e = 3n - 6$ then $3f = 2e$ and it must be that every face has exactly three edges on its boundary.</p>
+  </li>
+  <li>
+    <p><strong>Proof of (2):</strong> If the graph is disconnected we consider one particular connected component of it, so assume that $G$ is connected. If $G$ has two vertices or less the result is immediate, so assume that $n \geq 3$. Recall that $d_G(x)$ denotes the degree of a vertex $x$ in $G$. The sum $\sum_{x} d_G(x)$, ranging over the vertices $x$ of $G$, counts every edge twice, so</p>
+
+\[\sum_{x} d_G(x) = 2e.\]
+
+    <p>As we have seen, $e \leq 3n - 6$, so</p>
+
+\[\sum_{x} d_G(x) \leq 6n - 12.\]
+
+    <p>If the degree of every vertex is at least 6, we get</p>
+
+\[6n \leq 6n - 12,\]
+
+    <p>which is a contradiction. Therefore, there must be a vertex with degree at most 5.</p>
+  </li>
+</ol>
+
+<p>An intuitive way to think about Theorem 17.2.2(a) is that once a graph has too many edges, there is no more room for them in the plane and they start intersecting. This gives a way to prove that a particular graph is not planar. Take $K_5$, for example. It has 5 vertices and 10 edges, and $10 &gt; 3 \cdot 5 - 6$. Thus $K_5$ is not planar! In fact, no $K_n$ is planar for $n \geq 5$, since they all contain $K_5$ as a subgraph. On the other hand, $K_n$ is planar for $n \leq 4$, as can be demonstrated by their simple planar drawings. This illustrates a point that might be obvious by now: proving a graph to be planar is often easier than proving the opposite. (Just draw it!)</p>
+
+<p>How about complete bipartite graphs? It is easy to verify that $K_{i,j}$ is planar when $i \leq 2$ or $j \leq 2$. The smallest remaining suspect is $K_{3,3}$. Playing around with drawings doesn’t help: There seems to be no way to draw $K_{3,3}$ without intersections. Let’s try the trick that worked for $K_5$: The number of vertices of $K_{3,3}$ is 6, its number of edges is 9, and $9 \leq 3 \cdot 6 - 6$. No luck. We need a stronger tool, and here it is:</p>
+
+<p><strong>Proposition 17.2.3:</strong> For any simple planar graph $G$ with $n$ vertices and $e$ edges, if $G$ does not contain a cycle of length 3 then $e \leq 2n - 4$.</p>
+
+<p><strong>Proof:</strong> We can assume that $G$ is connected as in Theorem 17.2.2. Let $f$ be the number of faces of $G$ and let $\alpha(t)$ be the number of edges adjacent to a face $t$. These edges make up a cycle in $G$, and thus their number is at least 4, implying $\alpha(t) \geq 4$. Consider the sum $\sum_{t} \alpha(t)$, over all faces $t$ of $G$. Each edge is adjacent to at most two faces, thus</p>
+
+\[4f \leq \sum_{t} \alpha(t) \leq 2e.\]
+
+<p>Using Euler’s formula, we get $4(2 - n + e) \leq 2e$ and $e \leq 2n - 4$.</p>
+
+<p>With this result we’re finally in business: $K_{3,3}$ does not contain an odd cycle since it is bipartite, thus every cycle in the graph has length at least 4. Since $9 &gt; 2 \cdot 6 - 4$, $K_{3,3}$ is not planar. Let’s summarize what we’ve learned.</p>
+
+<p><strong>Theorem 17.2.4:</strong> $K_n$ is planar if and only if $n \leq 4$ and $K_{i,j}$ is planar if and only if $i \leq 2$ or $j \leq 2$.</p>
+
+<p>At this point we have laid the groundwork for one of the most striking results concerning planar graphs, known as Kuratowski’s theorem. To state it we need the following definition:</p>
+
+<p><strong>Definition 17.2.5:</strong> Given a graph $G = (V, E)$, an edge subdivision operation on an edge ${u, v}$ of $G$ results in the graph $(V \cup {x}, (E \setminus {{u, v}}) \cup {{u, x}, {x, v}})$, where $x \notin V$ is a new vertex. A graph $G’$ is said to be a subdivision of $G$ if it can be obtained from $G$ by successive applications of edge subdivision.</p>
+
+<p>Kuratowski’s theorem says that not only are $K_5$ and $K_{3,3}$ non-planar, but every non-planar graph contains either a subdivision of $K_5$ or a subdivision of $K_{3,3}$. That is, the graphs $K_5$ and $K_{3,3}$ characterize the whole family of non-planar graphs!</p>
+
+<p><strong>Theorem 17.2.6 (Kuratowski’s theorem):</strong> A graph is planar if and only if it does not contain a subdivision of $K_5$ or a subdivision of $K_{3,3}$ as a subgraph.</p>
+
+<h3 id="173-coloring-planar-graphs">17.3 Coloring Planar Graphs</h3>
+
+<p>You might have heard of the four-color problem. It was posed in the mid-19th century and occupied some of the best discrete mathematicians since that time. The original formulation is in terms of political maps. In such maps, neighboring countries are drawn with different colors. The question is how many colors are needed. It is easy to construct simple examples of maps that need at least four colors. The four-color problem asks whether four colors always suffice, for any political map. (We require that every country is connected, unlike, say, the US.)</p>
+
+<p>This problem is equivalent to whether every planar graph can be colored with four colors. (To see this, construct a graph whose vertices correspond to countries and whose edges connect neighbors through border segments.) It took over a century until Appel and Haken found a proof that four colors always suffice, and even that was possible only by using computers to conduct extensive case enumeration and analysis. To this date no proof of the four color theorem is known that does not rely on computers. On the other hand, in 1890 Heawood discovered a beautiful proof that five colors always suffice. To prepare for his proof, let us warm up by showing that every planar graph can be colored with 6 colors. The proof is surprisingly simple.</p>
+
+<p><strong>Theorem 17.3.1:</strong> The chromatic number of a planar graph $G$ is at most six.</p>
+
+<p><strong>Proof:</strong> By induction on the number $n$ of vertices of $G$. If $n \leq 6$ the claim is trivial. Assume every planar graph with at most $k$ vertices can be colored with 6 colors or less, and consider a graph $G = (V, E)$ with $k + 1$ vertices. By Theorem 17.2.2(b), there is a vertex $v$ of $G$ with degree at most 5. Let $G’$ be the induced subgraph of $G$ on the vertices $V \setminus {v}$. By the induction hypothesis, $G’$ can be colored with five colors or less. Color the vertices $V \setminus {v}$ of $G$ with the colors that they are assigned in the coloring of $G’$. Assign to $v$ the color that is not used by its neighbors. Since the degree of $v$ is at most five, such a color exists. This specifies a valid coloring of $G$.</p>
+
+<p>We are now ready for Heawood’s five color theorem.</p>
+
+<p><strong>Theorem 17.3.2:</strong> The chromatic number of a planar graph $G = (V, E)$ is at most five.</p>
+
+<p><strong>Proof:</strong> The proof proceeds by induction on the number $n$ of vertices of $G$. The base case is trivial. Assume every planar graph with at most $k$ vertices can be colored with 5 colors or less, and consider a graph $G = (V, E)$ with $k + 1$ vertices. Let $v$ be a vertex of $G$ with degree at most 5. If $d_G(v) &lt; 5$ we can produce a 5-coloring of $G$ as in the proof of Theorem 17.3.1. Assume $d_G(v) = 5$ and let $c : (V \setminus {v}) \to {1, 2, 3, 4, 5}$ be a 5-coloring of the induced subgraph $G’$ of $G$ on the vertices $V \setminus {v}$. This coloring exists by the induction hypothesis.</p>
+
+<p>We consider a particular drawing of $G$ in the plane and henceforth regard $G$ as a plane graph. Let $v_1, v_2, v_3, v_4, v_5$ be the neighbors of $v$ in the order they appear around $v$ in $G$. (That is, according to one of the circular orders in which the corresponding edges emanate from $v$ in $G$.) Without loss of generality, assume that $c(v_i) = i$ for $1 \leq i \leq 5$. (Note that if some color is unused by $v_1, v_2, v_3, v_4, v_5$, we can simply assign that color to $v$.) We distinguish between two cases: Either there does not exist a path between $v_1$ and $v_3$ in $G$ that uses only vertices of colors 1 and 3, or there does.</p>
+
+<ol>
+  <li>
+    <p><strong>There is no such path.</strong> In this case consider the subgraph $G’’$ of $G$ that is the union of all paths that begin at $v_1$ and use only vertices with colors 1 and 3. Note that neither $v_3$ nor its neighbors belong to $G’’$. We produce a 5-coloring of $G$ as follows: All the vertices of $G’’$ of color 1 are assigned the color 3, all the vertices of $G’’$ of color 3 are assigned the color 1, the vertex $v$ is assigned the color 1, and all other vertices of $G$ keep the color assigned by $c$. No monochromatic edges are created by this assignment and the coloring is valid.</p>
+  </li>
+  <li>
+    <p><strong>There is such a path.</strong> Consider a path $P$ from $v_1$ to $v_3$ that uses only vertices with colors 1 and 3. Together with the edges ${v, v_1}$ and ${v, v_3}$ this forms a cycle. The vertices $v_2$ and $v_4$ lie on different sides of this cycle. (Here we use the Jordan curve theorem.) Therefore there is no path between $v_2$ and $v_4$ that uses only vertices with colors 2 and 4, and we can apply the reasoning of the previous case.</p>
+  </li>
+</ol>
+
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

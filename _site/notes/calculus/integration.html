@@ -61,8 +61,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Integration","url":"http://localhost:4000/notes/calculus/integration.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=28694a1b72268c139baf770f3fd9c5dd5ccf61f6">
-    <link rel="stylesheet" href="/assets/css/style.css?v=28694a1b72268c139baf770f3fd9c5dd5ccf61f6">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=9c10af3047a5c8df9f3f289bdf567699759ad2c8">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9c10af3047a5c8df9f3f289bdf567699759ad2c8">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -128,7 +128,7 @@
                 
                 <h4>Table of Contents</h4>
             
-                <ul class="toc"><li><a href="#definite-integrals">Definite Integrals</a></li><li><a href="#first-fundamental-theorem-of-calculus">First Fundamental Theorem of Calculus</a></li><li><a href="#second-fundamental-theorem">Second Fundamental Theorem</a></li><li><a href="#application-of-ftc-2-to-logarithms">Application of FTC 2 to Logarithms</a></li><li><a href="#application-of-ftcs-to-geometry-volumes-and-areas">Application of FTCs to Geometry (Volumes and Areas)</a></li><li><a href="#application-of-ftc-2-to-logarithms-1">Application of FTC 2 to Logarithms</a></li><li><a href="#application-of-ftcs-to-geometry-volumes-and-areas-1">Application of FTCs to Geometry (Volumes and Areas)</a></li><li><a href="#numerical-integration">Numerical Integration</a></li><li><a href="#1-riemann-sum">1. Riemann Sum</a></li><li><a href="#2-trapezoidal-rule">2. Trapezoidal Rule</a></li><li><a href="#3-simpsons-rule">3. Simpson’s Rule</a></li><li><a href="#example-1-evaluate-int_01-fracdx1--x2-using-two-methods-trapezoidal-and-simpsons-of-numerical-integration">Example 1. Evaluate $\int_0^1 \frac{dx}{1 + x^2}$ using two methods (trapezoidal and Simpson’s) of numerical integration.</a></li></ul>
+                <ul class="toc"><li><a href="#definite-integrals">Definite Integrals</a></li><li><a href="#first-fundamental-theorem-of-calculus">First Fundamental Theorem of Calculus</a></li><li><a href="#second-fundamental-theorem">Second Fundamental Theorem</a></li><li><a href="#applications-to-logarithms-and-geometry">Applications to Logarithms and Geometry</a></li><li><a href="#volumes-by-disks-and-shells">Volumes by Disks and Shells</a></li><li><a href="#work-average-value-probability">Work, Average Value, Probability</a></li><li><a href="#numerical-integration">Numerical Integration</a></li></ul>
             
     
   </div>
@@ -172,10 +172,10 @@
     <ul>
       <li>$x = \frac{b}{n}$, height = $\left( \frac{b}{n} \right)^2$</li>
       <li>$x = \frac{2b}{n}$, height = $\left( \frac{2b}{n} \right)^2$</li>
-      <li>Sum of areas of rectangles:
-\(\sum_{i=1}^n \left( \frac{ib}{n} \right)^2 = \frac{b^3}{n^3} \sum_{i=1}^n i^2 = \frac{b^3}{n^3} \cdot \frac{n(n+1)(2n+1)}{6} \approx \frac{b^3}{3}\)
-as $n \to \infty$.</li>
+      <li>Sum of areas of rectangles:</li>
     </ul>
+
+\[\left( \frac{b}{n} \right)^2 + \left( \frac{b}{n} \right)\left( \frac{2b}{n} \right)^2 + \left( \frac{b}{n} \right)\left( \frac{3b}{n} \right)^2 + \cdots + \left( \frac{b}{n} \right)\left( \frac{nb}{n} \right)^2 = \frac{b^3}{n^3}(1^2 + 2^2 + 3^2 + \cdots + n^2)\]
   </li>
 </ol>
 
@@ -415,9 +415,8 @@ Hence, $F(x) = G(x) + c$. Finally, since $G(a) = 0$,</p>
 
 <p>We will use FTC 2 to discuss the function $L(x) = \int_1^x \frac{dt}{t}$ from first principles.</p>
 
-<p>Lecture 21: Applications to Logarithms and Geometry</p>
+<h3 id="applications-to-logarithms-and-geometry">Applications to Logarithms and Geometry</h3>
 
-<h3 id="application-of-ftc-2-to-logarithms">Application of FTC 2 to Logarithms</h3>
 <p>The integral definition of functions like $C(x)$, $S(x)$ of Fresnel makes them nearly as easy to use as elementary functions. It is possible to draw their graphs and tabulate values. You are asked to carry out an example or two of this on your problem set. To get used to using definite integrals and FTC2, we will discuss in detail the simplest integral that gives rise to a relatively new function, namely the logarithm.</p>
 
 <p>Recall that
@@ -476,12 +475,12 @@ except when $n = -1$. It follows that the antiderivative of $\frac{1}{x}$ is not
 
 <p>This provides an alternative to our previous approach to the exponential and log functions. Starting from $L(x)$, we can define the log function by $\ln x = L(x)$, define $e$ as the number such that $L(e) = 1$, define $e^x$ as the inverse function of $L(x)$, and define $a^x = e^{xL(a)}$.</p>
 
-<h3 id="application-of-ftcs-to-geometry-volumes-and-areas">Application of FTCs to Geometry (Volumes and Areas)</h3>
+<h2 id="application-of-ftcs-to-geometry-volumes-and-areas">Application of FTCs to Geometry (Volumes and Areas)</h2>
 <ol>
   <li><strong>Areas between two curves</strong></li>
 </ol>
 
-<p>Refer to Figure 2. Find the crossing points $a$ and $b$. The area, $A$, between the curves is
+<p>Find the crossing points $a$ and $b$. The area, $A$, between the curves is
 \(A = \int_a^b (f(x) - g(x)) \, dx\)</p>
 
 <p><strong>Example 1:</strong> Find the area in the region between $x = y^2$ and $y = x - 2$.</p>
@@ -500,14 +499,14 @@ except when $n = -1$. It follows that the antiderivative of $\frac{1}{x}$ is not
 
 <p><strong>Hard Way:</strong> Vertical Slices</p>
 
-<p>If we slice the region between the two curves vertically, we need to consider two different regions.
-Where $x &gt; 1$, the region’s lower bound is the straight line. For $x &lt; 1$, however, the region’s lower bound is the lower half of the sideways parabola. We find the area, $A$, between the two curves by integrating the difference between the top curve and the bottom curve in each region:
+<p>If we slice the region between the two curves vertically, we need to consider two different regions. Where $x &gt; 1$, the region’s lower bound is the straight line. For $x &lt; 1$, however, the region’s lower bound is the lower half of the sideways parabola. We find the area, $A$, between the two curves by integrating the difference between the top curve and the bottom curve in each region:
 \(A = \int_0^1 (\sqrt{x} - (-\sqrt{x})) \, dx + \int_1^4 (\sqrt{x} - (x - 2)) \, dx = \int (\text{top curve} - \text{bottom curve}) \, dx\)</p>
 
 <p><strong>Easy Way:</strong> Horizontal Slices</p>
 
-<p>Here, instead of subtracting the bottom curve from the top curve, we subtract the right curve from the left one.
-\(A = \int_{-1}^2 \left( (y + 2) - y^2 \right) \, dy = \left[ y + 2y - \frac{y^3}{3} \right]_{-1}^2 = 2 + 4 - \frac{8}{3} - \left( 2 - 2 + \frac{1}{3} \right) = \frac{9}{2}\)</p>
+<p>Here, instead of subtracting the bottom curve from the top curve, we subtract the right curve from the left one.</p>
+
+\[A = \int_{y=-1}^{2} (x_{\text{left}} - x_{\text{right}}) \, dy = \int_{y=-1}^{2} \left[ (y + 2) - y^2 \right] \, dx = \left( \frac{y^2}{2} + 2y - \frac{y^3}{3} \right) \bigg|_{-1}^{2} = \left[ \frac{4}{2} + 4 - \frac{8}{3} \right] - \left[ \frac{1}{2} - 2 + \frac{1}{3} \right] = 4 + 4 - \frac{8}{3} - \left( \frac{1}{2} - 2 + \frac{1}{3} \right) = \frac{9}{2}\]
 
 <ol>
   <li><strong>Volumes of solids of revolution</strong></li>
@@ -526,7 +525,7 @@ Where $x &gt; 1$, the region’s lower bound is the straight line. For $x &lt; 1
 <p>If we spin the upper part of the curve about the x-axis,```markdown
 Lecture 21: Applications to Logarithms and Geometry</p>
 
-<h3 id="application-of-ftc-2-to-logarithms-1">Application of FTC 2 to Logarithms</h3>
+<h2 id="application-of-ftc-2-to-logarithms">Application of FTC 2 to Logarithms</h2>
 <p>The integral definition of functions like $C(x)$, $S(x)$ of Fresnel makes them nearly as easy to use as elementary functions. It is possible to draw their graphs and tabulate values. You are asked to carry out an example or two of this on your problem set. To get used to using definite integrals and FTC2, we will discuss in detail the simplest integral that gives rise to a relatively new function, namely the logarithm.</p>
 
 <p>Recall that
@@ -585,39 +584,8 @@ except when $n = -1$. It follows that the antiderivative of $\frac{1}{x}$ is not
 
 <p>This provides an alternative to our previous approach to the exponential and log functions. Starting from $L(x)$, we can define the log function by $\ln x = L(x)$, define $e$ as the number such that $L(e) = 1$, define $e^x$ as the inverse function of $L(x)$, and define $a^x = e^{xL(a)}$.</p>
 
-<h3 id="application-of-ftcs-to-geometry-volumes-and-areas-1">Application of FTCs to Geometry (Volumes and Areas)</h3>
-<ol>
-  <li><strong>Areas between two curves</strong></li>
-</ol>
+<h3 id="volumes-by-disks-and-shells">Volumes by Disks and Shells</h3>
 
-<p>Find the crossing points $a$ and $b$. The area, $A$, between the curves is
-\(A = \int_a^b (f(x) - g(x)) \, dx\)</p>
-
-<p><strong>Example 1:</strong> Find the area in the region between $x = y^2$ and $y = x - 2$.</p>
-
-<p>\(x = y^2\)
-\(y = x - 2\)</p>
-
-<p>First, graph these functions and find the crossing points:
-\(y + 2 = x = y^2\)
-\(y^2 - y - 2 = 0\)
-\((y - 2)(y + 1) = 0\)</p>
-
-<p>Crossing points at $y = -1$, $2$. Plug these back in to find the associated x values, $x = 1$ and $x = 4$. Thus the curves meet at $(1, -1)$ and $(4, 2)$.</p>
-
-<p>There are two ways of finding the area between these two curves, a hard way and an easy way.</p>
-
-<p><strong>Hard Way:</strong> Vertical Slices</p>
-
-<p>If we slice the region between the two curves vertically, we need to consider two different regions. Where $x &gt; 1$, the region’s lower bound is the straight line. For $x &lt; 1$, however, the region’s lower bound is the lower half of the sideways parabola. We find the area, $A$, between the two curves by integrating the difference between the top curve and the bottom curve in each region:
-\(A = \int_0^1 (\sqrt{x} - (-\sqrt{x})) \, dx + \int_1^4 (\sqrt{x} - (x - 2)) \, dx = \int (\text{top curve} - \text{bottom curve}) \, dx\)</p>
-
-<p><strong>Easy Way:</strong> Horizontal Slices</p>
-
-<p>Here, instead of subtracting the bottom curve from the top curve, we subtract the right curve from the left one.
-\(A = \int_{-1}^2 \left( (y + 2) - y^2 \right) \, dy = \left[ y + 2y - \frac{y^3}{3} \right]_{-1}^2 = 2 + 4 - \frac{8}{3} - \left( 2 - 2 + \frac{1}{3} \right) = \frac{9}{2}\)</p>
-
-<h2 id="volumes-by-disks-and-shells">Volumes by Disks and Shells</h2>
 <p><strong>Disks</strong></p>
 
 \[V = \int_{0}^{a} \pi x^2 \, dy \quad \text{(substitute } y = x^2 \text{)}\]
@@ -714,7 +682,7 @@ except when $n = -1$. It follows that the antiderivative of $\frac{1}{x}$ is not
 
 <p>We will examine this problem more in the next lecture.</p>
 
-<h1 id="lecture-23-work-average-value-probability">Lecture 23: Work, Average Value, Probability</h1>
+<h3 id="work-average-value-probability">Work, Average Value, Probability</h3>
 
 <h2 id="application-of-integration-to-average-value">Application of Integration to Average Value</h2>
 
@@ -899,8 +867,6 @@ The shell or cylinder under $e^{-r^2}$ at radius sr has circumference $2\pi r$, 
 
 <p>on $-\infty &lt; x &lt; \infty$ is known as the normal distribution, and $\sigma &gt; 0$ is its standard deviation.</p>
 
-<h2 id="lecture-24-numerical-integration">Lecture 24: Numerical Integration</h2>
-
 <h3 id="numerical-integration">Numerical Integration</h3>
 
 <p>Numerical integration when an integral has no elementary antiderivative. For instance, there is no formula for</p>
@@ -911,7 +877,7 @@ The shell or cylinder under $e^{-r^2}$ at radius sr has circumference $2\pi r$, 
 
 <p>We’ll talk about three techniques for numerical integration: Riemann sums, the trapezoidal rule, and Simpson’s rule.</p>
 
-<h3 id="1-riemann-sum">1. Riemann Sum</h3>
+<h2 id="1-riemann-sum">1. Riemann Sum</h2>
 
 <p>Here,</p>
 
@@ -923,7 +889,7 @@ The shell or cylinder under $e^{-r^2}$ at radius sr has circumference $2\pi r$, 
 
 \[y_0 = f(x_0), y_1 = f(x_1), ... y_n = f(x_n)\]
 
-<h3 id="2-trapezoidal-rule">2. Trapezoidal Rule</h3>
+<h2 id="2-trapezoidal-rule">2. Trapezoidal Rule</h2>
 
 <p>The trapezoidal rule divides up the area under the function into trapezoids, rather than rectangles. The area of a trapezoid is the height times the average of the parallel bases:</p>
 
@@ -933,7 +899,7 @@ The shell or cylinder under $e^{-r^2}$ at radius sr has circumference $2\pi r$, 
 
 <p>The trapezoidal rule gives a more symmetric treatment of the two ends (a and b) than a Riemann sum does — the average of left and right Riemann sums.</p>
 
-<h3 id="3-simpsons-rule">3. Simpson’s Rule</h3>
+<h2 id="3-simpsons-rule">3. Simpson’s Rule</h2>
 
 <p>This approach often yields much more accurate results than the trapezoidal rule does. Here, we match quadratics (i.e. parabolas), instead of straight or slanted lines, to the graph. This approach requires an even number of intervals.</p>
 
@@ -965,7 +931,7 @@ The shell or cylinder under $e^{-r^2}$ at radius sr has circumference $2\pi r$, 
 
 <p>Example:</p>
 
-<h3 id="example-1-evaluate-int_01-fracdx1--x2-using-two-methods-trapezoidal-and-simpsons-of-numerical-integration">Example 1. Evaluate $\int_0^1 \frac{dx}{1 + x^2}$ using two methods (trapezoidal and Simpson’s) of numerical integration.</h3>
+<h2 id="example-1-evaluate-int_01-fracdx1--x2-using-two-methods-trapezoidal-and-simpsons-of-numerical-integration">Example 1. Evaluate $\int_0^1 \frac{dx}{1 + x^2}$ using two methods (trapezoidal and Simpson’s) of numerical integration.</h2>
 
 <p><strong>By the trapezoidal rule:</strong></p>
 
@@ -979,15 +945,7 @@ The shell or cylinder under $e^{-r^2}$ at radius sr has circumference $2\pi r$, 
 
 \[\int_0^1 \frac{1}{1 + x^2} dx = \tan^{-1} x \bigg|_0^1 = \tan^{-1} 1 - \tan^{-1} 0 = \frac{\pi}{4} - 0 = \frac{\pi}{4} \approx 0.785\]
 
-<table>
-  <tbody>
-    <tr>
-      <td>Roughly speaking, the error, $</td>
-      <td>\text{Simpson’s} - \text{Exact}</td>
-      <td>$, has order of magnitude $(\Delta x)^4$.</td>
-    </tr>
-  </tbody>
-</table>
+<p>Roughly speaking, the error, abs(Simpson’s-Exact), has order of magnitude $(\Delta x)^4$.</p>
 
 
       </section>
