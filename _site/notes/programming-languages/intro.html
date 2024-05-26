@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Intro to Programming Languages | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Intro to Programming Languages" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/programming-languages/intro.html" />
+<meta property="og:url" content="http://localhost:4000/notes/programming-languages/intro.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Intro to Programming Languages" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Intro to Programming Languages","url":"http://localhost:4000/notes/programming-languages/intro.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+    <link rel="stylesheet" href="/assets/css/style.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#evolution">Evolution</a></li><li><a href="#compilationinterpretation-phases">Compilation/Interpretation Phases</a></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="intro-to-programming-languages">Intro to Programming Languages</h1>
+
+<h1 id="why-so-many">Why So Many?</h1>
+
+<p>Programming languages are everywhere, so it makes sense that we’ll need to program things differently</p>
+
+<p>As the devices evolve, the amount we can do with our programming evolves as well</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ac49748f-61bb-4e3f-84f3-fc4a9d0d447e/Untitled.png" alt="Untitled" /></p>
+
+<p>But still, you could argue that we could create some “universal” programming language that could run on anything</p>
+
+<ul>
+  <li>We tried this with Java. It didn’t work.</li>
+</ul>
+
+<p>The reason we evolve languages is for a number of reasons, including developer preference, features, compilers, availability, marketing and special purposes</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c66687a0-74d3-4214-8ea8-d1ba87f4e696/Untitled.png" alt="Untitled" /></p>
+
+<p>All of these programs, however, are fundamentally ways of thinking and expressing algorithms</p>
+
+<p>They also abstract a virtual machine, specifying what your hardware should do without manipulating wires</p>
+
+<p>Ultimately, we want implementation efficiency and conceptual clarity, with the most successful languages being…</p>
+
+<ul>
+  <li>Easy to learn (BASIC, Pascal, etc.)</li>
+  <li>Powerful (C, Perl, etc.)</li>
+  <li>Easy to implement (Fortran)</li>
+  <li>Fast (C)</li>
+  <li>Backed by a powerful sponsor (Visual Basic, COBOL(</li>
+  <li>Widely disseminated (Java)</li>
+</ul>
+
+<p>There’s two main types of languages:</p>
+
+<ol>
+  <li>Imperative (dictating how a computer should do things)
+    <ol>
+      <li>von Neumann (C, Fortran, etc.)</li>
+      <li>OOP (C++, Java, etc.)</li>
+      <li>Scripting (Python, JS, etc.)</li>
+    </ol>
+  </li>
+  <li>Declarative (dictating what the computer does)
+    <ol>
+      <li>Functional (Scheme, Lisp, etc.)</li>
+      <li>Logic (Prolog)</li>
+    </ol>
+  </li>
+</ol>
+
+<p>Overall, imperative languages dominate, but declarative languages are higher-level, which makes them much safer</p>
+
+<h3 id="evolution">Evolution</h3>
+
+<p>We started with machine languages, going to assembly to abstract things and make them somewhat readable</p>
+
+<p>From there, we get to the first actual programming language, known as Fortran</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6e189fe2-c146-4a33-bc32-b45e50c1d6be/Untitled.png" alt="Untitled" /></p>
+
+<p>From there, we evolve into more modern imperative languages</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/57e48bed-1536-462a-989d-d3c4e5fb551a/Untitled.png" alt="Untitled" /></p>
+
+<p>However, our declarative languages look much freakier</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/065a8405-0cd5-4f74-aa3f-81de92f19d48/Untitled.png" alt="Untitled" /></p>
+
+<p>Let’s break this down a little bit</p>
+
+<p>With Scheme, all your code is in the form (function arguments)</p>
+
+<p>With define, we define the function gcd, specifying the arguments with lambda, so the first two lines define gcd as a function ($\lambda$) of two arguments (a,b)</p>
+
+<p>The third line defines a condition, with (zero? b) asking if b is zero, return a if its</p>
+
+<p>If b isn’t zero, it goes to the else case, where it executes gcd with parameters (b, mod_a b)</p>
+
+<p>With Prolog, we only have one real code word, which is :-, meaning ‘if’ in the strictly logical sense (you should know what I mean from 2209)</p>
+
+<p>At its core, the distinction between languages is the ability to control complexity, with function, objects and other features to abstract away the underlying systems</p>
+
+<h2 id="compilation-vs-interpretation">Compilation vs Interpretation</h2>
+
+<p>You may have heard of the distinction, but what does it actually mean?</p>
+
+<p>With a compiled language, we compile everything into bytecode before running anything</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f58ed1ba-db06-482b-a8fc-0a7d5444a773/Untitled.png" alt="Untitled" /></p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fc428253-26a2-42bf-89a7-3bbbd4a0f701/Untitled.png" alt="Untitled" /></p>
+
+<p>With interpreted languages on the other hand, we have an interpreter throughout the program’s runtime translating each instruction into bytecode as it goes along</p>
+
+<p>With compilation, we get better performance since we don’t have the bloat of an interpreter, but interpretation gives us greater flexibility and better diagnostics</p>
+
+<ul>
+  <li>For example, Prolog can write new pieces and execute them on the fly</li>
+</ul>
+
+<p>These aren’t mutually exclusive, however; you can have a system where we compile and then interpret</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3e43509e-2137-4ad9-a423-e460bc535b08/Untitled.png" alt="Untitled" /></p>
+
+<p>To put things more specifically, compilation is translation from one language into another, with full analysis of the meaning of the input</p>
+
+<p>This entails semantic understanding of what is being processed, while pre-processing simply removes comments and white space while grouping characters into tokens, expanding abbreviations and maybe identifying loops or subroutines</p>
+
+<ul>
+  <li>Preprocessors are more common for interpreted languages, but they also exist in C/C++</li>
+</ul>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/bd2c3fd8-44a7-43f2-a668-098434e77e64/Untitled.png" alt="Untitled" /></p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/409f6654-2350-4969-8f4c-3881a54051ab/Untitled.png" alt="Untitled" /></p>
+
+<p>We can also use a linker to merge libraries of subroutines (ex. math functions like log) into the final program</p>
+
+<p>We can also compile languages that are considered ‘interpreted’ since interpretation/compilation is actually a property of implementation</p>
+
+<p>The compiler, in this case, will generate code that makes assumptions and runs very fast if the assumptions are valid</p>
+
+<ul>
+  <li>If they aren’t valid, we can dynamically check with an interpreter</li>
+</ul>
+
+<p>Another more modern way of approaching things is Just-In-Time (JIT) compilation, where we delay compilation until the last second</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/404362d0-65bb-40a0-943f-530e8306d920/Untitled.png" alt="Untitled" /></p>
+
+<p>Some more unconventional compilers include text formatters that compile high-level document (Latex) and query language processors that translate into primitive operations on files (SQL)</p>
+
+<ul>
+  <li>There’s also tools in IDEs that are separate from this, including debuggers, version management and profilers for performance analysis</li>
+</ul>
+
+<h3 id="compilationinterpretation-phases">Compilation/Interpretation Phases</h3>
+
+<p>Compilation is handled in several steps</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/77269407-83c7-4c60-9cdd-3cc13992208f/Untitled.png" alt="Untitled" /></p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a572d10e-1cd6-4e10-b8d4-b270b19a488a/Untitled.png" alt="Untitled" /></p>
+
+<p>For interpretation, things are cut short a little bit</p>
+
+<p>In the scanner, we divide the program into token, which are the smallest meaningful units, saving time since char-by-char is very slow</p>
+
+<ul>
+  <li>This is done using a deterministic finite automata (DFA)</li>
+</ul>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ad5e08e0-64a7-405e-a50b-aedddc2e1593/Untitled.png" alt="Untitled" /></p>
+
+<p>On parsing, we check the syntax of the program to make sure the grammar is being adhered to, which is done via a pushdown automata (PDA)</p>
+
+<p>This parsing organizes tokens into a parse tree as defined by a context free grammar (CFG)</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2002c5e7-01cf-4a53-9463-a14424c860a1/Untitled.png" alt="Untitled" /></p>
+
+<p>From here, our previous GCD example can be split up into a parse tree</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/be9d324a-3167-4c54-abf5-0f57b44437eb/Untitled.png" alt="Untitled" /></p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e20fc87b-b06b-4eba-afec-77773d06121f/Untitled.png" alt="Untitled" /></p>
+
+<ul>
+  <li>You can go through the leaves left-first to read out the entire program</li>
+</ul>
+
+<p>With semantic analysis, we discover the meaning in the program, detecting multiple occurrences of the same identifier and tracking the types of identifiers and expressions</p>
+
+<p>From here, we can build and maintain a symbol table mapping each identifier to its information (type, scope, structure, etc.)</p>
+
+<p>The compiler can only handle static semantic analysis, since dynamic semantics must be checked at run time</p>
+
+<ul>
+  <li>These dynamic checks are pretty slow, so we need to make a trade off between safety and speed (this is what makes C so fast; dynamic checks are few and far in between)</li>
+</ul>
+
+<p>This semantic analysis produces a syntax tree, removing some of the more “useless” internal nodes that are present in the parse tree and annotates the remaining nodes with attributes</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/71c4522b-1a26-4eb4-b0b8-1a126c03fdf7/Untitled.png" alt="Untitled" /></p>
+
+<p>Finally, we have code generation which uses interpreters to run the syntax tree and target code generation which then produces assembly</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e3cea77d-e7e2-4ef8-8295-bc07af8579f3/Untitled.png" alt="Untitled" /></p>
+
+<p>This is a bit of a naive solution that can definitely be approved upon, so our final step is to find these optimizations to either do things faster or take less space</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e3cea77d-e7e2-4ef8-8295-bc07af8579f3/Untitled.png" alt="Untitled" /></p>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

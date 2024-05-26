@@ -1,0 +1,451 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Scheduling | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Scheduling" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/operating-systems/scheduling.html" />
+<meta property="og:url" content="http://localhost:4000/notes/operating-systems/scheduling.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Scheduling" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Scheduling","url":"http://localhost:4000/notes/operating-systems/scheduling.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+    <link rel="stylesheet" href="/assets/css/style.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#scheduling-algorithms">Scheduling Algorithms</a><ul><li><a href="#simple-queue">Simple Queue</a></li><li><a href="#stack">Stack</a></li><li><a href="#shortest-job-first">Shortest-Job-First</a></li><li><a href="#round-robin">Round Robin</a></li><li><a href="#priority">Priority</a></li><li><a href="#lottery">Lottery</a></li><li><a href="#multilevel-queue">Multilevel Queue</a></li></ul></li><li><a href="#on-multiprocesses">On Multiprocesses</a></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="scheduling">Scheduling</h1>
+
+<p>On most computers, we need to run multiple things at once, but how do we achieve this efficiently?</p>
+
+<p>We’ve spoken about multicore systems, but this is only part of the puzzle; we need to incorporate scheduling in order to make this work</p>
+
+<p>We do this with a CPU-I/O burst cycle, where we cycle short bits of CPU usage with short bits of I/O usage, each called a burst</p>
+
+<p>There are (supposed to be) many short bursts and only a few long bursts, so we can interleave pretty easily</p>
+
+<p><img src="images/scheduling/e1.png" alt="2023-04-17_05-34.png" /></p>
+
+<p>The scheduler itself selects processes from a queue of processes that haven’t been completed</p>
+
+<p>These processes switch from running to waiting, running to ready, waiting to ready, or any state to termination</p>
+
+<p>For situations 1 and 4, we can’t do much with our scheduler, but for 2 and 3 we can shake things up a bit with choice</p>
+
+<ul>
+  <li>The former is nonpreemptive scheduling (processes keep the CPU until it either waits or terminates) and the latter is preemptive (a different process can interrupt)</li>
+  <li>Preemptive is the standard for all modern OSes since it’s required for real-time computing and user interaction, but at the cost of race conditions (to be discussed in depth later)</li>
+</ul>
+
+<p>We handle process swapping with the dispatcher, which swaps context, between user mode and kernel mode and going to where it left off in a previous program</p>
+
+<p>This dispatcher has some latency, but this should be minimized as much as possible (we can use vmstat to track this)</p>
+
+<p><img src="images/scheduling/e2.png" alt="2023-04-17_05-40.png" /></p>
+
+<h2 id="scheduling-algorithms">Scheduling Algorithms</h2>
+
+<p>There’s many different ways to calculate how to interleave processes, but which one do we choose?</p>
+
+<p>To decide, we need to take into account CPU utilization, throughput, turnaround time, waiting time and response time</p>
+
+<ul>
+  <li>We also need to account for fairness; we don’t want a process sitting and waiting for the CPU forever</li>
+</ul>
+
+<h3 id="simple-queue">Simple Queue</h3>
+
+<p>The first and most simple way to go about this is to run whatever comes first in a FIFO queue, running until it needs I/O or is terminated</p>
+
+<ul>
+  <li>This is nonpreemptive since the OS doesn’t intervene at all</li>
+</ul>
+
+<p>The problem is that the wait time can be very long, so if you run a bunch of processes at once, it can be a while before we get to the next process</p>
+
+<p>To look at this deeper, consider the following processes</p>
+
+<p><img src="images/scheduling/e3.png" alt="2023-04-17_05-41.png" /></p>
+
+<p>This obviously isn’t good for 2 and 3, but if we had a different order, things get much better</p>
+
+<p><img src="images/scheduling/e4.png" alt="2023-04-17_05-41_1.png" /></p>
+
+<p>This begs the question: what if we slap $P_1$ into the middle? Crunching the numbers, we get the following</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Burst</th>
+      <th>Wait</th>
+      <th>Turnaround</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>P2</td>
+      <td>3</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>P1</td>
+      <td>24</td>
+      <td>3</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <td>P3</td>
+      <td>3</td>
+      <td>27</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <td>Avg</td>
+      <td>-</td>
+      <td>10</td>
+      <td>20</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>We notice that when we have short processes stuck behind long processes, we have longer wait times are turnaround times, much like a slow truck on a one-lane stretch of highway</p>
+
+<ul>
+  <li>This is called the convoy effect, and we want to avoid this!!</li>
+</ul>
+
+<p>This, of course, assumes that we have everything arrive at the same time, which usually isn’t the case</p>
+
+<p>If we take into account arrival time, our calculations look slightly different</p>
+
+<p><img src="images/scheduling/e5.png" alt="2023-04-17_05-41_2.png" /></p>
+
+<h3 id="stack">Stack</h3>
+
+<p>Another option is to use a stack, where processes are handled in LIFO</p>
+
+<p>This option improves response time for newly created processes, but has an extremely large risk of starvation, so it’s probably best to avoid this</p>
+
+<h3 id="shortest-job-first">Shortest-Job-First</h3>
+
+<p>In this, we take the shortest CPU burst and run that first, followed by the next shortest burst</p>
+
+<ul>
+  <li>This is also nonpreemptive but we can make it preemptive</li>
+</ul>
+
+<p>This gives the benefit of an optimal SJF with a minumum guaranteed average waiting time for a given set of processes, but determining the length of the burst is a bit complicated</p>
+
+<p>We could either make a guess based on history (which is automatic but inaccurate) or make the user/developer set it (accurate but annoying to have to set)</p>
+
+<p>To see how optimal this really is, let’s crunch the numbers</p>
+
+<p><img src="images/scheduling/e6.png" alt="2023-04-17_05-42.png" /></p>
+
+<p>This gives us our best times yet from all the other methods, but how do we actually calculate the burst length ahead of time?</p>
+
+<p>One way we can do this is with an averaging formula known as exponential smoothing, with the idea that the next CPU burst will probably be a similar length</p>
+
+<p>Here is the text from the image, typed out word for word:</p>
+
+<hr />
+
+<ol>
+  <li>$t_n$ = actual length of $n^{th}$ CPU burst</li>
+  <li>$\tau_{n+1}$ = predicted value for the next CPU burst</li>
+  <li>$\alpha$, $0 \leq \alpha \leq 1$</li>
+  <li>Define:
+\(\tau_{n+1} = \alpha t_n + (1 - \alpha) \tau_n\)</li>
+</ol>
+
+<p>We can modify $\alpha$ to get different effects</p>
+
+<ul>
+  <li>
+    <p>Set $\alpha$ to 0 – The most recent history has no bearing. Pick an estimate and never update it
+\(\tau_{n+1} = \tau_n\)</p>
+  </li>
+  <li>
+    <p>Set $\alpha$ to 1 – Only the most recent history has any bearing
+\(\tau_{n+1} = t_n\)</p>
+  </li>
+  <li>
+    <p>More commonly, set $\alpha$ to ½ so we get the most recent history and all the past history</p>
+    <ul>
+      <li>Set $\alpha$ to 0.5 – 1.0 to put higher weight on recent history, 0 – 0.5 to put higher weight on past history</li>
+    </ul>
+  </li>
+</ul>
+
+<p>This gives us slightly better times if we use it properly</p>
+
+<p>Here is the text from the image, typed out word for word:</p>
+
+<p>Here is the corrected table, typed out word for word:</p>
+
+<hr />
+
+<ul>
+  <li>What if we give higher weight to the most recent burst and set $\alpha$ to 0.75</li>
+</ul>
+
+\[\begin{array}{|c|c|c|c|c|c|c|c|c|}
+\hline
+t_i &amp;  &amp; 6 &amp; 4 &amp; 6 &amp; 4 &amp; 13 &amp; 13 &amp; 13 \\
+\hline
+\tau_0 &amp; 10 &amp; 4.5+2.5 &amp; 3+1.8 &amp; 4.5+1.2 &amp; 3+1.4 &amp; 9.8+1.1 &amp; 9.8+2.8 &amp; 9.8+3.2 \\
+ &amp;  &amp; 7 &amp; 4.8 &amp; 5.7 &amp; 4.4 &amp; 10.9 &amp; 12.6 &amp; 13 \\
+\hline
+\end{array}\]
+
+<hr />
+<p><img src="images/scheduling/e7.png" alt="2023-04-17_05-45.png" /></p>
+
+<h3 id="round-robin">Round Robin</h3>
+
+<p>This is probably the simplest of the “effective methods”: just split time evenly</p>
+
+<p>More specifically, we give each burst a certain amount of time (given by a time quantum) before switching to the next process, and so on in a loop</p>
+
+<p>In this case, no one process waits more than (n-1)q time units, but we have to be careful with q: too low and we spend more time context switching, but too high and we’re just doing FCFS again</p>
+
+<ul>
+  <li>This is usually 10-100ms</li>
+</ul>
+
+<p>Despite this, round robin is the most common scheduling algorithm, with pretty good results</p>
+
+<p><img src="images/scheduling/e8.png" alt="2023-04-17_05-45.png" /></p>
+
+<h3 id="priority">Priority</h3>
+
+<p>We can also assign priority for each process with an integer, with the upside of more control and the downside of possible starvation</p>
+
+<p><img src="images/scheduling/e9.png" alt="2023-04-17_05-49.png" /></p>
+
+<p>We can partially solve the starvation issue with process aging, so as the time progresses, increase priority</p>
+
+<h3 id="lottery">Lottery</h3>
+
+<p>Give each process a lottery ticket, and if it’s chosen, run that process, which eliminates starvation but can be inefficient</p>
+
+<h3 id="multilevel-queue">Multilevel Queue</h3>
+
+<p>We can also combine all of these together, with one method for each queue, which gives the best of all worlds but still can starve processes</p>
+
+<p><img src="images/scheduling/e10.png" alt="2023-04-17_05-52.png" /></p>
+
+<p>A variation of this that solves starvation is the feedback queue, where processes can be promoted to higher priority queues as they age and demoted to lower priority queues if they use too much CPU time</p>
+
+<p>Here is the text from the image, typed out word for word:</p>
+
+<p>Consider an example with three queues</p>
+<ul>
+  <li>$Q_0$ – RR with time quantum 8 milliseconds</li>
+  <li>$Q_1$ – RR time quantum 16 milliseconds</li>
+  <li>$Q_2$ – FCFS</li>
+</ul>
+
+<p>A new process enters queue $Q_0$ and receives 8 milliseconds</p>
+
+<p>If it does not finish in 8 milliseconds, the process is moved to queue $Q_1$</p>
+
+<p>At $Q_1$ job is again served in RR and receives 16 additional milliseconds</p>
+
+<p>If it still does not complete, it is preempted and moved to queue $Q_2$</p>
+
+<h2 id="on-multiprocesses">On Multiprocesses</h2>
+
+<p>Things get more complicated when we introduce parallelism, because now we can balance the load more efficiently</p>
+
+<p>One approach we can take is asymmetric multiprocessing, where we use one process for kernel-level scheduling and other processors just execute code</p>
+
+<ul>
+  <li>Since the primary processor is a bottleneck, this isn’t used nowadays</li>
+</ul>
+
+<p>The other approach is symmetric multiprocessing, where each processor schedules itself, where each processor can choose from a common queue (can lead to race conditions) or a private queue (can unbalance the load)</p>
+
+<ul>
+  <li>Race conditions are more of a problem, so modern OSes use this with a private queue</li>
+</ul>
+
+<p>This is applied either on</p>
+
+<ul>
+  <li>
+    <p>Multicore processors - each core is a logical CPU for the OS (faster and saves power, but can create memory stalls)</p>
+
+    <p><img src="images/scheduling/e11.png" alt="2023-04-17_05-58.png" /></p>
+  </li>
+  <li>Multithreaded multicore processors - each core can handle two or more threads (ex. Intel i7)</li>
+  <li>
+    <p>In this case, the chip has built-in thread scheduling</p>
+
+    <p><img src="images/scheduling/e12.png" alt="2023-04-17_05-59.png" /></p>
+  </li>
+</ul>
+
+<p>This also comes with the issue of load balancing, since now we have threads to work with</p>
+
+<p>We have two approaches to sort this out</p>
+
+<ul>
+  <li>Push migration - check tasks periodically and push from overloaded CPUs to other CPUs</li>
+  <li>Pull migration - idle processors pull waiting tasks from bust processors</li>
+  <li>Most use a combination of both</li>
+</ul>
+
+<p>We usually don’t want threads to migrate to new processors since we have to then repopulate the cache again</p>
+
+<ul>
+  <li>This is another reason to use private queues</li>
+</ul>
+
+<p>We can enforce this further by either using soft affinity (OS attempts to keep the thread running on the same processor) or hard affinity (threads specify a set of processors to run on)</p>
+
+<p>This is counterbalanced by load balancing, so the more we load balance, the less benefit we get from affinity, so we need to achieve a golden mean between the two in our algorithms</p>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

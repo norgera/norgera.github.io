@@ -4,7 +4,7 @@ layout: default
 toc: true
 ---
 
-# Memory + I/O
+# Memory & I/O
 # Strings
 
 With our arrays, we can do something special. Remember that we can have an array of characters in the same way as before. You may be quick to jump the gun and say that this is a string, but it isn't...unless we add a **terminating character**.

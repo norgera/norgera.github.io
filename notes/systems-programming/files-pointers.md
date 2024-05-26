@@ -4,7 +4,7 @@ layout: default
 toc: true
 ---
 
-# Files + Pointers
+# Files & Pointers
 
 # Files
 

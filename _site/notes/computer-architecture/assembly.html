@@ -45,9 +45,9 @@
     <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>Intro to Assembly | nate’s site</title>
+<title>Assembly | nate’s site</title>
 <meta name="generator" content="Jekyll v3.9.2" />
-<meta property="og:title" content="Intro to Assembly" />
+<meta property="og:title" content="Assembly" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Home" />
 <meta property="og:description" content="Home" />
@@ -56,13 +56,13 @@
 <meta property="og:site_name" content="nate’s site" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Intro to Assembly" />
+<meta property="twitter:title" content="Assembly" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Intro to Assembly","url":"http://localhost:4000/notes/computer-architecture/assembly.html"}</script>
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Assembly","url":"http://localhost:4000/notes/computer-architecture/assembly.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
-    <link rel="stylesheet" href="/assets/css/style.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+    <link rel="stylesheet" href="/assets/css/style.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -128,7 +128,7 @@
                 
                 <h4>Table of Contents</h4>
             
-                <ul class="toc"><li><a href="#assembly">Assembly</a></li><li><a href="#more-on-registers">More on Registers</a></li><li><a href="#addressing-modes">Addressing Modes</a></li><li><a href="#arm-assembly">ARM Assembly</a><ul><li><a href="#program-structure">Program Structure</a></li><li><a href="#pseudo-instructions">Pseudo Instructions</a></li><li><a href="#relative-addressing">Relative Addressing</a></li></ul></li><li><a href="#data-processing-instructions">Data-Processing Instructions</a><ul><li><a href="#add">Add</a></li><li><a href="#subtract">Subtract</a></li><li><a href="#negation">Negation</a></li><li><a href="#move">Move</a></li><li><a href="#multiply">Multiply</a></li><li><a href="#bitwise">Bitwise</a></li><li><a href="#compare">Compare</a></li><li><a href="#shifts">Shifts</a></li></ul></li></ul>
+                <ul class="toc"><li><a href="#assembly-1">Assembly</a></li><li><a href="#more-on-registers">More on Registers</a></li><li><a href="#addressing-modes">Addressing Modes</a></li><li><a href="#arm-assembly">ARM Assembly</a><ul><li><a href="#program-structure">Program Structure</a></li><li><a href="#pseudo-instructions">Pseudo Instructions</a></li><li><a href="#relative-addressing">Relative Addressing</a></li></ul></li><li><a href="#data-processing-instructions">Data-Processing Instructions</a><ul><li><a href="#add">Add</a></li><li><a href="#subtract">Subtract</a></li><li><a href="#negation">Negation</a></li><li><a href="#move">Move</a></li><li><a href="#multiply">Multiply</a></li><li><a href="#bitwise">Bitwise</a></li><li><a href="#compare">Compare</a></li><li><a href="#shifts">Shifts</a></li></ul></li></ul>
             
     
   </div>
@@ -148,13 +148,13 @@
       </div>
       <section>
 
-      <h1 id="intro-to-assembly">Intro to Assembly</h1>
+      <h1 id="assembly">Assembly</h1>
 
 <h1 id="what-is-an-instruction">What is an instruction?</h1>
 
 <p>To explain this, let’s assume we have a very simple stored program computer that we will perform instructions on</p>
 
-<p><img src="images/assembly/a1.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a1.png" alt="Untitled" /></p>
 
 <p>The format of instructions defines their anatomy, which consists of</p>
 
@@ -195,7 +195,7 @@ SUB <strong>r3</strong>,r3,r1 (subtract r1 from r3 and store in r3)</p>
 
 <p>To make this a little more clear, here’s an example of a hypothetical computer</p>
 
-<p><img src="images/assembly/a2.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a2.png" alt="Untitled" /></p>
 
 <p>Sometimes (like ADD), the operands will be read from the register before being transferred to the ALU and then sent back to the destination register (this is called a register-to-register operation)</p>
 
@@ -229,7 +229,7 @@ SUB <strong>r3</strong>,r3,r1 (subtract r1 from r3 and store in r3)</p>
 
 <p>We also have some status bits stored in the condition code register (CCR) after an operation is performed, going as follows</p>
 
-<p><img src="images/assembly/a3.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a3.png" alt="Untitled" /></p>
 
 <p>On RISC processors like ARM, we have to manually request status flags to be updated, while they are automatically updated on newer CISC processors</p>
 
@@ -237,7 +237,7 @@ SUB <strong>r3</strong>,r3,r1 (subtract r1 from r3 and store in r3)</p>
   <li>We do this in Assembly by adding an S to the operation (ex. SUBS)</li>
 </ul>
 
-<h2 id="assembly">Assembly</h2>
+<h2 id="assembly-1">Assembly</h2>
 
 <p>We’ve seen Assembly instructions before, but let’s look at them again</p>
 
@@ -294,7 +294,7 @@ SUB <strong>r3</strong>,r3,r1 (subtract r1 from r3 and store in r3)</p>
 
 <p>In this case, we go to the branch and skip to THEN, where we execute X=P+5 and halt (B EXIT and ADD 20 are ignored)</p>
 
-<p><img src="images/assembly/a4.png" alt="This is how we got the address for our vars btw" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a4.png" alt="This is how we got the address for our vars btw" /></p>
 
 <p>This is how we got the address for our vars btw</p>
 
@@ -302,7 +302,7 @@ SUB <strong>r3</strong>,r3,r1 (subtract r1 from r3 and store in r3)</p>
 
 <p>Below is an example where we calculate 1+2+3+…+20</p>
 
-<p><img src="images/assembly/a5.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a5.png" alt="Untitled" /></p>
 
 <ul>
   <li>Note that
@@ -386,11 +386,11 @@ SUB <strong>r3</strong>,r3,r1 (subtract r1 from r3 and store in r3)</p>
   <li>Operating mode in bits 0-7 (more on that later…maybe)</li>
 </ul>
 
-<p><img src="images/assembly/a6.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a6.png" alt="Untitled" /></p>
 
 <p>They also have a large instruction set including the following</p>
 
-<p><img src="images/assembly/a7.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a7.png" alt="Untitled" /></p>
 
 <p>Generally, instructions in ARM go by the following</p>
 
@@ -399,11 +399,11 @@ SUB <strong>r3</strong>,r3,r1 (subtract r1 from r3 and store in r3)</p>
 
 <p>Below is an example of an ARM assembly program fragment</p>
 
-<p><img src="images/assembly/a8.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a8.png" alt="Untitled" /></p>
 
 <p>And here’s another example which generates the sum of the cubes of numbers</p>
 
-<p><img src="images/assembly/a9.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a9.png" alt="Untitled" /></p>
 
 <ul>
   <li>MLA means multiply and accumulate (multiply r2 by r1, add r0 and store in r0)</li>
@@ -421,7 +421,7 @@ SUB <strong>r3</strong>,r3,r1 (subtract r1 from r3 and store in r3)</p>
 
 <p>To start, let’s look at an example from last week</p>
 
-<p><img src="images/assembly/a10.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a10.png" alt="Untitled" /></p>
 
 <p>These include</p>
 
@@ -456,7 +456,7 @@ SUB <strong>r3</strong>,r3,r1 (subtract r1 from r3 and store in r3)</p>
 
 <p>Below is an example of these directives in action</p>
 
-<p><img src="images/assembly/a11.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a11.png" alt="Untitled" /></p>
 
 <ul>
   <li>Note that the greyed out lines are how you stop your program on the ARM processor, but in the simulator we do an infinite loop instead like so</li>
@@ -478,7 +478,7 @@ SUB <strong>r3</strong>,r3,r1 (subtract r1 from r3 and store in r3)</p>
 
 <p>In the disassembly, these directives look like gibberish at first, so let’s look at it</p>
 
-<p><img src="images/assembly/a12.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a12.png" alt="Untitled" /></p>
 
 <p>Everything in the orange block is the memory locations used in the directives</p>
 
@@ -489,7 +489,7 @@ SUB <strong>r3</strong>,r3,r1 (subtract r1 from r3 and store in r3)</p>
   <li>This keeps going after that as well, which will be left below</li>
 </ul>
 
-<p><img src="images/assembly/a13.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a13.png" alt="Untitled" /></p>
 
 <h3 id="pseudo-instructions">Pseudo Instructions</h3>
 
@@ -514,7 +514,7 @@ SUB <strong>r3</strong>,r3,r1 (subtract r1 from r3 and store in r3)</p>
 
 <p>Below is an example of ADR in action</p>
 
-<p><img src="images/assembly/a14.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a14.png" alt="Untitled" /></p>
 
 <p>All of the pseudo translation is done automatically by the assembler, utilizing program counter relative addressing</p>
 
@@ -540,7 +540,7 @@ SUB <strong>r3</strong>,r3,r1 (subtract r1 from r3 and store in r3)</p>
 
 <p>To go more in-depth into how this works, let’s look at this in action in a real program</p>
 
-<p><img src="images/assembly/a15.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a15.png" alt="Untitled" /></p>
 
 <p>The top right shows how we calculate the offsets (goal address - address of the current instruction + 0x08 for pipelining = offset)</p>
 
@@ -565,7 +565,7 @@ SUB <strong>r3</strong>,r3,r1 (subtract r1 from r3 and store in r3)</p>
 
 <p>We can do so using a double-precision strategy, like so</p>
 
-<p><img src="images/assembly/a16.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a16.png" alt="Untitled" /></p>
 
 <ul>
   <li>Note that r1 and r0 make up one 64-bit number together, along with r3 and r2</li>
@@ -630,7 +630,7 @@ RSB r1,r2,r3 ;[r1]←[r3]-[r2]</li>
 
 <p>With MLA, we can also find dot products of vectors</p>
 
-<p><img src="images/assembly/a17.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a17.png" alt="Untitled" /></p>
 
 <ul>
   <li>We’ll talk about the cyan parts later</li>
@@ -652,7 +652,7 @@ RSB r1,r2,r3 ;[r1]←[r3]-[r2]</li>
 
 <p>These will just be listed off since they’re self-explanatory</p>
 
-<p><img src="images/assembly/a18.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a18.png" alt="Untitled" /></p>
 
 <ul>
   <li>The long list of ones on MVN is because they’re taken out of 11001010 for representation purposes; they’re still there</li>
@@ -660,29 +660,29 @@ RSB r1,r2,r3 ;[r1]←[r3]-[r2]</li>
 
 <p>We can use these bitwise operations for more complicated bit manipulations as well</p>
 
-<p><img src="images/assembly/a19.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a19.png" alt="Untitled" /></p>
 
-<p><img src="images/assembly/a20.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a20.png" alt="Untitled" /></p>
 
 <h3 id="compare">Compare</h3>
 
 <p>We’ve covered CMP already, but we have other compare instructions that we can use as well</p>
 
-<p><img src="images/assembly/a21.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a21.png" alt="Untitled" /></p>
 
 <h3 id="shifts">Shifts</h3>
 
 <p>Shifts move bites one or more places to the right or left, with its replacement depending on the instruction used</p>
 
-<p><img src="images/assembly/a22.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a22.png" alt="Untitled" /></p>
 
 <p>These shift can either be static (determined by a number representing the number of bits to shift by) or dynamic</p>
 
-<p><img src="images/assembly/a23.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a23.png" alt="Untitled" /></p>
 
 <p>Dynamic shifts can be any one of the following</p>
 
-<p><img src="images/assembly/a24.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a24.png" alt="Untitled" /></p>
 
 <ul>
   <li>These means that you left shift r3 by r2 bits (if r2=#5, you left shift 5 or multiply by 2^5)</li>
@@ -690,7 +690,7 @@ RSB r1,r2,r3 ;[r1]←[r3]-[r2]</li>
 
 <p>The following shifts are in ARM itself</p>
 
-<p><img src="images/assembly/a25.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/assembly/a25.png" alt="Untitled" /></p>
 
 <ul>
   <li>Note that ASL is the same as LSL, so it’s trivial</li>

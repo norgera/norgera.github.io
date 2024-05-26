@@ -4,10 +4,8 @@ layout: default
 toc: true
 ---
 
-# Intro to Computer Architecture
+# Computer Architecture
 
-
-### Computer Architecture
 
 Formally, a computer is characterized by its instruction set architecture, which is an abstract entity (meaning the implementation and design of the computer itself is irrelevant) that defines the computer from a programmer’s POV
 

@@ -1,0 +1,384 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Networks + Security | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Networks + Security" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/operating-systems/net-sec.html" />
+<meta property="og:url" content="http://localhost:4000/notes/operating-systems/net-sec.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Networks + Security" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Networks + Security","url":"http://localhost:4000/notes/operating-systems/net-sec.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+    <link rel="stylesheet" href="/assets/css/style.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#security">Security</a></li><li><a href="#virtualization">Virtualization</a></li><li><a href="#networks-and-distributed-systems">Networks and Distributed Systems</a></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="networks--security">Networks + Security</h1>
+
+<h2 id="security">Security</h2>
+
+<p>Security is a measure of confidence that the system will maintain integrity, with protection providing mechanisms to provide this</p>
+
+<p>Total security is impossible, but we can get pretty close with the help of the OS</p>
+
+<ul>
+  <li>We need security as the physical, app and network layers as well</li>
+</ul>
+
+<p>Security is only as good as the weakest link, with humans being the weakest link of all</p>
+
+<p><img src="images/net-sec/n1.png" alt="2023-04-18_06-16.png" /></p>
+
+<p>Threats include malware (malicious software like trojans), code-injection (regular software that has bugs ripe for exploiting), viruses (malware that self-replicates, attached to regular software) and worms (viruses that self-replicate without human interaction)</p>
+
+<p>We can increase security by only giving users as much privileges as they need and nothing more (principle of least privilege)</p>
+
+<ul>
+  <li>A monoculture can raise these threats (Linux is safe!!)</li>
+</ul>
+
+<p>Network threats still exist and makes security much more difficult, including DDoS (packet spam to shut down a target) and port scanning (automated port connection used to check for vulnerabilities)</p>
+
+<ul>
+  <li>We can check security on our own networks with nmap or nessus</li>
+</ul>
+
+<p>We can use cryptography as a tool to help us out, either symmetrically (sender and recievers share the same key) or asymmetric (public key for encrypting and private key for decrypting, usually more compute intensive)</p>
+
+<ul>
+  <li>Certificate authorities sign these keys to build trust with users</li>
+</ul>
+
+<p><img src="images/net-sec/n2.png" alt="2023-04-18_06-21_1.png" /></p>
+
+<p>A user can be authenticated by either something they know (a password), something they posess (phone) or something they are (biometrics), with common issues being reused password</p>
+
+<ul>
+  <li>We can alleviate some of this with MFA, which is increasingly common as smartphones get more popular</li>
+</ul>
+
+<p>The more layers we have, the more secure our system becomes, with self-vulnerability assessments, firewalls, virus protection and logging all being useful layers we can add on</p>
+
+<h1 id="protection">Protection</h1>
+
+<p>We implement security with protections, including mechanisms (the how) and policies (the what), with apps and the OS implementing these mechanisms</p>
+
+<p>Common ones include principle of least privilege and multi-layering, but there are others as well</p>
+
+<ul>
+  <li>Rough-grained control is easier but can be too broad (user perms in UNIX are a good example)</li>
+  <li>Fine-grained control is more complex but more protective (ACLs, RBAC, etc.)</li>
+</ul>
+
+<p>One good way on the OS is privilege separation, which abstract away from the hardware</p>
+
+<p><img src="images/net-sec/n3.png" alt="2023-04-18_06-27.png" /></p>
+
+<p>Each ring should only have required objects, with each user being given a domain</p>
+
+<ul>
+  <li>We can use sudo to switch between domains with UNIX</li>
+</ul>
+
+<p>Another method is an access matrix</p>
+
+<ul>
+  <li>
+    <p>If we treat rows as domains and columns as objects, we have an access matrix</p>
+  </li>
+  <li>
+    <p>$\text{Access}(i, j)$ is the set of operations that process in domain $i$ can perform on object $j$</p>
+  </li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>object</th>
+      <th>$F_1$</th>
+      <th>$F_2$</th>
+      <th>$F_3$</th>
+      <th>printer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>domain</strong></td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>$D_1$</td>
+      <td> </td>
+      <td>read</td>
+      <td> </td>
+      <td>read</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>$D_2$</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td>print</td>
+    </tr>
+    <tr>
+      <td>$D_3$</td>
+      <td> </td>
+      <td> </td>
+      <td>read</td>
+      <td>execute</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>$D_4$</td>
+      <td> </td>
+      <td>read, write</td>
+      <td> </td>
+      <td>read, write</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Access control can be implemented in the OS as a global table, and ACL for each object, a capacity list for each domain or a lock-key mechanism, with each having its own trade-offs</p>
+
+<ul>
+  <li>Most OSes uses a combo of ACLs and capacity lists</li>
+</ul>
+
+<p>Other ways we could use are role-based access control (assign privileges to roles) and mandatory access control (put labels on objects and users and only grant access when the labels match)</p>
+
+<p>Other methods include the following</p>
+
+<ul>
+  <li>
+    <p><strong>System Integrity Protection (SIP)</strong> – Used since macOS 10.11. Restrict the core operating system files from processes (even if the processes are run by <strong>root</strong>)</p>
+  </li>
+  <li>
+    <p><strong>System-call filtering</strong> – Like a firewall for system calls. Can also inspect system call arguments</p>
+  </li>
+  <li>
+    <p><strong>Sandboxing</strong> – Running processes in a limited environment even though the user privileges would dictate more access</p>
+  </li>
+  <li>
+    <p><strong>Code-signing</strong> – Only running programs that have been digitally signed by the vendor (E.g. iOS App Store, Android Play store, Microsoft store)</p>
+  </li>
+</ul>
+
+<h2 id="virtualization">Virtualization</h2>
+
+<p>We can abstract the hardware into a bunch of different environments, creating the illusion of a separate computer using VMs</p>
+
+<p><img src="images/net-sec/n4.png" alt="2023-04-18_06-32_1.png" /></p>
+
+<p>This includes emulation (software designed for a different architecture in a similar environment) programming virtualization (used by Java, Pythong and .NET) and containers (separating applications from eachother with the illusion of stand-alone, like Docker)</p>
+
+<p>Virtualization was in effect as early as 1972 with IBM’s multi-user batching, but by the 90s, Intel CPUs could finally do true virtualization, with many companies being founded on the idea (ex. VMWare)</p>
+
+<p>This protects the host OS from guest OSes, allows for live migrations, makes testing OSes easy, makes templating easy, gives cost savings and allows for cloud computing</p>
+
+<p>The VMM can’t be a perfect duplicate, like in the guest kernel mode</p>
+
+<p><img src="images/net-sec/n5.png" alt="2023-04-18_06-36.png" /></p>
+
+<p>These come in many types</p>
+
+<ul>
+  <li><strong>Type 0</strong> – The VMM is embedded in the firmware at the hardware level. Less common as sharing hardware resources is challenging</li>
+  <li><strong>Type 1</strong> – The VMM is a special purpose operating system designed for running VMs. This is the most common type (E.g. VMWare ESXi, Microsoft Hyper-V)</li>
+  <li><strong>Type 2</strong> – The VMM is simply another process running in the operating system. Useful for end-users who want to use multiple operating systems without modifying their operating system (E.g. Oracle Virtualbox, Parallels, VMWare workstation)</li>
+</ul>
+
+<p><strong>They also come with many components</strong></p>
+
+<ul>
+  <li><strong>CPU Scheduling</strong> – The VMM will present multiple vCPUs to the guest. The number of vCPUs can be changed. More vCPUs than physical CPUs is known as <strong>oversubscribing</strong>. CPU scheduling and threading makes oversubscribing possible</li>
+  <li><strong>Memory management</strong> – The VMM can oversubscribe memory using paging and de-duplication techniques</li>
+  <li><strong>I/O management</strong> – The VMM provides disk I/O. An entire partition for a guest OS is just a single file on the host machine (e.g. a .vmdk file)</li>
+  <li><strong>Networking</strong> – The VMM can bridge the guest OS directly to the external network or provide a local/private IP address from the host OS (like a wi-fi router does)</li>
+</ul>
+
+<p>This is a common research topic since it allows for better security, resource usage and flexibility making things like robotics and IoT deivces</p>
+
+<h2 id="networks-and-distributed-systems">Networks and Distributed Systems</h2>
+
+<p>A distributed system is a collection of loosely coupled nodes interconnected by a network, with each node being a different type and communicating using messages while giving the following benefits</p>
+
+<ul>
+  <li><strong>Resource sharing</strong> – Resources on one system can be shared with another</li>
+  <li><strong>Computation speedup</strong> – Partitioning and load balancing</li>
+  <li><strong>Reliability</strong> – Resources can be shared eliminating a <strong>single point of failure</strong></li>
+</ul>
+
+<p>The structure can be either a LAN with a small area on WiFi or a WAN over a large area (ex. the Internet, but others like North Korea’s WAN exist)</p>
+
+<p>The Internet uses a DNS to resolve names to IP addresses and they send messages through protocols, with the OS using the OSI network model</p>
+
+<p><img src="images/net-sec/n6.png" alt="2023-04-18_06-40.png" /></p>
+
+<p><img src="images/net-sec/n7.png" alt="2023-04-18_06-40_1.png" /></p>
+
+<p>We can also have network OSes (giving an environment to access remote resources like SSH and SFTP) and distributed OSes (seamless access to remote resources, like NFS but also wiwth shared computation)</p>
+
+<ul>
+  <li>The Internet is a bit like a distributed OS if you think about it</li>
+</ul>
+
+<p>These distributed systems come with some design issues as well</p>
+
+<ul>
+  <li>Systems should be <strong>resilient</strong>. Failures can be detected using <strong>heartbeat</strong> messages (“Are you up?” -&gt; “I am up”). If a failure occurs, reconfiguration and recovery is needed. If the failed system held critical resources, the surviving systems must handle this.</li>
+  <li>Systems should be <strong>transparent</strong>. Users should be unaware they are using remote resources (e.g. Playing music on Spotify feels like the music is stored on your machine).</li>
+  <li>Systems should be <strong>scalable</strong>. As user load increases, the ability for the distributed system to service requests should not be hindered.</li>
+</ul>
+
+<p>These distributed OSes use distributed file systems such as NFS</p>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

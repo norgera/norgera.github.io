@@ -1,0 +1,728 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Processes | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Processes" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/operating-systems/processes.html" />
+<meta property="og:url" content="http://localhost:4000/notes/operating-systems/processes.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Processes" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Processes","url":"http://localhost:4000/notes/operating-systems/processes.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+    <link rel="stylesheet" href="/assets/css/style.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#task-control-block">Task Control Block</a></li><li><a href="#process-control-block-in-linux">Process Control Block in Linux</a></li><li><a href="#scheduling">Scheduling</a></li><li><a href="#termination">Termination</a></li><li><a href="#in-practice">In Practice</a></li><li><a href="#files">Files</a></li><li><a href="#shared-memory">Shared Memory</a></li><li><a href="#message-passing">Message Passing</a></li><li><a href="#pipes">Pipes</a></li><li><a href="#in-c">In C</a></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="processes">Processes</h1>
+
+<p>Processes are programs in execution, with each instruction in a process being executed in sequence</p>
+
+<p>The process consists of multiple parts:</p>
+
+<ul>
+  <li>Text section - where the program code is stored</li>
+  <li>Program counter - keeps track of the function</li>
+  <li>Stack - contains temporary data (parameters, return addresses, local variables)</li>
+  <li>Data section - contains global variables</li>
+  <li>Heap - contains dynamically allocated memory
+    <ul>
+      <li>Note that the PROGRAM is passive and stored on the disk, while what we’re describing is the PROCESS, which is active (programs become processes when they’re loaded into memory)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="images/processes/q1.png" alt="The process, visualized with some C code and their place in the process" /></p>
+
+<p>The process, visualized with some C code and their place in the process</p>
+
+<p>A program can encompass several processes, such as a program being executed by multiple users at the same time</p>
+
+<p>As the program is being executed, it changes between states</p>
+
+<ul>
+  <li>New - process is in creation</li>
+  <li>Running - instructions are being executed</li>
+  <li>Waiting - process is waiting on an event (i.e. user input)</li>
+  <li>Ready - process is waiting for processor assignment</li>
+  <li>Terminated - process is over</li>
+</ul>
+
+<p><img src="images/processes/q2.png" alt="Untitled" /></p>
+
+<p>The state diagram of a process</p>
+
+<p>Below is an explanation of the process control block (PCB)</p>
+
+<p>The image provides information about the Process Control Block (PCB) in an operating system, specifically Linux. Here’s a breakdown of the key points from the image:</p>
+
+<h2 id="task-control-block">Task Control Block</h2>
+
+<ul>
+  <li><strong>Process state:</strong> Indicates whether the process is running, waiting, etc.</li>
+  <li><strong>Process number:</strong> Unique identifier for the process.</li>
+  <li><strong>Program counter:</strong> Location of the next instruction to be executed.</li>
+  <li><strong>Registers:</strong> Contents of all process-centric registers.</li>
+  <li><strong>CPU scheduling information:</strong> Priorities and scheduling queue pointers.</li>
+  <li><strong>Memory-management information:</strong> Memory allocated to the process.</li>
+  <li><strong>Accounting information:</strong> CPU usage, clock time elapsed since start, time limits.</li>
+  <li><strong>I/O status information:</strong> I/O devices allocated to the process, list of open files.</li>
+</ul>
+
+<h2 id="process-control-block-in-linux">Process Control Block in Linux</h2>
+<ul>
+  <li>Represented by the C structure <code class="language-plaintext highlighter-rouge">task_struct</code>.</li>
+  <li>Key fields in <code class="language-plaintext highlighter-rouge">task_struct</code>:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">pid_t pid;</code> - Process identifier.</li>
+      <li><code class="language-plaintext highlighter-rouge">long state;</code> - State of the process.</li>
+      <li><code class="language-plaintext highlighter-rouge">unsigned int time_slice;</code> - Scheduling information.</li>
+      <li><code class="language-plaintext highlighter-rouge">struct task_struct *parent;</code> - Pointer to the parent process.</li>
+      <li><code class="language-plaintext highlighter-rouge">struct list_head children;</code> - List of child processes.</li>
+      <li><code class="language-plaintext highlighter-rouge">struct files_struct *files;</code> - List of open files.</li>
+      <li><code class="language-plaintext highlighter-rouge">struct mm_struct *mm;</code> - Address space of this process.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Diagram of <code class="language-plaintext highlighter-rouge">task_struct</code></strong>
+The diagram shows how <code class="language-plaintext highlighter-rouge">task_struct</code> instances are connected, with links to parent, child, and sibling processes, representing the hierarchical structure of process management in Linux.</p>
+
+<h2 id="scheduling">Scheduling</h2>
+
+<p>Scheduling is handled by the process scheduler, which picks available processes for next execution, with the goal of maximizing CPU usage while quickly switching between them</p>
+
+<p>To do this, we create two queues: a ready queues with all processes in main memory and a wait queue with processes that are waiting for an event (i.e. I/O)</p>
+
+<p><img src="images/processes/q3.png" alt="Untitled" /></p>
+
+<p>The switch between processes is called a context switch</p>
+
+<p><img src="images/processes/q4.png" alt="Untitled" /></p>
+
+<p>In a context switch, we must save the state of the old process and load the state of the new process, both of which are stored in the PCB</p>
+
+<ul>
+  <li>The time spent switching is purely overhead, meaning the system doesn’t do useful work</li>
+  <li>The more complex the OS and PCB, the longer the switch takes</li>
+</ul>
+
+<p>We can speed this up through simpler OS/PCB or more complex hardware, including multiple sets of registers per CPU, allowing for more contexts</p>
+
+<h1 id="where-do-processes-come-from">Where do Processes Come From?</h1>
+
+<p>Parent processes create child processes, each of which can create other processes</p>
+
+<p>This in turn creates a process tree, with each process identified with a process identifier (pid)</p>
+
+<p>When creating child processes, we have lots of option for sharing resources, either all, none, or just a subset</p>
+
+<ul>
+  <li>We can also execute concurrently or wait until the child terminates</li>
+</ul>
+
+<p>This child program will be a duplicate with a program loaded on it, splitting away from the parent with the fork() command</p>
+
+<p>After this, the parent calls wait() waiting for the child to terminate, while the child calls exec() to replace the memory space with a new program</p>
+
+<p>Finally, the child calls exit() to give back control to the parent</p>
+
+<p><img src="images/processes/q5.png" alt="Untitled" /></p>
+
+<p>In UNIX, these are created automatically when we run programs</p>
+
+<p><img src="images/processes/q6.png" alt="Untitled" /></p>
+
+<h2 id="termination">Termination</h2>
+
+<p>To terminate a process, we ask the system to delete with the exit() system call, which then causes the OS to return status data from child to parent via wait(), before deallocating any resources created by the child</p>
+
+<p>The parent can also terminate child processes using abort(), which can be done when the child’s task is no longer needed or the child has exceeded allocated resources</p>
+
+<p>Depending on the OS, the child can’t exist without the parent, so the child must also be terminated through cascading termination initiated by the OS</p>
+
+<ul>
+  <li>In situations where there is a child without a parent, that child is an orphan</li>
+</ul>
+
+<p>The parent process may wait for termination, but if it doesn’t, it’s called a zombie</p>
+
+<p>Below is a breakdown of the wait() keyword</p>
+
+<p><img src="images/processes/q7.png" alt="Untitled" /></p>
+
+<h2 id="in-practice">In Practice</h2>
+
+<p>In C, fork() returns -1 if there’s no child created, 0 to the child and the child’s PID to the parent, meaning we can take advantage of this in a single program to tell whether we’re on the parent or child process</p>
+
+<ul>
+  <li>We can also call pid_t getpid() to get the current PID and pid_t getppid() to get the parent’s PID</li>
+</ul>
+
+<p>Due to the interleaving of instructions on the CPU, forking output is nondeterministic, meaning we can’t tell what the exact output will be just from the code</p>
+
+<p>For example, look at the following</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;unistd.h&gt;
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+	<span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+	<span class="n">pid</span><span class="o">=</span><span class="n">fork</span><span class="p">();</span>
+	<span class="k">if</span><span class="p">(</span> <span class="n">pid</span><span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span> <span class="cm">/* parent */</span>
+		<span class="k">for</span><span class="p">(</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+			<span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\t\t\t</span><span class="s">PARENT%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="k">else</span> <span class="p">{</span> <span class="cm">/* child */</span>
+		<span class="k">for</span><span class="p">(</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+			<span class="n">printf</span><span class="p">(</span> <span class="s">"CHILD %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Just looking at this, we’d think that the output is something like this</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PARENT</span> <span class="mi">0</span>
+<span class="n">PARENT</span> <span class="mi">1</span>
+<span class="n">PARENT</span> <span class="mi">2</span>
+<span class="n">PARENT</span> <span class="mi">3</span>
+<span class="n">PARENT</span> <span class="mi">4</span>
+<span class="n">PARENT</span> <span class="mi">5</span>
+<span class="n">PARENT</span> <span class="mi">6</span>
+<span class="n">PARENT</span> <span class="mi">7</span>
+<span class="n">PARENT</span> <span class="mi">8</span>
+<span class="n">PARENT</span> <span class="mi">9</span>
+<span class="n">CHILD</span> <span class="mi">0</span>
+<span class="n">CHILD</span> <span class="mi">1</span>
+<span class="n">CHILD</span> <span class="mi">2</span>
+<span class="n">CHILD</span> <span class="mi">3</span>
+<span class="n">CHILD</span> <span class="mi">4</span>
+<span class="n">CHILD</span> <span class="mi">5</span>
+<span class="n">CHILD</span> <span class="mi">6</span>
+<span class="n">CHILD</span> <span class="mi">7</span>
+<span class="n">CHILD</span> <span class="mi">8</span>
+<span class="n">CHILD</span> <span class="mi">9</span>
+</code></pre></div></div>
+
+<p>In reality, the lines could be interwoven into each other</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PARENT</span> <span class="mi">0</span>
+<span class="n">PARENT</span> <span class="mi">1</span>
+<span class="n">PARENT</span> <span class="mi">2</span>
+<span class="n">PARENT</span> <span class="mi">3</span>
+<span class="n">PARENT</span> <span class="mi">4</span>
+<span class="n">PARENT</span> <span class="mi">5</span>
+<span class="n">PARENT</span> <span class="mi">6</span>
+<span class="n">CHILD</span> <span class="mi">0</span>
+<span class="n">CHILD</span> <span class="mi">1</span>
+<span class="n">CHILD</span> <span class="mi">2</span>
+<span class="n">PARENT</span> <span class="mi">7</span>
+<span class="n">PARENT</span> <span class="mi">8</span>
+<span class="n">PARENT</span> <span class="mi">9</span>
+<span class="n">CHILD</span> <span class="mi">3</span>
+<span class="n">CHILD</span> <span class="mi">4</span>
+<span class="n">CHILD</span> <span class="mi">5</span>
+<span class="n">CHILD</span> <span class="mi">6</span>
+<span class="n">CHILD</span> <span class="mi">7</span>
+<span class="n">CHILD</span> <span class="mi">8</span>
+<span class="n">CHILD</span> <span class="mi">9</span>
+</code></pre></div></div>
+
+<p>This switch depends on a number of factors, including overall machine load and process scheduling, but it isn’t random</p>
+
+<p>We can also change out the current process for a new one with execl(), loading a binary file into memory</p>
+
+<ul>
+  <li>execl() shouldn’t return anything, but it will return -1 on failure</li>
+</ul>
+
+<h2 id="files">Files</h2>
+
+<p>When forking with files, the child process is given a copy of the parent’s file descriptor table, which holds stdin, stdout, stderr and an in_file, which points to a file name and its data</p>
+
+<ul>
+  <li>If the file is opened before a fork, both parent and child share the same file pointer</li>
+  <li>If the file is opened after a fork, both parent and child still get a copy of the file descriptor table but with different pointers</li>
+</ul>
+
+<h1 id="process-communication">Process Communication</h1>
+
+<p>Since everything on the OS is processes, it makes sense to have a way for these processes to communicate, but how do we actually go about this?</p>
+
+<p>The way we go about this is called interprocess communication (IPC), which has two models: shared memory managed by user processes and message passing managed by the OS</p>
+
+<p><img src="images/processes/q2.png" alt="Untitled" /></p>
+
+<p>a) shared memory
+b) message passing</p>
+
+<p>A question soon arises: how do we do this in a way that the data can be produced and consumed universally while also being lossless?</p>
+
+<p>We have two variations we can use: an unbounded buffer or a bounded buffer</p>
+
+<p>An unbounded buffer places no practical limit on the buffer size, meaning the producer never has to wait for free buffer space</p>
+
+<p>A bounded buffer assumes a fixed buffer space, so the producer must wait until some buffer space is freed up</p>
+
+<h2 id="shared-memory">Shared Memory</h2>
+
+<p>In a shared memory paradigm, an area of memory is shared among a set of processes that wish to communicate, which is under the control of the user processes</p>
+
+<p>This is a simple solution, but it comes with the problem of synchronizing everything between processes</p>
+
+<ul>
+  <li>How to handle this is covered later in the course</li>
+</ul>
+
+<p>In C, we can create a buffer like so</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define BUFFER_SIZE 10
+</span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+<span class="p">...</span>
+<span class="p">}</span> <span class="n">item</span><span class="p">;</span>
+
+<span class="n">item</span> <span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">in</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="c1">//points to next item to produce</span>
+<span class="kt">int</span> <span class="n">out</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="c1">//points to next item to consume</span>
+</code></pre></div></div>
+
+<p>This buffer can only use BUFFER_SIZE-1 elements</p>
+
+<p>When in == out, the buffer is empty, so if you try to fill in the last slot will make in == out again</p>
+
+<p>How do we alleviate this and use every slot available? What we can do is share a counter</p>
+
+<p>We can do this with pretty similar code on the producer and consumer side</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//producer</span>
+<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+	<span class="cm">/* produce an item in next_produced */</span>
+	<span class="k">while</span> <span class="p">(</span><span class="n">counter</span> <span class="o">==</span> <span class="n">BUFFER_SIZE</span><span class="p">)</span>
+		<span class="p">;</span> <span class="cm">/* do nothing */</span>
+	<span class="n">buffer</span><span class="p">[</span><span class="n">in</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_produced</span><span class="p">;</span>
+	<span class="n">in</span> <span class="o">=</span> <span class="p">(</span><span class="n">in</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">;</span>
+	<span class="n">counter</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">//consumer</span>
+<span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">while</span> <span class="p">(</span><span class="n">counter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="p">;</span> <span class="cm">/* do nothing */</span>
+	<span class="n">next_consumed</span> <span class="o">=</span> <span class="n">buffer</span><span class="p">[</span><span class="n">out</span><span class="p">];</span>
+	<span class="n">out</span> <span class="o">=</span> <span class="p">(</span><span class="n">out</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">BUFFER_SIZE</span><span class="p">;</span>
+	<span class="n">counter</span><span class="o">--</span><span class="p">;</span>
+	<span class="cm">/* consume the item in next_consumed */</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is alright, but it still poses the same synchronization problem, since the counter could be a different value between processes</p>
+
+<ul>
+  <li>This is also covered later</li>
+</ul>
+
+<h2 id="message-passing">Message Passing</h2>
+
+<p>With message passing, we can instead send data to a process directly, with send(message) and receive(message), the message size being either fixed or variable</p>
+
+<p>To actually facilitate communication this way, processes first need to establish a communication link before passing messages</p>
+
+<ul>
+  <li>This is much like TCP if you’ve taken a class on networks</li>
+</ul>
+
+<p>The implementation comes with several complications that we need to handle, including</p>
+
+<ul>
+  <li>Physical: do we do this with shared memory? or a hardware bus? or through a network?</li>
+  <li>Logical: is this direct or indirect? sync or async? automatic or explicit buffering?</li>
+</ul>
+
+<p>No matter the implementation, we must be explicit with who we send to a receive from</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">send</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+<span class="n">receive</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+<span class="c1">//P,Q are processes</span>
+</code></pre></div></div>
+
+<p>The links between processes for communications are established automatically, associated with just one pair of processes</p>
+
+<ul>
+  <li>These are usually bidirectional, but can be unidirectional</li>
+</ul>
+
+<p>We can also have indirect communication, much like a mailbox where messages are directed to a received from ports, each with a unique ID</p>
+
+<p>In this case, a link can be associated with many processes and each pair can share many links, but processes can only communicate if they share a mailbox</p>
+
+<p>With an indirect approach, we can create a new mailbox, send a received through the mailbox and delete the mailbox</p>
+
+<p>The primitives look something like this</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">send</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+<span class="n">receive</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+<span class="c1">//A is a shared mailbox</span>
+</code></pre></div></div>
+
+<p>This is all well and good with two processes, but when we get to three we get the issue of multiple processes receiving from the same mailbox: who actually gets the message in this case?</p>
+
+<p>There’s a few ways we can handle this</p>
+
+<ul>
+  <li>Restrict the link to two processes</li>
+  <li>Restrict reception to one process at a time</li>
+  <li>Have the system select a receiver arbitrarily and tell the sender which processes got the message</li>
+</ul>
+
+<p>There’s also the case of what to do during the transfer of a message: do we block the sender or receiver from doing anything until the message goes through (sync)? Or do we let the sender do whatever and deal with the consequences on the receiver side (async)?</p>
+
+<ul>
+  <li>We can also have a combination of the two, such as the sender being async and the receiver being sync</li>
+  <li>If both are sync, we have a rendezvous</li>
+</ul>
+
+<p>Lastly, what happens when there’s messages that are sent before the receiver is ready? We also have some options here</p>
+
+<ul>
+  <li>No buffer; sender must wait (rendezvous)</li>
+  <li>Bounded buffer; sender must wait until there’s free space in the buffer</li>
+  <li>Unbounded buffer; sender never waits</li>
+</ul>
+
+<h2 id="pipes">Pipes</h2>
+
+<p>Pipes provide a 1-to-1 channel between processes, where messages can be sent back and forth</p>
+
+<p>These can be uni or bidirectional, half or full duplex, without a relationship and even over a network</p>
+
+<p>Pipes are divided into two types: ordinary pipes that can’t be accessed outside the process that created it and mostly created by parents to children, and named pipes that can be used anywhere</p>
+
+<p>In ordinary pipes, the parent/producer writes to one end and the child/consumer reads from the other, making them unidirectional</p>
+
+<ul>
+  <li>These are called anonymous pipes in Windows</li>
+  <li>To make these bidirectional, set up an additional pipe</li>
+</ul>
+
+<p>With named pipes, communication is bidirectional and no relationship is needed beforehand, meaning they can even be used in networks</p>
+
+<ul>
+  <li>These can also be used by other processes</li>
+</ul>
+
+<p>Pipes are inherently limited by the OS, meaning any extra writes while full will be blocked by the system by default</p>
+
+<ul>
+  <li>The same happens with reading from an empty pipe</li>
+</ul>
+
+<h2 id="in-c">In C</h2>
+<p>Using shared memory in C to map a portion of a file descriptor in memory and write to the shared memory using sprintf()</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;sys/mman.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;unistd.h&gt;
+
+int main() {
+    /* the size (in bytes) of shared memory object */
+    const int SIZE = 4096;
+
+    /* name of the shared memory object */
+    const char *name = "OS";
+
+    /* strings written to shared memory */
+    const char *message_0 = "Hello";
+    const char *message_1 = "World!";
+
+    /* shared memory file descriptor */
+    int shm_fd;
+
+    /* pointer to shared memory object */
+    void *ptr;
+
+    /* create the shared memory object */
+    shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666);
+
+    /* configure the size of the shared memory object */
+    ftruncate(shm_fd, SIZE);
+
+    /* memory map the shared memory object */
+    ptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);
+
+    /* write to the shared memory object */
+    sprintf(ptr, "%s", message_0);
+    ptr += strlen(message_0);
+    sprintf(ptr, "%s", message_1);
+    ptr += strlen(message_1);
+
+    return 0;
+}
+</code></pre>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;sys/mman.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;unistd.h&gt;
+
+int main() {
+    /* the size (in bytes) of shared memory object */
+    const int SIZE = 4096;
+
+    /* name of the shared memory object */
+    const char *name = "OS";
+
+    /* shared memory file descriptor */
+    int shm_fd;
+
+    /* pointer to shared memory object */
+    void *ptr;
+
+    /* open the shared memory object */
+    shm_fd = shm_open(name, O_RDONLY, 0666);
+
+    /* memory map the shared memory object */
+    ptr = mmap(0, SIZE, PROT_READ, MAP_SHARED, shm_fd, 0);
+
+    /* read from the shared memory object */
+    printf("%s", (char *)ptr);
+
+    /* remove the shared memory object */
+    shm_unlink(name);
+
+    return 0;
+}
+</code></pre>
+
+<p>Pipes: Use pipe() to create a pipe, then use fork()</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/wait.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;errno.h&gt;
+
+int main(void) {
+    int n;
+    int status;
+    char c;
+    int port[2];
+    pid_t pid;
+
+    if (pipe(port) &lt; 0) {
+        perror("pipe error");
+        exit(0);
+    }
+    pid = fork();
+    if (pid &lt; 0) {
+        perror("fork error");
+        exit(0);
+    }
+
+    if(pid &gt; 0) { //parent
+        printf("\n From parent: writing ABCD to pipe now..");
+        write(port[1],"ABCD",4);
+        printf("\n From parent: waiting for child to complete..\n");
+        wait(NULL);
+    } else { //child
+        printf("\n From Child: reading A from the pipe now..");
+        read(port[0],&amp;c,1);
+        printf("\n From child: this is what I read %c\n", c);
+    }
+    return 0;
+}
+</code></pre>
+
+<p>Pipes: Writing and reading different types</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/wait.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;errno.h&gt;
+
+int main(void) {
+    int port[2];
+    if (pipe(port) &lt; 0) {
+        perror("pipe error");
+        exit(1);
+    }
+    pid_t pid = fork();
+    
+    if (pid &lt; 0) {
+        perror("fork error");
+        exit(1);
+    }
+
+    if (pid &gt; 0) { // parent
+        char c = 'A';
+        char s[4] = "ABC"; // Note: sizeof(s) == 4
+        int a = 1234;
+        write(port[1], &amp;c, sizeof(c)); // write char
+        write(port[1], s, sizeof(s)); // write string
+        write(port[1], &amp;a, sizeof(a)); // write int
+        wait(NULL);
+    } else { // child
+        char c;
+        char s[4];
+        int a;
+        read(port[0], &amp;c, sizeof(c)); // read char
+        read(port[0], s, sizeof(s)); // read string
+        read(port[0], &amp;a, sizeof(a)); // read int
+        printf("\n From child: read '%c', '%s', %d\n", c, s, a);
+    }
+
+    return 0;
+}
+</code></pre>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

@@ -45,9 +45,9 @@
     <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>Intro to Computer Architecture | nate’s site</title>
+<title>Computer Architecture | nate’s site</title>
 <meta name="generator" content="Jekyll v3.9.2" />
-<meta property="og:title" content="Intro to Computer Architecture" />
+<meta property="og:title" content="Computer Architecture" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Home" />
 <meta property="og:description" content="Home" />
@@ -56,13 +56,13 @@
 <meta property="og:site_name" content="nate’s site" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Intro to Computer Architecture" />
+<meta property="twitter:title" content="Computer Architecture" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Intro to Computer Architecture","url":"http://localhost:4000/notes/computer-architecture/intro.html"}</script>
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Computer Architecture","url":"http://localhost:4000/notes/computer-architecture/intro.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
-    <link rel="stylesheet" href="/assets/css/style.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+    <link rel="stylesheet" href="/assets/css/style.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -128,7 +128,7 @@
                 
                 <h4>Table of Contents</h4>
             
-                <ul class="toc"><li><a href="#computer-architecture">Computer Architecture</a></li><li><a href="#intro-to-the-computer">Intro to the Computer</a></li><li><a href="#register-transfer-language">Register Transfer Language</a></li><li><a href="#assembly">Assembly</a><ul><li><a href="#bus">Bus</a></li></ul></li><li><a href="#computer-arithmetic">Computer Arithmetic</a><ul><li><a href="#operations">Operations</a></li><li><a href="#describers">Describers</a></li></ul></li><li><a href="#flow-control-and-encoding">Flow Control and Encoding</a></li></ul>
+                <ul class="toc"><li><a href="#computer-organization">Computer Organization</a></li><li><a href="#computer-structure">Computer Structure</a></li><li><a href="#process-register">Process Register</a></li><li><a href="#computer-type">Computer Type</a></li><li><a href="#programs">Programs</a><ul><li><a href="#intro-to-the-computer">Intro to the Computer</a></li><li><a href="#register-transfer-language">Register Transfer Language</a></li><li><a href="#assembly">Assembly</a><ul><li><a href="#bus">Bus</a></li></ul></li><li><a href="#computer-arithmetic">Computer Arithmetic</a><ul><li><a href="#operations">Operations</a></li><li><a href="#describers">Describers</a></li></ul></li></ul></li><li><a href="#ascii">ASCII</a><ul><li><a href="#flow-control-and-encoding">Flow Control and Encoding</a></li></ul></li><li><a href="#encoding-of-branch-instructions">Encoding of Branch Instructions</a></li></ul>
             
     
   </div>
@@ -148,9 +148,7 @@
       </div>
       <section>
 
-      <h1 id="intro-to-computer-architecture">Intro to Computer Architecture</h1>
-
-<h3 id="computer-architecture">Computer Architecture</h3>
+      <h1 id="computer-architecture">Computer Architecture</h1>
 
 <p>Formally, a computer is characterized by its instruction set architecture, which is an abstract entity (meaning the implementation and design of the computer itself is irrelevant) that defines the computer from a programmer’s POV</p>
 
@@ -178,7 +176,7 @@
 
 <p>Below is an example of a computer structure</p>
 
-<p><img src="images/intro/intro1.png" alt="Untitled" /> disk drive, DRAM and cache memory</p>
+<p><img src="/notes/computer-architecture/images/intro/intro1.png" alt="Untitled" /> disk drive, DRAM and cache memory</p>
 
 <p>The busses act as roads that move information across components in a sort of data highway system</p>
 
@@ -236,7 +234,7 @@
 
 <p>Below is an example of what’s happening behind the scenes</p>
 
-<p><img src="images/intro/intro2.png" alt="Untitled" /> control signal generator</p>
+<p><img src="/notes/computer-architecture/images/intro/intro2.png" alt="Untitled" /> control signal generator</p>
 
 <p>Then, the signal is sent off to the adder, which pulls x and y into the register from memory</p>
 
@@ -250,25 +248,25 @@
 
 <p>This problem is fairly simple; find the longest sequence of consecutive digits in a string, like so</p>
 
-<p><img src="images/intro/intro3.png" alt="Untitled" /> consecutive digits or not in a run of consecutive digits</p>
+<p><img src="/notes/computer-architecture/images/intro/intro3.png" alt="Untitled" /> consecutive digits or not in a run of consecutive digits</p>
 
 <p>From here, we will transition between these two states, which we can examine using what’s called a state diagram</p>
 
-<p><img src="images/intro/intro4.png" alt="Untitled" /> go back to NR for the second, third and fourth digits</p>
+<p><img src="/notes/computer-architecture/images/intro/intro4.png" alt="Untitled" /> go back to NR for the second, third and fourth digits</p>
 
 <p>At the fifth digit, we recognize that the digit is the same, so we change the state to in a run (R), but then go back to NR by the sixth digit</p>
 
 <p>This process continues until we hit the end of the sequence of strings</p>
 
-<p><img src="images/intro/intro5.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/intro/intro5.png" alt="Untitled" /></p>
 
 <p>We also need to keep track of which run is the longest, so we’ll do that as well</p>
 
-<p><img src="images/intro/intro6.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/intro/intro6.png" alt="Untitled" /></p>
 
 <p>Now that we have an algorithm, we can write it out, first by making some variables</p>
 
-<p><img src="images/intro/intro7.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/intro/intro7.png" alt="Untitled" /></p>
 
 <p>From here we can develop some simple pseudocode to solve the problem</p>
 
@@ -289,11 +287,11 @@
 
 <p>From here, we will introduce a flowchart, which is basically a diagram of pseudocode</p>
 
-<p><img src="images/intro/intro8.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/intro/intro8.png" alt="Untitled" /></p>
 
 <p>From here, we store everything we need in memory, with all information being turn into machine code (0s and 1s), where the CPU can’t differentiate between a value and an instruction</p>
 
-<p><img src="images/intro/intro9.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/intro/intro9.png" alt="Untitled" /></p>
 
 <p>In this program, we have constants (values that don’t change), variables (values that do change) and symbolic names (names given to constants/variables to make them easier to use)</p>
 
@@ -338,13 +336,13 @@
 
 <p>We also might need to read and write to memory, so we can expand our pseudocode as such</p>
 
-<p><img src="images/intro/intro10.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/intro/intro10.png" alt="Untitled" /></p>
 
 <p>All in all, we have 3 situations of memory access</p>
 
 <p>The address port will give an address and the control port will be either read or write, where memory will either be sent towards or away from memory</p>
 
-<p><img src="images/intro/intro11.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/intro/intro11.png" alt="Untitled" /></p>
 
 <h3 id="assembly">Assembly</h3>
 
@@ -364,7 +362,7 @@
 
 <p>The command interpretation looks something like this</p>
 
-<p><img src="images/intro/intro12.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/intro/intro12.png" alt="Untitled" /></p>
 
 <p>We also have two-address format, <em>Operation <strong>Address1</strong> Address2</em>, where address1 is a source and destination</p>
 
@@ -378,7 +376,7 @@
 
 <p>You can also have more than one bus, which will allow for parallel operations since the two busses would be independent</p>
 
-<p><img src="images/intro/intro13.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/intro/intro13.png" alt="Untitled" /></p>
 
 <p>The bus has three ways of being described: the width (number of parallel data paths, ex. 64-bit bus carries 64 bits at once), the bandwidth (rate of information transportation, bytes/second) and the latency (time between data transfer request and data transmission completion)</p>
 
@@ -420,11 +418,11 @@
 
 <p>Basic operations in base 2 work similarly to the way they do in base 10</p>
 
-<p><img src="images/intro/intro14.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/intro/intro14.png" alt="Untitled" /></p>
 
 <p>This makes adding larger numbers easy too, since you just use the same elementary school methods</p>
 
-<p><img src="images/intro/intro15.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/intro/intro15.png" alt="Untitled" /></p>
 
 <ul>
   <li>Same logic applies to subtraction and multiplication, just do what you did in elementary school</li>
@@ -456,7 +454,7 @@
 
 <p>If the data is characters, we can use ASCII (American Standard Code for Information Interchange) which represents 128 characters from both the Latin alphabets and Arabic numeral system, as well as special characters like NULL</p>
 
-<p><img src="images/intro/intro16.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/intro/intro16.png" alt="Untitled" /></p>
 
 <ul>
   <li>There’s also UTF-8 and other standards for more complicated characters, but this is outside the scope of this course</li>

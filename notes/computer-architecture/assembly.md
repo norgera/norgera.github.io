@@ -5,7 +5,7 @@ toc: true
 ---
 
 
-# Intro to Assembly
+# Assembly
 
 # What is an instruction?
 

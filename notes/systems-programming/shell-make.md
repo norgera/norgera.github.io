@@ -4,7 +4,7 @@ layout: default
 toc: true
 ---
 
-# Shell + Makefiles
+# Shell & Makefiles
 
 # Shell Environments
 

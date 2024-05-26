@@ -1,0 +1,433 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Threads | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Threads" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/operating-systems/threads.html" />
+<meta property="og:url" content="http://localhost:4000/notes/operating-systems/threads.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Threads" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Threads","url":"http://localhost:4000/notes/operating-systems/threads.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+    <link rel="stylesheet" href="/assets/css/style.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#multicore">Multicore</a></li><li><a href="#amdahls-law-formula">Amdahl’s Law Formula</a></li><li><a href="#example-calculations">Example Calculations</a></li><li><a href="#multithreading">Multithreading</a></li><li><a href="#threads-1">Threads</a></li><li><a href="#in-c">In C</a></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="threads">Threads</h1>
+
+<h1 id="how-computers-multitask">How Computers Multitask</h1>
+
+<p>Parallel processing has been essential to the development of modern applications, something that is only possible because of threading</p>
+
+<p>With multithreading, we have multiple threads run within an operation, each of which is performing a different task or set of tasks</p>
+
+<p>This is more lightweight than creating a separate process while also simplifying code and increasing efficiency</p>
+
+<p><img src="images/threads/w1.png" alt="Untitled" /></p>
+
+<h3 id="multicore">Multicore</h3>
+
+<p>Note that the system needs a multicore with parallelism (doing multiple things at once) in order for threading to be useful; otherwise we’re just doing concurrency (more than one task-making process) which we could’ve just done with a new process</p>
+
+<p><img src="images/threads/w2.png" alt="Untitled" /></p>
+
+<p>Parallelism itself can be either data (distributes data evenly across multiple cores with the same operation) or task (threads across cores with unique operations)</p>
+
+<p>When you have a multicore, you can do good parallelism, but the tasks of dividing activities, balance, data splitting and other things are at the behest of the programmer</p>
+
+<p>We can actually calculate how much we’ll speed up with a simple formula: if tasks can be done in 60 seconds serial and 30 seconds parallel, it’s 2 times faster, so on and so forth</p>
+
+<p>In general, if a task can be done in X seconds serial and Y seconds parallel, the speedup of (X/Y) times</p>
+
+<p>We can generalize this even further with Amdahl’s law</p>
+
+<p>The image illustrates Amdahl’s Law, which is used to find the maximum improvement possible for an overall system when only part of the system is improved. Amdahl’s Law is typically used in parallel computing to predict the theoretical maximum speedup of a program using multiple processors.</p>
+
+<h3 id="amdahls-law-formula">Amdahl’s Law Formula</h3>
+<p>The speedup of a program using multiple processors in parallel computing is given by:</p>
+
+\[\text{speedup} \leq \frac{1}{S + \frac{(1 - S)}{N}}\]
+
+<p>Where:</p>
+<ul>
+  <li>$S $ is the fraction of the program that is serial (cannot be parallelized).</li>
+  <li>$N $ is the number of processing cores.</li>
+</ul>
+
+<h3 id="example-calculations">Example Calculations</h3>
+
+<p><strong>1. If the application is 75% parallel and 25% serial, moving from 1 to 2 cores results in a speedup of:</strong>
+\(\text{speedup} \leq \frac{1}{0.25 + \frac{0.75}{2}}\)</p>
+
+<p>Let’s calculate it:
+\(\text{speedup} \leq \frac{1}{0.25 + 0.375}\)
+\(\text{speedup} \leq \frac{1}{0.625}\)
+\(\text{speedup} \leq 1.6\)</p>
+
+<p><strong>2. If the application is 50% parallel and 50% serial on 2 cores:</strong>
+\(\text{speedup} \leq \frac{1}{0.5 + \frac{0.5}{2}}\)</p>
+
+<p>Let’s calculate it:
+\(\text{speedup} \leq \frac{1}{0.5 + 0.25}\)
+\(\text{speedup} \leq \frac{1}{0.75}\)
+\(\text{speedup} \leq 1.33\)</p>
+
+<p><strong>3. If the application is 50% parallel and 50% serial on 1024 cores:</strong>
+\(\text{speedup} \leq \frac{1}{0.5 + \frac{0.5}{1024}}\)</p>
+
+<p>Let’s calculate it:
+\(\text{speedup} \leq \frac{1}{0.5 + 0.00048828125}\)
+\(\text{speedup} \leq \frac{1}{0.50048828125}\)
+\(\text{speedup} \leq 1.998\)</p>
+
+<p><strong>Summary of Results:</strong></p>
+<ul>
+  <li>75% parallel / 25% serial with 2 cores: Speedup of 1.6 times.</li>
+  <li>50% parallel / 50% serial with 2 cores: Speedup of ~1.33 times.</li>
+  <li>50% parallel / 50% serial with 1024 cores: Speedup of ~1.998 times.</li>
+</ul>
+
+<p>These examples highlight how the speedup diminishes as the serial portion of the task increases, even with a large number of processing cores.</p>
+
+<p>Here, as N approaches infinity, the speedup approaches 1/S, and as S approaches 0, speedup approaches N</p>
+
+<p>This can apply to all parallel tasks as well, not just cores</p>
+
+<p>The image illustrates the use of Amdahl’s Law for calculating the speedup of a system with different portions of the workload that can be improved by different factors. The specific example given includes four portions of the workload with the following characteristics:</p>
+
+<ul>
+  <li><strong>11%</strong> of the workload must be done in serial (cannot be parallelized).</li>
+  <li><strong>18%</strong> of the workload can be done <strong>5 times faster</strong> (1/5th the time).</li>
+  <li><strong>23%</strong> of the workload can be done <strong>20 times faster</strong> (1/20th the time).</li>
+  <li><strong>48%</strong> of the workload can be done <strong>1.6 times faster</strong> (1/1.6th the time).</li>
+</ul>
+
+<p><strong>Speedup Calculation</strong></p>
+
+<p>The formula used for calculating the overall speedup ($S_{\text{latency}}$) is:</p>
+
+\[S_{\text{latency}} = \frac{1}{\frac{p_1}{s_1} + \frac{p_2}{s_2} + \frac{p_3}{s_3} + \frac{p_4}{s_4}}\]
+
+<p>Where:</p>
+<ul>
+  <li>$p_1, p_2, p_3, p_4 $ are the fractions of the workload.</li>
+  <li>$s_1, s_2, s_3, s_4 $ are the speedup factors for each fraction.</li>
+</ul>
+
+<p>For the given example:</p>
+<ul>
+  <li>$p_1 = 0.11 $, $s_1 = 1 $ (serial portion)</li>
+  <li>$p_2 = 0.18 $, $s_2 = 5 $ (5 times faster)</li>
+  <li>$p_3 = 0.23 $, $s_3 = 20 $ (20 times faster)</li>
+  <li>$p_4 = 0.48 $, $s_4 = 1.6 $ (1.6 times faster)</li>
+</ul>
+
+<p>Plugging these values into the formula:</p>
+
+\[S_{\text{latency}} = \frac{1}{\frac{0.11}{1} + \frac{0.18}{5} + \frac{0.23}{20} + \frac{0.48}{1.6}}\]
+
+<p>Let’s break down each term:</p>
+
+<p>\(\frac{0.11}{1} = 0.11\)
+\(\frac{0.18}{5} = 0.036\)
+\(\frac{0.23}{20} = 0.0115\)
+\(\frac{0.48}{1.6} = 0.3\)</p>
+
+<p>Summing these terms:</p>
+
+\[0.11 + 0.036 + 0.0115 + 0.3 = 0.4575\]
+
+<p>Therefore, the overall speedup is:</p>
+
+\[S_{\text{latency}} = \frac{1}{0.4575} \approx 2.19\]
+
+<p><strong>Summary</strong>
+The overall speedup for the given system with the specified improvements in different portions of the workload is approximately 2.19 times. This demonstrates how different parts of a workload contribute to the overall speedup and how improvements in parallelizable sections can lead to significant performance gains.</p>
+
+<h3 id="multithreading">Multithreading</h3>
+
+<p>There’s two types of threads that we refer to when we say threads</p>
+
+<ol>
+  <li>User threads (with user-level libraries)</li>
+  <li>Kernel threads (supported by the kernel)</li>
+</ol>
+
+<p>We have to join these together and there are generally three ways to do it</p>
+
+<ol>
+  <li>Many-to-one: everyone shares one thread</li>
+  <li>One-to-one: thread count is unlimited, but the kernel might run out of resources</li>
+  <li>Many-to-many: thread count is unlimited, but the kernel has to manage all of them</li>
+</ol>
+
+<p>One-to-one is by far the most common since most computers have multiple cores</p>
+
+<p><img src="images/threads/w3.png" alt="Untitled" /></p>
+
+<h3 id="threads-1">Threads</h3>
+
+<p>We can make threads in POSIX with the pthread.h header, where on linux, pthread_create() uses clone() just like fork() does</p>
+
+<ul>
+  <li>Windows and Java have their own thread creation methods that we won’t go into</li>
+</ul>
+
+<p>Some compilers also create threads themselves as an optimization through a labelling process</p>
+
+<p>There are many ways to do this, such as thread pools, fork-join model and others, but I won’t go too deep into it here</p>
+
+<p>Some problems arise pretty quickly with the way we do things, however</p>
+
+<p>First: is fork() supposed to duplicate all the threads or just the calling one? On Linux we only duplicate the calling thread, but some UNIXes have two versions, one for each use case</p>
+
+<ul>
+  <li>exec() just replaces all threads</li>
+</ul>
+
+<p>Second: how should signals work? For a single-threaded process, the signals are just delivered to the process and handled where they are, either by the default or by a user-defined override</p>
+
+<p>How about multi-threaded? For some signals like SIGKILL, it goes straight to all threads, but it can also go to threads where the signal applies, just certain threads, or we can also assign a specific thread to take all signals</p>
+
+<p>kill(pid_t pid, int signal) vs. pthread_kill(pthread_t tid, int signal)</p>
+
+<p>Last: how do we cancel threads early? We have two approaches…</p>
+
+<p>Async cancellation (smite it immediately)
+Deferred cancellation (let it check if it should be cancelled)
+We can do both in C relatively easy</p>
+
+<p>Use pthread_cancel() - but this is only a request
+Use pthread_setcanceltype() to set it. Use pthread_testcancel() to check for cancellation requests</p>
+
+<pre><code class="language-C">pthread_t tid;
+
+/* create the thread */
+pthread_create(&amp;tid, 0, worker, NULL);
+
+...
+
+/* cancel the thread */
+pthread_cancel(tid);
+
+/* wait for the thread to terminate */
+pthread_join(tid, NULL);
+</code></pre>
+
+<h3 id="in-c">In C</h3>
+
+<p>Creating a thread is just a one-liner</p>
+
+<pre><code class="language-C">int pthread_create(pthread_t* thread, pthread_attr_t* attr, 
+    void * (start_routine), void *arg);
+</code></pre>
+
+<p>Returns 0 to indicate success, otherwise returns error code</p>
+
+<p>thread – name of the new thread</p>
+
+<p>attr – argument that specifies the attributes of the thread to be created (NULL = default attributes)</p>
+
+<p>start_routine – function to use as the start of the new thread</p>
+
+<p>arg – argument to pass to the new thread routine</p>
+
+<p>To wait on a thread, we can join it up like so</p>
+
+<pre><code class="language-C">int pthread_join(pthread_t thread, void **retval);
+</code></pre>
+
+<p>Returns 0 to indicate success, otherwise returns error code</p>
+
+<p>thread – name of the new thread</p>
+
+<p>retval – copy the return value of pthread_exit() into the address of retval</p>
+
+<p>If you do not wait for a thread to complete, the parent process may get cleaned up before the thread can do its work</p>
+
+<pre><code class="language-C">#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;pthread.h&gt;
+
+void *do_work() {
+    printf("Hello, World!...I am a thread\n");
+}
+
+int main(int argc, char **argv) {
+    pthread_t worker_thread;
+    if (pthread_create(&amp;worker_thread, NULL, do_work, NULL)) {
+        printf("Error while creating thread\n");
+    }
+    pthread_join(worker_thread, NULL);
+    return 0;
+}
+</code></pre>
+
+<p>These threads should work independently, but if we want to copy data between parent and thread for some reason, we can do this either with</p>
+
+<ul>
+  <li>Global variables</li>
+  <li>Passing pipes to pthread_create</li>
+</ul>
+
+<pre><code class="language-C">// Pass in a message
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;pthread.h&gt;
+
+void *thread_prints_msg(void *msg) {
+    printf("From thread_prints_msg: %s\n", (char *) msg);
+}
+
+int main(int argc, char **argv) {
+    pthread_t thread_1;
+    printf("From main: Going to create Thread...\n");
+    pthread_create(&amp;thread_1, NULL, thread_prints_msg, "Hello, World!");
+    pthread_join(thread_1, NULL);
+    printf("Thread terminates...\n");
+    return 0;
+}
+</code></pre>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

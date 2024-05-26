@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Intro to OS | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Intro to OS" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/operating-systems/intro.html" />
+<meta property="og:url" content="http://localhost:4000/notes/operating-systems/intro.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Intro to OS" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Intro to OS","url":"http://localhost:4000/notes/operating-systems/intro.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+    <link rel="stylesheet" href="/assets/css/style.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#history">History</a></li><li><a href="#but-what-does-it-do">But What Does it Do?</a><ul><li><a href="#storage">Storage</a></li><li><a href="#where-the-os-fits">Where the OS fits</a></li><li><a href="#resource-management">Resource Management</a></li><li><a href="#environments">Environments</a></li></ul></li><li><a href="#meat-of-the-os">Meat of the OS</a><ul><li><a href="#os-structure">OS Structure</a></li><li><a href="#debugging">Debugging</a></li></ul></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="intro-to-os">Intro to OS</h1>
+
+<p>An OS effectively acts as an in-between, separating a user from a computer’s hardware</p>
+
+<p>With the OS, we should strike a balance between power and ease of use, allowing users to execute programs to solve problems</p>
+
+<h2 id="history">History</h2>
+
+<p>Back in the day (1950s), there was no OS, so we had to rewire the computer and fiddle with the hardware itself to run programs</p>
+
+<p>Eventually, we needed a general-purpose computer, which led to the development of batch systems in the late 50s</p>
+
+<p>Programmers would write their code on paper in either FORTRAN or assembly before encoding them on punch cards</p>
+
+<p>An input room would have an operator that feeds the cards into the machine and let the programmer know when their job is done</p>
+
+<ul>
+  <li>The program that interprets the cards is effectively the first OS</li>
+</ul>
+
+<p>At some point in the late 60s, we figured out how to do integrated circuits, so we could have multiple jobs run at once and queue up any other jobs, determined by the OS</p>
+
+<p>As time went on, we eventually developed the OS’s we know today, divided into Microsoft’s OS (DOS, Windows) and Unix (macOS, Linux, iOS, Android)</p>
+
+<h2 id="but-what-does-it-do">But What Does it Do?</h2>
+
+<p>This entirely depends on your perspective</p>
+
+<p>For a user, it provides convenience and ease of use, with no regard for resource utilization, but for a shared computer, resource allocation is essential to keep users happy</p>
+
+<p>We also need to care about the device’s health and energy usage, so even if we could run a million jobs at once, it might not be a good idea</p>
+
+<ul>
+  <li>For mobile devices especially resource use is extremely important since they’re very small and running off portable batteries</li>
+</ul>
+
+<p><img src="images/intro/s1.png" alt="Untitled" /></p>
+
+<p>The computers themselves are built on one or more CPUs and device controllers connected through a shared memory, all of which compete for memory cycles</p>
+
+<p>Each of these controllers has a particular type and local buffer, with each type having its own OS</p>
+
+<p><img src="images/intro/s2.png" alt="Untitled" /></p>
+
+<p>When a controller is done with an operation, it informs the CPU with an interrupt so that the CPU doesn’t sit idly waiting</p>
+
+<p>The entire OS, in fact, is ran on interrupts, with the interrupts themselves transferring control to the interrupt service routine through the interrupt vector, saving the address of the interrupted instruction in memory</p>
+
+<ul>
+  <li>This is different from software-generated interrupts, which are caused by user error or request (aka exceptions)</li>
+</ul>
+
+<p>The OS acts to preserve the state of the CPU whenever an interrupt happens by storing the registers and program counter</p>
+
+<p><img src="images/intro/s3.png" alt="Untitled" /></p>
+
+<h3 id="storage">Storage</h3>
+
+<p>The computer will store things in 3 different types of systems</p>
+
+<ol>
+  <li>The Bootstrap (stored in ROM, typically a program that loads on power-up and initializes all aspects of the system, including the kernel)</li>
+  <li>Volatile storage (RAM, only large storage that the CPU has direct access to, usually volatile)</li>
+  <li>Nonvolatile storage (HDD or SSD, extension of main memory)</li>
+</ol>
+
+<p>Typically, the faster a type of storage is, the more volatile it is and the smaller it is</p>
+
+<p><img src="images/intro/s4.png" alt="Untitled" /></p>
+
+<p>We have to be careful when we multitask for this reason, being absolutely sure to use the most recent value, no matter where it is in the storage hierarchy</p>
+
+<p>When you have a multiprocessor environment, we need to have all CPUs have the most recent value in their cache</p>
+
+<ul>
+  <li>This gets even worse with distributed systems, but this is covered more later</li>
+</ul>
+
+<p>(slide 26)</p>
+
+<p>To handle multiple CPUs, we could just have one channel like so</p>
+
+<p><img src="images/intro/s5.png" alt="Untitled" /></p>
+
+<p>Alternatively, we can use Non-uniform Memory Access (NUMA), where each CPU has its own memory channel, which is what’s most used in servers and other high-performance systems</p>
+
+<p><img src="images/intro/s6.png" alt="Untitled" /></p>
+
+<p>For clustered systems (multiple computers connecting to each other), we typically use a storage-area network to handle shared storage</p>
+
+<p><img src="images/intro/s7.png" alt="Untitled" /></p>
+
+<h3 id="where-the-os-fits">Where the OS fits</h3>
+
+<p>The OS is loaded in by the bootstrap program, started with the kernel, then the system daemons (services provided outside the kernel)</p>
+
+<p>This kernel is interrupt driven, either by hardware interrupt from one of the devices or software interrupt from software errors (ex. division by zero)</p>
+
+<p>This presents a problem when a program goes into an infinite loop, so the OS handles running multiple programs at once so that one user can’t always keep the CPU busy</p>
+
+<p>We use batching/multiprogramming to organize jobs, with a subset of jobs being kept in memory</p>
+
+<p>We also have timesharing, where jobs are swapped frequently in order to layer them together</p>
+
+<p><img src="images/intro/s8.png" alt="Untitled" /></p>
+
+<p>(slides 36-37)</p>
+
+<h3 id="resource-management">Resource Management</h3>
+
+<p>There are four things we mean when we say resource management:</p>
+
+<ol>
+  <li>Process management</li>
+  <li>Memory management</li>
+  <li>File management</li>
+  <li>Storage management</li>
+</ol>
+
+<p>Process management manages programs in execution, which need resources such as I/O, CPU, file and input to accomplish tasks</p>
+
+<ul>
+  <li>When the process terminates, we need to reclaim any reusable resources</li>
+</ul>
+
+<p>With single-threaded process, we have one program counter specifying the next instruction, counting one at a time until everything’s complete</p>
+
+<ul>
+  <li>With a multi-threaded process, we need one counter per thread</li>
+</ul>
+
+<p>Usually a system will have many process running concurrently by multiplexing the CPUs among the processes/threads</p>
+
+<p>With the OS, we need to create and delete processes, suspend and resume processes, synchronize processes, handle communication between processes and handle deadlocks</p>
+
+<p>Memory management determines what’s in memory and when, with the OS keeping track of memory usage, allocating memory and deciding which process to move memory to</p>
+
+<p>With file system management, we need to create/delete files and directories, manipulate files and directories and perform backups</p>
+
+<p>We also need to handle storage disks through proper storage management, including mounting/unmounting, free-space management, allocation, scheduling, partitioning and protection</p>
+
+<ul>
+  <li>We also need to handle security, but that’s for future courses (what you should know is that they first distinguish among users, then groups, which are sets of users)</li>
+</ul>
+
+<p>We also need a way to virtualize, or run applications within other OS’s</p>
+
+<p>This is either done through emulation, where the source CPU type is different from the target type (pretty slow, using interpretation) or virtualization, when the OS is natively compiled for the CPU running guest OS’s</p>
+
+<ul>
+  <li>A good example of this is Docker</li>
+</ul>
+
+<p><img src="images/intro/s9.png" alt="Untitled" /></p>
+
+<h3 id="environments">Environments</h3>
+
+<p>Back in the day, we usually just have single computers, but nowadays we need to handle different environments that our OS may be on, including mobile, client-server, peer-to-peer, cloud computing and real-time embedded systems</p>
+
+<h2 id="meat-of-the-os">Meat of the OS</h2>
+
+<p>The OS provides an environment for execution of programs and services to programs and users</p>
+
+<p><img src="images/intro/s10.png" alt="Untitled" /></p>
+
+<p>The command line interface (CLI) allows for direct command entry, implement in either the kernel or the systems program</p>
+
+<p>This primarily fetches and executes command, which can either be built-in or user created</p>
+
+<ul>
+  <li>Sometimes multiple flavours (shells) are implemented</li>
+</ul>
+
+<p>A GUI is a user-friendly desktop version with icons, with most systems having both GUI and CLI</p>
+
+<ul>
+  <li>There’s also touchscreen interfaces, with a virtual keyboard for text entry</li>
+</ul>
+
+<p>Programmers, of course, need their own interface for their programs, with systems calls used indirectly through a high-level API (ex. Win32 API for Windows and Java API for JVM)</p>
+
+<p>The caller doesn’t need to know about how the system call is implemented and only needs to worry about the API instructions and result</p>
+
+<p><img src="images/intro/s11.png" alt="Untitled" /></p>
+
+<p>We can also pass parameters to these calls, often when more information is required</p>
+
+<p>We can either pass these parameters through registers, blocks in memory or the memory stack which is popped off by the OS</p>
+
+<p>The OS also comes with system services which provide an environment for program development and execution</p>
+
+<p>These include file manipulation, language support, communications and program loading/execution</p>
+
+<h3 id="os-structure">OS Structure</h3>
+
+<p>For a general purpose OS, we usually divide functionality in one of four ways</p>
+
+<ol>
+  <li>Monolithic (fastest but hard to modify)</li>
+  <li>Layered (layers from 0 - hardware to N - user interface)</li>
+  <li>Microkernels (push functionality to user space)</li>
+  <li>Hybrid (combination of the three, most common with modern OSes)</li>
+</ol>
+
+<p><img src="images/intro/s12.png" alt="Untitled" /></p>
+
+<h3 id="debugging">Debugging</h3>
+
+<p>The OS will generate log files with error info, either in a core dump for app error or crash dump for OS failures</p>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

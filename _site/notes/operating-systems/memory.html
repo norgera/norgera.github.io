@@ -1,0 +1,593 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Memory Management | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Memory Management" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/operating-systems/memory.html" />
+<meta property="og:url" content="http://localhost:4000/notes/operating-systems/memory.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Memory Management" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Memory Management","url":"http://localhost:4000/notes/operating-systems/memory.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+    <link rel="stylesheet" href="/assets/css/style.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#why-do-we-need-this">Why Do We Need This?</a><ul><li><a href="#dynamic-loading">Dynamic Loading</a></li><li><a href="#conitguous-allocation">Conitguous Allocation</a></li></ul></li><li><a href="#paging">Paging</a><ul><li><a href="#hardware">Hardware</a></li><li><a href="#protection">Protection</a></li><li><a href="#structure">Structure</a></li></ul></li><li><a href="#virtual-memory">Virtual Memory</a><ul><li><a href="#demand-paging">Demand Paging</a></li><li><a href="#page-replacement">Page Replacement</a></li><li><a href="#frame-allocation">Frame Allocation</a></li><li><a href="#other-things">Other Things</a></li></ul></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="memory-management">Memory Management</h1>
+
+<h1 id="a-core-problem">A Core Problem</h1>
+
+<p>Modern computers need some sort of memory to store certain temporary data for processes, so the OS must handle this efficiently</p>
+
+<p>Hardware design and support is important as well, but there are certain software tricks we can use to make our approaches better, including with</p>
+
+<ul>
+  <li>Allocating memory</li>
+  <li>Managing memory during runtime</li>
+  <li>Deallocating memory</li>
+</ul>
+
+<h2 id="why-do-we-need-this">Why Do We Need This?</h2>
+
+<p>The CPU can access main memory and registers directly, but the OS has to fetch from memory itself</p>
+
+<p>Since the memory can stall, the CPU has its own cache to store a small amount of data, the only problem being that it’s small</p>
+
+<p>All the CPU sees is a stream of data and addresses, not actual permissions, so these need to be enforced by something else</p>
+
+<p>An OS-level solution won’t work directly since it takes a lot of overhead, so we can use a base register and a llimit register for this to record the beginning of the process memory space and the amount of space that is allocated to the process, respectively</p>
+
+<ul>
+  <li>The combination of these two registers gives the maximum address we can access</li>
+</ul>
+
+<p>We can do a simple check to see if we’re between these two limits when we’re in user mode</p>
+
+<ul>
+  <li>
+    <p><strong>Compile time</strong> – The location in memory may be known at compile time. The compiler generates absolute code. If the location changes, the program must be recompiled.</p>
+  </li>
+  <li>
+    <p><strong>Load time</strong> – The location in memory may not be known at compile time but it is decided when the program is loaded. The loader can use relocatable code. If the location changes, the program just needs to be reloaded.</p>
+  </li>
+  <li>
+    <p><strong>Execution time</strong> – If the process can be moved during its execution from one memory segment to another, binding must wait until run time. Special hardware is required to make this work. This is the method most modern operating systems use.</p>
+  </li>
+</ul>
+
+<p><img src="images/memory/m2.png" alt="2023-04-17_07-12_1.png" /></p>
+
+<p>We also have to differentiate between logical addresses (generated by the CPU) and physical addresses (the actual address of the memory-address register in memory)</p>
+
+<ul>
+  <li>Using compile-time binding, these are the same, but with runtime binding, these are different</li>
+</ul>
+
+<p>This translation is handled by the memory management unit (MMU), so we can use a special relocation register in this device instead of a base register, adding this to every logical address to get the physical address</p>
+
+<p><img src="images/memory/m3.png" alt="2023-04-17_07-15.png" /></p>
+
+<p>The logical addresses are in the range 0 to max, and the physical addresses add a base value R to both of these</p>
+
+<h3 id="dynamic-loading">Dynamic Loading</h3>
+
+<p>Something that sophisticated memory management also helps with is partial loading, where we only have the parts of the program that we need in memory at one time, so we can load routines into memory as they’re called</p>
+
+<ul>
+  <li>We can handle this in user space, so no fancy OS stuff yet, but the OS can give tools</li>
+</ul>
+
+<p>This also allows us to have more efficient libraries with dynamically linked libraries (DLLs, aka shared libraries) that are loaded dynamically at runtime</p>
+
+<ul>
+  <li>Some OSes don’t support this, however</li>
+</ul>
+
+<p>Since these are shared, we now need the help of the OS</p>
+
+<h3 id="conitguous-allocation">Conitguous Allocation</h3>
+
+<p>This is an early approach which partitions main memory into two partitions, with the OS either being in low or high memory and user processes being held in the opposite partition in one contiguous section</p>
+
+<ul>
+  <li>The OS is usually in high memory</li>
+</ul>
+
+<p>To prevent harm to processes, the MMU uses the base and limit registers from before, which are updated during a context switch</p>
+
+<p><img src="images/memory/m4.png" alt="2023-04-17_07-54.png" /></p>
+
+<p>The contiguous sections are either fixed or dynamic, with fixed meaning that the sizes never change, but can be different sizes depending on implementation (we can use either first-fit or best-fit for the latter approach)</p>
+
+<p>This has the problem of internal fragmentation (internal portions that are wasted) and external fragmentation (enough free space but they span partitions)</p>
+
+<p><img src="images/memory/m5.png" alt="2023-04-17_07-56.png" /></p>
+
+<p><img src="images/memory/m6.png" alt="2023-04-17_07-57.png" /></p>
+
+<p>With dynamic partitions, the sizes can change as needed, with empty partitions being shifted and adjusted through compaction, so we can select partitions by either first-fit, best-fit or worst-fit</p>
+
+<p>With this, internal fragmentation is a non-issue and external fragmentation can be solved by using compaction</p>
+
+<p><img src="images/memory/m7.png" alt="2023-04-17_07-58.png" /></p>
+
+<p><img src="images/memory/m8.png" alt="2023-04-17_07-59.png" /></p>
+
+<p><img src="images/memory/m9.png" alt="2023-04-17_07-59_1.png" /></p>
+
+<p>This sounds good, but compaction takes some time, which makes it better suited for persistent storage</p>
+
+<p>For main memory, we need a different approach…</p>
+
+<h2 id="paging">Paging</h2>
+
+<p>Paging is a non-continuous method where we we partition physical memory and logical memory into fixed-sized blocks called frames and pages, respectively, using a page table to translate between the two</p>
+
+<ul>
+  <li>When there are more pages than frames, we are using virtual memory, which we’ll touch on later</li>
+</ul>
+
+<p>We’ll take up pages 0 to N so, as far as the CPU is concerned, memory IS contiguous, even if physical memory isn’t</p>
+
+<p>This helps eliminate external fragmentation, but we can still have internal fragmentation</p>
+
+<p>The logical address is divided into a bitmap of length m, so we can have $2^m$ addresses structured as such</p>
+
+<ul>
+  <li>
+    <p><strong>Page number (p)</strong> - used as an index into a page table which contains the base address of each page in physical memory. It is of length $m-n$ or $2^{m-n}$ bits.</p>
+  </li>
+  <li>
+    <p><strong>Page offset (d)</strong> – combined with base address to define the physical memory address that is sent to the memory unit. It is of length $n$ or $2^n$ bits. This is the size of each page.</p>
+  </li>
+</ul>
+
+<p>From here, we can translate to physical memory with a lookup table</p>
+
+<p><img src="images/memory/m10.png" alt="2023-04-17_20-04_1.png" /></p>
+
+<p>Since we have fixed size pages, we can have internal fragmentation still</p>
+
+<p>Consider page sizes of 2048 bytes and a process size of 2049 bytes; we’d still need two pages, but one of the pages will be mostly empty, leading to wasted space</p>
+
+<p>We need a balance of page sizes, since making them too large leads to waste (but makes disk I/O more efficient) and too small leads to more overhead (while minimizing fragmentation)</p>
+
+<p>Most operating systems illeviate this with two page sizes: 4kb or 8kb for regular processes, 2mb or 4mb for exceptionally large processes</p>
+
+<ul>
+  <li>Since we can just take a free page, external fragmentation is solved</li>
+</ul>
+
+<p>We test freeness with a flag in a frame table, giving 0 if the frame is free and the PID of whatever process is using it if it isn’t</p>
+
+<p><img src="images/memory/m11.png" alt="2023-04-17_20-13.png" /></p>
+
+<h3 id="hardware">Hardware</h3>
+
+<p>Since the table is quite large, it’s kept in main memory, with the address and size being stored in the page-table base register (PTBR) and the page-table length register (PTLR), respectively</p>
+
+<p>With this, each memory access requires two accesses: one for a reference to the page table and one to get the actual data from memory</p>
+
+<p>This is a bit wasteful, so we solve it by caching the page table, which is called the translation look-aside buffer (TLB)</p>
+
+<p>These are usually small, with some entries being made permanent, so we only consult memory to load into the TLB if we don’t find the page we need in the TLB beforehand</p>
+
+<ul>
+  <li>Some TLBs hold address space identifiers (ASIDs) to lock in their own entries; otherwise we’d have to reload this for every context switch</li>
+</ul>
+
+<p><img src="images/memory/m12.png" alt="2023-04-17_20-17.png" /></p>
+
+<p>We can measure the effective memory access time with a pretty simple formula</p>
+
+<ul>
+  <li>The percentage of times the page number of interest is found in the TLB is the hit ratio
+    <ul>
+      <li>If it is not found in the TLB, we need to consult the page table (1 access)</li>
+      <li>Then we can use the address (1 access)</li>
+    </ul>
+  </li>
+</ul>
+
+\[\text{Effective Access Time} = (\text{Hit}) \cdot \text{AccessTime} + (1 - \text{Hit}) \cdot 2 (\text{AccessTime})\]
+
+<ul>
+  <li>
+    <p>Suppose a hit ratio of 80% and a memory access time of 10 nanoseconds, then effective access time is $0.80 \times 10 + 0.2 \times 20 = 12$ nanoseconds</p>
+  </li>
+  <li>
+    <p>A hit ratio of 99% is 10.1 nanoseconds</p>
+  </li>
+</ul>
+
+<h3 id="protection">Protection</h3>
+
+<p>To ensure that read-only memory isn’t overwritten, we can have each entry hold a protection bit, and for accidentally crossing over into inaccessible memory, we use the PTLR from before</p>
+
+<ul>
+  <li>Each entry also holds a valid-invalid bit for all frames in the space</li>
+</ul>
+
+<p><img src="images/memory/m13.png" alt="2023-04-17_20-33.png" /></p>
+
+<p>That being said, we can also make read-only pages for DLLs, making shared space easy</p>
+
+<p><img src="images/memory/m14.png" alt="2023-04-17_20-34.png" /></p>
+
+<h3 id="structure">Structure</h3>
+
+<p>Since these pages are so large, we can use hierarchies to slim them down a bit</p>
+
+<p><img src="images/memory/m15.png" alt="2023-04-17_20-35.png" /></p>
+
+<p><img src="images/memory/m16.png" alt="2023-04-17_20-36.png" /></p>
+
+<p>For 64 bits, this isn’t gonna work, so we can use hashes instead, so each entry will hold a hash for the page number, the frame and a pointer to the next hash</p>
+
+<p><img src="images/memory/m17.png" alt="2023-04-17_20-37.png" /></p>
+
+<p>Another method is to use one global page table for all processes, removing the need to maintain a lot of page tables, at the cost of time efficiency and having to remap shared memory a lot</p>
+
+<p><img src="images/memory/m18.png" alt="2023-04-17_20-38.png" /></p>
+
+<ul>
+  <li>Most OSes used a mixture of these methods for different purposes</li>
+</ul>
+
+<p>If need be, we can temporarily swap processes into a backing store and then bring it back into memory when there’s room</p>
+
+<ul>
+  <li>This is called a swap partition and the scenario is called being oversubscribed</li>
+</ul>
+
+<p>This store should be reasonably fast, like an SSD, while also only being used in emergencies</p>
+
+<ul>
+  <li>Nowdays we usually just swap individual pages rather than entire processes, as it can be costly</li>
+</ul>
+
+<h2 id="virtual-memory">Virtual Memory</h2>
+
+<p>We mentioned virtual memory before, but what does this actually mean?</p>
+
+<p>We can realize that we don’t need to bring in an entire program for execution, especially for routines that are rarely used like error routines or sections of a large data structure</p>
+
+<p>The way we do this is with virtual memory, or using more pages than frames, along with a memory map</p>
+
+<p><img src="images/memory/m19.png" alt="2023-04-17_20-43.png" /></p>
+
+<p>There are a few ways we can go about using this</p>
+
+<h3 id="demand-paging">Demand Paging</h3>
+
+<p>One way is to bring in pages only when it’s needed, leading to faster responses, less memory and less I/O</p>
+
+<ul>
+  <li>This is similar to swapping except the pages brought in is intentional, using the same valid/invalid approach in our MMU</li>
+</ul>
+
+<p>Initially, each entry is invalid since it’s not in memory, so if we request an invalid page, we generate a page fault</p>
+
+<p>The general process is as follows</p>
+
+<ol>
+  <li>
+    <p>If there is a reference to a page, first reference to that page will trap to operating system (Page fault)</p>
+  </li>
+  <li>Operating system looks at another table to decide:
+    <ul>
+      <li>Invalid reference → abort</li>
+      <li>Just not in memory</li>
+    </ul>
+  </li>
+  <li>
+    <p>Find free frame</p>
+  </li>
+  <li>
+    <p>Swap page into frame via scheduled disk operation</p>
+  </li>
+  <li>
+    <p>Reset tables to indicate page now in memory. Set validation bit = v</p>
+  </li>
+  <li>Restart the instruction that caused the page fault</li>
+</ol>
+
+<p><img src="images/memory/m20.png" alt="2023-04-18_02-38.png" /></p>
+
+<p>If all the frames are invalid, the page table will eventually populate with valid pages, which means processes will settle after a lot of page faults</p>
+
+<p>The free-frame list tells the OS where to put pages that need to be in memory, which is initally zeroed out for security</p>
+
+<p><img src="images/memory/m21.png" alt="2023-04-18_02-39.png" /></p>
+
+<ul>
+  <li>We’ll talk about how to fill this list later</li>
+</ul>
+
+<p>Page faults need to be kept to a minimum, since the formula for access time relies on the probability being small</p>
+
+\[\text{Effective Access Time} = (1 - p) \cdot \text{AccessTime} + (p) \cdot \text{PageFaultTime}\]
+
+<p>If a page fault time on an HDD is 8ms and the memory access time is 200ns, even if the chance of a page fault is 1/1000 the effective accesstime becomes 8.2 microseconds, which is a huge leap</p>
+
+<p>We can use an SSD speclailzed for swap space to alleviate this</p>
+
+<ul>
+  <li>Some devices (typically phones) don’t use swap space</li>
+</ul>
+
+<p>We can also use copy-on-write to speed things up, which which shares pages until there’s an update, with the idea that most child processes just call exec()</p>
+
+<p><img src="images/memory/m22.png" alt="2023-04-18_02-43.png" /></p>
+
+<h3 id="page-replacement">Page Replacement</h3>
+
+<p>Despite our best efforts, we WILL run out of frames, so we must replace valid pages that are no longer needed</p>
+
+<p><img src="images/memory/m23.png" alt="2023-04-18_02-44.png" /></p>
+
+<p>To do this, we follow a simple process</p>
+
+<ol>
+  <li>
+    <p>Find the location of the desired page on disk</p>
+  </li>
+  <li>Find a free frame:
+    <ul>
+      <li>If there is a free frame, use it</li>
+      <li>If there is no free frame, use a page replacement algorithm to select a victim frame</li>
+      <li>Write victim frame to disk; update the page and frame tables</li>
+    </ul>
+  </li>
+  <li>
+    <p>Bring the desired page into the (newly) free frame; update the page and frame tables</p>
+  </li>
+  <li>Continue the process by restarting the instruction that caused the trap</li>
+</ol>
+
+<p>This uses a page-out and page-in for every page fault, but we can eliminate the need for a page-out by keeping a modify-bit, which is set if any byte in the page has been changed</p>
+
+<p>We pick a victim frame either by FIFO, least recently used, least frequently used or most frequenly used</p>
+
+<p><img src="images/memory/m24.png" alt="2023-04-18_02-46.png" /></p>
+
+<p>The more frames we have, the fewer faults we should expect</p>
+
+<p><img src="images/memory/m25.png" alt="2023-04-18_02-47.png" /></p>
+
+<p>Here’s what the different algorithms look like</p>
+
+<p>We’ll start with FIFO, which sometimes gives bad results, or even more page faults as frames increase (called Belady’s anomaly)</p>
+
+<p><img src="images/memory/m26.png" alt="2023-04-18_02-47_1.png" /></p>
+
+<p><img src="images/memory/ms.png" alt="2023-04-18_02-48.png" /></p>
+
+<p>We could derive the theorhetical optimal replacement, but this requires future knowledge, which we don’t have</p>
+
+<p><img src="images/memory/m27.png" alt="2023-04-18_02-49.png" /></p>
+
+<p>A good solution is LRU, which is already better than FIFO</p>
+
+<p><img src="images/memory/m28.png" alt="2023-04-18_02-50.png" /></p>
+
+<p>We determine the least recently used frame with either a counter (increment when it’s used and search for the oldest) or by stack (move to the top when it’s used and grab the page at the bottom when we need a replacement)</p>
+
+<p><img src="images/memory/m29.png" alt="2023-04-18_02-51.png" /></p>
+
+<p>This might not be ideal since we’re being instant about our replacement, so we can use a reference bit to give tolerance, setting it to 1 when it’s used</p>
+
+<ul>
+  <li>This is called a second-chance algorithm</li>
+</ul>
+
+<p>For this, we check the reference bit first, so we set the bit to 0 when it’s 1 and replace it otherwise</p>
+
+<p><img src="images/memory/m30.png" alt="2023-04-18_02-52.png" /></p>
+
+<p>We can also use a counter, either by smallest count (LFU) or largest count (MFU), but these aren’t as common</p>
+
+<p>Regardless, all 3 require guesses about page access, with some applications having better knowledge (ex. databases) with direct disk access</p>
+
+<h3 id="frame-allocation">Frame Allocation</h3>
+
+<p>Eventually we’ll run out of frames and need page replacement, but we’ll also need to allocate new frames to be freed</p>
+
+<p><img src="images/memory/m31.png" alt="2023-04-18_02-56.png" /></p>
+
+<p>If a process needs memory, it might replace pages that it needs, so requests will page fault, so the recent page will be repalce and so on and so forth</p>
+
+<p>If we’re not careful, when resolving these loops will take more time away from the CPU, resulting in thrashing</p>
+
+<p><img src="images/memory/m32.png" alt="2023-04-18_02-58.png" /></p>
+
+<p>We can force processes to use the same set or, more likely, page-in the page request along with some pages in the same locality (i.e. dealing with the same program or data struct)</p>
+
+<p>We can also reduce page faults with good programming</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
+<span class="kt">int</span> <span class="p">[</span><span class="mi">128</span><span class="p">][</span><span class="mi">128</span><span class="p">]</span> <span class="n">data</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Since C holds multidimensional arrays in row-major order, if a page can hold one row, this code could generate 128x128 (16,384) page faults due to demand paging. One for every update.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
+<span class="kt">int</span> <span class="p">[</span><span class="mi">128</span><span class="p">][</span><span class="mi">128</span><span class="p">]</span> <span class="n">data</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This will zero each element in the page before requesting the next one. This will cause 128 page faults (~0.8% of 16384). Good programming can reduce page faults.</p>
+
+<p>Stacks have good locality as well since they always access from the top, while hash tables don’t, so if memory is a huge factor, this is worth thinking about</p>
+
+<ul>
+  <li>Other things like speed also need to be considered</li>
+</ul>
+
+<p>The compiler and loaded can also do things like avoiding placing routines across page boundaries</p>
+
+<h3 id="other-things">Other Things</h3>
+
+<p>We can prepage some or all of a program to avoid page faults at startup, but this is difficult since we need to know what pages we need from the get go</p>
+
+<ul>
+  <li>This is used for input files a lot since they’re read sequentially, so Linux provides a readahead() method to prefetch files into memory</li>
+</ul>
+
+<p>If we have a situation where a page is chosen for replacement but we’re currently writing to it, we can give it a lock bit to ensure the page is off limits, which can be done for common internal processes</p>
+
+<ul>
+  <li>DBs can request this as well if they have the right privileges</li>
+</ul>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

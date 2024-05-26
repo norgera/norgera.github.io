@@ -61,8 +61,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Branching, Decoding and Addressing Modes","url":"http://localhost:4000/notes/computer-architecture/core-concepts.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
-    <link rel="stylesheet" href="/assets/css/style.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+    <link rel="stylesheet" href="/assets/css/style.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -156,17 +156,17 @@
 
 <p>In total ARM instructions has 4 bits dedicated to 16 conditions</p>
 
-<p><img src="images/core/b1.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/core/b1.png" alt="Untitled" /></p>
 
 <p>Below is the meaning and encoding of each</p>
 
-<p><img src="images/core/b2.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/core/b2.png" alt="Untitled" /></p>
 
 <h1 id="decoding">Decoding</h1>
 
 <p>Branch instructions are encoded as such</p>
 
-<p><img src="images/core/b3.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/core/b3.png" alt="Untitled" /></p>
 
 <ul>
   <li>101 signified that it’s a branch instruction while the word offset determines how many instructions we want to go forward by</li>
@@ -214,14 +214,14 @@
 
 <p>For data processing instructions, they go as such</p>
 
-<p><img src="images/core/b4.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/core/b4.png" alt="Untitled" /></p>
 
 <ul>
   <li>00 means that it’s data processing</li>
   <li>Op-Codes are encoded as such</li>
 </ul>
 
-<p><img src="images/core/b5.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/core/b5.png" alt="Untitled" /></p>
 
 <ul>
   <li>S is 1 is there’s an S and 0 otherwise</li>
@@ -230,7 +230,7 @@
 
 <p>For shift operations, we have some extra divisions</p>
 
-<p><img src="images/core/b6.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/core/b6.png" alt="Untitled" /></p>
 
 <ul>
   <li>Bit 25=0 means that it’s a shift operand
@@ -380,7 +380,7 @@
 
 <p>We can see this in action with the following program</p>
 
-<p><img src="images/core/b7.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/core/b7.png" alt="Untitled" /></p>
 
 <p>Just like other registers, we can use the program counter (r15) as a pointer register as well</p>
 
@@ -403,7 +403,7 @@
 
 <p>To summerize:</p>
 
-<p><img src="images/core/b8.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/core/b8.png" alt="Untitled" /></p>
 
 <h2 id="ldrstr-and-stacks">LDR/STR and Stacks</h2>
 
@@ -413,7 +413,7 @@
 
 <p>The basic format goes at so</p>
 
-<p><img src="images/core/b9.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/core/b9.png" alt="Untitled" /></p>
 
 <ul>
   <li>Note that the 12-bit immediate value is a true unsigned 12-bit literal (0-4096), NOT an 8 bit literal w/ rotation</li>
@@ -480,22 +480,22 @@
   <li>
     <p>Growing up and pointing to the top of the stack (TOS)</p>
 
-    <p><img src="images/core/b10.png" alt="Untitled" /></p>
+    <p><img src="/notes/computer-architecture/images/core/b10.png" alt="Untitled" /></p>
   </li>
   <li>
     <p>Growing up and pointing one word above the TOS</p>
 
-    <p><img src="images/core/b11.png" alt="Untitled" /></p>
+    <p><img src="/notes/computer-architecture/images/core/b11.png" alt="Untitled" /></p>
   </li>
   <li>
     <p>Growing down and pointing to the TOS</p>
 
-    <p><img src="images/core/b12.png" alt="Untitled" /></p>
+    <p><img src="/notes/computer-architecture/images/core/b12.png" alt="Untitled" /></p>
   </li>
   <li>
     <p>Growing down and pointing one word below TOS</p>
 
-    <p><img src="images/core/b13.png" alt="Untitled" /></p>
+    <p><img src="/notes/computer-architecture/images/core/b13.png" alt="Untitled" /></p>
   </li>
 </ol>
 
@@ -513,7 +513,7 @@
 
 <p>Normally, we would have to add each word separately like so</p>
 
-<p><img src="images/core/b14.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/core/b14.png" alt="Untitled" /></p>
 
 <p>But with block move, we can combine all 4 instructions into 1</p>
 
@@ -557,7 +557,7 @@
 
 <p>Since these block move instructions implement stacks, we have special addons to simulate each type of stack</p>
 
-<p><img src="images/core/b15.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/core/b15.png" alt="Untitled" /></p>
 
 <ul>
   <li>Note that these are pseudo notations, they are translated into IA, IB, DA and DB in the assembler</li>
@@ -607,7 +607,7 @@
 
 <p>Overall, the instruction is encoded as 1110 1001 0010 1101 0000 0100 0001 1111 (or 0xE92D041F in hex)</p>
 
-<p><img src="images/core/b16.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/core/b16.png" alt="Untitled" /></p>
 
 <p>For a decoding instruction, lets look at the instruction 0x08855555</p>
 
@@ -661,7 +661,7 @@
 
 <p>The flow control looks something like this</p>
 
-<p><img src="images/core/b17.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/core/b17.png" alt="Untitled" /></p>
 
 <p>CISC processors have fully automatic subroutine mechanisms, but in ARM it’s a bit more complicated</p>
 
@@ -689,7 +689,7 @@
 
 <p>As a reminder of how these are encoded, we just take the old method and make bit 24 1</p>
 
-<p><img src="images/core/b18.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/core/b18.png" alt="Untitled" /></p>
 
 <h3 id="with-stacks">With Stacks</h3>
 
@@ -734,7 +734,7 @@
 
 <p>For example, take a look at the following program</p>
 
-<p><img src="images/core/b19.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/core/b19.png" alt="Untitled" /></p>
 
 <p>Since we call Fun_1 within Fun_2, we have to push the link register on the stack before we branch with link to Fun_1</p>
 
@@ -756,7 +756,7 @@
 
 <p>For example:</p>
 
-<p><img src="images/core/b20.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-architecture/images/core/b20.png" alt="Untitled" /></p>
 
 <ul>
   <li>

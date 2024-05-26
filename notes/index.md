@@ -3,16 +3,20 @@ layout: default
 permalink: /notes/
 ---
 
-## Computer Science
-
-* [Image Compression](image-compression)
-* [Systems Programming](systems-programming)
-* [Computer Architecture](computer-architecture)
 
 ## Math
 
-* [Calculus](calculus)
 * [Linear Algebra](linear-algebra)
+* [Calculus](calculus)
+
+
+## Computer Science
+
+* [Image Compression](image-compression)
+* [Operating Systems](operating-systems)
+* [Computer Architecture](computer-architecture)
+* [Programming Languages](programming-languages)
+* [Systems Programming](systems-programming)
 * [Discrete Structures](discrete-structures)
 
 

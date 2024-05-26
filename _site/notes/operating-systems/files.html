@@ -1,0 +1,691 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>File Systems | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="File Systems" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/operating-systems/files.html" />
+<meta property="og:url" content="http://localhost:4000/notes/operating-systems/files.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="File Systems" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"File Systems","url":"http://localhost:4000/notes/operating-systems/files.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+    <link rel="stylesheet" href="/assets/css/style.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#file-systems">File Systems</a><ul><li><a href="#files">Files</a></li><li><a href="#access-methods">Access Methods</a></li><li><a href="#directories">Directories</a></li><li><a href="#protection">Protection</a></li></ul></li><li><a href="#implementation">Implementation</a><ul><li><a href="#directories-1">Directories</a></li><li><a href="#allocations">Allocations</a></li><li><a href="#free-space">Free-Space</a></li><li><a href="#efficiency">Efficiency</a></li><li><a href="#recovery">Recovery</a></li></ul></li><li><a href="#internals">Internals</a><ul><li><a href="#mounting">Mounting</a></li><li><a href="#partitions">Partitions</a></li><li><a href="#perms">Perms</a></li><li><a href="#remote-systems">Remote Systems</a></li><li><a href="#network-file-system">Network File System</a></li></ul></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h2 id="file-systems">File Systems</h2>
+
+<p>For general-purpose OS, the file system is the most visible part, containing files (with metadata) and directories</p>
+
+<p>We’ve talked about how they’re stored, but how are they organized?</p>
+
+<p>To answer our previous question, we need to understand what we really mean by files and directories</p>
+
+<h3 id="files">Files</h3>
+
+<p>Files are collections of related information, either binary (zips, executables, etc.) or alphanumeric (code, text files, etc.)</p>
+
+<ul>
+  <li>Linux uses files to represent system attributes under /proc since they’re so fundamental</li>
+</ul>
+
+<p>These have attributes, which give some information</p>
+
+<p>The basic operations are create, read, write, reposition, delete, truncate (erase contents but not metadata) and open/close (bring in/out of memory), with others including read (update file name in metadata) and append (write to end of file)</p>
+
+<p>Any other operations are just a combo of the basic ones above (ex. copy a file really means opening for reading, creating a new one, opening that one for writing, reading the contents for that file, writing its contents into the new file and closing both files)</p>
+
+<p>The OS keeps track of what files are open with a read/write table, including read/write info, position and the process that opened it</p>
+
+<p>Some OSes also used file locking, either with a shared lock or an exclusive lock, so if there’s conflict we can either mandatory lock (prevent processes from sharing like in Windows) or advisory lock (leave it up to the processes, like in Linux)</p>
+
+<ul>
+  <li>More info on locks is discussed in lesson 6</li>
+</ul>
+
+<p>Some applications identify files with extensions, with the operating system assisting with default applications</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>file type</th>
+      <th>usual extension</th>
+      <th>function</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>executable</td>
+      <td>exe, com, bin or none</td>
+      <td>ready-to-run machine-language program</td>
+    </tr>
+    <tr>
+      <td>object</td>
+      <td>obj, o</td>
+      <td>compiled, machine language, not linked</td>
+    </tr>
+    <tr>
+      <td>source code</td>
+      <td>c, cc, java, pas, asm, a</td>
+      <td>source code in various languages</td>
+    </tr>
+    <tr>
+      <td>batch</td>
+      <td>bat, sh</td>
+      <td>commands to the command interpreter</td>
+    </tr>
+    <tr>
+      <td>text</td>
+      <td>txt, doc</td>
+      <td>textual data, documents</td>
+    </tr>
+    <tr>
+      <td>word processor</td>
+      <td>wp, tex, rtf, doc</td>
+      <td>various word-processor formats</td>
+    </tr>
+    <tr>
+      <td>library</td>
+      <td>lib, a, so, dll</td>
+      <td>libraries of routines for programmers</td>
+    </tr>
+    <tr>
+      <td>print or view</td>
+      <td>ps, pdf, jpg</td>
+      <td>ASCII or binary file in a format for printing or viewing</td>
+    </tr>
+    <tr>
+      <td>archive</td>
+      <td>arc, zip, tar</td>
+      <td>related files grouped into one file, sometimes compressed, for archiving or storage</td>
+    </tr>
+    <tr>
+      <td>multimedia</td>
+      <td>mpeg, mov, rm, mp3, avi</td>
+      <td>binary file containing audio or A/V information</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Some files are rigid in structure (simple record or complex record), while others are free-form</p>
+
+<ul>
+  <li>The OS doesn’t care since it’d cause overhead, but applications do</li>
+</ul>
+
+<h3 id="access-methods">Access Methods</h3>
+
+<p>Files have to be loaded into memory to be used, either by sequential access, direct access or other methods</p>
+
+<p>Sequential access uses read next, write next, reset and skip forward/backward and is the most common method</p>
+
+<p>Direct access reads and writes record in any order with knowledge of block location, with read block N and write block N being the only methods</p>
+
+<ul>
+  <li>Since files are typically scattered in blocks, N refers to blocks relative to the first block</li>
+  <li>We can still simulate sequential with this method</li>
+</ul>
+
+<p>Other access methods include indexes for quick lookup (used in databases)</p>
+
+<h3 id="directories">Directories</h3>
+
+<p>Directories group files together, containing all the filenames and their identifiers, which we then use to look up other file information</p>
+
+<p><img src="images/files/f1.png" alt="2023-04-18_04-59.png" /></p>
+
+<p>The basic operations include searching for a file, creating a file, deleting a file, listing directories, renming a file and traversing the system</p>
+
+<p>There are organized logically for efficiency (fast finding), naming (easy finding) and grouping (similar files in one directory)</p>
+
+<p>These directories can either be atomic, two-level, a tree or a graph</p>
+
+<p>With a single-level directory, each directory exists side by side, which is easiest but is the least useful since we can’t name efficiently and we can’t group similar files together</p>
+
+<p><img src="images/files/f2.png" alt="2023-04-18_05-01.png" /></p>
+
+<p>Two level is slightly better, but we have the same problem with grouping</p>
+
+<p><img src="images/files/f3.png" alt="2023-04-18_05-02.png" /></p>
+
+<p>Trees get to the meat of the problem, starting with a root dir and then stemming out from there, so we can use a flag 0 for a file and a flag 1 for a directory to differentiate the two</p>
+
+<p><img src="images/files/f4.png" alt="2023-04-18_05-03.png" /></p>
+
+<p>With an acyclic graph, we relax the structure even more by allowing files to exist in multiple directories with pointers called links or shortcuts</p>
+
+<p><img src="images/files/f5.png" alt="2023-04-18_05-04.png" /></p>
+
+<p>Directory traversal must account for possible cycles, so we must disallow links to directories and limit the number that can be search</p>
+
+<p>Deletes and link adds also need to account for cycles by keeping a count of incoming references and using garbage collection to remove unreferenced files</p>
+
+<p>Regardless of structure, if the directory isn’t specified, all operations occur in the pwd, so deleting the pwd can remove all files and directories in the subtree</p>
+
+<ul>
+  <li>On Linux, directories need to be empty before they’re deleted, but we can override this with rm -r</li>
+</ul>
+
+<h3 id="protection">Protection</h3>
+
+<p>Files need to be protected from not only physical damage but improper access as well, which we can do with authentication (valid user/pass like sudo), authorization (user perms) and encryption (even if the drive is copied, the files should be protected)</p>
+
+<p>We can think about this in accordance to our basic mtehods</p>
+
+<ul>
+  <li>
+    <p><strong>Read</strong> – Can the contents of the file be read?</p>
+  </li>
+  <li>
+    <p><strong>Write</strong> – Can data be written or re-written to the file?</p>
+  </li>
+  <li>
+    <p><strong>Execute</strong> – Can the contents of the file be loaded into memory and executed?</p>
+  </li>
+  <li>
+    <p><strong>Append</strong> – Can data be appended to the file?</p>
+  </li>
+  <li>
+    <p><strong>Delete</strong> – Can the file be deleted and space reclaimed?</p>
+  </li>
+  <li>
+    <p><strong>List</strong> – Can the name and attributes be listed?</p>
+  </li>
+  <li>
+    <p><strong>Attribute change</strong> – Can the attributes (metadata) be changed?</p>
+  </li>
+</ul>
+
+<p>Most OSes employ identity-based protection with an access control list (ACL) mapping users to permissions</p>
+
+<p>These can be quite large, so Linux uses classifications such as owner (the user who created the file), group (a set of users who share the file) and others</p>
+
+<p>More complex permissions can be achieved with some tricks</p>
+
+<h2 id="implementation">Implementation</h2>
+
+<p>The file system handles file structure, allocating/recovering space, tracking locations and interfacing with the OS</p>
+
+<ul>
+  <li>OSes provide support for many of these systems, with Linux supporting over 130</li>
+</ul>
+
+<p>Picking a file system depends on user needs, including performance, reliability and extra features, with new ones being created all the time</p>
+
+<ul>
+  <li>There are even tools such as FUSE providing interfaces to easily roll out custom file systems without editing the kernel</li>
+</ul>
+
+<p>These systems are made of multiple layers, which reduces complexity while adding overhead</p>
+
+<ol>
+  <li>Application programs
+    <ul>
+      <li>↓</li>
+    </ul>
+  </li>
+  <li>Logical file system
+    <ul>
+      <li>↓</li>
+    </ul>
+  </li>
+  <li>File-organization module
+    <ul>
+      <li>↓</li>
+    </ul>
+  </li>
+  <li>Basic file system
+    <ul>
+      <li>↓</li>
+    </ul>
+  </li>
+  <li>I/O control
+    <ul>
+      <li>↓</li>
+    </ul>
+  </li>
+  <li>Devices</li>
+</ol>
+
+<p>The I/O layer contains drivers and interrupt handlers, which controls I/O devices and are given commands like the following</p>
+
+<p>read drive1, cylinder 72, track 2, sector 10, into memory location 1060</p>
+
+<p>This gives low-level hardware specific commands to the hardware controller</p>
+
+<p>The basic file system uses buffers and cache to store data as it’s retrieved or stored, being given more generic commands such as retrieve block 123</p>
+
+<ul>
+  <li>This also manages I/O scheduling</li>
+</ul>
+
+<p>The file organization layer understand files, logical addresses and physical blocks, translating between logical and physical while also freeing and allocating space</p>
+
+<p>The logical file system manages metadata, while translating file names into numbers, handles and locating by maintaining file control blocks (inodes in UNIX)</p>
+
+<ul>
+  <li>We also maintain file control blocks (FCBs), directories and file protection</li>
+</ul>
+
+<p>These together provide structures and operations to manage files and directories using several storage or memory structures as well as operations on these structures</p>
+
+<ul>
+  <li>On-storage structures persist, but in-memory structures last until file system dismount or system reboot</li>
+</ul>
+
+<p>Some common ones include the boot control block (contains boot information for an OS, 1 per block), volume control block (contains volume details such as total blocks, total free blocks, block size and free block pointers, 1 per block), directory structures (1 per file system) and FCBs (1 per file, containing metadata)</p>
+
+<ul>
+  <li>Windows with NFTS uses as master table instead of FCBs</li>
+</ul>
+
+<p>For in-memory, we have the mount table (file system mount, mount points and file system types), directory structure cache (recently used directories), system-wide open-file table (FCB of each file and other info) and per-process open-file table (pointers to the system-wide open-file table along with other info)</p>
+
+<p>For operations, things get a bit complicated (and I don’t feel like writing)</p>
+
+<p>E.g. To create a new file, a process calls the logical file system layer to create</p>
+
+<p>The logical file system layer will allocate a new FCB, assign the FCB and the new file to a directory in the directory structure</p>
+
+<p>The file organization module layer will find logical blocks for the file</p>
+
+<p>The basic file system layer will map the logical blocks to physical blocks</p>
+
+<p>The I/O control layer will write the data to disk</p>
+
+<p>E.g. To read the new file, a process calls the logical file system layer to open and read</p>
+
+<p>The logical file system layer will search the system-wide open-file table</p>
+<ul>
+  <li>If it is already open, a per-process open-file table is created pointing to this entry and the entry is incremented</li>
+  <li>If it is not already open, search the directory structure for the file and add the FCB to the system-wide open-file table</li>
+</ul>
+
+<p>Update the per-process open-file table to include read location in the file and access mode</p>
+
+<p>E.g. To close the new file, a process calls the logical file system layer to close</p>
+
+<p>The logical file system layer will remove the per-process open-file table</p>
+
+<p>Decrement the system-wide open-file table entry</p>
+<ul>
+  <li>If the open count is now 0, write any metadata to the directory structure and remove the entry</li>
+</ul>
+
+<p><img src="images/files/f6.png" alt="2023-04-18_05-26_3.png" /></p>
+
+<h3 id="directories-1">Directories</h3>
+
+<p>The directory structure impacts efficiency, performance and reliability and depends on what we’re doing</p>
+
+<p>We could do a linear list with pointers to data blocks, which is simple to program but is linear time</p>
+
+<ul>
+  <li>We could maintain alphabetical order, but sorting is also time-consuming</li>
+</ul>
+
+<p><img src="images/files/f7.png" alt="2023-04-18_05-28.png" /></p>
+
+<p>Hash tables are another option, which decrease search time but come at the cost of hash collisions</p>
+
+<p><img src="images/files/f8.png" alt="2023-04-18_05-29.png" /></p>
+
+<h3 id="allocations">Allocations</h3>
+
+<p>The file system assigns contiguous sectors on the physical disk to a logical block, with files consisting of one or more blocks and free space being all the blocks that aren’t used</p>
+
+<p>The file system needs to keep track of these blocks efficiently, with three main approaches</p>
+
+<p>Contiguous allocation has each file occupying a contiguous set of blocks, with superior performance and simplicity, but makes finding space harder since we need to know the file size ahead of time</p>
+
+<ul>
+  <li>There’s also problems with fragmentation, which we discuss in lesson 7</li>
+</ul>
+
+<p><img src="images/files/f9.png" alt="2023-04-18_05-33.png" /></p>
+
+<p>Linked lists can eliminate external fragmentation and allow for dynamic file sizes, but random access is slow and a small portion of the block needs to be reserved for a pointer to the next block</p>
+
+<ul>
+  <li>Clustering blocks can help somewhat</li>
+</ul>
+
+<p><img src="images/files/f10.png" alt="2023-04-18_05-35.png" /></p>
+
+<p>Indexed allocation gives each file an index block, with the index pointing to all other blocks</p>
+
+<p>This also eliminates external fragmentation and makes random access fast, but if the number of indices exceeds the size of the index block, we will need multiple layers</p>
+
+<ul>
+  <li>These layers scale up fast, to where adding an extra layer can bring the block size from 4MB to 4GB</li>
+</ul>
+
+<p><img src="images/files/f11.png" alt="2023-04-18_05-37.png" /></p>
+
+<p>Some OSes will combine direct and indirect blocks, so small files will not use an index block, while large files will use multiple layers</p>
+
+<p>Increasing the size of the pointers will raise the maximum file size, so 32-bit pointers can hold up to 4GB, while must UNIX file systems support 64-bit pointers</p>
+
+<ul>
+  <li>ZFS uses 128-bit pointers</li>
+</ul>
+
+<p><img src="images/files/f12.png" alt="2023-04-18_05-39.png" /></p>
+
+<p><img src="images/files/f13.png" alt="2023-04-18_05-39_1.png" /></p>
+
+<p>If the workload against a file is known, the allocation type can be chosen at file creation, but this usually isn’t the case</p>
+
+<p>Reducing disk movement (discussed in lesson 8) can help, but for NVMs, we need different methods</p>
+
+<h3 id="free-space">Free-Space</h3>
+
+<p>We need to keep of list of free blocks, either as a bitmap or as a true list</p>
+
+<p>With a bitmap, we can assign each block to a bit, using 0 for in-use and 1 for free</p>
+
+<p><img src="images/files/f14.png" alt="2023-04-18_05-42.png" /></p>
+
+<p>This makes finding free blocks very simple and is easy to implement, as well as finding contiguous blocks, while also taking up a lot of space (1TB with 4KB blocks requires a 32MB bitmap in memory)</p>
+
+<p>A linked-list makes it easy to find a free block (just look at the head), but traversing the list is costly (we rarely do a full traversal)</p>
+
+<ul>
+  <li>To make this more efficient, we can use grouping (blocks storing a list of n addresses, with n-1 being free and the last block pointing to another group of addresses) or counting (storing a value n to signify that the next n blocks are free)</li>
+</ul>
+
+<p>Freeing blocks doesn’t require erasing data, so file systems just mark the block as being free, saving time while hurting security (forensics experts ca manually read the disk)</p>
+
+<ul>
+  <li>HDDs and NVMs can either do this immediately, during a quiet period or before the block is used again</li>
+</ul>
+
+<h3 id="efficiency">Efficiency</h3>
+
+<p>The biggest bottleneck is the disk itself, so we must consider the following</p>
+
+<ul>
+  <li>
+    <p>Unix spreads inodes across the volume. Files are stored close to their directory’s inode. This reduces seek time</p>
+  </li>
+  <li>
+    <p>Keeping “last modified” and “last accessed” dates can tell the OS if the file needs to be loaded into memory or to be backed up to tertiary storage</p>
+  </li>
+  <li>Pointer size – 32-bit pointers use less space but limits file size to 4GB. 64-bit pointers use more space but allow for larger files.
+    <ul>
+      <li>(A device capable of holding $2^{128}$ bytes at the atomic level should weigh about 272 trillion kilograms)</li>
+    </ul>
+  </li>
+  <li>Use a cache both on the disk and in memory. Most operating systems combine process and file data cache in a unified virtual memory</li>
+</ul>
+
+<h3 id="recovery">Recovery</h3>
+
+<p>Crashes and bugs can create inconsistencies, so we must correct these issues in the file system itself</p>
+
+<p>In the system, we can scan the metadata to check for inconsistencies</p>
+
+<ul>
+  <li>This can take minutes or even hours, so we should save this for boot time</li>
+</ul>
+
+<p>A status bit can be used to indicate whether or not the whole system is up to date, so if the system reboots suddenly, the file system is marked as “in flux”, triggering a full consistency check such as fsck in UNIX</p>
+
+<p>We can alsu take a tip from DBs and use log-based transaction-oriented recovery (aka journaliing), which requires maintaining a running log of unconfirmed transactions that must be replayed when an interruption occurs</p>
+
+<p>This log can be stored in a separate section of the file system or a different device, with the log also allowing the OS to write data asynchronously</p>
+
+<p>Backups are also recommended, typically following a schedule like the following</p>
+
+<ul>
+  <li>
+    <p>A typical backup schedule (e.g. weekly or monthly)</p>
+
+    <ul>
+      <li>
+        <p><strong>Day 1</strong> – Copy all files to a backup medium. This is a <strong>full backup</strong></p>
+      </li>
+      <li>
+        <p><strong>Day 2</strong> – Compare a file’s last backup date with the last modified date. If the file has changed, back it up. This is an <strong>incremental backup</strong></p>
+      </li>
+      <li>
+        <p>Continue this process up to day N. Then run a full backup again</p>
+      </li>
+      <li>
+        <p>Watch out for daylight savings time</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>To restore the file system, we can restore from either a full backup or an incremental backup</p>
+
+<ul>
+  <li>A differential backup is also a good substitute for a incremental backup, restoring only files that differ from the full backup</li>
+  <li>Cold storage is also a good idea, keeping a long-term backup off-site and disconnected to protect against the environment or malicious attacks</li>
+</ul>
+
+<h2 id="internals">Internals</h2>
+
+<p>General-purpose computers can have multiple storage devices, including USBs, extra drives and so on</p>
+
+<p>These storage devices can be further divided into partitions, assigned to one or more volumes and each of those being formatted into a file system</p>
+
+<p>Some common ones include</p>
+
+<ul>
+  <li>Windows: NTFS, FAT, FAT32</li>
+  <li>UNIX: ext2, ext3, ext4, zfs, ufs</li>
+  <li>Special-purpose: tmpfs for temp I/O, procfs for process information as a file system in UNIX, others for specific workloads like Google filesystem</li>
+</ul>
+
+<h3 id="mounting">Mounting</h3>
+
+<p>Systems need to be mounted before they can be used, with the OS being given a name and a mount point, a location in the file structure (usually empty)</p>
+
+<ul>
+  <li>The file system is either given or determined automatically</li>
+</ul>
+
+<p>If the system is already mounted, the OS needs to either allow or disallow multiple mounts</p>
+
+<p>If the mount point is non-empty, the OS must also decide whether to prevent the action or obscure existing files and directories until the file system is unmounted</p>
+
+<p><img src="images/files/f15.png" alt="2023-04-18_06-01.png" /></p>
+
+<h3 id="partitions">Partitions</h3>
+
+<p>Partitions can either be raw (just blocks, like in databases or RAID) or cooked with a file system (bootable, root, etc.)</p>
+
+<h3 id="perms">Perms</h3>
+
+<p>User-oriented OSes must accomodate shared files, with permissions being kept in the FCB</p>
+
+<p>When we mount a file system to another OS, we must take care of perms, like in the case fo multiple user IDs across systems</p>
+
+<p>To make this seemless, we can use virtual file systems, separating generic operations fro implementation details</p>
+
+<p><img src="images/files/f16.png" alt="2023-04-18_06-03.png" /></p>
+
+<h3 id="remote-systems">Remote Systems</h3>
+
+<p>To transfer files, we can use ftp like back in the day, or use a distributed file system (DFS) like we do nowadays</p>
+
+<ul>
+  <li>File transfers across the Internet usually use http</li>
+</ul>
+
+<p>DFS uses a file-server protocol, with the client seeking the mount the remote and the sever sharing its local file system, while providing authentication and authorization</p>
+
+<ul>
+  <li>These need to account for more failure conditions than local file systems, but keeping state on both client and server side can help identify these easily, while adding security and overhead</li>
+</ul>
+
+<p>These must specify behaviour when there’s multiple users sharing files, which is discussed in more detail in lesson 6</p>
+
+<p>We can either block requests until a file session (between open() and close()) is complete, or share read-only and just use blocking for writes</p>
+
+<h3 id="network-file-system">Network File System</h3>
+
+<p>The NFS is a popular remote system model using a similar client-server model and mounts to a remote NFS share, appearing as if it’s part of the local file system</p>
+
+<p>This is designed to work in heterogeneous environments (different OSes, machines, protocols, etc.)</p>
+
+<p><img src="images/files/f17.png" alt="2023-04-18_06-09.png" /></p>
+
+<p>With this, the client requests a remote directory and the server identifies client perms on the directory, including read-only and read-write</p>
+
+<p>If permission is granted, the mount is recorded in an export table used to track all mounts, revoke access and notify of downtimes, among other things</p>
+
+<p>We also use a set of remote procedure calls (RPCs) to handle searching, rerading a set of entries, changing links, accessing file attributes and reading/writing</p>
+
+<p>Version 3 of this is stateless while version 4 is stateful, requiring additional overhead but being more secure since we don’t send vital info as parameters all the time</p>
+
+<p>Despte the version, writing data to disk requires a lot of safety mechanisms, which can take minutes</p>
+
+<ul>
+  <li>Windows uses common Internet file system (CIFS) instead</li>
+</ul>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>
