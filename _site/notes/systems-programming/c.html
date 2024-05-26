@@ -1,0 +1,793 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>C Fundamentals | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="C Fundamentals" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/systems-programming/c.html" />
+<meta property="og:url" content="http://localhost:4000/notes/systems-programming/c.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="C Fundamentals" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"C Fundamentals","url":"http://localhost:4000/notes/systems-programming/c.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+    <link rel="stylesheet" href="/assets/css/style.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#on-the-command-line">On the Command Line</a><ul><li><a href="#cc">CC</a></li><li><a href="#gcc">GCC</a></li></ul></li><li><a href="#general-form">General Form</a><ul><li><a href="#directives">Directives</a></li><li><a href="#functions">Functions</a></li><li><a href="#statements">Statements</a></li><li><a href="#comments">Comments</a></li></ul></li><li><a href="#variables">Variables</a><ul><li><a href="#data-types">Data Types</a></li><li><a href="#variable-initialization">Variable Initialization</a></li><li><a href="#identifiers">Identifiers</a></li><li><a href="#layout">Layout</a></li></ul></li><li><a href="#compiling-in-detail">Compiling in Detail</a><ul><li><a href="#1-writing-the-source-codes">1. Writing the Source Codes</a></li><li><a href="#2-preprocess">2. Preprocess</a></li><li><a href="#3-compile">3. Compile</a></li><li><a href="#4-link">4. Link</a></li><li><a href="#5-load">5. Load</a></li><li><a href="#6-run">6. Run</a></li></ul></li><li><a href="#selection">Selection</a><ul><li><a href="#switch">Switch</a></li><li><a href="#alternative-form">Alternative Form</a></li></ul></li><li><a href="#iteration">Iteration</a><ul><li><a href="#do-while">Do-while</a></li><li><a href="#for">For</a></li></ul></li><li><a href="#jump">Jump</a><ul><li><a href="#continue">Continue</a></li><li><a href="#break">Break</a></li></ul></li><li><a href="#other-important-things">Other Important Things</a><ul><li><a href="#null">Null</a></li></ul></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="c-fundamentals">C Fundamentals</h1>
+
+<p>Take a look at this:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">printf</span><span class="p">(</span><span class="s">"To C or not to C, that is the question."</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We’ll name this file <em>pun.c</em></p>
+
+<ul>
+  <li>The name here doesn’t matter (although there are standards that we’ll get into later), but the extension is always <em>.c</em></li>
+  <li>What DOES matter is that there’s no spaces in the name</li>
+</ul>
+
+<p>This program can’t be executed yet; there’s 3 steps that must be taken:</p>
+
+<ol>
+  <li><strong>Preprocessing</strong> - obeying commands that have a # (in this case, _#include <stdio.h>_</stdio.h></li>
+  <li><strong>Compiling</strong> - translating the program into machine code</li>
+  <li><strong>Linking</strong> - combines the machine code with anything else needed to make the program an executable (.exe)</li>
+</ol>
+
+<ul>
+  <li>Note: the preprocessor is usually interlinked with the compiler</li>
+</ul>
+
+<h2 id="on-the-command-line">On the Command Line</h2>
+
+<h3 id="cc">CC</h3>
+
+<p>Let’s compile <em>pun.c</em>. We can do this like so:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">cc</span> <span class="n">pun</span><span class="p">.</span><span class="n">c</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Note: the % is a UNIX prompt, you don’t type it in</li>
+  <li>Linking is automatic when using <em>cc</em></li>
+</ul>
+
+<p>After you do this, you get an executable with the name <em>a.out</em> by default</p>
+
+<p>The <em>-o</em> option flag lets us pick a new name</p>
+
+<p>Let’s name this executable <em>pun</em>:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">cc</span> <span class="o">-</span><span class="n">o</span> <span class="n">pun</span> <span class="n">pun</span><span class="p">.</span><span class="n">c</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Note: order is important; the naming flag and new name goes first</li>
+</ul>
+
+<h3 id="gcc">GCC</h3>
+
+<p>GCC is one of the most popular C compilers and the one we’ll be using the most for this class</p>
+
+<p>It’s supplied with Linux but available on other platforms as well</p>
+
+<p>We make calls with the same form as <em>cc</em></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">gcc</span> <span class="o">-</span><span class="n">o</span> <span class="n">pun</span> <span class="n">pun</span><span class="p">.</span><span class="n">c</span>
+</code></pre></div></div>
+
+<h2 id="general-form">General Form</h2>
+
+<p>Let’s look at <em>pun.c</em> again:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">printf</span><span class="p">(</span><span class="s">"To C or not to C, that is the question."</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is an example of the general form of a C program, with <strong>directives</strong> at the top (#include) and <strong>statements</strong> at the bottom (int main(void))</p>
+
+<ul>
+  <li>C will execute its programs line by line, so order is important here</li>
+</ul>
+
+<p>There’s actually 3 key language features:</p>
+
+<ol>
+  <li><strong>Directives</strong></li>
+  <li><strong>Functions</strong></li>
+  <li><strong>Statements</strong></li>
+</ol>
+
+<h3 id="directives">Directives</h3>
+
+<p>These are what’s processed by the preprocessor before anything else</p>
+
+<p>You can easily tell where the directives are because they always start with a # character</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+</span><span class="c1">// this is an example</span>
+</code></pre></div></div>
+
+<p>Other features include:</p>
+
+<ul>
+  <li>Being one line long</li>
+  <li>Having no special marker at the end (semicolon, etc.)</li>
+</ul>
+
+<p>You’d use this when you want a certain part of your code to compile before anything</p>
+
+<ul>
+  <li>For example, if you want to import something, you’ll need to do that before anything else</li>
+  <li>The example above is an import of a library</li>
+</ul>
+
+<h3 id="functions">Functions</h3>
+
+<p>These are series’ of statements that have been grouped together and given a name</p>
+
+<ul>
+  <li>These work a lot like methods in Java</li>
+</ul>
+
+<p>Some functions are already provided with C, called <strong>library functions</strong></p>
+
+<ul>
+  <li>The above example is a standard library that’s being imported, full of library functions</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">printf</span><span class="p">(</span><span class="s">"i need a drink bro"</span><span class="p">);</span>
+<span class="n">scanf</span><span class="p">(</span><span class="s">"fuck.txt"</span><span class="p">);</span>
+<span class="c1">//these are examples of library functions</span>
+</code></pre></div></div>
+
+<p>We also use a <strong>return</strong> statement to return the result of a function</p>
+
+<p>Also note that a <strong>main function</strong> is <strong>MANDATORY!!</strong></p>
+
+<ul>
+  <li>This is not unlike Java</li>
+</ul>
+
+<p>Unlike Java, main in C returns a <strong>status code</strong>, with the value 0 indicating normal termination</p>
+
+<p>If there’s no return statement for this at the end of main, most compilers give a warning and throw a fit like your annoying cousin at the family reunion</p>
+
+<ul>
+  <li>“Waaaaaah you need a return statement!!” “Waaaaaah auntie said I can play games on your phone!!!” SHUT THE FUCK UP DAWIT</li>
+</ul>
+
+<p>…moving on</p>
+
+<h3 id="statements">Statements</h3>
+
+<p>A statement is a command to be executed when the program runs</p>
+
+<ul>
+  <li>Examples include function calls, return statements and simple operations</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
+<span class="n">printf</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+<span class="c1">//these are all statements</span>
+</code></pre></div></div>
+
+<p>Notice that each statement ends with a semicolon, just like Java</p>
+
+<ul>
+  <li>Note: directives are <strong>not</strong> statements, they are processed at different stages</li>
+</ul>
+
+<h3 id="comments">Comments</h3>
+
+<p>Comments are text in the code that are not compiled</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//this is a comment</span>
+<span class="cm">/* This is
+also a
+comment */</span>
+</code></pre></div></div>
+
+<p>These comments aren’t turned into machine code and aren’t in your executable, meaning no bloat (yay!)</p>
+
+<p>They’re detected by the preprocessor and thrown out before the compiler can reach it</p>
+
+<ul>
+  <li>Note: if you use a multi line comment, <strong>don’t forget to terminate it (*/)</strong></li>
+  <li>Note 2: the single line comment (//) is part of C99, so your compiler <strong>must support the C99 standard of C</strong> (most do, so don’t worry)</li>
+</ul>
+
+<h2 id="variables">Variables</h2>
+
+<p>Most programs need a way to store data to memory during execution, with the storage locations referred to as variables</p>
+
+<p>A variable, in short, is a space in memory assigned for a specific purpose</p>
+
+<p>Like Java, C is strict with its variables:</p>
+
+<ul>
+  <li>Variables must be declared with a <strong>type</strong> (int, float, etc.)</li>
+  <li>Variables can’t change types on the fly (ex. you can’t set an int variable to “Trevor”)</li>
+</ul>
+
+<p>This finnicky nature is called <strong>static typing</strong></p>
+
+<h3 id="data-types">Data Types</h3>
+
+<p>Data types (DTs) in C come in 3 forms:</p>
+
+<ol>
+  <li>Primary DT (char, float, int, void)</li>
+  <li>User-defined DT (enum, typedef, etc.)</li>
+  <li>Derived DT (pointers, arrays, structures, etc.)</li>
+</ol>
+
+<p>DTs also have unsigned and signed variants, which we will get into later</p>
+
+<p>Note that in C99, you don’t have to make all of your declarations before your statements (except in the main method)</p>
+
+<ul>
+  <li>You still have to declare a variable before you use it</li>
+  <li>In older versions, this isn’t the case</li>
+</ul>
+
+<h3 id="variable-initialization">Variable Initialization</h3>
+
+<p>Some variables are set to 0 by default when a program executes, <strong>but most don’t</strong></p>
+
+<p>When you create a variable that doesn’t have a default value and isn’t assigned to anything, it’s said to be <strong>uninitialized</strong> and, when you attempt to access it…things can go wrong</p>
+
+<ul>
+  <li>Depending on your compiler and other factors, this can cause a crash</li>
+</ul>
+
+<p>What happens is that, where the variable is stored, the program will just take whatever data was in its memory location last time</p>
+
+<p>Now, when you do initialize a variable, the value you set it to is called the <strong>initializer</strong></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">height</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span> <span class="c1">//8 is the initializer</span>
+<span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="cm">/*you can also assign
+multiple variables in one statement, just like Java*/</span>
+<span class="kt">int</span> <span class="n">height</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="cm">/*however, you must
+assign each variable separately, so in this case, only
+width is assigned*/</span>
+</code></pre></div></div>
+
+<p>You can also give a value through an <strong>assignment</strong></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">height</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span> <span class="o">/*</span><span class="mi">8</span> <span class="n">here</span> <span class="n">is</span> <span class="n">called</span> <span class="n">a</span> <span class="n">constant</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Note: when assigning floats, it’s best practice to add an f to the end of the constant</li>
+  <li>Otherwise, the compiler throws a fit (see cousin Dawit)</li>
+  <li>Note 2: when assigning a variable to a value, that value is computed and reduced to a single value before being assigned</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">height</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">12</span> <span class="c1">//this computation has to finish first</span>
+</code></pre></div></div>
+
+<p>You can also define a constant through a directive for readability purposes if you use it over and over again</p>
+
+<ul>
+  <li>This is called a <strong>macro definition</strong></li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define INCHES_PER_POUND 166
+</span></code></pre></div></div>
+
+<p>These macro definitions can also be an expression</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define RECIPROCAL_OF_PI (1.0f / 3.14f)
+</span></code></pre></div></div>
+
+<h3 id="identifiers">Identifiers</h3>
+
+<p>The names of variables and definitions are called <strong>identifiers</strong> and they come with some rules:</p>
+
+<ul>
+  <li>They can only contain letters, numbers and underscores</li>
+  <li>They cannot start with a number</li>
+  <li>They CAN start with underscores, but it’s not usually best practice since they have a special meaning</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">get_next_char</span><span class="p">,</span> <span class="n">times10</span> <span class="c1">//legal</span>
+<span class="n">get</span><span class="o">-</span><span class="n">next</span><span class="o">-</span><span class="kt">char</span><span class="p">,</span> <span class="mi">10</span><span class="n">times</span> <span class="c1">//illegal</span>
+</code></pre></div></div>
+
+<p>As mentioned before, these identifiers are case sensitive</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">job</span> <span class="o">!=</span> <span class="n">JOB</span>
+</code></pre></div></div>
+
+<p>Because of this, most programmers just use lowercase letters in their identifiers, with underscores separating words</p>
+
+<ul>
+  <li>Note: there is no maximum length</li>
+</ul>
+
+<p>There are also several <strong>keywords</strong> that can’t be used as an identifier, including <em>enum</em>, <em>break</em> and <em>return</em></p>
+
+<h3 id="layout">Layout</h3>
+
+<p>The amount of space between tokens doesn’t matter to the compiler, but it’s best practice to have legible spacing (I’m sure you know this already…at least I hope you do…)</p>
+
+<p>What you cannot do however is put an entire C program on one line, since preprocessing directives require separate lines</p>
+
+<ul>
+  <li>This isn’t good practice anyway</li>
+</ul>
+
+<h2 id="compiling-in-detail">Compiling in Detail</h2>
+
+<p>We’ve mentioned before that C code must be compiled before it’s executed, but what does that actually entail?</p>
+
+<p>There are 6 steps to compiling a C program</p>
+
+<h3 id="1-writing-the-source-codes">1. Writing the Source Codes</h3>
+
+<p>We have to write the source codes (.c) and header files (.h) before we can compile them</p>
+
+<h3 id="2-preprocess">2. Preprocess</h3>
+
+<p>Here, we run through the code quickly looking for directives and other things</p>
+
+<p>Tasks controlled by the preprocessor include:</p>
+
+<ul>
+  <li>Removing comments</li>
+  <li>Processing macro definitions</li>
+  <li>Read in included files</li>
+  <li>And other advanced conditionals (#ifdef, #endif, etc.)</li>
+</ul>
+
+<h3 id="3-compile">3. Compile</h3>
+
+<p>We then take the preprocessed code and compile it into object code (.obg or .o)</p>
+
+<p>This is the machine code we talked about earlier and they’re not meant for human consumption</p>
+
+<p>Something like…</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Gets turned into…</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mo">0000000000000000</span> <span class="o">&lt;</span><span class="n">main</span><span class="o">&gt;:</span>
+<span class="mi">0</span><span class="o">:</span> <span class="mo">0011010101101011</span> <span class="n">push</span> <span class="o">%</span><span class="n">rbp</span>
+<span class="mi">1</span><span class="o">:</span> <span class="mi">1101010101000110</span> <span class="n">mov</span> <span class="o">%</span><span class="n">rsp</span><span class="p">,</span><span class="o">%</span><span class="n">rbp</span>
+<span class="mi">4</span><span class="o">:</span> <span class="mi">1001011010100011</span> <span class="n">mov</span> <span class="o">%</span><span class="n">edi</span><span class="p">,</span><span class="o">-</span><span class="mh">0x4</span><span class="p">(</span><span class="o">%</span><span class="n">rbp</span><span class="p">)</span>
+<span class="mi">7</span><span class="o">:</span> <span class="mi">1011110101001000</span> <span class="n">mov</span> <span class="o">-</span><span class="mh">0x4</span><span class="p">(</span><span class="o">%</span><span class="n">rbp</span><span class="p">),</span><span class="o">%</span><span class="n">eax</span> <span class="c1">// get x in reg. eax</span>
+<span class="n">a</span><span class="o">:</span> <span class="mo">0011010110110011</span> <span class="n">imul</span> <span class="o">-</span><span class="mh">0x4</span><span class="p">(</span><span class="o">%</span><span class="n">rbp</span><span class="p">),</span><span class="o">%</span><span class="n">eax</span> <span class="c1">// (x*x)</span>
+<span class="n">e</span><span class="o">:</span> <span class="mo">0101010110001101</span> <span class="n">leaveq</span>
+<span class="n">f</span><span class="o">:</span> <span class="mi">11101110110101100</span> <span class="n">retq</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Note: left side is machine code in the .obj file and the right side is the resulting assembly instructions</li>
+</ul>
+
+<h3 id="4-link">4. Link</h3>
+
+<p>Here, we join the object code from our C code with library object codes (.lib or .a) and other object codes in the system to produce an executable (.exe)</p>
+
+<p>We also assign (delineate) memory space for every variable</p>
+
+<ul>
+  <li>Depending on the location of the variables, the linker will patch the old location with the new location</li>
+</ul>
+
+<h3 id="5-load">5. Load</h3>
+
+<p>We then load the executable code into memory, creating the .exe file with the help for shared libraries (.dll, .so)</p>
+
+<h3 id="6-run">6. Run</h3>
+
+<p>Now we have code that we can execute</p>
+
+<h1 id="flow-of-control">Flow of Control</h1>
+
+<p>Remember that C is a procedural language, meaning it goes one statement at a time</p>
+
+<p>With our control statements, however, we can change the order in which the program reads statements</p>
+
+<p>C has 3 types of control statements:</p>
+
+<ol>
+  <li>Selection (if and switch)</li>
+  <li>Iteration (while, do, for) (basically loops)</li>
+  <li>Jump (break, continue, goto, return)</li>
+</ol>
+
+<p>Other C statements exist as well, including:</p>
+
+<ul>
+  <li>Compound</li>
+  <li>Null</li>
+</ul>
+
+<h2 id="selection">Selection</h2>
+
+<p>We have already covered if statements in other classes, so I won’t go over it again here in these notes</p>
+
+<p>Instead, I want to briefly talk about <strong>switch statements</strong></p>
+
+<h3 id="switch">Switch</h3>
+
+<p>Now, examine this block of code:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">grade</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">grade</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
+			<span class="n">printf</span><span class="p">(</span><span class="s">"Good"</span><span class="p">);</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">grade</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+			<span class="n">printf</span><span class="p">(</span><span class="s">"Average"</span><span class="p">);</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">grade</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+			<span class="n">printf</span><span class="p">(</span><span class="s">"Poor"</span><span class="p">);</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">grade</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+			<span class="n">printf</span><span class="p">(</span><span class="s">"Failing"</span><span class="p">);</span>
+		<span class="k">else</span>
+			<span class="n">printf</span><span class="p">(</span><span class="s">"Illegal grade"</span><span class="p">);</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is what’s known as a <strong>cascading if</strong> and in some cases, it’s actually the best option</p>
+
+<p>Here, however, it isn’t</p>
+
+<p>In this case, the code is a bit hard to read at a glance</p>
+
+<p>This can be improved with a switch statement</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">grade</span><span class="p">;</span>
+		<span class="k">switch</span> <span class="p">(</span><span class="n">grade</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">case</span> <span class="mi">3</span><span class="p">:</span>
+				<span class="n">printf</span><span class="p">(</span><span class="s">"Good"</span><span class="p">);</span>
+				<span class="k">break</span><span class="p">;</span>
+			<span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
+				<span class="n">printf</span><span class="p">(</span><span class="s">"Average"</span><span class="p">);</span>
+				<span class="k">break</span><span class="p">;</span>
+			<span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+				<span class="n">printf</span><span class="p">(</span><span class="s">"Poor"</span><span class="p">);</span>
+				<span class="k">break</span><span class="p">;</span>
+			<span class="k">case</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">printf</span><span class="p">(</span><span class="s">"Failing"</span><span class="p">);</span>
+				<span class="k">break</span><span class="p">;</span>
+			<span class="nl">default:</span>
+				<span class="n">printf</span><span class="p">(</span><span class="s">"Illegal grade"</span><span class="p">);</span>
+				<span class="k">break</span><span class="p">;</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here, the code is much cleaner and easier to read</p>
+
+<ul>
+  <li>Note: the <em>break</em> statements are a necessity here, <strong>don’t skip them.</strong> If you don’t, the compiler reads every single case statement, even if the condition has already been met</li>
+</ul>
+
+<h3 id="alternative-form">Alternative Form</h3>
+
+<p>There’s another alternative form of an if statement called a <strong>conditional operator</strong></p>
+
+<p>Let’s look at this if statement</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+	<span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We can condense this into a form like so</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span> <span class="o">?</span> <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span><span class="o">:</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="c1">// form:</span>
+<span class="c1">// (conditional) ? trueExpression : falseExpression;</span>
+</code></pre></div></div>
+
+<h2 id="iteration">Iteration</h2>
+
+<p>These are effectively the same loops we have already covered, so again, I won’t go into detail</p>
+
+<p>I just want to briefly mention the existence of <strong>do-while loops</strong></p>
+
+<h3 id="do-while">Do-while</h3>
+
+<p>Do-while loops are the same as while loops except for one quirk: they test the conditional after an iteration is complete</p>
+
+<p>Why does this matter? It matters because <strong>a do-while loop will run at least once</strong></p>
+
+<p>The syntax is similar to a while loop</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">do</span> <span class="p">{</span>
+ <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>This type of loop is often called a <strong>post-test</strong> loop, whereas while loops are called <strong>pre-test</strong> loops</p>
+
+<h3 id="for">For</h3>
+
+<p>Now, I said I wasn’t going to cover loops in detail, but I do wish to go over what’s happening under the surface of a for loop</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">;</span> <span class="n">b</span><span class="p">;</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// do something</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>A for loop consists of three parts:</p>
+
+<ol>
+  <li>Initialization statement (i.e. int i = 0)</li>
+  <li>Test expression (i.e. i &lt; 10)</li>
+  <li>Update statement (i.e. i++)</li>
+</ol>
+
+<p>I also want to note that, despite for loops usually only having one variable, they can have multiple in C</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">,</span> <span class="n">j</span><span class="o">--</span><span class="p">,</span> <span class="n">k</span><span class="o">+=</span><span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">//do something</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In a for loop, the first iteration runs through a followed by b, with subsequent iterations running c followed by b until condition b fails or the loop is forcibly exited</p>
+
+<p>Speaking of forcibly exited…</p>
+
+<h2 id="jump">Jump</h2>
+
+<p>Jump statements forcibly move the compiler from one line to another and they have lots of uses</p>
+
+<p>Let’s look at a few of them</p>
+
+<h3 id="continue">Continue</h3>
+
+<p>Let’s look at this while loop:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">continue</span><span class="p">;</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This loop seems like it would run 100 times, but it actually runs forever</p>
+
+<p>This is because of the continue statement, which tells the compiler to skip to the start of the loop</p>
+
+<h3 id="break">Break</h3>
+
+<p>Let’s modify the while loop a bit:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">break</span><span class="p">;</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now this loop seems like it would run 100 times, but it actually runs 10 times</p>
+
+<p>The break statement here automatically exits whatever construct it is in, meaning that the compiler thinks there’s no more iterations and that it can move on to the next bit of code</p>
+
+<p>You may recall earlier that this is part of what makes switch statements work as well</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">grade</span><span class="p">;</span>
+		<span class="k">switch</span> <span class="p">(</span><span class="n">grade</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">case</span> <span class="mi">3</span><span class="p">:</span>
+				<span class="n">printf</span><span class="p">(</span><span class="s">"Good"</span><span class="p">);</span>
+				<span class="k">break</span><span class="p">;</span>
+			<span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
+				<span class="n">printf</span><span class="p">(</span><span class="s">"Average"</span><span class="p">);</span>
+				<span class="k">break</span><span class="p">;</span>
+			<span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+				<span class="n">printf</span><span class="p">(</span><span class="s">"Poor"</span><span class="p">);</span>
+				<span class="k">break</span><span class="p">;</span>
+			<span class="k">case</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="n">printf</span><span class="p">(</span><span class="s">"Failing"</span><span class="p">);</span>
+				<span class="k">break</span><span class="p">;</span>
+			<span class="nl">default:</span>
+				<span class="n">printf</span><span class="p">(</span><span class="s">"Illegal grade"</span><span class="p">);</span>
+				<span class="k">break</span><span class="p">;</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="other-important-things">Other Important Things</h2>
+
+<h3 id="null">Null</h3>
+
+<p>An important concept to learn right now is the <strong>null</strong> character, which is represented as ‘\0’ in C</p>
+
+<p>A null basically means that nothing is there</p>
+
+<p>This can be past the end of a string, past the end of an array or something else</p>
+
+<p>Let’s that a look at this in action:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+</span><span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+	<span class="kt">char</span> <span class="n">string</span> <span class="o">=</span> <span class="err">“</span><span class="n">Something</span> <span class="n">or</span> <span class="n">Another</span><span class="err">”</span><span class="p">);</span>
+	<span class="p">{</span>
+		<span class="kt">int</span> <span class="n">i</span> <span class="p">;</span> <span class="c1">// i MUST be declared OUTSIDE the loop to survive ...</span>
+		<span class="k">for</span> <span class="p">(</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">string</span> <span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="o">!=</span> <span class="sc">'\0'</span> <span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span> <span class="c1">//loop runs until the string hits a null character</span>
+			<span class="cm">/* NULL STATEMENT! */</span> <span class="p">;</span>
+		<span class="k">return</span> <span class="n">i</span> <span class="p">;</span> <span class="c1">// … otherwise i is dereferenced before control passes back</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>If you’re inquisitive, you may notice that this is a character counter, which is one of many uses of the null character</p>
+
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

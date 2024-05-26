@@ -1,0 +1,707 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Intro to Assembly | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Intro to Assembly" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/computer-architecture/assembly.html" />
+<meta property="og:url" content="http://localhost:4000/notes/computer-architecture/assembly.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Intro to Assembly" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Intro to Assembly","url":"http://localhost:4000/notes/computer-architecture/assembly.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+    <link rel="stylesheet" href="/assets/css/style.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#assembly">Assembly</a></li><li><a href="#more-on-registers">More on Registers</a></li><li><a href="#addressing-modes">Addressing Modes</a></li><li><a href="#arm-assembly">ARM Assembly</a><ul><li><a href="#program-structure">Program Structure</a></li><li><a href="#pseudo-instructions">Pseudo Instructions</a></li><li><a href="#relative-addressing">Relative Addressing</a></li></ul></li><li><a href="#data-processing-instructions">Data-Processing Instructions</a><ul><li><a href="#add">Add</a></li><li><a href="#subtract">Subtract</a></li><li><a href="#negation">Negation</a></li><li><a href="#move">Move</a></li><li><a href="#multiply">Multiply</a></li><li><a href="#bitwise">Bitwise</a></li><li><a href="#compare">Compare</a></li><li><a href="#shifts">Shifts</a></li></ul></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="intro-to-assembly">Intro to Assembly</h1>
+
+<h1 id="what-is-an-instruction">What is an instruction?</h1>
+
+<p>To explain this, let’s assume we have a very simple stored program computer that we will perform instructions on</p>
+
+<p><img src="images/assembly/a1.png" alt="Untitled" /></p>
+
+<p>The format of instructions defines their anatomy, which consists of</p>
+
+<ul>
+  <li>The number of operands</li>
+  <li>The number of bits that define each operation</li>
+  <li>The format of each operand</li>
+</ul>
+
+<p>For example, here’s some hypothetical instructions (with result destinations in bold)</p>
+
+<p>LDR <strong>r1</strong>,1234 (load memory address 1234 in register 1)
+STR r3,<strong>2000</strong> (store register 3 into memory address 2000)
+ADD <strong>r1</strong>,r2,r3 (add r2 and r3 and store in r1)
+SUB <strong>r3</strong>,r3,r1 (subtract r1 from r3 and store in r3)</p>
+
+<p>To execute instructions, the computer will go through a two-stage process</p>
+
+<ol>
+  <li>Fetch (read from memory and decode)</li>
+  <li>Execute (interpret and execute by the CPU’s logic)</li>
+</ol>
+
+<p>The program counter then points to the next instruction, where the process repeats ad nauseum</p>
+
+<ul>
+  <li>Modern computers overlap these two processes through a process called <strong>pipelining</strong></li>
+</ul>
+
+<p>The program counter (PC) is a type of register, along with the…</p>
+
+<ul>
+  <li>instruction register (IR / stores the current instruction)</li>
+  <li>memory aggress register (MAR / stores the address currently being used)</li>
+  <li>memory bigger register (MBR / stores data that was just read)</li>
+  <li>general purpose registers (r0,r1,…,ri / i is typically 8, 16 or 32)</li>
+</ul>
+
+<p>To make this a little more clear, here’s an example of a hypothetical computer</p>
+
+<p><img src="images/assembly/a2.png" alt="Untitled" /></p>
+
+<p>Sometimes (like ADD), the operands will be read from the register before being transferred to the ALU and then sent back to the destination register (this is called a register-to-register operation)</p>
+
+<p>Other times, we need to access the MAR to read/write to memory, but how do we deal with the conflict with the PC?</p>
+
+<p>We do this through a multiplex, which acts like a traffic light for the signal</p>
+
+<p>As an example, let’s cover the execution process in RTL:</p>
+
+<p>Fetch</p>
+
+<p>[MAR] ← [PC]</p>
+
+<p>[PC] ← [PC] + 4</p>
+
+<p>[MBR] ← [[MAR]]</p>
+
+<p>[IR] ← [MAR]</p>
+
+<p>Execute LDR</p>
+
+<p>[MAR] ← [IR(address)]</p>
+
+<p>[MBR] ← [[MAR]]</p>
+
+<p>[r1] ← [MBR]</p>
+
+<p>How do we do flow control? We just have to modify the incrementor’s path</p>
+
+<p>Before the incrementor can increment the PC, we have the CU check it to make sure it doesn’t have to be changed</p>
+
+<p>We also have some status bits stored in the condition code register (CCR) after an operation is performed, going as follows</p>
+
+<p><img src="images/assembly/a3.png" alt="Untitled" /></p>
+
+<p>On RISC processors like ARM, we have to manually request status flags to be updated, while they are automatically updated on newer CISC processors</p>
+
+<ul>
+  <li>We do this in Assembly by adding an S to the operation (ex. SUBS)</li>
+</ul>
+
+<h2 id="assembly">Assembly</h2>
+
+<p>We’ve seen Assembly instructions before, but let’s look at them again</p>
+
+<p>For whitespace (space or tab), we need at least 1 after the operation name, but all other whitespace is up to the programmer</p>
+
+<ul>
+  <li>Ex. LDR <strong>r0</strong>,address</li>
+</ul>
+
+<p>To branch (do a conditional) we can use BPL</p>
+
+<ul>
+  <li>Ex. BPL target (if the previous instruction was plus (positive or zero), we branch to the instruction at address target)</li>
+  <li>Use BEQ if you want the result to be 0 and B to branch unconditionally (use this as an else statement)</li>
+</ul>
+
+<p>Let’s look at a more complex example</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SUBS</span> <span class="n">r5</span><span class="p">,</span><span class="n">r5</span><span class="p">,</span><span class="err">#</span><span class="mi">1</span> <span class="p">;</span><span class="n">Subtract</span> <span class="mi">1</span> <span class="n">from</span> <span class="n">r5</span> <span class="n">and</span> <span class="n">store</span> <span class="n">in</span> <span class="n">r5</span>
+<span class="n">BEQ</span> <span class="n">onZero</span> <span class="p">;</span><span class="n">IF</span> <span class="n">zero</span> <span class="n">THEN</span> <span class="n">go</span> <span class="n">to</span> <span class="n">onZero</span>
+<span class="n">notZero</span> <span class="n">ADD</span> <span class="n">r1</span><span class="p">,</span><span class="n">r2</span><span class="p">,</span><span class="n">r3</span> <span class="p">;</span><span class="n">ELSE</span> <span class="k">continue</span>
+<span class="p">...</span>
+<span class="n">onZero</span> <span class="n">SUB</span> <span class="n">r1</span><span class="p">,</span><span class="n">r2</span><span class="p">,</span><span class="n">r3</span> <span class="p">;</span><span class="n">Here</span><span class="err">'</span><span class="n">s</span> <span class="n">where</span> <span class="n">the</span> <span class="n">branch</span> <span class="n">ends</span> <span class="n">up</span> <span class="k">if</span> <span class="n">SUBS</span> <span class="n">gave</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<p>We can also define variables to do something like this</p>
+
+\[P \geq Q \rightarrow X=P+5 \\ ELSE \rightarrow X=P+20\]
+
+<p>First, we need to define these variables, which we can do with DCD</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">P</span> <span class="n">DCD</span> <span class="mi">12</span> <span class="p">;</span><span class="n">This</span> <span class="n">reserves</span> <span class="n">a</span> <span class="n">space</span> <span class="n">in</span> <span class="n">memory</span> <span class="k">for</span> <span class="n">the</span> <span class="n">decimal</span> <span class="n">number</span> <span class="mi">12</span> <span class="n">and</span> <span class="n">labels</span> <span class="n">it</span> <span class="n">P</span>
+<span class="n">Q</span> <span class="n">DCD</span> <span class="mi">9</span> <span class="p">;</span><span class="n">This</span> <span class="n">does</span> <span class="n">the</span> <span class="n">same</span> <span class="n">thing</span> <span class="n">but</span> <span class="k">for</span> <span class="n">Q</span> <span class="n">and</span> <span class="mi">9</span>
+<span class="n">X</span> <span class="n">DCD</span> <span class="mi">0</span> <span class="p">;</span><span class="n">The</span> <span class="n">memory</span> <span class="n">locations</span> <span class="n">are</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">40</span> <span class="n">and</span> <span class="mi">44</span> <span class="p">(</span><span class="n">we</span><span class="err">'</span><span class="n">ll</span> <span class="n">learn</span> <span class="n">how</span> <span class="n">we</span> <span class="n">got</span> <span class="n">this</span> <span class="n">later</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Then we can do our ARM magic</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LDR</span> <span class="n">r0</span><span class="p">,</span><span class="n">P</span> <span class="p">;</span><span class="n">Load</span> <span class="n">P</span> <span class="n">into</span> <span class="n">r0</span>
+<span class="n">LDR</span> <span class="n">r1</span><span class="p">,</span><span class="n">Q</span> <span class="p">;</span><span class="n">We</span> <span class="k">do</span> <span class="n">this</span> <span class="n">so</span> <span class="n">that</span> <span class="n">we</span> <span class="n">can</span> <span class="k">do</span> <span class="n">arithmetic</span> <span class="n">on</span> <span class="n">the</span> <span class="n">number</span>
+<span class="n">SUBS</span> <span class="n">r2</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="n">r1</span> <span class="p">;</span><span class="n">It</span><span class="err">'</span><span class="n">s</span> <span class="n">easier</span> <span class="n">to</span> <span class="n">check</span> <span class="k">if</span> <span class="n">P</span><span class="o">-</span><span class="n">Q</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="n">since</span> <span class="n">we</span> <span class="n">can</span> <span class="n">just</span> <span class="k">do</span> <span class="n">BPL</span>
+<span class="n">BPL</span> <span class="n">THEN</span> <span class="p">;</span><span class="n">If</span> <span class="n">P</span><span class="o">-</span><span class="n">Q</span><span class="o">&gt;=</span><span class="mi">0</span> <span class="n">then</span> <span class="n">execute</span> <span class="n">THEN</span>
+<span class="n">ADD</span> <span class="n">r0</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="err">#</span><span class="mi">20</span> <span class="p">;</span><span class="n">ELSE</span> <span class="n">add</span> <span class="mi">20</span> <span class="n">to</span> <span class="n">r0</span> <span class="n">and</span> <span class="n">store</span> <span class="n">it</span> <span class="n">in</span> <span class="n">r0</span>
+<span class="n">B</span> <span class="n">EXIT</span> <span class="p">;</span><span class="n">Skip</span> <span class="n">to</span> <span class="n">EXIT</span>
+<span class="n">THEN</span> <span class="n">ADD</span> <span class="n">r0</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="err">#</span><span class="mi">5</span> <span class="p">;</span><span class="n">Add</span> <span class="mi">5</span> <span class="n">to</span> <span class="n">r0</span> <span class="n">and</span> <span class="n">store</span> <span class="n">in</span> <span class="n">r0</span>
+<span class="n">EXIT</span> <span class="n">STR</span> <span class="n">r0</span><span class="p">,</span><span class="n">X</span> <span class="p">;</span><span class="n">Whatever</span><span class="err">'</span><span class="n">s</span> <span class="n">in</span> <span class="n">r0</span> <span class="n">is</span> <span class="n">stored</span> <span class="n">in</span> <span class="n">X</span> <span class="p">(</span><span class="n">which</span> <span class="n">branch</span> <span class="n">we</span> <span class="n">took</span> <span class="n">doesn</span><span class="err">'</span><span class="n">t</span> <span class="n">matter</span><span class="p">)</span>
+<span class="n">STOP</span> <span class="p">;</span><span class="n">Program</span> <span class="n">is</span> <span class="n">done</span>
+<span class="n">P</span> <span class="n">DCD</span> <span class="mi">12</span> <span class="p">;</span><span class="n">It</span> <span class="n">sounds</span> <span class="n">weird</span> <span class="n">but</span> <span class="n">we</span> <span class="n">declare</span> <span class="n">variables</span> <span class="n">after</span> <span class="n">our</span> <span class="n">instructions</span>
+<span class="n">Q</span> <span class="n">DCD</span> <span class="mi">9</span>
+<span class="n">X</span> <span class="n">DCD</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<p>Since we set P to 12 and Q to 9, we can see that P ≥ Q, so P-Q≥0</p>
+
+<p>In this case, we go to the branch and skip to THEN, where we execute X=P+5 and halt (B EXIT and ADD 20 are ignored)</p>
+
+<p><img src="images/assembly/a4.png" alt="This is how we got the address for our vars btw" /></p>
+
+<p>This is how we got the address for our vars btw</p>
+
+<p>To do a loop, we can just branch to a previous instruction</p>
+
+<p>Below is an example where we calculate 1+2+3+…+20</p>
+
+<p><img src="images/assembly/a5.png" alt="Untitled" /></p>
+
+<ul>
+  <li>Note that
+    <ul>
+      <li>MOV copies the value of operand 2 (register or literal) into operand 1</li>
+      <li>CMP compares the values of operand 2 and operand 1, updating the condition flags but not the result (like subtract but without a value update)</li>
+      <li>BNE branches if the result of the previous isn’t zero (branching checks the status flags, not the actual value)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="more-on-registers">More on Registers</h2>
+
+<p>Registers usually have the same width as the word of the computer (if the word is 32 bits, the registers will be 32 bits as well)</p>
+
+<ul>
+  <li>ARM processors usually have two special purpose registers and a lot of general purpose registers</li>
+</ul>
+
+<p>Let’s say you have 32 bits and you don’t use all of them (ex. 16 bits of data); where do the rest of the bits go?</p>
+
+<p>This depends entirely on the processor, which might</p>
+
+<ul>
+  <li>leave them unchanged</li>
+  <li>set them to 0</li>
+  <li>sign-extend the halfword to 32 bits (two’s complement)</li>
+</ul>
+
+<p>Something to note is that if you want to do data processing on ARM processors, you have to put the data in registers first</p>
+
+<ul>
+  <li>There are ways around this (ex. pseudo instructions, which we cover later)</li>
+  <li>This isn’t the case for CISC processors, which can do processing on memory addresses</li>
+</ul>
+
+<p>In CISC, processors usually have two-address instructions (one memory and one register)</p>
+
+<p>RISC on the other hand has three-address instructions where all three operands are register (this doesn’t include LDR and STR, which are special cases)</p>
+
+<ul>
+  <li>Ex. ADD r1,r2,r3</li>
+</ul>
+
+<h2 id="addressing-modes">Addressing Modes</h2>
+
+<p>There are three fundamental addressing modes</p>
+
+<ul>
+  <li>Literal (i.e. the actual value)</li>
+  <li>Direction (give the memory address itself)
+    <ul>
+      <li>Note that this isn’t directly supported in ARM</li>
+    </ul>
+  </li>
+  <li>Register indirect (register contains the address of the operand)
+    <ul>
+      <li>AKA pointer based or indexed</li>
+      <li>This is similar to pointers in C</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="arm-assembly">ARM Assembly</h2>
+
+<p>For ARM processors specifically, the registers are 32-bits and there’s 16 of them r0-r15</p>
+
+<ul>
+  <li>r0-r12 are general purpose</li>
+  <li>r13 is reserved as a stack pointer by the programmer (it isn’t necessary, it’s just convention)</li>
+  <li>r14 is the link register which holds subroutine return addresses</li>
+  <li>r15 is the program counter</li>
+</ul>
+
+<p>Because there’s 16 registers, we require a 4-bit address for each in the instruction before its decoded</p>
+
+<p>The ARM also has a current program status register (CPSR) which has</p>
+
+<ul>
+  <li>The condition codes (N for negative, Z for zero, C for carry and V for overflow) in bits 31-28</li>
+  <li>Operating mode in bits 0-7 (more on that later…maybe)</li>
+</ul>
+
+<p><img src="images/assembly/a6.png" alt="Untitled" /></p>
+
+<p>They also have a large instruction set including the following</p>
+
+<p><img src="images/assembly/a7.png" alt="Untitled" /></p>
+
+<p>Generally, instructions in ARM go by the following</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="n">label</span><span class="p">}</span> <span class="n">op</span><span class="o">-</span><span class="n">code</span> <span class="n">operand1</span><span class="p">,</span><span class="n">operand2</span><span class="p">,</span><span class="n">operand3</span> <span class="p">{;</span><span class="n">comment</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>Below is an example of an ARM assembly program fragment</p>
+
+<p><img src="images/assembly/a8.png" alt="Untitled" /></p>
+
+<p>And here’s another example which generates the sum of the cubes of numbers</p>
+
+<p><img src="images/assembly/a9.png" alt="Untitled" /></p>
+
+<ul>
+  <li>MLA means multiply and accumulate (multiply r2 by r1, add r0 and store in r0)</li>
+</ul>
+
+<p>Note that these are fragments and not full programs since we need to specify the environment first</p>
+
+<ul>
+  <li>The setup is called assembler directives while the fragments are executable instructions</li>
+</ul>
+
+<h3 id="program-structure">Program Structure</h3>
+
+<p>We mentioned before that we need ARM directives and instructions in order to make a full program, but what do these directives look like?</p>
+
+<p>To start, let’s look at an example from last week</p>
+
+<p><img src="images/assembly/a10.png" alt="Untitled" /></p>
+
+<p>These include</p>
+
+<ul>
+  <li>AREA (names a region of code (ex. Cubes))</li>
+  <li>ENTRY (determines the start point)</li>
+  <li>END (ends the program)</li>
+  <li>name EQU value (equate a name to a value)</li>
+  <li>{label} DCD v, expr {, v, expr} (create a 32-bit constant in memory starting at a multiple of 4 address location)</li>
+  <li>{label} DCW v, expr {, v, expr} (create a 16-bit constant in memory starting at an even address location)</li>
+  <li>{label} DCB v, expr {, v, expr} (create an 8-bit constant in memory starting anywhere)</li>
+  <li>{label} SPACE size expr (reserves a zeroed block in memory)</li>
+  <li>ALIGN (ensures the next data item is correctly aligned on 32-bit boundaries i.e. multiple of 4)
+    <ul>
+      <li>Useful for DCD</li>
+    </ul>
+  </li>
+</ul>
+
+<p>The DCD, DCW and DCB directives tell the assembler to</p>
+
+<ul>
+  <li>Reserve one or more blocks of appropriate size in memory</li>
+  <li>Load whatever value(s) to the right of the directives into these locations</li>
+  <li>Advance the location-counter by one of four, two or one bytes, respectively
+    <ul>
+      <li>This is a variable inside the assembler itself to keep track of memory locations during the program; it’s not a register like the program counter</li>
+      <li>ALIGN moves the location counter manually to ensure 32-bit alignment</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Below is an example of these directives in action</p>
+
+<p><img src="images/assembly/a11.png" alt="Untitled" /></p>
+
+<ul>
+  <li>Note that the greyed out lines are how you stop your program on the ARM processor, but in the simulator we do an infinite loop instead like so</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">loop</span> <span class="n">b</span> <span class="n">loop</span>
+</code></pre></div></div>
+
+<p>There’s also synonyms here, so let’s look at them</p>
+
+<ul>
+  <li>&amp; in the op-code is for DCD
+    <ul>
+      <li>Not to be confused with &amp; in front of a constant, which signifies a hex code like 0x</li>
+    </ul>
+  </li>
+  <li>= in the op-code means DCB</li>
+</ul>
+
+<p>In the disassembly, these directives look like gibberish at first, so let’s look at it</p>
+
+<p><img src="images/assembly/a12.png" alt="Untitled" /></p>
+
+<p>Everything in the orange block is the memory locations used in the directives</p>
+
+<ul>
+  <li>We store 0x12345678, so that’s the first word</li>
+  <li>We then store 25 in decimal, which is 0x19 in hex as we can see on the second line</li>
+  <li>After that, we store ‘A’ which is 0x41 in hex as we can see next to 19</li>
+  <li>This keeps going after that as well, which will be left below</li>
+</ul>
+
+<p><img src="images/assembly/a13.png" alt="Untitled" /></p>
+
+<h3 id="pseudo-instructions">Pseudo Instructions</h3>
+
+<p>We mentioned pseudos before, but what exactly are they?</p>
+
+<p>Pseudos are operations for which there are no direct machine language equivalent</p>
+
+<p>To execute these, the assembler has tricks it can use instead</p>
+
+<p>For example, you can’t execute MOV r0,#0x12345678 to load r0 with 0x12345678 since the instructions are only 32-bits long</p>
+
+<p>As an alternative, we can use LDR r0, = 0x12345678 as our pseudo instead</p>
+
+<p>With this, the assembler</p>
+
+<ul>
+  <li>Stores the constant 0x12345678 in the literal pool (aka constant pool) somewhere in memory after the program</li>
+  <li>Generates code to load the constant into r0</li>
+</ul>
+
+<p>Another example is ADR r0,label (address to register) which loads the 32-bit address of the line ‘label’ into r0</p>
+
+<p>Below is an example of ADR in action</p>
+
+<p><img src="images/assembly/a14.png" alt="Untitled" /></p>
+
+<p>All of the pseudo translation is done automatically by the assembler, utilizing program counter relative addressing</p>
+
+<h3 id="relative-addressing">Relative Addressing</h3>
+
+<p>Relatives addressing allows us to specify the location of an operand with respect to a register value</p>
+
+<ul>
+  <li>Ex. LDR r0,[r1,#16] (the operand is 16 bytes onward from the address stored in r1</li>
+</ul>
+
+<p>The cool part comes in when we use r15 (PC) in the relative addressing)</p>
+
+<ul>
+  <li>Ex. LDR r0,[PC,#16] (operand is 16 bytes onward from the address stored in the PC)</li>
+</ul>
+
+<p>In most cases the ARM’s PC is 8 bytes from the current instruction to be executed due to pipelining (where the next instruction is fetched before the current one has been executed)</p>
+
+<ul>
+  <li>Note that this is relative to the program counter, so the program’s location in memory doesn’t impact anything</li>
+</ul>
+
+<p>To go more in-depth into how this works, let’s look at this in action in a real program</p>
+
+<p><img src="images/assembly/a15.png" alt="Untitled" /></p>
+
+<p>The top right shows how we calculate the offsets (goal address - address of the current instruction + 0x08 for pipelining = offset)</p>
+
+<ul>
+  <li>Note that we add PC and the offset in ADR translations instead of loading through relative addressing</li>
+  <li>Note that the difference between LDR r4,P3 and ADR r4,P3 is that LDR loads the value while ADR stores the address
+    <ul>
+      <li>LDR r4, = P3 will do the same thing as ADR r4,P3, only it will be implemented by storing the address in the literal pool and loading it through relative addressing</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="data-processing-instructions">Data-Processing Instructions</h2>
+
+<p>Each instruction listed here will have a version ending in S, which will update the status flags (remember what we have to do this to update status flags because it’s not automatic)</p>
+
+<p>We’ve covered a few of these already so let’s go over the ones we haven’t</p>
+
+<h3 id="add">Add</h3>
+
+<p>ADC performs a 32-bit ADD while also added the carry-over, which is useful for adding 64-bit numbers</p>
+
+<p>We can do so using a double-precision strategy, like so</p>
+
+<p><img src="images/assembly/a16.png" alt="Untitled" /></p>
+
+<ul>
+  <li>Note that r1 and r0 make up one 64-bit number together, along with r3 and r2</li>
+</ul>
+
+<h3 id="subtract">Subtract</h3>
+
+<p>RSB is the same as SUB, except that RSB reverses the two operands</p>
+
+<ul>
+  <li>SUB r1,r2,r3 ;[r1]←[r2]-[r3]
+RSB r1,r2,r3 ;[r1]←[r3]-[r2]</li>
+</ul>
+
+<p>This is useful when you want to subtract a register value from a constant, since you can’t list constants first</p>
+
+<ul>
+  <li>SUB r1,#10,r2 is wrong, but RSB r1,r2,#10 is right</li>
+  <li>Note that RSB r1,#5 means the same thing as RSB r1,r1,#5
+    <ul>
+      <li>The same applies to ADD r1,#5 but for ADD</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="negation">Negation</h3>
+
+<p>Negation subtracts a number from zero, which has the effect of making it negative by two’s complement</p>
+
+<p>ARM doesn’t give this as a instruction, rather as a pseudo called NEG</p>
+
+<ul>
+  <li>NEG r1,r2 often gets translated as RSB r1,r2,#0</li>
+  <li>NEG r1,r1 can also mean RSB r1,r1,#0 or just RSB r1,#0</li>
+</ul>
+
+<h3 id="move">Move</h3>
+
+<p>We’ve covered MOV already, but we also have MVN, which flips the bits of the source operand before storing it in the register</p>
+
+<ul>
+  <li>Ex. if r1 = 0x00000000, MVN r0,r1 turns r0 into 0xFFFFFFFF</li>
+</ul>
+
+<h3 id="multiply">Multiply</h3>
+
+<p>The multiply instruction MUL Rd,Rm,Rs</p>
+
+<ul>
+  <li>Takes the 32-bit signed numbers Rm and Rs</li>
+  <li>Forms their 64 bit product</li>
+  <li>Stores the lower-order (aka right-most) 32 bits of the 64 bit product (i.e. truncates it) into Rd</li>
+</ul>
+
+<p>Note that Rd can’t be the same as Rm because of how ARM implements MUL</p>
+
+<ul>
+  <li>It also doesn’t allow for multiplying by constants</li>
+</ul>
+
+<p>MLA exists as well, but we’ve already covered that</p>
+
+<p>With MLA, we can also find dot products of vectors</p>
+
+<p><img src="images/assembly/a17.png" alt="Untitled" /></p>
+
+<ul>
+  <li>We’ll talk about the cyan parts later</li>
+  <li>Vector1 is 4 words, one for each value (multiple operands means multiple words stored)</li>
+</ul>
+
+<p>We have multiplication for other types of numbers as well</p>
+
+<ul>
+  <li>UMLL unsigned long MUL (Rm x Rd gives a 64-bit product in two registers)</li>
+  <li>UMLAL unsigned long MLA</li>
+  <li>SMULL signed long MUL</li>
+  <li>SMLAL signed long MLA</li>
+</ul>
+
+<p>Note that ARM does not have division, but that can be implemented by the programmer if they wish</p>
+
+<h3 id="bitwise">Bitwise</h3>
+
+<p>These will just be listed off since they’re self-explanatory</p>
+
+<p><img src="images/assembly/a18.png" alt="Untitled" /></p>
+
+<ul>
+  <li>The long list of ones on MVN is because they’re taken out of 11001010 for representation purposes; they’re still there</li>
+</ul>
+
+<p>We can use these bitwise operations for more complicated bit manipulations as well</p>
+
+<p><img src="images/assembly/a19.png" alt="Untitled" /></p>
+
+<p><img src="images/assembly/a20.png" alt="Untitled" /></p>
+
+<h3 id="compare">Compare</h3>
+
+<p>We’ve covered CMP already, but we have other compare instructions that we can use as well</p>
+
+<p><img src="images/assembly/a21.png" alt="Untitled" /></p>
+
+<h3 id="shifts">Shifts</h3>
+
+<p>Shifts move bites one or more places to the right or left, with its replacement depending on the instruction used</p>
+
+<p><img src="images/assembly/a22.png" alt="Untitled" /></p>
+
+<p>These shift can either be static (determined by a number representing the number of bits to shift by) or dynamic</p>
+
+<p><img src="images/assembly/a23.png" alt="Untitled" /></p>
+
+<p>Dynamic shifts can be any one of the following</p>
+
+<p><img src="images/assembly/a24.png" alt="Untitled" /></p>
+
+<ul>
+  <li>These means that you left shift r3 by r2 bits (if r2=#5, you left shift 5 or multiply by 2^5)</li>
+</ul>
+
+<p>The following shifts are in ARM itself</p>
+
+<p><img src="images/assembly/a25.png" alt="Untitled" /></p>
+
+<ul>
+  <li>Note that ASL is the same as LSL, so it’s trivial</li>
+  <li>ROL by n bits is the same as ROR by 32-n bits</li>
+  <li>Rotate left through carry can be done with ADCS r0,r0,r0 (add r0 to r0 with carry and set the flags)</li>
+</ul>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

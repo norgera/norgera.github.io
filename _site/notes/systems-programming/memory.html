@@ -1,0 +1,563 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Memory + I/O | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Memory + I/O" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/systems-programming/memory.html" />
+<meta property="og:url" content="http://localhost:4000/notes/systems-programming/memory.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Memory + I/O" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Memory + I/O","url":"http://localhost:4000/notes/systems-programming/memory.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+    <link rel="stylesheet" href="/assets/css/style.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#string-functions">String Functions</a><ul><li><a href="#strlen">strlen</a></li><li><a href="#strcpy">strcpy</a></li><li><a href="#strcat">strcat</a></li><li><a href="#strcmp">strcmp</a></li><li><a href="#strchr">strchr</a></li><li><a href="#others">Others</a></li></ul></li><li><a href="#output">Output</a><ul><li><a href="#formatting-characters---">Formatting Characters ( % )</a></li><li><a href="#formatting-characters----1">Formatting Characters ( \ )</a></li></ul></li><li><a href="#the-basics">The Basics</a></li><li><a href="#multi-byte-variables">Multi-Byte Variables</a></li><li><a href="#arrays">Arrays</a><ul><li><a href="#multi-dimensional">Multi-Dimensional</a></li></ul></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="memory--io">Memory + I/O</h1>
+<h1 id="strings">Strings</h1>
+
+<p>With our arrays, we can do something special. Remember that we can have an array of characters in the same way as before. You may be quick to jump the gun and say that this is a string, but it isn’t…unless we add a <strong>terminating character</strong>.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">\0</code> is known as the <strong>NULL</strong> character and it’s what tells the computer to stop reading the string. With this, we can create some new notation. Instead of declaring a string like any other variable, we can do this:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">char</span> <span class="n">d</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="s">"Magic"</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The double quotes are important here, since single quotes signify individual characters. Here, we declare the array in memory and then start assigning values. We assign d[0-4] with the letters and d[5] as <code class="language-plaintext highlighter-rouge">\0</code> to signal the end of the string. But what about d[6-7]? Since they aren’t assigned, we set them to 0 just like any other array.</p>
+
+<h2 id="string-functions">String Functions</h2>
+
+<p>Since strings are special, they have their own special functions. These are provided for us by the ANSI standard string library, which is included like so:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;string.h&gt;
+</span></code></pre></div></div>
+
+<h3 id="strlen">strlen</h3>
+
+<p><code class="language-plaintext highlighter-rouge">strlen</code> returns the length of a NULL terminated string. For example, we were to have code like so:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
+<span class="kt">char</span> <span class="n">d</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="s">"Magic"</span><span class="p">;</span>
+<span class="n">count</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>…then count would now be equal to 5. In our memory map, we start from d[0] and count down until we hit a NULL, returning the number of characters we counted up to that point.</p>
+
+<h3 id="strcpy">strcpy</h3>
+
+<p>We can’t just assign one string to another since all that does is make their addresses the same. Instead, we can use <code class="language-plaintext highlighter-rouge">strcpy</code> to make a copy of the source to the destination, with some caveats:</p>
+
+<ol>
+  <li>The source must be NULL terminated.</li>
+  <li>The destination must have enough room (is the same or greater size as the source).</li>
+  <li>The return value points to the destination.</li>
+</ol>
+
+<p>In C, it looks something like this:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">str1</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span> <span class="o">=</span> <span class="s">"C programming"</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">str2</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span>
+    
+    <span class="c1">//copying str1 to str2</span>
+    <span class="n">strcpy</span><span class="p">(</span><span class="n">str2</span><span class="p">,</span> <span class="n">str1</span><span class="p">);</span>
+
+    <span class="n">puts</span><span class="p">(</span><span class="n">str2</span><span class="p">);</span> <span class="c1">//C programming</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="strcat">strcat</h3>
+
+<p>With this, we can add two strings together. We append a copy of str2 onto str1 and a pointer equal to str1 is returned. Note: you should make sure that str1 has enough room to append str2 onto it.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">str1</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span> <span class="o">=</span> <span class="s">"C "</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">str2</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span> <span class="o">=</span> <span class="s">"programming"</span><span class="p">;</span>
+    
+    <span class="c1">//adding str2 to str1</span>
+    <span class="n">strcat</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">);</span>
+
+    <span class="n">puts</span><span class="p">(</span><span class="n">str1</span><span class="p">);</span> <span class="c1">//C programming</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="strcmp">strcmp</h3>
+
+<p>With this, we do an ASCII comparison of two strings one character at a time until a difference is found or the end of the strings are reached.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">&gt;0</code> if <code class="language-plaintext highlighter-rouge">str1 &gt; str2</code></li>
+  <li><code class="language-plaintext highlighter-rouge">0</code> if <code class="language-plaintext highlighter-rouge">str1 == str2</code></li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;0</code> if <code class="language-plaintext highlighter-rouge">str1 &lt; str2</code></li>
+</ul>
+
+<p>In C, it looks like this:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">strcmp</span> <span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>If we only want to compare part of the strings, we can use <code class="language-plaintext highlighter-rouge">strncmp</code>:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">strncmp</span> <span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span> <span class="c1">//stops comparing at n characters or at a null, </span>
+<span class="c1">//whichever one happens first</span>
+</code></pre></div></div>
+
+<h3 id="strchr">strchr</h3>
+
+<p>This function searches through a string <code class="language-plaintext highlighter-rouge">str</code> for a character <code class="language-plaintext highlighter-rouge">ch</code> until it is found or a NULL is found instead. If found, a pointer to <code class="language-plaintext highlighter-rouge">ch</code> is returned, else NULL is returned instead. You can determine its index by subtracting the value returned from the address at the start of the string. This is pointer arithmetic and we’ll cover it later.</p>
+
+<h3 id="others">Others</h3>
+
+<p>These are all conversion functions in <code class="language-plaintext highlighter-rouge">stdlib</code>:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdlib.h&gt;
+</span>
+<span class="kt">double</span> <span class="nf">atof</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">);</span> <span class="c1">//converts the pointed string to a double</span>
+<span class="kt">int</span> <span class="nf">atoi</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">);</span> <span class="c1">//same but for int</span>
+<span class="kt">long</span> <span class="kt">int</span> <span class="nf">atol</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">);</span> <span class="c1">//same but for long int</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Note that the asterisk refers to a pointer to <code class="language-plaintext highlighter-rouge">str</code>…more on that later.</li>
+</ul>
+
+<p>Now, we’ve been printing a lot in this course so far, so on that subject…how do they actually work?</p>
+
+<h1 id="simple-io">Simple I/O</h1>
+
+<p>These are all the functions that are included in our standard I/O (input/output) library.</p>
+
+<p>Notice that this covers input AND output, so let’s start with output.</p>
+
+<h2 id="output">Output</h2>
+
+<p>Let’s see a simple program under the hood to see how printing works:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">65</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Our character is: %d </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">a</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Our character is: %c </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">a</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In printing, C will view the content of the variable as a <strong>generic</strong> (untyped) sequence of bits, not caring about the actual data type, so we must tell the computer how to interpret the value.</p>
+
+<p>We do this with a <strong>formatting character</strong>, which is a % followed by a character (or a sequence of characters) that dictate how the value is interpreted and printed.</p>
+
+<h3 id="formatting-characters---">Formatting Characters ( % )</h3>
+
+<p>We have a lot of formatting characters to pick from, so let’s list them all out.</p>
+
+<p>Our syntax for <code class="language-plaintext highlighter-rouge">printf</code> looks like this:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">printf</span><span class="p">(</span><span class="s">"format string"</span><span class="p">,</span> <span class="n">value1</span><span class="p">,</span> <span class="n">value2</span><span class="p">,...);</span>
+</code></pre></div></div>
+
+<p>Going back to our code, we can comment what each print statement prints out:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">65</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Our character is: %d </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">a</span><span class="p">);</span> <span class="c1">//65</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Our character is: %c </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">a</span><span class="p">);</span> <span class="c1">//A</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The compiler doesn’t do any type checks in the <code class="language-plaintext highlighter-rouge">printf()</code> function call, so make sure the data types correspond to the formatting character, or else you run into problems.</p>
+
+<p>We can also do some tricks with this by adding things into the formatting characters:</p>
+
+<p>With a number in front of the character like %3d, we leave a minimum width of 3 spaces, which will be right justified.</p>
+
+<p>If we want to left justify, we add a <code class="language-plaintext highlighter-rouge">-</code> character, as in <code class="language-plaintext highlighter-rouge">%-3d</code>.</p>
+
+<p>Instead of spaces, we can also zero fill with <code class="language-plaintext highlighter-rouge">%03d</code>.</p>
+
+<p>We can also make positive values with a <code class="language-plaintext highlighter-rouge">+</code> sign, as in <code class="language-plaintext highlighter-rouge">%+3d</code>.</p>
+
+<p>These are all for integers, but we have some for floats as well:</p>
+
+<p>With floats, we can also use <code class="language-plaintext highlighter-rouge">.</code> followed by a number to make our float go to that many decimal places, like <code class="language-plaintext highlighter-rouge">%.4f</code>, which will go to 4 decimal places.</p>
+
+<ul>
+  <li>All our other additions can be included as well, like <code class="language-plaintext highlighter-rouge">%08.1f</code>, which will zero fill 8 wide and go to 1 decimal place.</li>
+</ul>
+
+<h3 id="formatting-characters----1">Formatting Characters ( \ )</h3>
+
+<p>There’s also formatting characters that can format your string in different ways, marked by a <code class="language-plaintext highlighter-rouge">\</code> followed by a character.</p>
+
+<h1 id="strings-1">Strings</h1>
+
+<p>With strings, we have to print things differently since they’re aggregate variables. Let’s look at a program to see what’s going on under the hood:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">char</span> <span class="n">str</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"Message"</span><span class="p">;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>With this, we output characters going down the memory list until we hit a NULL, thereby stopping the output. This can make things go wrong very fast, though:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">char</span> <span class="n">str</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="s">"Message"</span><span class="p">;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Here, there’s no room for a NULL character since we already have 7 in the string, so the computer reads through the 7 characters and then the rest of the memory until it happens to hit a null somewhere. This will still compile because C is dumb, but it will be a logic error that can break things…a lot of things.</p>
+
+<p>We can also print out strings without the formatting character, which be counted as a pointer:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">printf</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>If we have a % somewhere in the string with this approach, we’ll either get a 1 or a % in its place depending on the compiler used. Our formatting characters work the same way, adding numbers to give space and a - to left justify. For printing strings, this is super complicated, so we can use puts instead:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">puts</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>This is more efficient than printf() because you don’t have to analyze the format string at runtime.</p>
+
+<h1 id="input">Input</h1>
+
+<p>Reading in values inputted into the command line can be done using scanf() for all built-in data types in C. Our syntax is very similar to printf(), with the same formatting characters indicating types:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>With this, the data entered into the command line is read in and stored in computer memory in the address of x as an integer. The &amp; symbol refers to a pointer to the address of x, telling the computer where to store the data inputted (we’ll cover this later). For strings, this is a little complicated since the reading will stop at a white space (space, tab, newline, etc.). Instead of %s for strings, we can also do %ns, which scans the next n characters or up to a white space, whichever comes first:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scanf</span><span class="p">(</span><span class="s">"%s%3s"</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">);</span> <span class="c1">//note that we don't use &amp; because these are pointers</span>
+<span class="c1">//more on that later</span>
+</code></pre></div></div>
+
+<p>Since this is a bit complicated for strings, we can use gets() instead, which will take everything entered in and store it in a string:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gets</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>We need to be careful here since there’s a risk of overflow, which can cause…problems (blue screen of death). This is all defined in the standard I/O library, which we can include like so:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+</span></code></pre></div></div>
+
+<h1 id="memory-maps">Memory Maps</h1>
+
+<p>Understanding computer memory is the heart of understanding the C language, since we’re so close to the system.</p>
+
+<p>To understand this, we need to know about memory maps.</p>
+
+<h2 id="the-basics">The Basics</h2>
+
+<p>Imagine a grid of empty cells like this:</p>
+
+<p>This will represent a set of transistors in memory with either a charge (1) or no charge (0).</p>
+
+<p>We then group this into rows of 8 bits arbitrarily (bytes) and give them an address.</p>
+
+<ul>
+  <li>Remember that this is a human representation and not what the computer actually does, computers are dumb.</li>
+</ul>
+
+<p>This is a bit confusing, so we represent this as a <strong>memory map</strong>.</p>
+
+<p>Here we give each address a type (the variable type), the label (the variable name), the address, and the value.</p>
+
+<p>Given all this, the actual transistors in memory will switch on and off based on the value given.</p>
+
+<ul>
+  <li>Remember that if no value is given, the value will be whatever was in memory before (for example, if I were to print out b, whatever is in address 401 would be printed.</li>
+</ul>
+
+<p>Let’s say we want to declare some variables…</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">char</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">;</span> <span class="c1">//1 byte each</span>
+</code></pre></div></div>
+
+<p>The computer will then look for addresses that aren’t being used and fill in the blanks, blocking off whatever addresses are used.</p>
+
+<ul>
+  <li>Note that these addresses are longer most of the time in the real world, we use small numbers to make representation easier.</li>
+</ul>
+
+<p>It’s also worth noting that memory taking isn’t always contiguous, locations are assigned based on whether or not they’re free and have a big enough size.</p>
+
+<ul>
+  <li>This doesn’t apply to arrays and multi-byte variables, which have to be contiguous.</li>
+</ul>
+
+<p>When you assign a variable, its value is placed in the map, converted to binary and placed in the appropriate address (or addresses).</p>
+
+<p>If we were to assign a variable as we declare it, it would have an unintuitive approach.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">char</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>This is separated into 2 statements by the computer and processed separately.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">char</span> <span class="n">a</span><span class="p">;</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The variable declaration doesn’t do anything to the transistors in memory, rather it simply sets aside what was already there to a type and label.</p>
+
+<p>In the actual assignment, we then map our value and change the transistors to reflect it.</p>
+
+<h2 id="multi-byte-variables">Multi-Byte Variables</h2>
+
+<p>What if we need more than 1 byte? We have a process for this.</p>
+
+<p>Let’s say we want to declare an int.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mi">13</span><span class="p">;</span> <span class="c1">//4 bytes</span>
+</code></pre></div></div>
+
+<p>For this, we must:</p>
+
+<ol>
+  <li>Find 4 contiguous bytes.</li>
+  <li>Map a type, label, and value for the first address.</li>
+  <li>Map binary for the rest of the addresses.</li>
+</ol>
+
+<p>In our memory map, it would look something like this.</p>
+
+<p>We would do this for however many bytes we need (2 for short, 4 for int, 8 for double, etc.).</p>
+
+<p>This is also making our memory map a bit confusing to look at, so let’s give a different representation.</p>
+
+<ul>
+  <li>Note: c is a float and d is a double.</li>
+</ul>
+
+<h2 id="arrays">Arrays</h2>
+
+<p>So far, we’ve only looked at <strong>scalar</strong> variables (able to keep only one item).</p>
+
+<p>C also supports <strong>aggregate</strong> variables (storing collections of values).</p>
+
+<p>In C, there are 2 types of aggregates: <strong>arrays</strong> and <strong>structures</strong>.</p>
+
+<p>To declare an array, we specify the type and the number of elements (the type affects the whole array, since arrays are <strong>homogenous</strong>, meaning they share the same.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>You can also give initial values when declaring.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">};</span>
+</code></pre></div></div>
+
+<p>What makes arrays the except is that when you initialize part of the array, the other part is initialized as 0.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">};</span> <span class="c1">//positions 3-9 are set to 0.</span>
+</code></pre></div></div>
+
+<p>Remember that arrays must be contiguous in order for them to work, so the memory map for them will look something like this.</p>
+
+<p>The reason for this is simple: easy access to values.</p>
+
+<p>Let’s say we were to make a call for some index of d.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">printf</span><span class="p">(</span><span class="s">"%c"</span><span class="p">,</span><span class="n">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+</code></pre></div></div>
+
+<p>Here, the array will jump to the first value of the array in memory and count from there based on the index given.</p>
+
+<p>The computer will go to the address assigned to d[0] and then d[1] and then d[2], taking its value and using it to print.</p>
+
+<ul>
+  <li>Assigning variables to indexes operates the same way.</li>
+</ul>
+
+<p>But what if we go past the array bounds? Well, we run into some problems…</p>
+
+<p>Let’s say we make an assignment.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">14</span><span class="p">;</span>
+</code></pre></div></div>
+<p>The computer will start at <code class="language-plaintext highlighter-rouge">a[0]</code> and climb through, 4 bytes at a time until it gets to where <code class="language-plaintext highlighter-rouge">a[2]</code> is supposed to be (which is actually <code class="language-plaintext highlighter-rouge">b[0]</code>). The computer will then overwrite whatever was there and… hijinks ensue.</p>
+
+<p>The bad thing is that you could be overwriting anything, whether that be some random cache file or system32, since memory is non-contiguous.</p>
+
+<p>If you go far enough, you can actually go out of range of physical memory and cause a crash…and by crash, I mean the blue screen of death.</p>
+
+<p>Something that you can also do is skip the length in the declaration if you have an initializer:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">a</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">};</span> <span class="c1">//this will create an array of length 3</span>
+</code></pre></div></div>
+
+<p>These lengths are also compiled at runtime, so you can declare an array with an expression:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span><span class="p">];</span> <span class="c1">//creates an array of length 6</span>
+</code></pre></div></div>
+
+<p>This is all well and good for single-dimension arrays, but what about multiple?</p>
+
+<h3 id="multi-dimensional">Multi-Dimensional</h3>
+
+<p>We can also declare multi-dimensional arrays in a similar way:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">2</span><span class="p">];</span> <span class="c1">//gives a table with 3 rows and 2 columns</span>
+<span class="c1">//6 cells with 4 bytes each</span>
+</code></pre></div></div>
+
+<p>It’s also worth noting that C is <strong>row-major order</strong> with row 0 first, then row 1 and so forth.</p>
+
+<p>With this, you can now access individual members of the array.</p>
+
+<p>This can also extend past 2 dimensions.</p>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

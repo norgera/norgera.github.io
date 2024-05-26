@@ -1,0 +1,423 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Stack Frame and Passing Parameters | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Stack Frame and Passing Parameters" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/computer-architecture/stackframe.html" />
+<meta property="og:url" content="http://localhost:4000/notes/computer-architecture/stackframe.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Stack Frame and Passing Parameters" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Stack Frame and Passing Parameters","url":"http://localhost:4000/notes/computer-architecture/stackframe.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+    <link rel="stylesheet" href="/assets/css/style.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#handling-in-arm">Handling in ARM</a><ul><li><a href="#passing-by-value">Passing by Value</a><ul><li><a href="#main-function">Main Function</a></li><li><a href="#swap-function">Swap Function</a></li></ul></li><li><a href="#passing-by-reference">Passing by Reference</a><ul><li><a href="#main-function-1">Main Function</a></li><li><a href="#swap-function-1">Swap Function</a></li></ul></li></ul></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="stack-frame-and-passing-parameters">Stack Frame and Passing Parameters</h1>
+
+<h1 id="stack-frames">Stack Frames</h1>
+
+<p>Normally in a function we will have a <strong>local space</strong> for temporary variables within the function which are private to the rest of the program</p>
+
+<p>These variables are never accessed outside the function and are destroyed after the function is complete</p>
+
+<ul>
+  <li>If the function is recursive, this locality is to be confined to each call of the function as well</li>
+</ul>
+
+<p>Conversely, variables also have <strong>scopes</strong> for which they can be global or local</p>
+
+<ul>
+  <li>Global variables are created at compile time and are statically allocated</li>
+  <li>Local variables are created at runtime and are dynamically allocated</li>
+</ul>
+
+<p>We’ve covered static memory allocation, but how do we do dynamic allocation in ARM?</p>
+
+<p>Usually, when a function is called, there is an activation record created alongside it, which includes the parameters, local variables, return address and a link to other records</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9266527d-293a-4c54-9265-dded5cac8e55/Untitled.png" alt="Untitled" /></p>
+
+<ul>
+  <li>These records are also called <strong>stack frames</strong></li>
+</ul>
+
+<h2 id="handling-in-arm">Handling in ARM</h2>
+
+<p>After we use each activation record, it must be deallocated, which is our responsibility in ARM (In CISC, this is taken care of for us)</p>
+
+<p>Since we know about stacks already, we can use those to implement dynamic memory allocation</p>
+
+<p>For each stack frame:</p>
+
+<ul>
+  <li>We push it into the stack at the start of the subroutine and</li>
+  <li>Pop it from the stack at the end of the subroutine</li>
+</ul>
+
+<p>The best part about this is that we only need two pointers to do this: the <strong>stack pointer (SP) (r13)</strong> and the <strong>frame pointer (FP) (r11)</strong></p>
+
+<ul>
+  <li>In ARM, we need to maintain both the stack pointer and the frame pointer (this is handled for us in CISC)</li>
+</ul>
+
+<p>For the frame pointer, we will always point at the base of the current stack frame and the stack pointer will always point to the top of the stack</p>
+
+<p>Since the stack pointer can change during execution of the procedure, it’s best practice to access stack frame data from the frame pointer since it’s static throughout the procedure</p>
+
+<p>For example, assume we have an FD stack and we want to store variable XYZ at 12 bytes below the frame pointer</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d2ed3444-71bd-4de8-9e54-bd5b5b188fd9/Untitled.png" alt="Untitled" /></p>
+
+<p>If we add anything to the stack after this, we have to manually recalculate the location of XYZ which is a pain</p>
+
+<p>What we can do instead is have a frame pointer sit at the base of the stack frame</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2415624d-3834-444c-96c8-c73439929302/Untitled.png" alt="Untitled" /></p>
+
+<p>Now when we want XYZ, we know exactly where it is no matter what happens to the stack</p>
+
+<p>To create these stack frame, we must</p>
+
+<ol>
+  <li>Push the old frame pointer onto the stack</li>
+  <li>Make the frame pointer point to the bottom of the stack frame</li>
+</ol>
+
+<p>In ARM, this looks something like this</p>
+
+<ol>
+  <li>Move up the stack pointer by d bytes (d being the number of bytes we want to allocate for the routine)</li>
+</ol>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e4f23393-83c6-4b42-a0a5-8354cc2137b8/Untitled.png" alt="Untitled" /></p>
+
+<ul>
+  <li>
+    <p>Note that the highlighted instructions can be optimized with either of the following</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="no">STR</span> <span class="n">fp</span><span class="o">,</span> <span class="o">[</span><span class="n">sp</span><span class="o">,</span><span class="err">#</span><span class="o">-</span><span class="mi">4</span><span class="o">]!</span>
+  <span class="no">STMFD</span> <span class="n">sp</span><span class="o">!,{</span><span class="n">fp</span><span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>For the collapse, we do something like this</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c44c81bd-a080-45be-9be2-364738f3b319/Untitled.png" alt="Untitled" /></p>
+
+<ul>
+  <li>
+    <p>The highlighted instructions can also be combined with one of the following</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="no">LDR</span> <span class="n">fp</span><span class="o">,[</span><span class="n">sp</span><span class="o">],</span><span class="err">#</span><span class="mi">4</span>
+  <span class="no">LDMFD</span> <span class="n">sp</span><span class="o">!,{</span><span class="n">fp</span><span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Visually, the process looks like this</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5a3178c3-2eb8-4f25-92f0-3818153d91f5/Untitled.png" alt="Untitled" /></p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f826c299-2281-4b6b-bcb8-30d7c6136710/Untitled.png" alt="Untitled" /></p>
+
+<p>As a review, here’s the entire process of calling a subroutine</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3441560e-10d2-4358-a410-58d9bf56c7e7/Untitled.png" alt="Untitled" /></p>
+
+<p>In ARM, it looks something like this</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d0970c64-248f-407f-844e-3d7a809df639/Untitled.png" alt="Untitled" /></p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/78bc6572-e281-4a13-86fd-5f4e6f425f37/Untitled.png" alt="Untitled" /></p>
+
+<ul>
+  <li>Note that we modified r2 and did not return it back to what it was originally (this was most likely the point of the subroutine, but just be careful when you do this)</li>
+  <li>Setting the fp as #123 doesn’t mean anything, we just want to clear what might already be there</li>
+</ul>
+
+<p>Visually, it looks something like this</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4331618f-4826-4856-aff8-96bf998aee3f/Untitled.png" alt="Untitled" /></p>
+
+<ul>
+  <li>To collapse and return to the main program, we do the reverse</li>
+</ul>
+
+<p>For the parameter, notice how there’s two steps, one before and one after the subroutine</p>
+
+<ol>
+  <li>Push the parameter(s) on the stack</li>
+  <li>Pop the parameter(s) from the stack</li>
+</ol>
+
+<p>More about parameters is below</p>
+
+<p>The provided code examples demonstrate the differences between passing parameters by value and passing parameters by reference in ARM assembly language. Let’s break down each approach in more detail.</p>
+
+<h3 id="passing-by-value">Passing by Value</h3>
+
+<p>In passing by value, the values of the parameters are copied to the stack, and the subroutine operates on these copies. Here’s the main function setup and the swap function for passing by value:</p>
+
+<h4 id="main-function">Main Function</h4>
+<pre><code class="language-assembly">main
+    SUB sp,sp,#4          ; move the stack pointer up
+    STR fp,[sp]           ; push the frame pointer onto the stack
+    MOV fp,sp             ; the frame pointer points at the base
+
+    ; int x = 2, y = 3;
+    SUB sp,sp,#8          ; move sp up 8 bytes for 2 integers
+    MOV r0,#2             ; x = 2
+    STR r0,[fp,#-4]       ; put x in stack frame
+    MOV r0,#3             ; y = 3
+    STR r0,[fp,#-8]       ; put y in stack frame
+
+    ; swap(x, y);
+    LDR r0,[fp,#-8]       ; get y from stack frame
+    STR r0,[sp,#-4]!      ; push y on stack
+    LDR r0,[fp,#-4]       ; get x from stack frame
+    STR r0,[sp,#-4]!      ; push x on stack
+    BL swap               ; call swap, save return address in LR
+    ADD sp,sp,#8          ; clean the stack from the parameters
+
+    MOV sp,fp             ; restore the stack pointer
+    LDR fp,[sp]           ; restore old frame pointer from stack
+    ADD sp,sp,#4          ; move stack pointer down 4 bytes
+    Loop B Loop           ; stop
+    END
+</code></pre>
+
+<h4 id="swap-function">Swap Function</h4>
+<pre><code class="language-assembly">swap
+    SUB sp,sp,#4          ; Create stack frame: decrement sp
+    STR fp,[sp]           ; push the frame pointer onto the stack
+    MOV fp,sp             ; frame pointer points at the base
+
+    ; int temp;
+    SUB sp,sp,#4          ; move sp up 4 bytes for temp
+
+    ; temp = a;
+    LDR r0,[fp,#4]        ; get parameter a from the stack
+    STR r0,[fp,#-4]       ; copy a to temp onto the stack frame
+
+    ; a = b;
+    LDR r0,[fp,#8]        ; get parameter b from the stack
+    STR r0,[fp,#4]        ; copy b to a
+
+    ; b = temp;
+    LDR r0,[fp,#-4]       ; get temp from the stack frame
+    STR r0,[fp,#8]        ; copy temp to b
+
+    ; Collapse stack frame created for swap
+    MOV sp,fp             ; restore the stack pointer
+    LDR fp,[sp]           ; restore old frame pointer from stack
+    ADD sp,sp,#4          ; move stack pointer down 4 bytes
+    MOV pc,lr             ; return by loading LR into PC
+</code></pre>
+
+<h3 id="passing-by-reference">Passing by Reference</h3>
+
+<p>In passing by reference, the addresses of the parameters are passed to the subroutine, which then operates directly on the original variables. Here’s the main function setup and the swap function for passing by reference:</p>
+
+<h4 id="main-function-1">Main Function</h4>
+<pre><code class="language-assembly">main
+    SUB sp,sp,#4          ; move the stack pointer up
+    STR fp,[sp]           ; push the frame pointer onto the stack
+    MOV fp,sp             ; the frame pointer points at the base
+
+    ; int x = 2, y = 3;
+    SUB sp,sp,#8          ; move sp up 8 bytes for 2 integers
+    MOV r0,#2             ; x = 2
+    STR r0,[fp,#-4]       ; put x in stack frame
+    MOV r0,#3             ; y = 3
+    STR r0,[fp,#-8]       ; put y in stack frame
+
+    ; swap(&amp;x, &amp;y);
+    SUB r0,fp,#8          ; get address of y in stack frame
+    STR r0,[sp,#-4]!      ; push address of y on stack
+    SUB r0,fp,#4          ; get address of x in stack frame
+    STR r0,[sp,#-4]!      ; push address of x on stack
+    BL swap               ; call swap, save return address in LR
+    ADD sp,sp,#8          ; clean the stack from the parameters
+
+    MOV sp,fp             ; restore the stack pointer
+    LDR fp,[sp]           ; restore old frame pointer from stack
+    ADD sp,sp,#4          ; move stack pointer down 4 bytes
+    Loop B Loop           ; stop
+    END
+</code></pre>
+
+<h4 id="swap-function-1">Swap Function</h4>
+<pre><code class="language-assembly">swap
+    SUB sp,sp,#4          ; Create stack frame: decrement sp
+    STR fp,[sp]           ; push the frame pointer onto the stack
+    MOV fp,sp             ; frame pointer points at the base
+
+    ; int temp;
+    SUB sp,sp,#4          ; move sp up 4 bytes for temp
+
+    ; temp = *a;
+    LDR r1,[fp,#4]        ; get address of parameter a
+    LDR r2,[r1]           ; get value of parameter a (i.e., *a)
+    STR r2,[fp,#-4]       ; store *a in temp in stack frame
+
+    ; *a = *b;
+    LDR r0,[fp,#8]        ; get address of parameter b
+    LDR r3,[r0]           ; get value of parameter b (i.e., *b)
+    STR r3,[r1]           ; store *b in *a
+
+    ; *b = temp;
+    LDR r3,[fp,#-4]       ; get temp
+    STR r3,[r0]           ; store temp in *b
+
+    ; Collapse stack frame created for swap
+    MOV sp,fp             ; restore the stack pointer
+    LDR fp,[sp]           ; restore old frame pointer from stack
+    ADD sp,sp,#4          ; move stack pointer down 4 bytes
+    MOV pc,lr             ; return by loading LR into PC
+</code></pre>
+
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

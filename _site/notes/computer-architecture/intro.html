@@ -1,0 +1,488 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Intro to Computer Architecture | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Intro to Computer Architecture" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/computer-architecture/intro.html" />
+<meta property="og:url" content="http://localhost:4000/notes/computer-architecture/intro.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Intro to Computer Architecture" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Intro to Computer Architecture","url":"http://localhost:4000/notes/computer-architecture/intro.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+    <link rel="stylesheet" href="/assets/css/style.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#computer-architecture">Computer Architecture</a></li><li><a href="#intro-to-the-computer">Intro to the Computer</a></li><li><a href="#register-transfer-language">Register Transfer Language</a></li><li><a href="#assembly">Assembly</a><ul><li><a href="#bus">Bus</a></li></ul></li><li><a href="#computer-arithmetic">Computer Arithmetic</a><ul><li><a href="#operations">Operations</a></li><li><a href="#describers">Describers</a></li></ul></li><li><a href="#flow-control-and-encoding">Flow Control and Encoding</a></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="intro-to-computer-architecture">Intro to Computer Architecture</h1>
+
+<h3 id="computer-architecture">Computer Architecture</h3>
+
+<p>Formally, a computer is characterized by its instruction set architecture, which is an abstract entity (meaning the implementation and design of the computer itself is irrelevant) that defines the computer from a programmer’s POV</p>
+
+<p>This ISA consists of three parts: the register set, instruction set and addressing modes</p>
+
+<p>The ISA is also embodied by Assembly, a programming language at the heart of the computer</p>
+
+<h2 id="computer-organization">Computer Organization</h2>
+
+<p>Since ISA is the abstraction of the computer, the organization is how that ISA is implemented</p>
+
+<p>You can think of the ISA as an initial plan for a building and the organization as the blueprint, so even if the blueprint changes slightly, the idea (ISA) stays the same</p>
+
+<ul>
+  <li>Today, organization is called microarchitecture</li>
+</ul>
+
+<p>Theoretically, architecture and organization are independent</p>
+
+<h2 id="computer-structure">Computer Structure</h2>
+
+<p>The structure of a computer is how the individual components of a computer connect with one another</p>
+
+<p>The computer structure almost always consists of a CPU, which reads and executes command, but some modern computers will also include a cache memory on the CPU chip to speed it up</p>
+
+<p>Below is an example of a computer structure</p>
+
+<p><img src="images/intro/intro1.png" alt="Untitled" /> disk drive, DRAM and cache memory</p>
+
+<p>The busses act as roads that move information across components in a sort of data highway system</p>
+
+<h2 id="process-register">Process Register</h2>
+
+<p>A process register is a memory element that holds a single unit (word) of data</p>
+
+<p>These registers are specified in the number of bits it holds, which is almost always 2^something</p>
+
+<ul>
+  <li>Nowadays, this is mainly 32 bit and 64 bit</li>
+</ul>
+
+<p>Each processor has a specified number of registers, which only differ from words in memory in their speed, since registers are in the CPU itself</p>
+
+<h2 id="computer-type">Computer Type</h2>
+
+<p>Two types of computer exists: dedicated and general-purpose</p>
+
+<p>Dedicated computers only solve one problem, such as a dedicated bitcoin mining rig</p>
+
+<p>A general-purpose computer, however, can be programmed to solve any problem, which applies to most home PCs</p>
+
+<p>The main difference comes with being able to change the program of a general-purpose computer, which dedicated computers don’t have</p>
+
+<h2 id="programs">Programs</h2>
+
+<p>Typically, how you’d write a program in Java is you’d do something like this</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p>However, in Assembly, which the CPU actually uses, this would have to be split up a bit like this</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">LOAD</span> <span class="no">X</span>
+<span class="no">LOAD</span> <span class="no">Y</span>
+<span class="no">Z</span> <span class="o">=</span> <span class="no">X</span> <span class="o">+</span> <span class="no">Y</span>
+<span class="no">STORE</span> <span class="no">Z</span>
+<span class="no">STOP</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Note that this isn’t actual Assembly</li>
+</ul>
+
+<p>The start of each of these lines (called events) is dictated by the CPUs clock (a stream of pulses sequencing all operation in a computer)</p>
+
+<ul>
+  <li>This clock makes sure that processes run in sequences</li>
+</ul>
+
+<p>The clock is measured in Hz and also the width of the pulse, which is $1/T$</p>
+
+<p>For example, 1 MHz is 1 microsecond (10^-6) and 1 GHz is 1 nanosecond (10^-9)</p>
+
+<p>Below is an example of what’s happening behind the scenes</p>
+
+<p><img src="images/intro/intro2.png" alt="Untitled" /> control signal generator</p>
+
+<p>Then, the signal is sent off to the adder, which pulls x and y into the register from memory</p>
+
+<p>Finally, the output z is placed into a register and sent off to z in memory</p>
+
+<p>All in all, this program takes up 8 words in memory, which is important since memory is the bottleneck for any program in this computer structure</p>
+
+<h3 id="intro-to-the-computer">Intro to the Computer</h3>
+
+<p>To introduce the computer, we should talk about a problem</p>
+
+<p>This problem is fairly simple; find the longest sequence of consecutive digits in a string, like so</p>
+
+<p><img src="images/intro/intro3.png" alt="Untitled" /> consecutive digits or not in a run of consecutive digits</p>
+
+<p>From here, we will transition between these two states, which we can examine using what’s called a state diagram</p>
+
+<p><img src="images/intro/intro4.png" alt="Untitled" /> go back to NR for the second, third and fourth digits</p>
+
+<p>At the fifth digit, we recognize that the digit is the same, so we change the state to in a run (R), but then go back to NR by the sixth digit</p>
+
+<p>This process continues until we hit the end of the sequence of strings</p>
+
+<p><img src="images/intro/intro5.png" alt="Untitled" /></p>
+
+<p>We also need to keep track of which run is the longest, so we’ll do that as well</p>
+
+<p><img src="images/intro/intro6.png" alt="Untitled" /></p>
+
+<p>Now that we have an algorithm, we can write it out, first by making some variables</p>
+
+<p><img src="images/intro/intro7.png" alt="Untitled" /></p>
+
+<p>From here we can develop some simple pseudocode to solve the problem</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Read</span> <span class="n">the</span> <span class="n">first</span> <span class="n">digit</span> <span class="n">in</span> <span class="n">the</span> <span class="n">string</span> <span class="n">and</span> <span class="n">call</span> <span class="n">it</span> <span class="n">New_Digit</span>
+<span class="nc">Set</span> <span class="n">the</span> <span class="n">Current_Run_Value</span> <span class="n">to</span> <span class="n">New_Digit</span>
+<span class="nc">Set</span> <span class="n">the</span> <span class="n">Current_Run_Length</span> <span class="n">to</span> <span class="mi">1</span>
+<span class="nc">Set</span> <span class="n">the</span> <span class="n">Max_Run</span> <span class="n">to</span> <span class="mi">1</span>
+<span class="no">REPEAT</span>
+	<span class="nc">Read</span> <span class="n">the</span> <span class="n">next</span> <span class="n">digit</span> <span class="n">in</span> <span class="n">the</span> <span class="nf">sequence</span> <span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">e</span><span class="o">.,</span> <span class="n">read</span> <span class="n">a</span> <span class="n">New_Digit</span><span class="o">)</span>
+	<span class="no">IF</span> <span class="n">its</span> <span class="n">value</span> <span class="n">is</span> <span class="n">the</span> <span class="n">same</span> <span class="n">as</span> <span class="n">Current_Run_Value</span>
+		<span class="no">THEN</span> <span class="n">Current_Run_Length</span> <span class="o">=</span> <span class="n">Current_Run_Length</span> <span class="o">+</span> <span class="mi">1</span>
+		<span class="no">ELSE</span> <span class="o">{</span><span class="n">Current_Run_Length</span> <span class="o">=</span> <span class="mi">1</span>
+					<span class="n">Current_Run_Value</span> <span class="o">=</span> <span class="n">New_Digit</span><span class="o">}</span>
+	<span class="no">IF</span> <span class="n">Current_Run_Length</span> <span class="o">&gt;</span> <span class="n">Max_Run</span>
+		<span class="no">THEN</span> <span class="n">Max_Run</span> <span class="o">=</span> <span class="n">Current_Run_Length</span>
+<span class="no">UNTIL</span> <span class="nc">The</span> <span class="n">last</span> <span class="n">digit</span> <span class="n">is</span> <span class="n">read</span>
+</code></pre></div></div>
+
+<p>From here, we will introduce a flowchart, which is basically a diagram of pseudocode</p>
+
+<p><img src="images/intro/intro8.png" alt="Untitled" /></p>
+
+<p>From here, we store everything we need in memory, with all information being turn into machine code (0s and 1s), where the CPU can’t differentiate between a value and an instruction</p>
+
+<p><img src="images/intro/intro9.png" alt="Untitled" /></p>
+
+<p>In this program, we have constants (values that don’t change), variables (values that do change) and symbolic names (names given to constants/variables to make them easier to use)</p>
+
+<p>All of these pieces of information have a value and a location in memory, called the address</p>
+
+<p>Now, let’s say we want to increment Max_Run; in this case, we can’t just say Max_Run = Max_Run + 1, because the computer only sees the address, so you’d end up with 20 + 1 = 21</p>
+
+<ul>
+  <li>This distinction becomes important when we talk about pointers (variables with addresses as values)</li>
+</ul>
+
+<h3 id="register-transfer-language">Register Transfer Language</h3>
+
+<p>Register Transfer Language (RTL) is a way we can deal with these registers in an easy to interpret manner</p>
+
+<p>In this notation, square brackets indicate the contents of a location in memory</p>
+
+<ul>
+  <li>For example, [15] = Max_Run means that the content of memory location 15 is equal to the value of Max_Run, i.e. an initialization</li>
+</ul>
+
+<p>The left arrow ← is a memory transfer</p>
+
+<ul>
+  <li>Ex. [15] ← [15] + 1 means add 1 to the content of memory location 15 and place it in memory location 15</li>
+</ul>
+
+<p>We can use pseudocode to express this fundamental action</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Stored_program_machine</span>
+	<span class="nc">Point</span> <span class="n">to</span> <span class="n">the</span> <span class="n">first</span> <span class="n">instruction</span> <span class="n">in</span> <span class="n">memory</span>
+	<span class="no">REPEAT</span>
+		<span class="nc">Read</span> <span class="n">the</span> <span class="n">instruction</span> <span class="n">at</span> <span class="n">the</span> <span class="n">memory</span> <span class="n">location</span> <span class="n">pointed</span> <span class="n">at</span>
+		<span class="nc">Point</span> <span class="n">to</span> <span class="n">the</span> <span class="n">next</span> <span class="n">instruction</span>
+		<span class="nc">Decode</span> <span class="n">the</span> <span class="n">instruction</span> <span class="n">just</span> <span class="n">read</span> <span class="n">from</span> <span class="n">memory</span>
+		<span class="nc">Execute</span> <span class="n">the</span> <span class="n">instruction</span>
+	<span class="no">FOREVER</span>
+<span class="nc">End</span>
+</code></pre></div></div>
+
+<p>For each instruction, we have to read from memory, so it’s best for us to minimize that by using less instructions</p>
+
+<p>We also might need to read and write to memory, so we can expand our pseudocode as such</p>
+
+<p><img src="images/intro/intro10.png" alt="Untitled" /></p>
+
+<p>All in all, we have 3 situations of memory access</p>
+
+<p>The address port will give an address and the control port will be either read or write, where memory will either be sent towards or away from memory</p>
+
+<p><img src="images/intro/intro11.png" alt="Untitled" /></p>
+
+<h3 id="assembly">Assembly</h3>
+
+<p>In Assembly, the language used to interact with the memory directly, there is a three-address format</p>
+
+<p>This format goes <em>Operation <strong>Address1</strong> Address2 Address3</em>, where Operation is the instruction and the address are locations of the three operands in memory</p>
+
+<ul>
+  <li>In common use, we use bold font to indicate the destination address</li>
+</ul>
+
+<p>For example, <em><strong>ADD P</strong>, Q, R</em> will add Q and R and store it in P</p>
+
+<ul>
+  <li>This can also be done in RTL notation: [<em><strong>Address1] ←</strong> Operation [Address2] [Address3]</em></li>
+</ul>
+
+<p>The command interpretation looks something like this</p>
+
+<p><img src="images/intro/intro12.png" alt="Untitled" /></p>
+
+<p>We also have two-address format, <em>Operation <strong>Address1</strong> Address2</em>, where address1 is a source and destination</p>
+
+<p>The problem with this, however, is that one of the operands is overwritten, which you might not want, but you also gain the benefit of needing less memory reads</p>
+
+<h4 id="bus">Bus</h4>
+
+<p>The bus, as we’ve mentioned before, is the highway system connecting all the functional parts of a computer, as well as external peripherals such as keyboards</p>
+
+<p>Without a bus, the connections are all over the place and are hard to manage, while the bus makes the structure orderly in nature</p>
+
+<p>You can also have more than one bus, which will allow for parallel operations since the two busses would be independent</p>
+
+<p><img src="images/intro/intro13.png" alt="Untitled" /></p>
+
+<p>The bus has three ways of being described: the width (number of parallel data paths, ex. 64-bit bus carries 64 bits at once), the bandwidth (rate of information transportation, bytes/second) and the latency (time between data transfer request and data transmission completion)</p>
+
+<h3 id="computer-arithmetic">Computer Arithmetic</h3>
+
+<p>As you may know, computer data is based on bits (0s and 1s) that represent low and high voltage in wires</p>
+
+<ul>
+  <li>Ex. 0010 means 3</li>
+</ul>
+
+<p>A convention we used is calling a unit of 8 bits a byte</p>
+
+<p>Every time you introduce a bit to a sequence, you double the number of possibilities, so 2 bits has 4 values, 3 bits has 8 values, etc.</p>
+
+<p>Binary and decimal notation uses Hindu-Arabic positional notation, meaning an n=digit number N is represented as such</p>
+
+\[N = a_{n-1}a_{n-2}...a_i...a_1a_0\]
+
+<p>The value of N in this case would also depend on the base b, so the true value of N would be as follows</p>
+
+\[N=a_{n-1}b^{n-1} + a_{n-2}b^{n-2} + ... + a_1b^1 + a_0b^0\]
+
+<p>Since binary is base 2, we will have b = 2</p>
+
+<p>For example, with the number 0100 in binary, we say $0 + 2^3 + 0 + 0$</p>
+
+<p>But what about fractions? In that case, we can extend our definition by saying there’s n digits to the left of the radix point (a.k.a. decimal point) and m digits to the left</p>
+
+<p>From there, we can expand our general definition</p>
+
+\[N = a_{n-1}a_{n-2}...a_1a_0a_{-1}...a_{-m}\]
+
+<p>Representing the true value goes the same way</p>
+
+<p>This approach gives a good approximation, but it can lead to problems converting between bases, which are referred to as floating point errors</p>
+
+<h4 id="operations">Operations</h4>
+
+<p>Basic operations in base 2 work similarly to the way they do in base 10</p>
+
+<p><img src="images/intro/intro14.png" alt="Untitled" /></p>
+
+<p>This makes adding larger numbers easy too, since you just use the same elementary school methods</p>
+
+<p><img src="images/intro/intro15.png" alt="Untitled" /></p>
+
+<ul>
+  <li>Same logic applies to subtraction and multiplication, just do what you did in elementary school</li>
+</ul>
+
+<p>The slight difference comes from multiplication, where we add partial products onto the final product as we go to save on memory</p>
+
+<ul>
+  <li>Division is a little more complicated, but we will get into that later</li>
+</ul>
+
+<h4 id="describers">Describers</h4>
+
+<p>With numbers, we have some ways of describing them</p>
+
+<p>Range is the variation between the largest and the smallest value (for 8 bits, this would be 0-255)</p>
+
+<p>Precision is a measure of how precise we can represent a number (pi can’t be represented in full in a finite space, so we can use a number of significant figures to represent it)</p>
+
+<p>Accuracy is the difference between the representation and its actual value (if you say you’re 6’0 (183cm) when you’re actually 5’7 (170cm), this is an error of 5 inches (13cm))</p>
+
+<ul>
+  <li>Note that this is different from accuracy</li>
+</ul>
+
+<p>This is good and all, but how do we actually interpret these? Well, that would entirely depend on what the data is</p>
+
+<h2 id="ascii">ASCII</h2>
+
+<p>If the data is characters, we can use ASCII (American Standard Code for Information Interchange) which represents 128 characters from both the Latin alphabets and Arabic numeral system, as well as special characters like NULL</p>
+
+<p><img src="images/intro/intro16.png" alt="Untitled" /></p>
+
+<ul>
+  <li>There’s also UTF-8 and other standards for more complicated characters, but this is outside the scope of this course</li>
+</ul>
+
+<p>This table also includes hex (hexadecimal) values, which is base 16 and is represented as 0-F</p>
+
+<p>This behaves the same way as base-2 and base-10 as previously described</p>
+
+<h3 id="flow-control-and-encoding">Flow Control and Encoding</h3>
+
+<h2 id="encoding-of-branch-instructions">Encoding of Branch Instructions</h2>
+
+<p>Branch instructions, like other instructions, are stored in a 32 bit address with the following division</p>
+
+<ul>
+  <li>Bits 31-28 are the branch condition</li>
+  <li>27-25 are 101 in that order</li>
+  <li>24 is the L-bit which determines link (0 for a regular branch and 1 for a branch w/ link)</li>
+  <li>The rest are a signed word offset (converted to a real byte address by left shifting twice)</li>
+</ul>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

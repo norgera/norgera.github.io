@@ -1,0 +1,979 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Shell + Makefiles | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Shell + Makefiles" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/systems-programming/shell-make.html" />
+<meta property="og:url" content="http://localhost:4000/notes/systems-programming/shell-make.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Shell + Makefiles" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Shell + Makefiles","url":"http://localhost:4000/notes/systems-programming/shell-make.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+    <link rel="stylesheet" href="/assets/css/style.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#variables">Variables</a></li><li><a href="#finding-commands">Finding Commands</a></li><li><a href="#startup">Startup</a></li><li><a href="#alias">alias</a></li><li><a href="#quotes">Quotes</a></li><li><a href="#history">History</a></li><li><a href="#completion">Completion</a></li><li><a href="#some-useful-commands">Some Useful Commands</a></li><li><a href="#control">Control</a><ul><li><a href="#for-loop">For loop</a></li><li><a href="#conditional">Conditional</a></li><li><a href="#semicolons-and-colons">Semicolons and Colons</a></li><li><a href="#while">While</a></li><li><a href="#case">Case</a></li></ul></li><li><a href="#test">Test</a></li><li><a href="#passing-input">Passing Input</a></li><li><a href="#special-variables">Special Variables</a></li><li><a href="#read">Read</a></li><li><a href="#redirection">Redirection</a></li><li><a href="#separate-directories">Separate Directories</a></li><li><a href="#macros">Macros</a></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="shell--makefiles">Shell + Makefiles</h1>
+
+<h1 id="shell-environments">Shell Environments</h1>
+
+<p>Remember that the shell is an interface between the users and the kernel, which manages hardware for you</p>
+
+<p>Shell is about the lowest you can go in the computer</p>
+
+<h2 id="variables">Variables</h2>
+
+<p>The shell environment is the place where you interact with the kernel, with a set of variables and values that allow the user to actually do anything</p>
+
+<p>Ex. PATH determines the file that the shell looks at for your command and SHELL indicates the type of shell you’re using</p>
+
+<p>You can also define new variables and changes other variables’ values, much like you can in C</p>
+
+<p>You use shell variables by putting a $ in front of the names, many of which are define in .bash_profile and .bashrc</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">echo</span> <span class="err">$</span><span class="n">HOME</span>
+</code></pre></div></div>
+
+<p>Two kinds of variables exist: environment variables (available to the current shell and the programs invoked from the shell) and regular shell variables (not available in programs invoked from the shell)</p>
+
+<p>In bash, regular variables are defined with the following</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">varname</span><span class="o">=</span><span class="n">varvalue</span> <span class="c1">//no spaces allowed!!</span>
+</code></pre></div></div>
+
+<p>For an environment variable, you do this instead</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MYENVVAR</span><span class="o">=</span><span class="s">"env value"</span>
+<span class="n">export</span> <span class="n">MYENVVAR</span>
+<span class="c1">//or</span>
+<span class="n">export</span> <span class="n">MYENVVAR</span><span class="o">=</span><span class="s">"env value"</span>
+</code></pre></div></div>
+
+<ul>
+  <li>This is also called exporting for obvious reasons</li>
+</ul>
+
+<p>For example, let’s say you run the following commands</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">export</span> <span class="n">MYENVVAR</span><span class="o">=</span><span class="s">"foo"</span>
+<span class="o">%</span> <span class="n">myregvar</span><span class="o">=</span><span class="s">"bar"</span>
+<span class="o">%</span> <span class="n">bash</span> <span class="c1">//here we enter a new shell</span>
+<span class="o">%</span> <span class="n">echo</span> <span class="err">$</span><span class="n">MYENVVAR</span>
+<span class="n">foo</span> <span class="c1">//has scope for the all shells</span>
+<span class="o">%</span> <span class="n">echo</span> <span class="err">$</span><span class="n">myregvar</span>
+<span class="n">bash</span><span class="o">:</span> <span class="n">myregvar</span><span class="o">:</span> <span class="n">unbound</span> <span class="n">variables</span> <span class="c1">//has scope for only the shell it was defined in</span>
+<span class="c1">//the above result only occurs when you have set -u in .bashrc, otherwise it's blank</span>
+<span class="o">%</span> <span class="n">echo</span> <span class="err">$</span><span class="n">SHLVL</span> <span class="c1">//shows the level of shell you're on</span>
+</code></pre></div></div>
+
+<p>For csh/tsch, setting regular variables is a bit different</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">set</span> <span class="n">varname</span><span class="o">=</span><span class="n">varvalue</span>
+<span class="n">unset</span> <span class="n">varname</span> <span class="c1">//unsets the variable</span>
+</code></pre></div></div>
+
+<p>Environment variables is also different</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">setenv</span> <span class="n">MYENVVAR</span> <span class="s">"env var"</span>
+<span class="n">unsetenv</span> <span class="n">MYENVVAR</span> <span class="c1">//unsets the variable</span>
+</code></pre></div></div>
+
+<p>The following are some common shell variables</p>
+
+<ul>
+  <li>SHELL: the name of the shell being used</li>
+  <li>PATH: where to find executables to execute</li>
+  <li>LANG: the locale you are using</li>
+  <li>LIBRARY_PATH: where libraries for executables are found at run time</li>
+  <li>USER: the user name of the user logged in</li>
+  <li>HOME: the user’s home directory</li>
+  <li>TERM: the kind of terminal the user is using</li>
+  <li>DISPLAY: where X program windows are shown</li>
+  <li>HOSTNAME: the name of the host logged on to</li>
+</ul>
+
+<p>But how does Unix actually find these commands?</p>
+
+<h2 id="finding-commands">Finding Commands</h2>
+
+<p>If you specify a pathname, the shell looks into that path for the executable</p>
+
+<p>If you specify a filename (i.e. w/o / in the name), the shell looks for it in the search path</p>
+
+<ul>
+  <li>Note that the shell doesn’t look for executables in your current directory unless you specify it explicitly (ex. ./a.out)</li>
+</ul>
+
+<p>Sometimes there’s multiple versions of a command with the same name, so the shell will search in each directory of $PATH in left to right order and execute the first version</p>
+
+<ul>
+  <li>If you wish to write the other version, you have to explicitly call the pathname</li>
+</ul>
+
+<h2 id="startup">Startup</h2>
+
+<p>When bash is executed, it runs two config files: .bash_profile (runs once when you log in, sets up terminal) and .bashrc (runs each time a bash process runs, sets variables and aliases)</p>
+
+<ul>
+  <li>Other shells use different files</li>
+</ul>
+
+<p>DO NOT ALTER THESE UNLESS YOU KNOW EXACTLY WHAT YOU’RE DOING</p>
+
+<ul>
+  <li>Something you can do if you want to alter these is have a backup in case you screw something up</li>
+</ul>
+
+<h2 id="alias">alias</h2>
+
+<p>You can also use the shell to set aliases for commands</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">alias</span> <span class="n">alias_name</span><span class="o">=</span><span class="err">'</span><span class="n">real</span><span class="o">-</span><span class="n">command</span> <span class="n">input</span><span class="err">'</span>
+<span class="c1">//for example</span>
+<span class="o">%</span> <span class="n">alias</span> <span class="n">rm</span><span class="o">=</span><span class="err">'</span><span class="n">rm</span> <span class="o">-</span><span class="n">i</span><span class="err">'</span> <span class="c1">//good safety switch</span>
+</code></pre></div></div>
+
+<p>You can put these in your .bashrc to set them up as soon as you log in</p>
+
+<h2 id="quotes">Quotes</h2>
+
+<p>You may notice I used single quotes instead of double quotes above</p>
+
+<p>This is because different quotes mean different things in Unix</p>
+
+<p>If you use double quotes, shell variables are expanded, but with single quotes, they’re simply treated as text</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">echo</span> <span class="s">"Welcome $HOME"</span>
+<span class="n">Welcome</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span>
+<span class="o">%</span> <span class="n">echo</span> <span class="err">'</span><span class="n">Welcome</span> <span class="err">$</span><span class="n">HOME</span><span class="err">'</span>
+<span class="n">Welcome</span> <span class="err">$</span><span class="n">HOME</span>
+</code></pre></div></div>
+
+<p>With back quotes, the quotes are replaced with the return value of the execution of the command</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">PS1</span><span class="o">=</span><span class="err">`</span><span class="n">hostname</span><span class="err">`</span>
+<span class="c1">//below is a more standard way</span>
+<span class="o">%</span> <span class="n">PS1</span><span class="o">=</span><span class="err">$</span><span class="p">(</span><span class="n">hostname</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="history">History</h2>
+
+<p>If you have some commands that you’re repeating a bunch of times, you can repeat the last shell command you ran with !!</p>
+
+<ul>
+  <li>If you add a command suffix, you can return the last command beginning with that command (ex. !gcc runs the last gcc command)</li>
+  <li>This can also be a number (ex. !5 runs the 5th command in the history list)</li>
+</ul>
+
+<p>You can also call your history with the history command</p>
+
+<p>When you’re in bash, you can also use the arrow keys</p>
+
+<p>If you want a longer history list, you can change HISTSIZE in your .bashrc file</p>
+
+<h2 id="completion">Completion</h2>
+
+<p>You can let the shell complete a long command name by typing the prefix and hitting TAB</p>
+
+<ul>
+  <li>The shell can also complete file names the same way</li>
+</ul>
+
+<h2 id="some-useful-commands">Some Useful Commands</h2>
+
+<p>bash and tcsh (for tcsh set autolist)</p>
+
+<ul>
+  <li>tab completion will show a list of possibilities when the completion choice is ambiguous</li>
+</ul>
+
+<p>export PATH=$PATH:$HOME/bin:.</p>
+
+<ul>
+  <li>if you want to add ~/bin and . to your PATH</li>
+</ul>
+
+<p>export TERM=xterm</p>
+
+<ul>
+  <li>if your terminal is not working properly, i.e. some system does not know xterm-256color</li>
+</ul>
+
+<p>printenv or env</p>
+
+<ul>
+  <li>show the current values of all your environment variables</li>
+</ul>
+
+<h1 id="shell-scripts">Shell Scripts</h1>
+
+<p>Much like you can make files of C code, you can make files of shell commands that are executed procedurally</p>
+
+<p>These scripts usually begin with a #! and a shell name</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span></code></pre></div></div>
+
+<ul>
+  <li>The users current shell will be used by default</li>
+</ul>
+
+<p>Any command in Unix can go into a shell script, which are then executed in the same order as they are in C</p>
+
+<p>Every shell will use a different control structure, which is what makes the #! line very important</p>
+
+<ul>
+  <li>We’ll use Bourne shell (sh) for this class (not to be confused with Bourne Again Shell aka BASH)</li>
+</ul>
+
+<p>You can use this scripts to avoid repetitive tasks and to automate long tasks that are difficult to remember</p>
+
+<p>For example, you can “encrypt a file with the following command</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">tr</span> <span class="n">abcdefghijklmnopqrstuvwxyz</span> <span class="n">thequickbrownfxjmpsvalzydg</span> <span class="o">&lt;</span> <span class="n">file1</span> <span class="o">&gt;</span> <span class="n">file2</span>
+</code></pre></div></div>
+
+<p>This command is hard to remember, so we can take this and put it into a shell script</p>
+
+<p>For example, an encrypting script will look like this</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="n">tr</span> <span class="n">abcdefghijklmnopqrstuvwxyz</span> <span class="err">\</span> <span class="c1">//the \ just means that the script goes to the next line</span>
+<span class="n">thequickbrownfxjmpsvalzydg</span>
+</code></pre></div></div>
+
+<p>And a decrypting script will look like this</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="n">tr</span> <span class="n">thequickbrownfxjmpsvalzydg</span> \
+<span class="n">abcdefghijklmnopqrstuvwxyz</span>
+</code></pre></div></div>
+
+<p>You can make these text files into executables with the chmod command</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">chmod</span> <span class="n">u</span><span class="o">+</span><span class="n">x</span> <span class="n">encrypt</span> <span class="n">decrypt</span>
+</code></pre></div></div>
+
+<p>From here, you can run them like normal commands with ./ in front</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="p">.</span><span class="o">/</span><span class="n">encrypt</span> <span class="o">&lt;</span> <span class="n">file1</span> <span class="o">&gt;</span> <span class="n">file2</span>
+<span class="o">%</span> <span class="p">.</span><span class="o">/</span><span class="n">decrypt</span> <span class="o">&lt;</span> <span class="n">file2</span> <span class="o">&gt;</span> <span class="n">file2</span>
+<span class="o">%</span> <span class="n">diff</span> <span class="n">file1</span> <span class="n">file3</span>
+<span class="c1">//no difference found</span>
+</code></pre></div></div>
+
+<p>Shell variables work like they do in bash</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">PATH</span><span class="o">=</span><span class="err">$</span><span class="n">PATH</span><span class="o">:</span><span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="n">bin</span>
+<span class="o">%</span> <span class="n">HA</span><span class="o">=</span><span class="err">$</span><span class="mi">1</span>
+<span class="o">%</span> <span class="n">PHRASE</span><span class="o">=</span><span class="s">"House on the hill"</span>
+<span class="o">%</span> <span class="n">export</span> <span class="n">PHRASE</span>
+</code></pre></div></div>
+
+<p>You can also use backquotes the same way you can in bash</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="n">files</span><span class="o">=</span><span class="err">`</span><span class="n">ls</span><span class="err">`</span>
+<span class="n">echo</span> <span class="err">$</span><span class="n">files</span>
+</code></pre></div></div>
+
+<p>If you run this, you get the same result as just doing the ls command</p>
+
+<p>You can also do calculations on integers with the expr command</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="n">count</span><span class="o">=</span><span class="mi">5</span>
+<span class="n">count</span><span class="o">=</span><span class="err">`</span><span class="n">expr</span> <span class="err">$</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="err">`</span>
+<span class="n">echo</span> <span class="err">$</span><span class="n">count</span>
+</code></pre></div></div>
+
+<p>You then get 6 as an output</p>
+
+<p>expr also supports the following operators</p>
+
+<ul>
+  <li>Arithmetic operators: +, -, *, /, %</li>
+  <li>Comparison operators: &lt;, &lt;=, =, !=, &gt;=, &gt;</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>Boolean/Logical operators: &amp;,</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>Parentheses: (, )</p>
+  </li>
+  <li>Precedence is the same as it is in C and Java</li>
+</ul>
+
+<h2 id="control">Control</h2>
+
+<p>You also have access to all the same control statements that you do in C</p>
+
+<h3 id="for-loop">For loop</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="k">for</span> <span class="n">var</span> <span class="n">in</span> <span class="n">val1</span> <span class="n">val2</span>
+<span class="k">do</span>
+	<span class="n">command_set</span> <span class="c1">//command_set is executed w/ each value of var (val1, val2...) in order</span>
+<span class="n">done</span>
+</code></pre></div></div>
+
+<p>For example, you can print the numbers from 1 to 5 like so</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+# prints from 1 to 5 //this is a comment in a shell script
+</span><span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span>
+<span class="k">do</span>
+	<span class="n">echo</span> <span class="s">"$i"</span>
+<span class="n">done</span>
+</code></pre></div></div>
+
+<p>Typing out each value gets cumbersome, so you can use (()) to do for loops like normal C</p>
+
+<ul>
+  <li>This is called a bash construct</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="k">for</span> <span class="p">((</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">));</span> <span class="k">do</span>
+	<span class="k">for</span> <span class="p">((</span><span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">));</span> <span class="k">do</span>
+		<span class="p">((</span> <span class="n">value</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="n">j</span> <span class="p">))</span> <span class="c1">//(()) also allows for calculation without expr</span>
+		<span class="n">echo</span> <span class="o">-</span><span class="n">n</span> <span class="s">"$value "</span> <span class="c1">//-n echoes with no newline</span>
+	<span class="n">done</span>
+	<span class="n">echo</span>
+<span class="n">done</span>
+</code></pre></div></div>
+
+<p>Bash constructs basically allow for C statements</p>
+
+<p>The following is a good use case of a for loop, which just gets all the filenames in the current directory</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="n">files</span><span class="o">=</span><span class="err">`</span><span class="n">ls</span><span class="err">`</span>
+<span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="err">$</span><span class="n">files</span>
+<span class="k">do</span>
+	<span class="n">echo</span> <span class="s">" $i"</span>
+	<span class="n">grep</span> <span class="err">$</span><span class="n">i</span> <span class="err">$</span><span class="n">i</span>
+<span class="n">done</span>
+</code></pre></div></div>
+
+<p>You can also do this instead for the same result</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="o">*</span><span class="p">;</span> <span class="k">do</span>
+	<span class="n">echo</span> <span class="s">" $i"</span>
+	<span class="n">grep</span> <span class="err">$</span><span class="n">i</span> <span class="err">$</span><span class="n">i</span>
+<span class="n">done</span>
+</code></pre></div></div>
+
+<h3 id="conditional">Conditional</h3>
+
+<p>You can also use conditionals much like C, the only difference is that conditionals can only test whether or not a command is successful</p>
+
+<p>Well-behaved commands always return back a return code (0 for a success, anything else for a failure [it’s actually just 1-255])</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="k">if</span> <span class="n">command_1</span>
+<span class="n">then</span>
+	<span class="n">command_set_1</span>
+<span class="n">fi</span> <span class="c1">//we use a different codeword to finish the conditional</span>
+</code></pre></div></div>
+
+<p>For example</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="c1">//grep returns 0 if something is found and non-zero otherwise</span>
+<span class="c1">//redurecting to /dev/null makes sure that no intermediate results get printed</span>
+<span class="k">if</span> <span class="n">grep</span> <span class="n">unix</span> <span class="n">myfile</span> <span class="o">&gt;/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+<span class="n">then</span>
+	<span class="n">echo</span> <span class="s">"It's there"</span>
+<span class="k">else</span> <span class="c1">//else works the same way it does in C</span>
+	<span class="n">echo</span> <span class="s">"It's not there"</span>
+<span class="n">fi</span>
+</code></pre></div></div>
+
+<p>You can also have else if like so</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="k">if</span> <span class="n">grep</span> <span class="s">"UNIX"</span> <span class="n">myfile</span> <span class="o">&gt;/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+<span class="n">then</span>
+	<span class="n">echo</span> <span class="s">"UNIX occurs in file"</span>
+<span class="n">elif</span> <span class="n">grep</span> <span class="s">"DOS"</span> <span class="n">myfile</span> <span class="o">&gt;/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+<span class="n">then</span>
+	<span class="n">echo</span> <span class="s">"Unix does not occur, but DOS does"</span>
+<span class="k">else</span>
+	<span class="n">echo</span> <span class="s">"Nobody is there"</span>
+<span class="n">fi</span>
+</code></pre></div></div>
+
+<h3 id="semicolons-and-colons">Semicolons and Colons</h3>
+
+<p>Semicolons separate statements when you want separate statements on the same line, much like they do in C</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="k">if</span> <span class="n">grep</span> <span class="s">"UNIX"</span> <span class="n">myfile</span><span class="p">;</span> <span class="n">then</span> <span class="n">echo</span> <span class="s">"Got it"</span><span class="p">;</span> <span class="n">fi</span>
+</code></pre></div></div>
+
+<p>You can also do the same thing on the command line</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">ls</span><span class="p">;</span> <span class="n">cd</span> <span class="p">..;</span> <span class="n">ls</span>
+</code></pre></div></div>
+
+<p>You can use the colon as a dummy command, which means it does nothing</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="k">if</span> <span class="n">grep</span> <span class="s">"UNIX"</span> <span class="n">myfile</span> <span class="o">&gt;/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+<span class="n">then</span>
+	<span class="o">:</span>
+<span class="k">else</span>
+	<span class="n">echo</span> <span class="s">"Nobody is there"</span>
+<span class="n">fi</span>
+</code></pre></div></div>
+
+<h3 id="while">While</h3>
+
+<p>While loops have the same conditional rules as if statements, with all the looping of a for loop</p>
+
+<p>For example, the following script sums the numbers from 1 to 100</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">sum</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">while</span> <span class="p">[</span> <span class="err">$</span><span class="n">i</span> <span class="o">-</span><span class="n">le</span> <span class="mi">100</span> <span class="p">];</span> <span class="k">do</span>
+	<span class="n">sum</span><span class="o">=</span><span class="err">`</span><span class="n">expr</span> <span class="err">$</span><span class="n">sum</span> <span class="o">+</span> <span class="err">$</span><span class="n">i</span><span class="err">`</span>
+	<span class="n">i</span><span class="o">=</span><span class="err">`</span><span class="n">expr</span> <span class="err">$</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="err">`</span>
+<span class="n">done</span>
+<span class="n">echo</span> <span class="n">The</span> <span class="n">sum</span> <span class="n">is</span> <span class="err">$</span><span class="n">sum</span><span class="p">.</span>
+</code></pre></div></div>
+
+<p>The until loop is basically the same, except it stops the execution when the command is successful</p>
+
+<ul>
+  <li>This in particular echoes all numbers less than 3</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">until</span> <span class="p">[</span> <span class="err">$</span><span class="n">x</span> <span class="o">-</span><span class="n">gt</span> <span class="mi">3</span> <span class="p">];</span> <span class="k">do</span>
+	<span class="n">echo</span> <span class="n">x</span> <span class="o">=</span> <span class="err">$</span><span class="n">x</span>
+	<span class="n">x</span><span class="o">=</span><span class="err">`</span><span class="n">expr</span> <span class="err">$</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="err">`</span>
+<span class="n">done</span>
+</code></pre></div></div>
+
+<h3 id="case">Case</h3>
+
+<p>Case works a lot like a switch in Java</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="n">echo</span> <span class="o">-</span><span class="n">n</span> <span class="err">'</span><span class="n">Choose</span> <span class="n">command</span> <span class="p">[</span><span class="mi">1</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="o">&gt;</span> <span class="err">'</span>
+<span class="n">read</span> <span class="n">reply</span>
+<span class="n">echo</span>
+<span class="k">case</span> <span class="err">$</span><span class="n">reply</span> <span class="n">in</span> <span class="c1">//format is case string in</span>
+	<span class="s">"1"</span><span class="p">)</span> <span class="n">date</span> <span class="p">;;</span> <span class="c1">//format is pattern) result_command ;;</span>
+	<span class="s">"2"</span><span class="o">|</span><span class="s">"3"</span><span class="p">)</span> <span class="n">pwd</span> <span class="p">;;</span> <span class="c1">//| is used as a logical or here</span>
+	<span class="s">"4"</span><span class="p">)</span> <span class="n">ls</span> <span class="p">;;</span>
+	<span class="o">*</span><span class="p">)</span> <span class="n">echo</span> <span class="n">Illegal</span> <span class="n">choice</span><span class="o">!</span> <span class="p">;;</span> <span class="c1">//*) is the default case</span>
+<span class="n">esac</span> <span class="c1">//escaping the case</span>
+</code></pre></div></div>
+
+<h2 id="test">Test</h2>
+
+<p>If you want to actually use booleans like you do in C, you have to use the test command</p>
+
+<p>Let’s see this in action with a simple example</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">count</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="o">*</span><span class="p">;</span> <span class="k">do</span>
+	<span class="k">if</span> <span class="n">test</span> <span class="err">–</span><span class="n">x</span> <span class="err">$</span><span class="n">i</span><span class="p">;</span> <span class="n">then</span> <span class="c1">//tests if the file is executable</span>
+		<span class="n">count</span><span class="o">=</span><span class="err">`</span><span class="n">expr</span> <span class="err">$</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="err">`</span>
+	<span class="n">fi</span>
+<span class="n">done</span>
+<span class="n">echo</span> <span class="s">"Total of $count files executable."</span>
+</code></pre></div></div>
+
+<p>The following are some file switches you can use</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">test -f file</code> does file exist and is a regular file?</li>
+  <li><code class="language-plaintext highlighter-rouge">test -d file</code> does file exist and is a directory?</li>
+  <li><code class="language-plaintext highlighter-rouge">test -x file</code> does file exist and is executable?</li>
+  <li><code class="language-plaintext highlighter-rouge">test -s file</code> does file exist and is longer than 0 bytes?</li>
+</ul>
+
+<p>There’s also a set of string switch you can use:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">test -z string</code> is string of length 0?</li>
+  <li><code class="language-plaintext highlighter-rouge">test string1 = string2</code> does string1 equal string2?</li>
+  <li><code class="language-plaintext highlighter-rouge">test string1 != string2</code> not equal?</li>
+</ul>
+
+<p>For example</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">test</span> <span class="o">-</span><span class="n">z</span> <span class="err">$</span><span class="n">REMOTEHOST</span>
+<span class="n">then</span>
+	<span class="o">:</span>
+<span class="k">else</span>
+	<span class="n">DISPLAY</span><span class="o">=</span><span class="s">"$REMOTEHOST:0"</span>
+	<span class="n">export</span> <span class="n">DISPLAY</span>
+<span class="n">fi</span>
+<span class="c1">//creates an environment variable with the remote host if it exists</span>
+</code></pre></div></div>
+
+<p>Integers can also be compares with test with the following switches</p>
+
+<p>-eq (=), -ne (≠), -lt (&lt;), -le (≤), -gt (&gt;), -ge (≥)</p>
+
+<p>For example, the following script finds the smallest number in a list</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="n">smallest</span><span class="o">=</span><span class="mi">10000</span>
+<span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="mi">5</span> <span class="mi">8</span> <span class="mi">19</span> <span class="mi">8</span> <span class="mi">7</span> <span class="mi">3</span><span class="p">;</span> <span class="k">do</span>
+	<span class="k">if</span> <span class="n">test</span> <span class="err">$</span><span class="n">i</span> <span class="o">-</span><span class="n">lt</span> <span class="err">$</span><span class="n">smallest</span><span class="p">;</span> <span class="n">then</span>
+		<span class="n">smallest</span><span class="o">=</span><span class="err">$</span><span class="n">i</span>
+	<span class="n">fi</span>
+<span class="n">done</span>
+<span class="n">echo</span> <span class="err">$</span><span class="n">smallest</span>
+</code></pre></div></div>
+
+<p>You can also use [] as an alias for test</p>
+
+<ul>
+  <li>Note that you must have inner spaces!!</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="n">smallest</span><span class="o">=</span><span class="mi">10000</span>
+<span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="mi">5</span> <span class="mi">8</span> <span class="mi">19</span> <span class="mi">8</span> <span class="mi">7</span> <span class="mi">3</span><span class="p">;</span> <span class="k">do</span>
+	<span class="k">if</span> <span class="p">[</span> <span class="err">$</span><span class="n">i</span> <span class="o">-</span><span class="n">lt</span> <span class="err">$</span><span class="n">smallest</span> <span class="p">];</span> <span class="n">then</span>
+		<span class="n">smallest</span><span class="o">=</span><span class="err">$</span><span class="n">i</span>
+	<span class="n">fi</span>
+<span class="n">done</span>
+<span class="n">echo</span> <span class="err">$</span><span class="n">smallest</span>
+</code></pre></div></div>
+
+<h2 id="passing-input">Passing Input</h2>
+
+<p>You can pass in command line input with $1, $2 up to $9 for each input in the same order</p>
+
+<p>For example, $3 would be the third input passed in</p>
+
+<ul>
+  <li>This is limited to 9 inputs</li>
+</ul>
+
+<p>For example, the following script gets a particular line in a file</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="c1">//gets everything from the start to the line number and pipes that into the tail</span>
+<span class="c1">//tail then gets the last element of that block, which is the line at the number</span>
+<span class="n">head</span> <span class="o">-</span><span class="err">$</span><span class="mi">1</span> <span class="err">$</span><span class="mi">2</span> <span class="o">|</span> <span class="n">tail</span> <span class="o">-</span><span class="mi">1</span>
+</code></pre></div></div>
+
+<p>You can call it like so</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">getfilenum</span> <span class="n">filenum</span> <span class="n">file</span>
+</code></pre></div></div>
+
+<p>Other input variables go as follows</p>
+
+<ul>
+  <li>$0 is the name of the command running</li>
+  <li>$* and $@ are all the arguments (even if there’s more than 9)</li>
+  <li>$# is the number of arguments</li>
+</ul>
+
+<p>You can also use the shift command to shift all arguments to the left</p>
+
+<ul>
+  <li>The first argument will be lost in the process</li>
+</ul>
+
+<p>For example, the following shell script prints the n oldest files in the directory</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">oldestfiles</span> <span class="n">n</span> <span class="n">dir</span>
+<span class="cp">#!/bin/sh
+</span><span class="n">N</span><span class="o">=</span><span class="err">$</span><span class="mi">1</span>
+<span class="n">shift</span>
+<span class="c1">//does ls with the list sorted in descending order of time of modification</span>
+<span class="c1">//takes that output and pipes into tail</span>
+<span class="c1">//tail then removes the first line and pipes into another tail</span>
+<span class="c1">//that tail then gives the block of N</span>
+<span class="n">ls</span> <span class="o">-</span><span class="n">lt</span> <span class="err">$</span><span class="o">*</span> <span class="o">|</span> <span class="n">tail</span> <span class="o">-</span><span class="n">n</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">|</span> <span class="n">tail</span> <span class="o">-</span><span class="err">$</span><span class="n">N</span>
+</code></pre></div></div>
+
+<h2 id="special-variables">Special Variables</h2>
+
+<p>There’s a set of special variables available to us in Bourne Shell as well</p>
+
+<p>We’ve seen a few, like $_ and $_, but there’s also:</p>
+
+<ul>
+  <li>$$ (process ID of the current shell)</li>
+  <li>$? return value of the last foreground process to finish</li>
+</ul>
+
+<p>Note that $@ and $* are different when the arguments contain spaces</p>
+
+<p>You can read through all the special variables with the following</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">man</span> <span class="n">sh</span>
+</code></pre></div></div>
+
+<h2 id="read">Read</h2>
+
+<p>The read command reads one line of input from the standard input</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">read</span> <span class="n">var1</span> <span class="n">var2</span> <span class="n">var3</span>
+<span class="c1">//for example</span>
+<span class="o">%</span> <span class="n">read</span> <span class="n">X</span> <span class="n">Y</span> <span class="n">Z</span>
+<span class="n">Here</span> <span class="n">is</span> <span class="n">input</span>
+<span class="o">%</span> <span class="n">echo</span> <span class="err">$</span><span class="n">X</span>
+<span class="n">Here</span>
+<span class="o">%</span> <span class="n">echo</span> <span class="err">$</span><span class="n">Z</span>
+<span class="n">input</span>
+</code></pre></div></div>
+
+<p>Because this is a Unix command, you can use this in a shell script as well</p>
+
+<h2 id="redirection">Redirection</h2>
+
+<p>Redirection in shell works similarly to the way it does in Unix</p>
+
+<p>You can use command « word to input into command up to, but not including, word beginning with word</p>
+
+<p>For example, the following only displays lines with the word hello in it</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+</span><span class="n">grep</span> <span class="err">'</span><span class="n">hello</span><span class="err">'</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span> <span class="c1">//EOF stands for end of file</span>
+<span class="n">This</span> <span class="n">is</span> <span class="n">some</span> <span class="n">sample</span> <span class="n">text</span><span class="p">.</span>
+<span class="n">Here</span> <span class="n">is</span> <span class="n">a</span> <span class="n">line</span> <span class="n">with</span> <span class="n">hello</span> <span class="n">in</span> <span class="n">it</span><span class="p">.</span>
+<span class="n">Here</span> <span class="n">is</span> <span class="n">another</span> <span class="n">line</span> <span class="n">with</span> <span class="n">hello</span><span class="p">.</span>
+<span class="n">No</span> <span class="n">more</span> <span class="n">lines</span> <span class="n">with</span> <span class="n">that</span> <span class="n">word</span><span class="p">.</span>
+<span class="n">EOF</span>
+</code></pre></div></div>
+
+<p>For another example, let’s say you have a file marks.txt which some student information</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">091286899</span> <span class="mi">90</span> <span class="n">H</span><span class="p">.</span> <span class="n">White</span>
+<span class="mi">197920499</span> <span class="mi">80</span> <span class="n">J</span><span class="p">.</span> <span class="n">Brown</span>
+<span class="mi">899268899</span> <span class="mi">75</span> <span class="n">A</span><span class="p">.</span> <span class="n">Green</span>
+</code></pre></div></div>
+
+<p>If you want to compute the average, you can do the following</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#!/bin/sh
+# statistics
+</span><span class="n">sum</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">countfail</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="c1">//takes the student info from each line until we hit an error</span>
+<span class="k">while</span> <span class="n">read</span> <span class="n">studentnum</span> <span class="n">grade</span> <span class="n">name</span><span class="p">;</span> <span class="k">do</span> <span class="c1">//name includes the rest of the args on the line</span>
+	<span class="n">sum</span><span class="o">=</span><span class="err">`</span><span class="n">expr</span> <span class="err">$</span><span class="n">sum</span> <span class="o">+</span> <span class="err">$</span><span class="n">grade</span><span class="err">`</span>
+	<span class="n">count</span><span class="o">=</span><span class="err">`</span><span class="n">expr</span> <span class="err">$</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="err">`</span>
+	<span class="k">if</span> <span class="p">[</span> <span class="err">$</span><span class="n">grade</span> <span class="o">-</span><span class="n">lt</span> <span class="mi">50</span> <span class="p">];</span> <span class="n">then</span> <span class="c1">//executes when grade &lt; 50</span>
+		<span class="n">countfail</span><span class="o">=</span><span class="err">`</span><span class="n">expr</span> <span class="err">$</span><span class="n">countfail</span> <span class="o">+</span> <span class="mi">1</span><span class="err">`</span>
+	<span class="n">fi</span>
+<span class="n">done</span>
+<span class="n">echo</span> <span class="n">The</span> <span class="n">average</span> <span class="n">is</span> <span class="err">`</span><span class="n">expr</span> <span class="err">$</span><span class="n">sum</span> <span class="o">/</span> <span class="err">$</span><span class="n">count</span><span class="err">`</span><span class="p">.</span>
+<span class="n">echo</span> <span class="err">$</span><span class="n">countfail</span> <span class="n">students</span> <span class="n">failed</span><span class="p">.</span>
+</code></pre></div></div>
+
+<p>You can execute this script on marks.txt by doing the following</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">statistics</span> <span class="o">&lt;</span> <span class="n">marks</span><span class="p">.</span><span class="n">txt</span>
+</code></pre></div></div>
+
+<h1 id="makefiles">Makefiles</h1>
+
+<p>We’ve covered modularity in C with simple examples</p>
+
+<p>However, when your code gets larger and larger, managing all these C files and header files manually is impossible</p>
+
+<p>This is where makefiles come in</p>
+
+<p>Makefiles are a way to automatically group together your disparate modules into one clear executable, which is especially useful for large projects such as the Mars Rover (which is ~1 million lines of C code)</p>
+
+<p>For example, let’s say you use my_stat.h, my_stat.c and sample.c in your program</p>
+
+<p>These are all the command you’ll have to run to compile the program</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">cc</span> <span class="o">-</span><span class="n">c</span> <span class="n">my_stat</span><span class="p">.</span><span class="n">c</span>
+<span class="o">%</span> <span class="n">cc</span> <span class="o">-</span><span class="n">c</span> <span class="n">sample</span><span class="p">.</span><span class="n">c</span>
+<span class="o">%</span> <span class="n">cc</span> <span class="o">-</span><span class="n">o</span> <span class="n">sample</span> <span class="n">same</span><span class="p">.</span><span class="n">o</span> <span class="n">my_stat</span><span class="p">.</span><span class="n">o</span>
+</code></pre></div></div>
+
+<p>You can put all this into a makefile using any text editor</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp"># Makefile for sample //this is a comment
+</span><span class="nl">sample:</span> <span class="n">sample</span><span class="p">.</span><span class="n">o</span> <span class="n">my_stat</span><span class="p">.</span><span class="n">o</span> <span class="c1">//target: dependency1 dependency2...</span>
+	<span class="n">cc</span> <span class="o">-</span><span class="n">o</span> <span class="n">sample</span> <span class="n">sample</span><span class="p">.</span><span class="n">o</span> <span class="n">my_stat</span><span class="p">.</span><span class="n">o</span> <span class="c1">//execute command here</span>
+<span class="n">sample</span><span class="p">.</span><span class="n">o</span><span class="o">:</span> <span class="n">sample</span><span class="p">.</span><span class="n">c</span> <span class="n">my_stat</span><span class="p">.</span><span class="n">h</span> <span class="c1">//header file is also a dependency</span>
+	<span class="n">cc</span> <span class="o">-</span><span class="n">c</span> <span class="n">sample</span><span class="p">.</span><span class="n">c</span> <span class="c1">//btw these indents have to be tabs</span>
+<span class="n">my_stat</span><span class="p">.</span><span class="n">o</span><span class="o">:</span> <span class="n">my_stat</span><span class="p">.</span><span class="n">c</span> <span class="n">my_stat</span><span class="p">.</span><span class="n">h</span>
+	<span class="n">cc</span> <span class="o">-</span><span class="n">c</span> <span class="n">my_stat</span><span class="p">.</span><span class="n">c</span>
+<span class="n">clean</span><span class="o">:</span> <span class="c1">//removes all .o files and the executable</span>
+	<span class="n">rm</span> <span class="n">sample</span> <span class="o">*</span><span class="p">.</span><span class="n">o</span> <span class="n">core</span>
+</code></pre></div></div>
+
+<p>You then save this file with the name “Makefile” or “makefile” and execute</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">make</span>
+</code></pre></div></div>
+
+<p>This way, you don’t need to recompile everything in case you need to change one of your files</p>
+
+<p>For example, if I were to change sample.c, only the commands for sample.o and sample would run</p>
+
+<p>You can also clear every generated file with the clean command</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">make</span> <span class="n">clean</span>
+</code></pre></div></div>
+
+<p>If you want to recompile everything, you can do this</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">make</span> <span class="n">clean</span><span class="p">;</span> <span class="n">make</span>
+</code></pre></div></div>
+
+<p>You can also do the following for the same effect</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">touch</span> <span class="n">my_stat</span><span class="p">.</span><span class="n">h</span> <span class="c1">//changes the time stamp of my_stat.h</span>
+<span class="o">%</span> <span class="n">make</span>
+</code></pre></div></div>
+
+<h2 id="separate-directories">Separate Directories</h2>
+
+<p>You can also use makefiles with several directories, which you might need for larger programs, if you know what you’re doing with your architecture</p>
+
+<p>If you store all the .c files related to each module in its own directory and all the .h files in a separate directory, you can have one makefile for each major module</p>
+
+<p>The makefile for the main program will direct the creation of the final executable and makefiles for each module will create the .o bytecode files</p>
+
+<p>For example, let’s say you had the following files:</p>
+
+<p>StackTypes.h,
+StackInterface.h,
+QueueTypes.h,
+QueueInterface.h,
+StackImplementation.c,
+QueueImplementation.c,
+Main.c</p>
+
+<p>You’ll want 4 subdirectories: Stack, Queue, Main and Include (which will store ALL of your header files)</p>
+
+<p>Your makefile might look something like this for Stack</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">export:</span> <span class="n">StackImplementation</span><span class="p">.</span><span class="n">o</span> <span class="c1">//exports the module</span>
+<span class="n">StackImplementation</span><span class="p">.</span><span class="n">o</span><span class="o">:</span> <span class="n">StackImplementation</span><span class="p">.</span><span class="n">c</span> \
+												<span class="p">..</span><span class="o">/</span><span class="n">Include</span><span class="o">/</span><span class="n">StackTypes</span><span class="p">.</span><span class="n">h</span> \
+												<span class="p">..</span><span class="o">/</span><span class="n">Include</span><span class="o">/</span><span class="n">StackInterface</span><span class="p">.</span><span class="n">h</span>
+<span class="c1">//-I lets us specify the path ../Include to look for .h files</span>
+	<span class="n">gcc</span> <span class="o">-</span><span class="n">I</span><span class="p">..</span><span class="o">/</span><span class="n">Include</span> <span class="o">-</span><span class="n">c</span> <span class="n">StackImplementation</span><span class="p">.</span><span class="n">c</span>
+<span class="cp"># substitute a print command of your choice for lpr below
+</span><span class="n">print</span><span class="o">:</span>
+	<span class="n">lpr</span> <span class="n">StackImplementation</span><span class="p">.</span><span class="n">c</span>
+<span class="n">clean</span><span class="o">:</span>
+	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="o">*</span><span class="p">.</span><span class="n">o</span>
+</code></pre></div></div>
+
+<p>Queue will follow the same form</p>
+
+<p>For Main, it’s just a matter of collecting everything</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">export:</span> <span class="n">Main</span>
+<span class="n">Main</span><span class="o">:</span> <span class="n">Main</span><span class="p">.</span><span class="n">o</span> <span class="n">StackDir</span> <span class="n">QueueDir</span>
+	<span class="n">gcc</span> <span class="o">-</span><span class="n">o</span> <span class="n">Main</span> <span class="n">Main</span><span class="p">.</span><span class="n">o</span> <span class="p">..</span><span class="o">/</span><span class="n">Stack</span><span class="o">/</span><span class="n">StackImplementation</span><span class="p">.</span><span class="n">o</span> \
+											<span class="p">..</span><span class="o">/</span><span class="n">Queue</span><span class="o">/</span><span class="n">QueueImplementation</span><span class="p">.</span><span class="n">o</span>
+<span class="n">Main</span><span class="p">.</span><span class="n">o</span><span class="o">:</span> <span class="n">Main</span><span class="p">.</span><span class="n">c</span> <span class="p">..</span><span class="o">/</span><span class="n">Include</span><span class="o">/*</span><span class="p">.</span><span class="n">h</span>
+	<span class="n">gcc</span> <span class="o">-</span><span class="n">I</span><span class="p">..</span><span class="o">/</span><span class="n">Include</span> <span class="o">-</span><span class="n">c</span> <span class="n">Main</span><span class="p">.</span><span class="n">c</span>
+<span class="n">StackDir</span><span class="o">:</span>
+<span class="c1">// parentheses makes a subprocess, letting us cd into Stack without having to cd back</span>
+	<span class="p">(</span><span class="n">cd</span> <span class="p">..</span><span class="o">/</span><span class="n">Stack</span><span class="p">;</span> <span class="n">make</span> <span class="n">export</span><span class="p">)</span>
+<span class="n">QueueDir</span><span class="o">:</span>
+	<span class="p">(</span><span class="n">cd</span> <span class="p">..</span><span class="o">/</span><span class="n">Queue</span><span class="p">;</span> <span class="n">make</span> <span class="n">export</span><span class="p">)</span>
+<span class="n">print</span><span class="o">:</span>
+	<span class="n">lpr</span> <span class="n">Main</span><span class="p">.</span><span class="n">c</span>
+<span class="n">printall</span><span class="o">:</span>
+	<span class="n">lpr</span> <span class="n">Main</span><span class="p">.</span><span class="n">c</span>
+	<span class="p">(</span><span class="n">cd</span> <span class="p">..</span><span class="o">/</span><span class="n">Stack</span><span class="p">;</span> <span class="n">make</span> <span class="n">print</span><span class="p">)</span>
+	<span class="p">(</span><span class="n">cd</span> <span class="p">..</span><span class="o">/</span><span class="n">Queue</span><span class="p">;</span> <span class="n">make</span> <span class="n">print</span><span class="p">)</span>
+<span class="n">clean</span><span class="o">:</span>
+	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="o">*</span><span class="p">.</span><span class="n">o</span> <span class="n">Main</span> <span class="n">core</span>
+<span class="n">cleanall</span><span class="o">:</span>
+	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="o">*</span><span class="p">.</span><span class="n">o</span> <span class="n">Main</span> <span class="n">core</span>
+	<span class="p">(</span><span class="n">cd</span> <span class="p">..</span><span class="o">/</span><span class="n">Stack</span><span class="p">;</span> <span class="n">make</span> <span class="n">clean</span><span class="p">)</span>
+	<span class="p">(</span><span class="n">cd</span> <span class="p">..</span><span class="o">/</span><span class="n">Queue</span><span class="p">;</span> <span class="n">make</span> <span class="n">clean</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="macros">Macros</h2>
+
+<p>Much like in header files, macros can be used in makefiles to shorten long pieces of text</p>
+
+<p>For example, our stack makefile will look like this</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CC</span> <span class="o">=</span> <span class="n">gcc</span>
+<span class="n">HDIR</span> <span class="o">=</span> <span class="p">..</span><span class="o">/</span><span class="n">Include</span>
+<span class="n">INCPATH</span> <span class="o">=</span> <span class="o">-</span><span class="n">I</span><span class="err">$</span><span class="p">(</span><span class="n">HDIR</span><span class="p">)</span> <span class="c1">//general form for using a macro is $(MACRO_NAME)</span>
+<span class="n">DEPH</span> <span class="o">=</span> <span class="err">$</span><span class="p">(</span><span class="n">HDIR</span><span class="p">)</span><span class="o">/</span><span class="n">StackTypes</span><span class="p">.</span><span class="n">h</span>
+<span class="err">$</span><span class="p">(</span><span class="n">HDIR</span><span class="p">)</span><span class="o">/</span><span class="n">StackInterface</span><span class="p">.</span><span class="n">h</span>
+<span class="n">SOURCE</span> <span class="o">=</span> <span class="n">StackImplementation</span>
+
+<span class="n">export</span><span class="o">:</span> <span class="err">$</span><span class="p">(</span><span class="n">SOURCE</span><span class="p">).</span><span class="n">o</span>
+<span class="err">$</span><span class="p">(</span><span class="n">SOURCE</span><span class="p">).</span><span class="n">o</span><span class="o">:</span> <span class="err">$</span><span class="p">(</span><span class="n">SOURCE</span><span class="p">).</span><span class="n">c</span> <span class="err">$</span><span class="p">(</span><span class="n">DEPH</span><span class="p">)</span>
+	<span class="err">$</span><span class="p">(</span><span class="n">CC</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">INCPATH</span><span class="p">)</span> <span class="o">-</span><span class="n">c</span> <span class="err">$</span><span class="p">(</span><span class="n">SOURCE</span><span class="p">).</span><span class="n">c</span>
+<span class="n">print</span><span class="o">:</span>
+	<span class="n">lpr</span> <span class="err">$</span><span class="p">(</span><span class="n">SOURCE</span><span class="p">).</span><span class="n">c</span>
+<span class="n">clean</span><span class="o">:</span>
+	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="o">*</span><span class="p">.</span><span class="n">o</span>
+</code></pre></div></div>
+
+<p>gmake allows for more complex makefiles as well, which can include loops and conditionals</p>
+
+<ul>
+  <li>This is outside the scope of this course</li>
+</ul>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

@@ -1,0 +1,572 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Data Types in C | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Data Types in C" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/systems-programming/data.html" />
+<meta property="og:url" content="http://localhost:4000/notes/systems-programming/data.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Data Types in C" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Data Types in C","url":"http://localhost:4000/notes/systems-programming/data.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+    <link rel="stylesheet" href="/assets/css/style.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#binary-representation">Binary Representation</a><ul><li><a href="#binary">Binary</a></li><li><a href="#conversion">Conversion</a></li><li><a href="#and-here-comes-the-byte">And Here Comes the Byte</a></li><li><a href="#ascii">ASCII</a></li></ul></li><li><a href="#forms">Forms</a><ul><li><a href="#magnitude-form">Magnitude Form</a></li><li><a href="#signed-magnitude-form">Signed Magnitude Form</a></li><li><a href="#ones-compliment">Ones Compliment</a></li><li><a href="#twos-compliment">Two’s Compliment</a></li><li><a href="#fixed-point-form">Fixed Point Form</a></li><li><a href="#floating-point-form">Floating Point Form</a></li></ul></li><li><a href="#types">Types</a><ul><li><a href="#the-gosh-darn-ones-and-zeroes">The Gosh Darn Ones and Zeroes</a></li><li><a href="#in-c">In C</a></li></ul></li><li><a href="#type-definitions">Type Definitions</a></li><li><a href="#inline-functions">Inline Functions</a></li><li><a href="#conditional-compilation">Conditional Compilation</a></li><li><a href="#include">Include</a></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="data-types-in-c">Data Types in C</h1>
+
+<p>Remember that C is a heavily typed language, meaning that whatever the type of a variable is the the type that it is</p>
+
+<p>Now…what even is a type and why do we need it?</p>
+
+<p>For that, we need to look at binary</p>
+
+<h2 id="binary-representation">Binary Representation</h2>
+
+<p>Remember that computers only know on and off, represented by ones and zeroes</p>
+
+<p>The only thing your CPU can actually do is add two numbers together (yes, all your computer does is add numbers really quickly)</p>
+
+<p>But what do the ones and zeroes actually represent? How does the computer know how to use this?</p>
+
+<p>Remember that C is a heavily typed language, meaning memory is allocated and the computer is told to represent this set of on and offs as this type of variable</p>
+
+<h3 id="binary">Binary</h3>
+
+<p>Take our counting system in base 10; we have 10 symbols 0 1 2 3 4 5 6 7 8 9</p>
+
+<p>If we were to take 10 and keep adding 1, we get 11, 12, 13…18, 19…</p>
+
+<p>What do we do now?</p>
+
+<p>Well, we reset the first digit back to 0 and increase the second digit to 2, giving us 20 and so on and so forth</p>
+
+<p>We do the same thing for our ones and zeroes</p>
+
+<p>For example, if we wanted to add to 1 to 0 in base 2, we add to the digit, giving us 1. If we want to add 1 again, we reset our first digit to 0 and create a second digit, 1, giving us 10. This keeps going as 11, 100, 101, 110, 111, 1000, 1001, 1010, 1011, etc.</p>
+
+<p>But how can we go from this to decimal?</p>
+
+<h3 id="conversion">Conversion</h3>
+
+<p>Let’s say you have the binary number 11111101. How do we go about converting this?</p>
+
+<p>The process is actually quite simple</p>
+
+<ol>
+  <li>Take the first digit. If it’s 1, add 1 to our decimal and do nothing if it’s 0</li>
+  <li>Take the second digit and do the same thing, but add double what you did last time to your decimal (for the second digit, you’d add 2. Third, you’d do 4. Fourth, you’d do 8, etc.)</li>
+</ol>
+
+<p>For the above example, you’d get 1+0+4+8+16+32+64+128, giving you 253</p>
+
+<p>Now, if you put a string of binary together, you’ll get something like:</p>
+
+<p>10010101010100100101010010010101</p>
+
+<p>By itself, this is unintelligible both for us and the computer, so we have to chop this up somehow…</p>
+
+<h3 id="and-here-comes-the-byte">And Here Comes the Byte</h3>
+
+<p>In order to actually do anything with this, we chop up the string of ones and zeroes into 8 digits, called a <strong>byte</strong></p>
+
+<ul>
+  <li>Note that dividing every 8 instead of every 15 or 10 is arbitrary, it’s just what the CS gods decided on</li>
+</ul>
+
+<p>If we separate our original string of ones and zeroes into bites, we get:</p>
+
+<p>10010101 01010010 01010100 10010101</p>
+
+<p>Now this is a lot more readable and can be thus be divided up</p>
+
+<h3 id="ascii">ASCII</h3>
+
+<p>Now that we have our binary chopped up into bytes, we can do something special…</p>
+
+<p>We can start assigning these to alphanumeric characters in a standard form called <strong>ASCII</strong></p>
+
+<ul>
+  <li>A link to the ASCII table can be found below, along with octal, decimal and hexadecimal numbering</li>
+</ul>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c925e329-ebdf-4ce5-a01a-0130bc0358c4/ASCII_Conversion_Chart.gif" alt="ASCII Conversion Chart.gif" /></p>
+
+<p>You should also notice here that the capital letters and lowercase letters only differ in the third bit, which makes conversion from capital to lowercase much easier</p>
+
+<p>Nowadays we use other encoding systems such as UTF-8, UTF-16 and UTF-32, but it’s still nice to know ASCII</p>
+
+<p>You may ask “How does the computer know when this is a character or a number?” Well for that, we need to look at <strong>types</strong></p>
+
+<h2 id="forms">Forms</h2>
+
+<p>Before we talk about the types themselves, we need to talk about <strong>forms</strong></p>
+
+<p>Binary can be represented in many forms</p>
+
+<h3 id="magnitude-form">Magnitude Form</h3>
+
+<p>In this form, only positive integers can be shown (referred to as <strong>unsigned</strong> numbers)</p>
+
+<p>For example, one byte in unsigned form can hold numbers 0-255</p>
+
+<h3 id="signed-magnitude-form">Signed Magnitude Form</h3>
+
+<p>This is just like magnitude form except that now we can represent negatives (referred to as a <strong>signed</strong> number)</p>
+
+<p>One byte in signed magnitude can hold the numbers -127 to 127</p>
+
+<p>The way you can tell if a number is positive or negative in signed magnitude is looking at the first bit: if it’s 1, it’s positive and if it’s 0, it’s negative</p>
+
+<p>This does come with a problem, which is that we have two forms of 0, making this form inefficient</p>
+
+<p>There’s more than one way to represent negative numbers, however, including…</p>
+
+<h3 id="ones-compliment">Ones Compliment</h3>
+
+<p>In ones compliment, we flip every bit to represent negative numbers, with the first significant bit representing a positive or a negative in the same way</p>
+
+<p>This also has the same problem with two representations of 0, which eventually led to…</p>
+
+<h3 id="twos-compliment">Two’s Compliment</h3>
+
+<p>Here, we do the same thing as the ones compliment, but add 1 (in decimal, not in binary)</p>
+
+<p>Now if we take 0 and try to make it negative, it become 11111111, which we add 1 to, making it 00000000 (integer overflow)</p>
+
+<p>Most computers will either represent numbers in magnitude form (for unsigned numbers) or two’s compliment form (for signed numbers)</p>
+
+<p>But what if there’s a decimal? Well, in this case, we must look at…</p>
+
+<h3 id="fixed-point-form">Fixed Point Form</h3>
+
+<p>Let’s take the number 18.375 and divide it up into 2 parts: the whole number (18) and the fractional part (0.375)</p>
+
+<p>Because we can represent fractional parts as the negative power of 2, we can do something special</p>
+
+<p>We can do our normal division of binary, but start our bits at 2^-4 instead of 2^0</p>
+
+<p>For example: 18.375 would be 16+2+0.25+0.125, giving us 10010011 as a representation in fixed point form</p>
+
+<p>The first 5 bits (10010) are the whole number part, while the last 3 (011) are the fractional part</p>
+
+<p>With this form, however, we are limited in our precision</p>
+
+<p>What we CAN do, however, is a clever mathematical trick…</p>
+
+<h3 id="floating-point-form">Floating Point Form</h3>
+
+<p>Remember how we can represent numbers through scientific notation in decimal form? We can do the same thing for binary numbers</p>
+
+<p>For example, 10010.011 can turn into 1.0010011 * 2^4</p>
+
+<p>This offers us a greater degree of precision, but it’s impossible to do in just 1 byte</p>
+
+<p>So let’s assume there’s 4 bytes…</p>
+
+<p>We can then save 8 bits for the exponent, 23 bits for the fractional and 1 extra for a sign (+/-)</p>
+
+<p>The form goes sign → exponent → fractional</p>
+
+<p>We can of course do better: with a double precision form, we spent 8 bytes, with 1 bit for sign, 11 bits for exponent and 52 for fractional</p>
+
+<p>Now, that we know our forms, we can finally talk about…</p>
+
+<h2 id="types">Types</h2>
+
+<p>Remember that all data is stored as a type in C, the type of which is decided by you because you’re god</p>
+
+<p>You may already know some of these from Java (1 byte char, 2 byte short, 4 byte int, 4 byte float, 8 byte double), but I want to go over some of these in detail</p>
+
+<p>A <strong>short</strong> is a 2 byte integer, with values between -32768 and 32767</p>
+
+<p>An <strong>int</strong> is the same, except it’s 4 bytes with a wider range and <strong>long</strong> is the same with 8 bytes</p>
+
+<p>A <strong>float</strong> is the precision float we talked about, while a <strong>double</strong> is our double precision float</p>
+
+<p>Finally, <strong>boolean</strong> (known as _Bool in C) is either true (1) or false (0)</p>
+
+<p>C also has other built in <strong>unsigned</strong> data types for char, short, int and long, which you get by adding “unsigned” to whatever type you wanted to use</p>
+
+<ul>
+  <li>There’s also something called a <strong>reference type</strong>, but we’ll get into that later</li>
+</ul>
+
+<p>Now we can talk about what the ones and zeroes mean</p>
+
+<h3 id="the-gosh-darn-ones-and-zeroes">The Gosh Darn Ones and Zeroes</h3>
+
+<p>Take this as your binary string</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mo">01000010</span> <span class="mo">00111110</span> <span class="mo">01110011</span> <span class="mo">01010001</span>
+</code></pre></div></div>
+
+<p>This can take many forms, depending on what we tell the computer to represent this as</p>
+
+<ul>
+  <li>Remember that we’re god here</li>
+</ul>
+
+<p>Let’s try char first; the representation would be..</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="sc">'B'</span><span class="p">,</span> <span class="sc">'?'</span><span class="p">,</span> <span class="sc">'s'</span><span class="p">,</span> <span class="sc">'Q'</span> <span class="c1">//or</span>
+<span class="mi">66</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">115</span><span class="p">,</span> <span class="mi">81</span>
+</code></pre></div></div>
+
+<p>We can also break it up into 16-bit sections, called <strong>words</strong></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mo">0100001000111110</span> <span class="mo">0111001101010001</span>
+</code></pre></div></div>
+
+<p>If we’re to tell the computer that this is a short, it would look like…</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">16959</span><span class="p">,</span> <span class="mi">259521</span> <span class="c1">//note that these are signed</span>
+<span class="c1">//these are positive because they start with 0</span>
+</code></pre></div></div>
+
+<p>We can also represent this in utf-16 as ‘㽂’ and ‘关’, respectively</p>
+
+<p>If we join all of them into one part, we get what’s called a <strong>double word</strong></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mo">01000010001111100111001101010001</span>
+<span class="c1">//we can represent this as an integer</span>
+<span class="mi">1111454545</span>
+<span class="c1">//or as a float</span>
+<span class="mi">47</span><span class="p">.</span><span class="mi">862613677978515625</span>
+</code></pre></div></div>
+
+<p>The next step up would be 64 bits or a <strong>quad word</strong> which would be for long or double, which I won’t type here for space’s sake</p>
+
+<h3 id="in-c">In C</h3>
+
+<p>Let’s take the following code to see what’s going on here</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+	<span class="kt">char</span> <span class="n">a</span><span class="p">;</span> <span class="cm">/* 1 byte */</span>
+	<span class="kt">int</span> <span class="n">b</span><span class="p">;</span> <span class="cm">/* 4 bytes */</span>
+	<span class="kt">float</span> <span class="n">c</span><span class="p">;</span> <span class="cm">/* 4 bytes */</span>
+	<span class="kt">double</span> <span class="n">d</span><span class="p">;</span> <span class="cm">/* 8 bytes */</span>
+
+	<span class="n">a</span> <span class="o">=</span> <span class="sc">'K'</span><span class="p">;</span>
+	<span class="n">b</span> <span class="o">=</span> <span class="mi">37</span><span class="p">;</span>
+	<span class="n">c</span> <span class="o">=</span> <span class="mi">2</span><span class="p">.</span><span class="mi">5</span><span class="p">;</span>
+	<span class="n">d</span> <span class="o">=</span> <span class="mi">75</span><span class="p">.</span><span class="mi">3</span><span class="p">;</span>
+
+	<span class="n">printf</span><span class="p">(</span> <span class="s">"1st value of a is : %c </span><span class="se">\n</span><span class="s">"</span> <span class="p">,</span> <span class="n">a</span> <span class="p">);</span>
+	<span class="n">printf</span><span class="p">(</span> <span class="s">"2nd value of b is : %d </span><span class="se">\n</span><span class="s">"</span> <span class="p">,</span> <span class="n">b</span> <span class="p">);</span>
+	<span class="n">printf</span><span class="p">(</span> <span class="s">"3rd value of c is : %f </span><span class="se">\n</span><span class="s">"</span> <span class="p">,</span> <span class="n">c</span> <span class="p">);</span>
+	<span class="n">printf</span><span class="p">(</span> <span class="s">"4rd value of d is : %lf </span><span class="se">\n</span><span class="s">"</span> <span class="p">,</span> <span class="n">d</span> <span class="p">);</span>
+
+	<span class="k">return</span> <span class="mi">0</span> <span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here, we declare 4 variables, define them and print them</p>
+
+<p>Remember that all data is stored in a type, so the computer will assign spaces in memory according to the type declared and give it the according label</p>
+
+<ul>
+  <li>For char a, it would take up 1 byte, for int b it would be 4, etc.</li>
+</ul>
+
+<p>In order to actually do the math on these, the variables must</p>
+
+<ul>
+  <li>Have the same length</li>
+  <li>Be stored in the same way</li>
+</ul>
+
+<p>You can’t just add a char and an int because they take up different amounts of space (neither can you do an int and a float because they’re stored differently)</p>
+
+<p>But what if we wanted to? Well, the compiler would have to convert one variable type to the other</p>
+
+<p>In C, the more complex representation would be chosen for conversion (known as <strong>variable promotion</strong>)</p>
+
+<p>For example, if you wanted to add a short and an int, the short would be converted into an int. If you wanted to add an int and a float, the int would be converted into a float</p>
+
+<ul>
+  <li>Note that the compiler does this for you, which is known as <strong>implicit conversion</strong></li>
+</ul>
+
+<p>For a chart of which types take priority over others (top to bottom):</p>
+
+<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fe542074-4955-4c99-a693-9fc83e8d2955/Untitled.png" alt="Untitled" /></p>
+
+<p>We can also force the compiler to convert things a certain way through <strong>type casting</strong></p>
+
+<ul>
+  <li>This is known as <strong>explicit conversion</strong></li>
+</ul>
+
+<p>The format of this goes as follows</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="n">data_type</span><span class="p">)</span> <span class="n">variable</span>
+<span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">x</span> <span class="c1">//example </span>
+</code></pre></div></div>
+
+<p>If we were adding a double and an int, we may want to cast the double as an int to get an int result</p>
+
+<p>These type operators are called <strong>unary operators</strong> and have precedence over <strong>binary operators</strong> (division, addition, etc.)</p>
+
+<p>This can also be used to avoid integer <strong>overflow</strong></p>
+
+<p>Now, we can also define other types if need be, using <strong>type definitions</strong></p>
+
+<h1 id="compiler-directives">Compiler Directives</h1>
+
+<h2 id="type-definitions">Type Definitions</h2>
+
+<p>We can do this quite easily with a macro definition</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define BOOL int
+</span></code></pre></div></div>
+
+<p>This makes the preprocessor tell the compiler to switch every instance of BOOL with int</p>
+
+<p>But there’s a better way…</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="kt">int</span> <span class="n">BOOL</span><span class="p">;</span>
+<span class="c1">// remember the semicolon here!!</span>
+</code></pre></div></div>
+
+<p>This is what’s known as a <strong>type definition</strong> and it’s much more readable in this case than a macro def</p>
+
+<p>This also makes variables easy to change</p>
+
+<p>Let’s say I have a typedef for dollars, recorded in floats</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="kt">float</span> <span class="n">Dollars</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>What if I wanted a double instead?</p>
+
+<p>Well, that’s simple; we just change float on this one line to a double</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="kt">double</span> <span class="n">Dollars</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>This saves me a lot of time and a lot of errors than having to change every single variable relating to dollar amounts to a double</p>
+
+<p>We can also have more complex macros defined the same way</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define max(a,b) ((a)&gt;(b)?(a):(b))
+</span></code></pre></div></div>
+
+<ul>
+  <li>Note that your parentheses matter here!!</li>
+</ul>
+
+<p>This is a bit more efficient, but it can also be dangerous, which is why modern C compilers include…</p>
+
+<h2 id="inline-functions">Inline Functions</h2>
+
+<p>Usually, when you make a function call, the compiler has to jump to the function and jump back, which can be inefficient at scale</p>
+
+<p>What you can do instead is have an <strong>inline function</strong> if you have a small but often used function</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">int</span> <span class="nf">max</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="n">a</span><span class="o">&gt;</span><span class="n">b</span><span class="o">?</span><span class="n">a</span><span class="o">:</span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This has advantage over a regular function call because, instead of the compiler having to jump all over the place, it just puts whatever the function returns in place of the call, which can save some time</p>
+
+<p>A caveat is that you have to define inlines before you use it, which result in them often being defined in header (.h) files</p>
+
+<p>Another problem is that some debuggers get confused with inline, so it’s best to save them for after you’ve debugged everything</p>
+
+<h2 id="conditional-compilation">Conditional Compilation</h2>
+
+<p>We can also have preprocessor conditionals, which are only really useful for macro definitions</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define ENGLAND 0
+#define FRANCE 1
+#define ITALY 0
+#if ENGLAND
+</span>	<span class="cp">#include "england.h"
+#elif FRANCE
+</span>	<span class="cp">#include "france.h"
+#elif ITALY
+</span>	<span class="cp">#include "italy.h"
+#else
+</span>	<span class="cp">#include "canada.h"
+#endif //the endif is important here
+</span></code></pre></div></div>
+
+<p>This is pretty useful for including debug code to avoid debug printouts when you release your program</p>
+
+<p>You can have such a system like this</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define DEBUG 1
+</span><span class="p">...</span>
+<span class="cp">#if DEBUG
+</span>	<span class="n">printf</span><span class="p">(</span><span class="s">"Debug reporting at function my_sort()!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="cp">#endif
+</span><span class="p">...</span>
+</code></pre></div></div>
+
+<p>You can also do it like this</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define DEBUG
+#if defined ( DEBUG ) //only checks whether or not DEBUG has been defined at all
+</span>	<span class="n">printf</span><span class="p">(</span><span class="s">"debug report at function my_sort() </span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<p>And you can undefine a macro as well</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define DEBUG
+</span><span class="p">...</span>
+<span class="cp">#undef DEBUG
+</span><span class="p">...</span>
+</code></pre></div></div>
+
+<h2 id="include">Include</h2>
+
+<p>These work similarly to import statements in Java with a few quirks</p>
+
+<p>You can use &lt;&gt; to tell the compiler to look at the standard include directories first and “ “ to treat it as a Unix filename imported from a specified path</p>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

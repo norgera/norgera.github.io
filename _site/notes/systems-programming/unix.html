@@ -1,0 +1,865 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Unix Basics | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Unix Basics" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/systems-programming/unix.html" />
+<meta property="og:url" content="http://localhost:4000/notes/systems-programming/unix.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Unix Basics" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Unix Basics","url":"http://localhost:4000/notes/systems-programming/unix.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+    <link rel="stylesheet" href="/assets/css/style.css?v=7d437001db36d219846f9ede2ba2041a3ee2d750">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#logging-into-unix">Logging Into UNIX</a><ul><li><a href="#at-home">At Home</a></li></ul></li><li><a href="#some-commands">Some Commands</a><ul><li><a href="#other-notes">Other Notes</a></li></ul></li><li><a href="#unix-editors">UNIX Editors</a><ul><li><a href="#ed">ed</a></li><li><a href="#vivim">vi/vim</a></li><li><a href="#emacs">emacs</a></li><li><a href="#pico">pico</a></li></ul></li><li><a href="#redirection">Redirection</a></li><li><a href="#filters">Filters</a></li><li><a href="#pipes">Pipes</a></li><li><a href="#managing-jobs">Managing Jobs</a></li><li><a href="#more-job-commands">More Job Commands</a></li><li><a href="#wildcards">Wildcards</a></li><li><a href="#sets">Sets</a></li><li><a href="#parts">Parts</a></li><li><a href="#more">More</a></li><li><a href="#switches">Switches</a></li><li><a href="#extended-regular-expressions">Extended Regular Expressions</a></li></ul>
+            
+    
+  </div>
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch"><i class="far fa-moon"></i></button>
+</div>
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="unix-basics">Unix Basics</h1>
+
+<h2 id="logging-into-unix">Logging Into UNIX</h2>
+
+<p>You’ll need:</p>
+
+<ul>
+  <li>Internet access</li>
+  <li>An ssh client program (ssh, slogin if on linux or windows 10 or PuTTY on Windows)</li>
+  <li>PuTTY is better for windows than command prompt and maybe better than powershell</li>
+</ul>
+
+<p>What you do:</p>
+
+<h3 id="at-home">At Home</h3>
+
+<p>For UNIX, Mac and Linux:</p>
+
+<ol>
+  <li>Open a terminal</li>
+  <li>Use ssh in the terminal</li>
+</ol>
+
+<p>For Windows 10:</p>
+
+<ol>
+  <li>Open PowerShell</li>
+  <li>Use ssh in the PowerShell</li>
+</ol>
+
+<p>For Windows w/o ssh client, use PuTTY</p>
+
+<p>Command:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">ssh</span> <span class="p">[</span><span class="nx">UWO_username</span><span class="p">]@</span><span class="nd">compute</span><span class="p">.</span><span class="nx">gaul</span><span class="p">.</span><span class="nx">csd</span><span class="p">.</span><span class="nx">uwo</span><span class="p">.</span><span class="nx">ca</span>
+</code></pre></div></div>
+
+<p>From here, you can enter your password and access GAUL</p>
+
+<p>Notes:</p>
+
+<ul>
+  <li>Don’t delete any files created by yourself</li>
+  <li>You can’t change your login through GAUL</li>
+  <li>E-mail isn’t configured</li>
+  <li>Make sure you log out by typing the command <em>exit</em></li>
+</ul>
+
+<h2 id="some-commands">Some Commands</h2>
+
+<p><em>who</em></p>
+
+<ul>
+  <li>Displays who is currently logged in</li>
+</ul>
+
+<p><em>whoami</em></p>
+
+<ul>
+  <li>Displays who you are</li>
+</ul>
+
+<p><em>pwd</em></p>
+
+<ul>
+  <li>Prints the current working directory, or cwd</li>
+  <li>Note: cwd is the file you’re in (ex. when you open a file in your computer’s file manager, that’s your cwd)</li>
+  <li>When you log in, this is your home directory by default</li>
+</ul>
+
+<p><em>ls</em></p>
+
+<ul>
+  <li>Displays the files in your cwd</li>
+  <li>Note: add <em>-l</em> to show permission information</li>
+</ul>
+
+<p><em>cd</em> <em>[name_of_directory]</em></p>
+
+<ul>
+  <li>Navigates the file system (cd = change directory)</li>
+  <li>You can only cd into a directory if it’s directly connected to your cwd (parent/child)</li>
+  <li><em>cd ..</em> goes back one directory</li>
+</ul>
+
+<p><em>cat [name_of_text_file]</em></p>
+
+<ul>
+  <li>Displays the content of a text file in the cwd</li>
+  <li>You can use the <em>more</em> or <em>less</em> commands to show more or less of the current text file</li>
+</ul>
+
+<p><em>mkdir</em> <em>[new_directory_name]</em></p>
+
+<ul>
+  <li>Makes a new directory inside the cwd</li>
+</ul>
+
+<p><em>mv [file_name] [new_directory_path]</em></p>
+
+<ul>
+  <li>Moves files from one directory to another</li>
+</ul>
+
+<p><em>cp [name_of_file] [path_to_file]</em></p>
+
+<ul>
+  <li>Copies files from cwd to the desired directory (cwd if path_to_file is blank)</li>
+</ul>
+
+<p><em>rm [name_of_file]</em></p>
+
+<ul>
+  <li>Removes a file from the cwd</li>
+  <li>Adding <em>-i</em> gives you a prompt before removal as a safety measure (this should be used in most cases)</li>
+  <li><em>rmdir</em> does the same thing but for a directory</li>
+</ul>
+
+<p><em>man [command]</em></p>
+
+<ul>
+  <li>Shows the manual page for a command (how to use the command, what the command does, etc.)</li>
+  <li><em>xman</em> gives a graphical X-Windows version</li>
+</ul>
+
+<p><em>sftp</em></p>
+
+<ul>
+  <li>Allows for the transfer of files between GAUL and your home computer</li>
+  <li>SFTP = Secure File Transfer Protocol</li>
+  <li>Steps go as follows:</li>
+</ul>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="nx">sftp</span> <span class="nx">user_name</span><span class="p">@</span><span class="nd">compute</span><span class="p">.</span><span class="nx">gail</span><span class="p">.</span><span class="nx">csd</span><span class="p">.</span><span class="nx">uwo</span><span class="p">.</span><span class="nx">ca</span>
+<span class="nx">password</span><span class="p">:</span> <span class="p">[</span><span class="nx">enter</span> <span class="nx">your</span> <span class="nx">password</span><span class="p">]</span>
+<span class="c1">// use lls, lpwd and lcd to navigate through the home file system</span>
+<span class="c1">// once you get to the file you want:</span>
+<span class="kd">get</span> <span class="p">[</span><span class="nx">name_of_remote_file</span><span class="p">]</span> <span class="c1">//to download from GAUL to home</span>
+<span class="nx">put</span> <span class="p">[</span><span class="nx">name_of_local_file</span><span class="p">]</span> <span class="c1">//to upload from home to GAUL</span>
+<span class="nx">quit</span> <span class="c1">//make sure you do this when you're done!!</span>
+</code></pre></div></div>
+
+<h3 id="other-notes">Other Notes</h3>
+
+<ul>
+  <li>UNIX is case sensitive</li>
+  <li>Ctrl-c (^C) interrupts the current task</li>
+</ul>
+
+<h2 id="unix-editors">UNIX Editors</h2>
+
+<p>Editors come in 2 types:</p>
+
+<p>Modal:</p>
+
+<ul>
+  <li>Generally have an input mode and a command mode</li>
+  <li>Input mode allows entry of text</li>
+  <li>Command mode allows positioning within the file and more complex text mods</li>
+  <li>Examples: ed and vi</li>
+</ul>
+
+<p>Modeless:</p>
+
+<ul>
+  <li>Text mod/positioning is done my key sequences (ex. arrow keys)</li>
+  <li>Examples: emacs and pico</li>
+</ul>
+
+<h3 id="ed">ed</h3>
+
+<ul>
+  <li>The original line editor</li>
+  <li>One of the most powerful, allowing for massive changes with one command</li>
+  <li>Doesn’t give a “local” or screen picture of what’s in your file</li>
+  <li>Powered by regular expressions (we’ll look at this later)</li>
+  <li>A lot of its capabilities have been taken for vi and emacs</li>
+  <li>Still used for some shell scripts</li>
+</ul>
+
+<h3 id="vivim">vi/vim</h3>
+
+<ul>
+  <li>Comes in all UNIX versions</li>
+  <li>Steep learning curve but very fast once you’re experienced</li>
+  <li>Has 3 modes: command mode, input mode and colon command mode</li>
+</ul>
+
+<p>Starting, you do</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">vi</span> <span class="p">[</span><span class="nx">name_of_file</span><span class="p">]</span> <span class="c1">//new or existing</span>
+</code></pre></div></div>
+
+<ul>
+  <li>If it exists, you will see the first page of the file</li>
+  <li>If it’s new, you have a blank screen that you can type into</li>
+  <li>File name is in the bottom left</li>
+  <li>Line/column numbers can also be at the bottom</li>
+</ul>
+
+<p>Basic commands:</p>
+
+<ul>
+  <li>arrow keys: move the cursor</li>
+  <li>i: change to input mode</li>
+  <li>esc: change to command move</li>
+  <li>x: delete the current character (3x for 3)</li>
+  <li>dd: delete the current line (3dd for 3)</li>
+  <li>u: undo</li>
+  <li>/: search for text following the</li>
+</ul>
+
+<p>Colon command mode:</p>
+
+<ul>
+  <li>:w: write to file</li>
+  <li>:wq: save and quit</li>
+  <li>:q: quit (if no change)</li>
+  <li>:q!: exit without saving</li>
+</ul>
+
+<h3 id="emacs">emacs</h3>
+
+<ul>
+  <li>Has versions for UNIX, Windows and other systems</li>
+  <li>Menu and mouse driven under X-Windows (to avoid this, do emacs -nw</li>
+  <li>Uses special keys ESC and CTRL to do editor functions other than input</li>
+  <li>Contains a complete programming language, meaning you can do <strong>anything</strong></li>
+</ul>
+
+<p>Starting</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="nx">emacs</span> <span class="o">-</span><span class="nx">nw</span> <span class="p">[</span><span class="nx">name_of_file</span><span class="p">]</span> <span class="c1">//new or existing</span>
+</code></pre></div></div>
+
+<ul>
+  <li>If it exists, you will see the first page of the file</li>
+  <li>If it’s new, you have a blank screen that you can type into</li>
+  <li>File name is in the bottom left</li>
+</ul>
+
+<p>Commands:</p>
+
+<ul>
+  <li>^_ or ^X u: undo</li>
+  <li>^G: backs you out of whatever mode you’re in</li>
+  <li>^X ^S: save</li>
+  <li>^X ^C: exit emacs</li>
+  <li>^X ^W: save to a different file (you get prompted for a name)</li>
+  <li>^S: search (you get prompted for a string)</li>
+</ul>
+
+<p>To cut and paste:</p>
+
+<ol>
+  <li>Move cursor to start</li>
+  <li>Do ^@</li>
+  <li>Move cursor to end</li>
+  <li>Either ^W to cut or ESCW to copy</li>
+  <li>Move cursor to new location</li>
+  <li>Do ^y to paste</li>
+</ol>
+
+<h3 id="pico">pico</h3>
+
+<ul>
+  <li>Modeless like emacs</li>
+  <li>Use in the pine email program</li>
+</ul>
+
+<p>Commands:</p>
+
+<ul>
+  <li>^g: help</li>
+  <li>^r: reads</li>
+  <li>^o: writes a file</li>
+  <li>^x: exits pico</li>
+</ul>
+
+<h1 id="command-io-and-redirection">Command IO and Redirection</h1>
+
+<p>Recall that each Unix process has three streams opened upon start; input, output and diagnostic/error messages</p>
+
+<p>Input is represented as <strong>stdin</strong> and has a file descriptor of 0, output is <strong>stdout</strong> and 1, and error is <strong>stderr</strong> and 2</p>
+
+<p>For your terminal, stdin is the keyboard, while stdout and stderr is the display</p>
+
+<ul>
+  <li>For example, whoami echoes your username to the display (stdout) after being entered into your keyboard (stdin)</li>
+</ul>
+
+<p>This is all well and good, but what if you wanted to change where this outputted? What about input?</p>
+
+<h2 id="redirection">Redirection</h2>
+
+<p>Luckily, this is quite simple</p>
+
+<p>&lt; to redirect standard output (or 0&lt;)</p>
+
+<blockquote>
+  <p>to redirect standard input (or 1&gt;)</p>
+</blockquote>
+
+<p>2&gt; to redirect standard error</p>
+
+<p>For example, if we want to output the following command to a text file…</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">whoami</span>
+</code></pre></div></div>
+
+<p>…we can modify it like so</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">whoami</span> <span class="o">&gt;</span> <span class="n">file1</span>
+</code></pre></div></div>
+
+<p>Just like normal file usage, file1 is created if it’s not there</p>
+
+<p>However, depending on your bash setup, Unix can sometimes get mad at you if file1 already exists</p>
+
+<p>So what can you do? You can force the overwrite (or <strong>clobber</strong>) the file</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">whoami</span> <span class="o">&gt;|</span> <span class="n">file1</span>
+</code></pre></div></div>
+
+<p>You can also append the output to file1</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">whoami</span> <span class="o">&gt;&gt;</span> <span class="n">file1</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Note that this will cause warnings if file1 doesn’t exist</li>
+</ul>
+
+<p>You can also use this method to separate output and error messages</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">whoami</span> <span class="o">&gt;</span> <span class="n">file1</span> <span class="mi">2</span><span class="o">&gt;</span> <span class="n">file_error</span>
+</code></pre></div></div>
+
+<p>You can also direct them to the same place like so</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">whoami</span> <span class="o">&amp;&gt;</span> <span class="n">file1</span>
+</code></pre></div></div>
+
+<p>A more general way goes as follows</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">whoami</span> <span class="o">&gt;</span> <span class="n">file1</span> <span class="mi">2</span><span class="o">&gt;&amp;</span><span class="mi">1</span> <span class="c1">//stdout goes to file1 and stderr goes to where stdout is</span>
+</code></pre></div></div>
+
+<p>For redirecting input, there’s a very good use case with the command <strong>tr</strong></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">tr</span> <span class="n">string1</span> <span class="n">string2</span> <span class="n">text</span>
+</code></pre></div></div>
+
+<p>This command will do the following</p>
+
+<ol>
+  <li>Take each character in text</li>
+  <li>If it matches a character n of string1, translate it to character n of string2</li>
+  <li>Output the result</li>
+</ol>
+
+<p>Usually this outputs to the terminal, but we can change this with our redirections</p>
+
+<p>For example, if we want to do a translation on our file1 and put it into file2, we can do so like this</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">tr</span> <span class="n">aeio</span> <span class="mi">4310</span> <span class="o">&lt;</span> <span class="n">file1</span> <span class="o">&gt;</span> <span class="n">file2</span>
+</code></pre></div></div>
+
+<p>Using this type of command, we can also do encoding, somewhat like a cypher</p>
+
+<p>We can also put in regular expressions (which we will cover in a bit)</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">tr</span> <span class="n">a</span><span class="o">-</span><span class="n">z</span> <span class="n">A</span><span class="o">-</span><span class="n">Z</span> <span class="o">&lt;</span> <span class="n">file1</span> <span class="o">&gt;</span> <span class="n">file2</span>
+</code></pre></div></div>
+
+<p>For an application of error redirection, let’s say you don’t want to display error messages for whatever reason</p>
+
+<p>Recalling /dev/null, the directory that makes files disappear, we can set out error output to this directory to discard them</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">tr</span> <span class="n">a</span><span class="o">-</span><span class="n">z</span> <span class="n">A</span><span class="o">-</span><span class="n">Z</span> <span class="o">&lt;</span> <span class="n">file1</span> <span class="o">&gt;</span> <span class="n">file2</span> <span class="mi">2</span><span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+</code></pre></div></div>
+
+<p>This tr command is an example of what we call a <strong>filter</strong></p>
+
+<h2 id="filters">Filters</h2>
+
+<p>Filters are simply programs that</p>
+
+<ul>
+  <li>Read from stdin</li>
+  <li>Modify it (or do nothing)</li>
+  <li>Write the results to stdout</li>
+</ul>
+
+<p>Although these filters can take user input, they don’t need it thanks to our redirection capabilities</p>
+
+<p>The command tr is an example of a filter command, as well as others, such as:</p>
+
+<p>grep pattern</p>
+
+<p>This reads stdin and writes any lines containing the regex pattern in the argument</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">grep</span> <span class="n">a</span><span class="o">-</span><span class="n">z</span> <span class="o">&lt;</span> <span class="n">file1</span> <span class="o">&gt;</span> <span class="n">file2</span>
+</code></pre></div></div>
+
+<p>wc</p>
+
+<p>Counts the # of chars/words/lines on stdin and writes the result to stdout</p>
+
+<p>sort</p>
+
+<p>Sorts input lines in alphabetical order and writes to stdout</p>
+
+<h2 id="pipes">Pipes</h2>
+
+<p>Something we can also do is use take the output of a command and use it as the input for another</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">command1</span> <span class="o">|</span> <span class="n">command2</span> <span class="o">|</span> <span class="n">command3</span> <span class="o">|</span> <span class="p">...</span> <span class="o">|</span> <span class="n">command_n</span>
+</code></pre></div></div>
+
+<p>You can also pipe any error messages that you get</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">command1</span> <span class="o">|&amp;</span> <span class="n">command2</span>
+</code></pre></div></div>
+
+<p>If we run into a scenario where we want to pipe to a file AND our terminal, we can use the <strong>tee</strong> command</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">command1</span> <span class="o">|</span> <span class="n">tee</span> <span class="n">file1</span>
+</code></pre></div></div>
+
+<h1 id="job-control">Job Control</h1>
+
+<p>Recall that Unix is a multi-tasking operating system and not all tasks are controlled by you, either by other users or in the background</p>
+
+<ul>
+  <li>Ex. your inbox listening for mail</li>
+</ul>
+
+<p>When you run a task (ls, vi, etc.) it executes in the foreground of your shell, meaning that it has control over your screen and keyboard</p>
+
+<p>But what if you want a task in the background? This can be easily done with the &amp; symbol</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">command</span> <span class="o">&amp;</span>
+</code></pre></div></div>
+
+<p>This is especially useful for heavy tasks that you don’t want to take over your computer, leaving you to do other things while you wait</p>
+
+<p>Any output, once finished, will immediately output to your screen, which can be a bit confusing</p>
+
+<p>When input is required, the process prints a message and stops</p>
+
+<p>Upon completion, a message is printed</p>
+
+<p>Explicitly calling background jobs aren’t needed as much for windowing systems (eg. Windows) since you can just go to another window and run the command, but for terminal-based systems (Unix) this is very useful</p>
+
+<p>You also (fortunately) have a lot of control over your jobs in Unix</p>
+
+<h2 id="managing-jobs">Managing Jobs</h2>
+
+<p>While you can terminate a job in the foreground with Ctrl-C, you can also temporarily pause a job with Ctrl-Z</p>
+
+<p>Doing this, the job can be either taken into the foreground, taken into the background or killed</p>
+
+<p>To see which jobs are running/stopped, you can check using the jobs command</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">jobs</span>
+</code></pre></div></div>
+
+<p>This will pull up a list of jobs that have either stopped or are still running</p>
+
+<p>If you wish to move a job into the background you can do the following</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">bg</span> <span class="o">%</span><span class="n">n</span> <span class="c1">//brings the nth job into the background</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Use fg to bring jobs into the foreground</li>
+</ul>
+
+<p>You can also kill jobs using the kill command, much like Ctrl-C</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">kill</span> <span class="o">%</span><span class="n">n</span>
+<span class="o">%</span> <span class="n">kill</span> <span class="o">-</span><span class="n">KILL</span> <span class="o">%</span><span class="n">n</span> <span class="c1">//use this if the above command doesn't work</span>
+</code></pre></div></div>
+
+<p>This kill command can also have the same functionality as Ctrl-Z with the following switch</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">kill</span> <span class="o">-</span><span class="n">STOP</span> <span class="o">%</span><span class="n">n</span>
+</code></pre></div></div>
+
+<h2 id="more-job-commands">More Job Commands</h2>
+
+<p>Jobs are simply a special type of Unix process that are started by Unix shells, so if you want to see every current process, you must use the ps command</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">ps</span>
+</code></pre></div></div>
+
+<p>This can take many options depending on which ps command you use</p>
+
+<p>-l</p>
+
+<p>Gives a long list of what’s going on</p>
+
+<p>-u login_id</p>
+
+<p>Shows info about login_id’s processes</p>
+
+<p>You can use the following command to see more options</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">man</span> <span class="n">ps</span>
+</code></pre></div></div>
+
+<p>If you want to kill any process, you can do the following</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">kill</span> <span class="n">process_id</span>
+</code></pre></div></div>
+
+<p>The ulimit command is also quite useful, setting and reporting file-size writing limits on files written by the shell or child processes</p>
+
+<p>While any user can decrease the limit, you need certain privileges to increase it</p>
+
+<p>This also comes with some switches you can use</p>
+
+<p>-a</p>
+
+<p>Prints all limits</p>
+
+<p>-n</p>
+
+<p>Max number of open file descriptors</p>
+
+<p>-u</p>
+
+<p>Max number of processes available</p>
+
+<h1 id="regular-expressions">Regular Expressions</h1>
+
+<p>Sometimes we want to search for certain patterns, which is perfectly done by a regular expressions, special strings that define a search pattern for matching text</p>
+
+<p>These are used in many Unix utilities (grep, vi, etc.) as well as outside of Unix in other programming languages, which then interpret these strings</p>
+
+<p>These strings can be regular text…</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">grep</span> <span class="n">unix</span> <span class="n">file</span> <span class="c1">//matches only unix in file</span>
+</code></pre></div></div>
+
+<p>…or they can be special text</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">grep</span> <span class="err">'</span><span class="p">[</span><span class="n">uU</span><span class="p">]</span><span class="n">nix</span><span class="err">'</span> <span class="n">file</span> <span class="c1">//matches unix and Unix</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Note that these are different from name expansions, which are interpreted by the shell</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span> <span class="n">grep</span> <span class="p">[</span><span class="n">uU</span><span class="p">]</span><span class="n">nix</span> <span class="n">file</span> <span class="c1">//filename expansion</span>
+</code></pre></div></div>
+
+<p>With special modifications, you can match a wide array of strings</p>
+
+<h2 id="wildcards">Wildcards</h2>
+
+<p>.</p>
+
+<p>Matches any single character</p>
+
+<p>Ex. a.b matches axb and a$b but not axxb</p>
+
+<p>-</p>
+
+<p>Matches zero of more occurrences of the previous single character pattern</p>
+
+<p>Ex. a*b matches b, ab, and aab, but not axb</p>
+
+<ul>
+  <li>This can be combined with . to make .*, which matches any string of characters</li>
+</ul>
+
+<p>*</p>
+
+<p>Matches one or more occurrences of the previous single character pattern</p>
+
+<p>Ex. a+b matches ab and aab, but not b or axb</p>
+
+<p>?</p>
+
+<p>Matches zero or one occurrences of the previous single character pattern</p>
+
+<p>Ex. a\?b matches b and ab, but not aab or axb</p>
+
+<ul>
+  <li>Notice that + and ? are escaped with \, which is necessary for them to have any special meaning</li>
+  <li>You can use (string) if what you want to match isn’t just a single character</li>
+</ul>
+
+<h2 id="sets">Sets</h2>
+
+<p>You can represent sets of characters with […] (ex. [wxyz] matches w, x, y or z)</p>
+
+<p>This can also match ranges of characters (ex. [a-z] matches anything from a to z)</p>
+
+<ul>
+  <li>Wildcards can be applied to both of these as well</li>
+</ul>
+
+<p>It is also worth noting that wildcards lose any meaning once they’re in these brackets</p>
+
+<h2 id="parts">Parts</h2>
+
+<p>You can also match specific parts of lines or words using regular expressions</p>
+
+<p>Matches the beginning of a line</p>
+
+<p>ex. ^TITLE</p>
+
+<p>$</p>
+
+<p>Matches the end of a line</p>
+
+<p>ex. FINI$</p>
+
+<ul>
+  <li>Note that $ only has special meaning at the end of an expression</li>
+</ul>
+
+<p>&lt;</p>
+
+<p>Match beginning of a word</p>
+
+<p>&gt;</p>
+
+<p>Match the end of a word</p>
+
+<h2 id="more">More</h2>
+
+<p>You can match the opposite of a set with ^</p>
+
+<p>ex. [^aeiou] matches any non-vowel</p>
+
+<p>You can also escape the special meaning of character with \</p>
+
+<p>ex. * will only match asterisks</p>
+
+<p>You can refer to the most recent match with (…)</p>
+
+<p>Recall the remembered portion with \n, where n is 1-9</p>
+
+<p>ex. ‘([a-z])\1’ matches any pair of duplicate letters</p>
+
+<p>X{m,n}</p>
+
+<p>Matches m – n repeats of the one character regular expression X</p>
+
+<p>X{m}</p>
+
+<p>Matches exactly m repeats of the one character regular expression X</p>
+
+<p>X{m,}</p>
+
+<p>Matches at least m repeats of the one character regular expression X</p>
+
+<h2 id="switches">Switches</h2>
+
+<p>-c</p>
+
+<p>Count the number of matches</p>
+
+<p>-i</p>
+
+<p>Ignore case distinction</p>
+
+<p>-v</p>
+
+<p>Select non-matching lines</p>
+
+<h2 id="extended-regular-expressions">Extended Regular Expressions</h2>
+
+<p>If you were to use a utility like egrep or grep -E, you can make use of an extended set of wildcards and other mechanisms</p>
+
+<p>-</p>
+
+<p>Works like before, except you don’t need a backslash</p>
+
+<ul>
+  <li>Same applies to ?</li>
+</ul>
+
+<table>
+  <tbody>
+    <tr>
+      <td>r1</td>
+      <td>r2</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Acts as a logical or operator between two regular expressions</p>
+
+<p>(…)</p>
+
+<p>Allows for single character wildcards to apply to an entire encased regular expression</p>
+
+<ul>
+  <li>Recall currently doesn’t work on GAUL</li>
+</ul>
+
+<p>Some character classes are predefined, including [:lower:] (a-z), [:upper:] (A-Z), [:alpha:] (A-Za-z), [:digit:] (0-9) and [:alnum:] (A-Za-z0-9)</p>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>
