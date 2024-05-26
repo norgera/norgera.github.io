@@ -23,7 +23,7 @@ We’ve covered static memory allocation, but how do we do dynamic allocation in
 
 Usually, when a function is called, there is an activation record created alongside it, which includes the parameters, local variables, return address and a link to other records
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9266527d-293a-4c54-9265-dded5cac8e55/Untitled.png)
+![Untitled](images/stackframe/s1.png)
 
 - These records are also called **stack frames**
 
@@ -48,13 +48,13 @@ Since the stack pointer can change during execution of the procedure, it’s bes
 
 For example, assume we have an FD stack and we want to store variable XYZ at 12 bytes below the frame pointer
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d2ed3444-71bd-4de8-9e54-bd5b5b188fd9/Untitled.png)
+![Untitled](images/stackframe/s2.png)
 
 If we add anything to the stack after this, we have to manually recalculate the location of XYZ which is a pain
 
 What we can do instead is have a frame pointer sit at the base of the stack frame
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2415624d-3834-444c-96c8-c73439929302/Untitled.png)
+![Untitled](images/stackframe/s3.png)
 
 Now when we want XYZ, we know exactly where it is no matter what happens to the stack
 
@@ -67,7 +67,7 @@ In ARM, this looks something like this
 
 1. Move up the stack pointer by d bytes (d being the number of bytes we want to allocate for the routine)
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e4f23393-83c6-4b42-a0a5-8354cc2137b8/Untitled.png)
+![Untitled](images/stackframe/s4.png)
 
 - Note that the highlighted instructions can be optimized with either of the following
     
@@ -79,7 +79,7 @@ In ARM, this looks something like this
 
 For the collapse, we do something like this
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c44c81bd-a080-45be-9be2-364738f3b319/Untitled.png)
+![Untitled](images/stackframe/s5.png)
 
 - The highlighted instructions can also be combined with one of the following
     
@@ -91,26 +91,26 @@ For the collapse, we do something like this
 
 Visually, the process looks like this
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5a3178c3-2eb8-4f25-92f0-3818153d91f5/Untitled.png)
+![Untitled](images/stackframe/s6.png)
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f826c299-2281-4b6b-bcb8-30d7c6136710/Untitled.png)
+![Untitled](images/stackframe/s7.png)
 
 As a review, here’s the entire process of calling a subroutine
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3441560e-10d2-4358-a410-58d9bf56c7e7/Untitled.png)
+![Untitled](images/stackframe/s8.png)
 
 In ARM, it looks something like this
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d0970c64-248f-407f-844e-3d7a809df639/Untitled.png)
+![Untitled](images/stackframe/s9.png)
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/78bc6572-e281-4a13-86fd-5f4e6f425f37/Untitled.png)
+![Untitled](images/stackframe/s10.png)
 
 - Note that we modified r2 and did not return it back to what it was originally (this was most likely the point of the subroutine, but just be careful when you do this)
 - Setting the fp as #123 doesn’t mean anything, we just want to clear what might already be there
 
 Visually, it looks something like this
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4331618f-4826-4856-aff8-96bf998aee3f/Untitled.png)
+![Untitled](images/stackframe/s11.png)
 
 - To collapse and return to the main program, we do the reverse
 
