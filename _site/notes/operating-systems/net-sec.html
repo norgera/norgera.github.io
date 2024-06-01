@@ -43,6 +43,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
       type="text/javascript"></script>
     <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+    <script src="/assets/js/colour-theme.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.5/jscolor.min.js"></script>
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Networks + Security | nate’s site</title>
@@ -61,8 +63,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Networks + Security","url":"http://localhost:4000/notes/operating-systems/net-sec.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
-    <link rel="stylesheet" href="/assets/css/style.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=93fd9cf77ce30840ae329d5bf55b7231059bf4c2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=93fd9cf77ce30840ae329d5bf55b7231059bf4c2">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -122,7 +124,9 @@
       <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
       <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
     </ul>
-    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+    <button class="theme-switch star-button"><i class="far fa-star"></i></button>
+
     
       
                 
@@ -162,7 +166,7 @@
 
 <p>Security is only as good as the weakest link, with humans being the weakest link of all</p>
 
-<p><img src="images/net-sec/n1.png" alt="2023-04-18_06-16.png" /></p>
+<p><img src="/notes/operating-systems/images/net-sec/n1.png" alt="2023-04-18_06-16.png" /></p>
 
 <p>Threats include malware (malicious software like trojans), code-injection (regular software that has bugs ripe for exploiting), viruses (malware that self-replicates, attached to regular software) and worms (viruses that self-replicate without human interaction)</p>
 
@@ -184,7 +188,7 @@
   <li>Certificate authorities sign these keys to build trust with users</li>
 </ul>
 
-<p><img src="images/net-sec/n2.png" alt="2023-04-18_06-21_1.png" /></p>
+<p><img src="/notes/operating-systems/images/net-sec/n2.png" alt="2023-04-18_06-21_1.png" /></p>
 
 <p>A user can be authenticated by either something they know (a password), something they posess (phone) or something they are (biometrics), with common issues being reused password</p>
 
@@ -207,7 +211,7 @@
 
 <p>One good way on the OS is privilege separation, which abstract away from the hardware</p>
 
-<p><img src="images/net-sec/n3.png" alt="2023-04-18_06-27.png" /></p>
+<p><img src="/notes/operating-systems/images/net-sec/n3.png" alt="2023-04-18_06-27.png" /></p>
 
 <p>Each ring should only have required objects, with each user being given a domain</p>
 
@@ -310,7 +314,7 @@
 
 <p>We can abstract the hardware into a bunch of different environments, creating the illusion of a separate computer using VMs</p>
 
-<p><img src="images/net-sec/n4.png" alt="2023-04-18_06-32_1.png" /></p>
+<p><img src="/notes/operating-systems/images/net-sec/n4.png" alt="2023-04-18_06-32_1.png" /></p>
 
 <p>This includes emulation (software designed for a different architecture in a similar environment) programming virtualization (used by Java, Pythong and .NET) and containers (separating applications from eachother with the illusion of stand-alone, like Docker)</p>
 
@@ -320,7 +324,7 @@
 
 <p>The VMM can’t be a perfect duplicate, like in the guest kernel mode</p>
 
-<p><img src="images/net-sec/n5.png" alt="2023-04-18_06-36.png" /></p>
+<p><img src="/notes/operating-systems/images/net-sec/n5.png" alt="2023-04-18_06-36.png" /></p>
 
 <p>These come in many types</p>
 
@@ -355,9 +359,9 @@
 
 <p>The Internet uses a DNS to resolve names to IP addresses and they send messages through protocols, with the OS using the OSI network model</p>
 
-<p><img src="images/net-sec/n6.png" alt="2023-04-18_06-40.png" /></p>
+<p><img src="/notes/operating-systems/images/net-sec/n6.png" alt="2023-04-18_06-40.png" /></p>
 
-<p><img src="images/net-sec/n7.png" alt="2023-04-18_06-40_1.png" /></p>
+<p><img src="/notes/operating-systems/images/net-sec/n7.png" alt="2023-04-18_06-40_1.png" /></p>
 
 <p>We can also have network OSes (giving an environment to access remote resources like SSH and SFTP) and distributed OSes (seamless access to remote resources, like NFS but also wiwth shared computation)</p>
 

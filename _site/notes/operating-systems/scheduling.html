@@ -43,6 +43,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
       type="text/javascript"></script>
     <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+    <script src="/assets/js/colour-theme.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.5/jscolor.min.js"></script>
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Scheduling | nate’s site</title>
@@ -61,8 +63,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Scheduling","url":"http://localhost:4000/notes/operating-systems/scheduling.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
-    <link rel="stylesheet" href="/assets/css/style.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=93fd9cf77ce30840ae329d5bf55b7231059bf4c2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=93fd9cf77ce30840ae329d5bf55b7231059bf4c2">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -122,7 +124,9 @@
       <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
       <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
     </ul>
-    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+    <button class="theme-switch star-button"><i class="far fa-star"></i></button>
+
     
       
                 
@@ -158,7 +162,7 @@
 
 <p>There are (supposed to be) many short bursts and only a few long bursts, so we can interleave pretty easily</p>
 
-<p><img src="images/scheduling/e1.png" alt="2023-04-17_05-34.png" /></p>
+<p><img src="/notes/operating-systems/images/scheduling/e1.png" alt="2023-04-17_05-34.png" /></p>
 
 <p>The scheduler itself selects processes from a queue of processes that haven’t been completed</p>
 
@@ -175,7 +179,7 @@
 
 <p>This dispatcher has some latency, but this should be minimized as much as possible (we can use vmstat to track this)</p>
 
-<p><img src="images/scheduling/e2.png" alt="2023-04-17_05-40.png" /></p>
+<p><img src="/notes/operating-systems/images/scheduling/e2.png" alt="2023-04-17_05-40.png" /></p>
 
 <h2 id="scheduling-algorithms">Scheduling Algorithms</h2>
 
@@ -199,11 +203,11 @@
 
 <p>To look at this deeper, consider the following processes</p>
 
-<p><img src="images/scheduling/e3.png" alt="2023-04-17_05-41.png" /></p>
+<p><img src="/notes/operating-systems/images/scheduling/e3.png" alt="2023-04-17_05-41.png" /></p>
 
 <p>This obviously isn’t good for 2 and 3, but if we had a different order, things get much better</p>
 
-<p><img src="images/scheduling/e4.png" alt="2023-04-17_05-41_1.png" /></p>
+<p><img src="/notes/operating-systems/images/scheduling/e4.png" alt="2023-04-17_05-41_1.png" /></p>
 
 <p>This begs the question: what if we slap $P_1$ into the middle? Crunching the numbers, we get the following</p>
 
@@ -254,7 +258,7 @@
 
 <p>If we take into account arrival time, our calculations look slightly different</p>
 
-<p><img src="images/scheduling/e5.png" alt="2023-04-17_05-41_2.png" /></p>
+<p><img src="/notes/operating-systems/images/scheduling/e5.png" alt="2023-04-17_05-41_2.png" /></p>
 
 <h3 id="stack">Stack</h3>
 
@@ -276,7 +280,7 @@
 
 <p>To see how optimal this really is, let’s crunch the numbers</p>
 
-<p><img src="images/scheduling/e6.png" alt="2023-04-17_05-42.png" /></p>
+<p><img src="/notes/operating-systems/images/scheduling/e6.png" alt="2023-04-17_05-42.png" /></p>
 
 <p>This gives us our best times yet from all the other methods, but how do we actually calculate the burst length ahead of time?</p>
 
@@ -335,7 +339,7 @@ t_i &amp;  &amp; 6 &amp; 4 &amp; 6 &amp; 4 &amp; 13 &amp; 13 &amp; 13 \\
 \end{array}\]
 
 <hr />
-<p><img src="images/scheduling/e7.png" alt="2023-04-17_05-45.png" /></p>
+<p><img src="/notes/operating-systems/images/scheduling/e7.png" alt="2023-04-17_05-45.png" /></p>
 
 <h3 id="round-robin">Round Robin</h3>
 
@@ -351,13 +355,13 @@ t_i &amp;  &amp; 6 &amp; 4 &amp; 6 &amp; 4 &amp; 13 &amp; 13 &amp; 13 \\
 
 <p>Despite this, round robin is the most common scheduling algorithm, with pretty good results</p>
 
-<p><img src="images/scheduling/e8.png" alt="2023-04-17_05-45.png" /></p>
+<p><img src="/notes/operating-systems/images/scheduling/e8.png" alt="2023-04-17_05-45.png" /></p>
 
 <h3 id="priority">Priority</h3>
 
 <p>We can also assign priority for each process with an integer, with the upside of more control and the downside of possible starvation</p>
 
-<p><img src="images/scheduling/e9.png" alt="2023-04-17_05-49.png" /></p>
+<p><img src="/notes/operating-systems/images/scheduling/e9.png" alt="2023-04-17_05-49.png" /></p>
 
 <p>We can partially solve the starvation issue with process aging, so as the time progresses, increase priority</p>
 
@@ -369,7 +373,7 @@ t_i &amp;  &amp; 6 &amp; 4 &amp; 6 &amp; 4 &amp; 13 &amp; 13 &amp; 13 \\
 
 <p>We can also combine all of these together, with one method for each queue, which gives the best of all worlds but still can starve processes</p>
 
-<p><img src="images/scheduling/e10.png" alt="2023-04-17_05-52.png" /></p>
+<p><img src="/notes/operating-systems/images/scheduling/e10.png" alt="2023-04-17_05-52.png" /></p>
 
 <p>A variation of this that solves starvation is the feedback queue, where processes can be promoted to higher priority queues as they age and demoted to lower priority queues if they use too much CPU time</p>
 
@@ -412,13 +416,13 @@ t_i &amp;  &amp; 6 &amp; 4 &amp; 6 &amp; 4 &amp; 13 &amp; 13 &amp; 13 \\
   <li>
     <p>Multicore processors - each core is a logical CPU for the OS (faster and saves power, but can create memory stalls)</p>
 
-    <p><img src="images/scheduling/e11.png" alt="2023-04-17_05-58.png" /></p>
+    <p><img src="/notes/operating-systems/images/scheduling/e11.png" alt="2023-04-17_05-58.png" /></p>
   </li>
   <li>Multithreaded multicore processors - each core can handle two or more threads (ex. Intel i7)</li>
   <li>
     <p>In this case, the chip has built-in thread scheduling</p>
 
-    <p><img src="images/scheduling/e12.png" alt="2023-04-17_05-59.png" /></p>
+    <p><img src="/notes/operating-systems/images/scheduling/e12.png" alt="2023-04-17_05-59.png" /></p>
   </li>
 </ul>
 

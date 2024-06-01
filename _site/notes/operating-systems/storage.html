@@ -43,6 +43,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
       type="text/javascript"></script>
     <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+    <script src="/assets/js/colour-theme.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.5/jscolor.min.js"></script>
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Storage Systems | nate’s site</title>
@@ -61,8 +63,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Storage Systems","url":"http://localhost:4000/notes/operating-systems/storage.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
-    <link rel="stylesheet" href="/assets/css/style.css?v=f1493bec2ce30c26469f6477fe6851650851c811">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=93fd9cf77ce30840ae329d5bf55b7231059bf4c2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=93fd9cf77ce30840ae329d5bf55b7231059bf4c2">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -122,7 +124,9 @@
       <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
       <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
     </ul>
-    <button class="theme-switch"><i class="far fa-moon"></i></button>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+    <button class="theme-switch star-button"><i class="far fa-star"></i></button>
+
     
       
                 
@@ -167,7 +171,7 @@
 
 <p>These rotate at 5.4k-15k RPM, with certain types like CDs being removeable</p>
 
-<p><img src="images/storage/st1.png" alt="2023-04-18_03-09.png" /></p>
+<p><img src="/notes/operating-systems/images/storage/st1.png" alt="2023-04-18_03-09.png" /></p>
 
 <p>Sectors nowadays are usually 4kb, but they can be larger on the outer tracks, increasing data density and capacity</p>
 
@@ -185,7 +189,7 @@
 
 <p>These using paging, similar to main memory, making it efficient for reads but inefficient for writes, as they can also degrade the memory cell over time</p>
 
-<p><img src="images/storage/st2.png" alt="2023-04-18_03-13.png" /></p>
+<p><img src="/notes/operating-systems/images/storage/st2.png" alt="2023-04-18_03-13.png" /></p>
 
 <h2 id="scheduling">Scheduling</h2>
 
@@ -214,13 +218,13 @@
 
 <p>Managing the queue intelligently can increase efficiency, with the following being examples of algorithms to use</p>
 
-<p><img src="images/storage/st3.png" alt="2023-04-18_03-17.png" /></p>
+<p><img src="/notes/operating-systems/images/storage/st3.png" alt="2023-04-18_03-17.png" /></p>
 
-<p><img src="images/storage/st4.png" alt="2023-04-18_03-17_1.png" /></p>
+<p><img src="/notes/operating-systems/images/storage/st4.png" alt="2023-04-18_03-17_1.png" /></p>
 
-<p><img src="images/storage/st5.png" alt="2023-04-18_03-17_2.png" /></p>
+<p><img src="/notes/operating-systems/images/storage/st5.png" alt="2023-04-18_03-17_2.png" /></p>
 
-<p><img src="images/storage/st6.png" alt="2023-04-18_03-17_3.png" /></p>
+<p><img src="/notes/operating-systems/images/storage/st6.png" alt="2023-04-18_03-17_3.png" /></p>
 
 <p>There are others as well, including random, LIFO and priority, but all of these depend on the expected workload and most OSes use a combination</p>
 
@@ -246,7 +250,7 @@
 
 <p>The last thing this program does is reading the MBR, which is the first block on the first partition, which loads the rest of the OS</p>
 
-<p><img src="images/storage/st7.png" alt="2023-04-18_03-41.png" /></p>
+<p><img src="/notes/operating-systems/images/storage/st7.png" alt="2023-04-18_03-41.png" /></p>
 
 <h2 id="swap-space-management">Swap-Space Management</h2>
 
@@ -266,13 +270,13 @@
 
 <p>We can also attach storage to network under LAN</p>
 
-<p><img src="images/storage/st8.png" alt="2023-04-18_04-24.png" /></p>
+<p><img src="/notes/operating-systems/images/storage/st8.png" alt="2023-04-18_04-24.png" /></p>
 
 <p>Cloud storage also exists, which is similar to NAS except it’s over the Internet, including Google Drive and Dropbox</p>
 
 <p>If cloud storage is undesirable (ex. servers) we can use SANs to set up a local array or servers, with disks being added and replaced transparently</p>
 
-<p><img src="images/storage/st9.png" alt="2023-04-18_04-26.png" /></p>
+<p><img src="/notes/operating-systems/images/storage/st9.png" alt="2023-04-18_04-26.png" /></p>
 
 <h2 id="raid">RAID</h2>
 
@@ -282,15 +286,15 @@
 
 <p>There are 6 differnet types, generally</p>
 
-<p><img src="images/storage/st10.png" alt="2023-04-18_04-28.png" /></p>
+<p><img src="/notes/operating-systems/images/storage/st10.png" alt="2023-04-18_04-28.png" /></p>
 
-<p><img src="images/storage/st11.png" alt="2023-04-18_04-28_1.png" /></p>
+<p><img src="/notes/operating-systems/images/storage/st11.png" alt="2023-04-18_04-28_1.png" /></p>
 
-<p><img src="images/storage/st12.png" alt="2023-04-18_04-28_2.png" /></p>
+<p><img src="/notes/operating-systems/images/storage/st12.png" alt="2023-04-18_04-28_2.png" /></p>
 
-<p><img src="images/storage/st13.png" alt="2023-04-18_04-28_3.png" /></p>
+<p><img src="/notes/operating-systems/images/storage/st13.png" alt="2023-04-18_04-28_3.png" /></p>
 
-<p><img src="images/storage/st14.png" alt="2023-04-18_04-29.png" /></p>
+<p><img src="/notes/operating-systems/images/storage/st14.png" alt="2023-04-18_04-29.png" /></p>
 
 <p>Other variants exist as well, such as RAID 2, 3, 4, 50, 60, etc.</p>
 

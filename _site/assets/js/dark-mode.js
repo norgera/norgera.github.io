@@ -1,16 +1,22 @@
 const getTheme = () => localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
 
 document.addEventListener("DOMContentLoaded", function () {
-  const toggleButtons = document.querySelectorAll('button.theme-switch');
+  const moonButton = document.querySelector('button.moon-button');
 
   function toggleTheme(e) {
     const currentTheme = getTheme();
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    console.log(`Toggling theme from ${currentTheme} to ${newTheme}`);
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
   }
 
-  toggleButtons.forEach(btn => btn.addEventListener('click', toggleTheme));
+  if (moonButton) {
+    moonButton.addEventListener('click', toggleTheme);
+    console.log('Moon button event listener added');
+  } else {
+    console.error('Moon button not found');
+  }
 
   const currentTheme = getTheme();
   if (currentTheme) {
