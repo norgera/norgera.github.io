@@ -245,7 +245,7 @@ hr { width: 100%; }
 
 pre { font-size: 14px; }
 
-.theme-switch { align-self: flex-end; background-color: transparent; border: none; /* Remove borders */ color: var(--clr-text); font-size: 16px; /* Set a font size */ cursor: pointer; /* Mouse pointer on hover */ }
+.theme-switch { align-self: flex-end; background-color: transparent; border: none; /* Remove borders */ color: var(--clr-text); font-size: 16px; /* Set a font size */ cursor: pointer; /* Mouse pointer on hover */ z-index: 10; /* Ensure buttons are on top */ position: relative; /* Ensure buttons are positioned correctly */ }
 
 .link-wrapper { display: flex; flex-direction: column; }
 

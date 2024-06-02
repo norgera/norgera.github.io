@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const starButton = document.querySelector('button.star-button');
+    const starButtons = document.querySelectorAll('button.star-button');
 
     // Initialize jscolor picker
     jscolor.presets.default = {
@@ -23,11 +23,14 @@ document.addEventListener("DOMContentLoaded", function () {
         picker.show();
     }
 
-    if (starButton) {
-        starButton.addEventListener('click', showColorPicker);
-        console.log('Star button event listener added');
+    if (starButtons.length > 0) {
+        starButtons.forEach(button => {
+            button.addEventListener('click', showColorPicker);
+            button.addEventListener('touchstart', showColorPicker); // Add touchstart event listener for mobile
+            console.log('Star button event listener added');
+        });
     } else {
-        console.error('Star button not found');
+        console.error('Star buttons not found');
     }
 
     // Apply the saved color on page load

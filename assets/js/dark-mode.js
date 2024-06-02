@@ -1,7 +1,7 @@
 const getTheme = () => localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
 
 document.addEventListener("DOMContentLoaded", function () {
-  const moonButton = document.querySelector('button.moon-button');
+  const moonButtons = document.querySelectorAll('button.moon-button');
 
   function toggleTheme(e) {
     const currentTheme = getTheme();
@@ -11,11 +11,14 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem('theme', newTheme);
   }
 
-  if (moonButton) {
-    moonButton.addEventListener('click', toggleTheme);
-    console.log('Moon button event listener added');
+  if (moonButtons.length > 0) {
+    moonButtons.forEach(button => {
+      button.addEventListener('click', toggleTheme);
+      button.addEventListener('touchstart', toggleTheme); // Add touchstart event listener for mobile
+      console.log('Moon button event listener added');
+    });
   } else {
-    console.error('Moon button not found');
+    console.error('Moon buttons not found');
   }
 
   const currentTheme = getTheme();
