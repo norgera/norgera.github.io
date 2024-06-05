@@ -13,12 +13,14 @@ document.addEventListener("DOMContentLoaded", function () {
       localStorage.setItem('theme', newTheme);
       themeToggled = true;
     }
+    e.preventDefault(); // Prevent default action to avoid double toggling
   }
 
   if (moonButtons.length > 0) {
     moonButtons.forEach(button => {
       button.addEventListener('click', toggleTheme);
       button.addEventListener('touchstart', toggleTheme); // Add touchstart event listener for mobile
+      button.addEventListener('touchend', (e) => e.preventDefault()); // Prevent click after touchstart
       console.log('Moon button event listener added');
     });
   } else {
