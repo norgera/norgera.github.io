@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const starButtons = document.querySelectorAll('button.star-button');
 
     // Initialize jscolor picker
+    let picker = null;
+
     jscolor.presets.default = {
         width: 200,
         position: 'right',
@@ -18,13 +20,18 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault();
         e.stopPropagation();
         const target = e.currentTarget.querySelector('i');
-        const picker = new jscolor(target, {
-            onFineChange: 'updateColor(this)',
-            valueElement: null, // This ensures that the color value is not applied to the button itself
-            previewElement: null, // No preview element
-            styleElement: null // No style element
-        });
-        picker.show();
+
+        if(!picker){
+            picker = new jscolor(target, {
+                onFineChange: 'updateColor(this)',
+                valueElement: null, // This ensures that the color value is not applied to the button itself
+                previewElement: null, // No preview element
+                styleElement: null // No style element
+            });
+
+        }
+
+        if(picker) picker.show();
     }
 
     if (starButtons.length > 0) {
