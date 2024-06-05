@@ -11,14 +11,18 @@ document.addEventListener("DOMContentLoaded", function () {
         borderRadius: 6,
         borderWidth: 1,
         borderColor: '#444',
+        previewElement: null
     };
 
     function showColorPicker(e) {
         e.preventDefault();
-        const picker = new jscolor(e.target, {
+        e.stopPropagation();
+        const target = e.currentTarget.querySelector('i');
+        const picker = new jscolor(target, {
             onFineChange: 'updateColor(this)',
             valueElement: null, // This ensures that the color value is not applied to the button itself
-            styleElement: null 
+            previewElement: null, // No preview element
+            styleElement: null // No style element
         });
         picker.show();
     }
@@ -27,10 +31,21 @@ document.addEventListener("DOMContentLoaded", function () {
         starButtons.forEach(button => {
             button.addEventListener('click', showColorPicker);
             button.addEventListener('touchstart', showColorPicker); // Add touchstart event listener for mobile
+            const greenPart = button.querySelector('.green-part');
+            if (greenPart) {
+                greenPart.addEventListener('click', handleGreenPartClick);
+                greenPart.addEventListener('touchstart', handleGreenPartClick); // Add touchstart event listener for mobile
+            }
             console.log('Star button event listener added');
         });
     } else {
-        console.error('Star buttons not found');
+        console.log('No star buttons found');
+    }
+
+    function handleGreenPartClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        alert('Green part clicked!');
     }
 
     // Apply the saved color on page load

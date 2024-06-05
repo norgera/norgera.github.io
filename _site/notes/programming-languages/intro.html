@@ -63,8 +63,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Intro to Programming Languages","url":"http://localhost:4000/notes/programming-languages/intro.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=2ee97eaa611dc385c715b5be0481de34f8dc115b">
-    <link rel="stylesheet" href="/assets/css/style.css?v=2ee97eaa611dc385c715b5be0481de34f8dc115b">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=6de137d4c33a3c1b7b61f62275990bd28e590d27">
+    <link rel="stylesheet" href="/assets/css/style.css?v=6de137d4c33a3c1b7b61f62275990bd28e590d27">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -132,7 +132,7 @@
                 
                 <h4>Table of Contents</h4>
             
-                <ul class="toc"><li><a href="#evolution">Evolution</a></li><li><a href="#compilationinterpretation-phases">Compilation/Interpretation Phases</a></li></ul>
+                <ul class="toc"><li><a href="#compilation-vs-interpretation">Compilation vs Interpretation</a><ul><li><a href="#compilationinterpretation-phases">Compilation/Interpretation Phases</a></li></ul></li><li><a href="#scanning-example">Scanning: Example</a><ul><li><a href="#c-program-computes-gcd">C Program (computes GCD):</a></li><li><a href="#input--sequence-of-characters">Input – sequence of characters:</a></li><li><a href="#output--tokens">Output – tokens:</a></li></ul></li><li><a href="#parsing-example--while-loop-in-c">Parsing: Example – while loop in C</a><ul><li><a href="#context-free-grammar-part-of">Context-free grammar (part of):</a></li><li><a href="#parse-tree-for-gcd-program">Parse tree for GCD program</a></li></ul></li><li><a href="#assembly-code-for-gcd-program">Assembly Code for GCD Program</a><ul><li><a href="#corresponding-c-program">Corresponding C Program:</a></li></ul></li><li><a href="#assembly-code-example">Assembly Code Example</a></li></ul>
             
     
   </div>
@@ -146,12 +146,8 @@
     <a href="/posts">posts</a>
     <a href="/projects">projects</a>
     <a href="/notes">notes</a>
-    <button class="theme-switch moon-button">
-        <i class="far fa-moon"></i>
-    </button>
-    <button class="theme-switch star-button">
-        <i class="far fa-star"></i>
-    </button>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+    <button class="theme-switch star-button"><i class="far fa-star"></i></button>
 </div>
 
 
@@ -161,89 +157,6 @@
       <section>
 
       <h1 id="intro-to-programming-languages">Intro to Programming Languages</h1>
-
-<h1 id="why-so-many">Why So Many?</h1>
-
-<p>Programming languages are everywhere, so it makes sense that we’ll need to program things differently</p>
-
-<p>As the devices evolve, the amount we can do with our programming evolves as well</p>
-
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ac49748f-61bb-4e3f-84f3-fc4a9d0d447e/Untitled.png" alt="Untitled" /></p>
-
-<p>But still, you could argue that we could create some “universal” programming language that could run on anything</p>
-
-<ul>
-  <li>We tried this with Java. It didn’t work.</li>
-</ul>
-
-<p>The reason we evolve languages is for a number of reasons, including developer preference, features, compilers, availability, marketing and special purposes</p>
-
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c66687a0-74d3-4214-8ea8-d1ba87f4e696/Untitled.png" alt="Untitled" /></p>
-
-<p>All of these programs, however, are fundamentally ways of thinking and expressing algorithms</p>
-
-<p>They also abstract a virtual machine, specifying what your hardware should do without manipulating wires</p>
-
-<p>Ultimately, we want implementation efficiency and conceptual clarity, with the most successful languages being…</p>
-
-<ul>
-  <li>Easy to learn (BASIC, Pascal, etc.)</li>
-  <li>Powerful (C, Perl, etc.)</li>
-  <li>Easy to implement (Fortran)</li>
-  <li>Fast (C)</li>
-  <li>Backed by a powerful sponsor (Visual Basic, COBOL)</li>
-  <li>Widely disseminated (Java)</li>
-</ul>
-
-<p>There’s two main types of languages:</p>
-
-<ol>
-  <li>Imperative (dictating how a computer should do things)
-    <ol>
-      <li>von Neumann (C, Fortran, etc.)</li>
-      <li>OOP (C++, Java, etc.)</li>
-      <li>Scripting (Python, JS, etc.)</li>
-    </ol>
-  </li>
-  <li>Declarative (dictating what the computer does)
-    <ol>
-      <li>Functional (Scheme, Lisp, etc.)</li>
-      <li>Logic (Prolog)</li>
-    </ol>
-  </li>
-</ol>
-
-<p>Overall, imperative languages dominate, but declarative languages are higher-level, which makes them much safer</p>
-
-<h3 id="evolution">Evolution</h3>
-
-<p>We started with machine languages, going to assembly to abstract things and make them somewhat readable</p>
-
-<p>From there, we get to the first actual programming language, known as Fortran</p>
-
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6e189fe2-c146-4a33-bc32-b45e50c1d6be/Untitled.png" alt="Untitled" /></p>
-
-<p>From there, we evolve into more modern imperative languages</p>
-
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/57e48bed-1536-462a-989d-d3c4e5fb551a/Untitled.png" alt="Untitled" /></p>
-
-<p>However, our declarative languages look much freakier</p>
-
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/065a8405-0cd5-4f74-aa3f-81de92f19d48/Untitled.png" alt="Untitled" /></p>
-
-<p>Let’s break this down a little bit</p>
-
-<p>With Scheme, all your code is in the form (function arguments)</p>
-
-<p>With define, we define the function gcd, specifying the arguments with lambda, so the first two lines define gcd as a function ($\lambda$) of two arguments (a,b)</p>
-
-<p>The third line defines a condition, with (zero? b) asking if b is zero, return a if its</p>
-
-<p>If b isn’t zero, it goes to the else case, where it executes gcd with parameters (b, mod_a b)</p>
-
-<p>With Prolog, we only have one real code word, which is :-, meaning ‘if’ in the strictly logical sense (you should know what I mean from 2209)</p>
-
-<p>At its core, the distinction between languages is the ability to control complexity, with function, objects and other features to abstract away the underlying systems</p>
 
 <h2 id="compilation-vs-interpretation">Compilation vs Interpretation</h2>
 
@@ -315,13 +228,53 @@
   <li>This is done using a deterministic finite automata (DFA)</li>
 </ul>
 
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ad5e08e0-64a7-405e-a50b-aedddc2e1593/Untitled.png" alt="Untitled" /></p>
+<h2 id="scanning-example">Scanning: Example</h2>
+
+<h3 id="c-program-computes-gcd">C Program (computes GCD):</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">getint</span><span class="p">(),</span> <span class="n">j</span> <span class="o">=</span> <span class="n">getint</span><span class="p">();</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="n">j</span><span class="p">)</span> <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">;</span>
+        <span class="k">else</span> <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">-</span> <span class="n">i</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">putint</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="input--sequence-of-characters">Input – sequence of characters:</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>‘i’, ‘n’, ‘t’, ‘ ’, ‘m’, ‘a’, ‘i’, ‘n’, ‘(’, ‘)’ ...
+</code></pre></div></div>
+
+<h3 id="output--tokens">Output – tokens:</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>int, main, (, ), {, int, i, =, getint, (, ), ,, j, =, getint, (, ), ;, while, (, i, !=, j, ), {, if, (, i, &gt;, j, ), i, =, i, -, j, ;, else, j, =, j, -, i, ;, }, putint, (, i, ), ;, }
+</code></pre></div></div>
 
 <p>On parsing, we check the syntax of the program to make sure the grammar is being adhered to, which is done via a pushdown automata (PDA)</p>
 
 <p>This parsing organizes tokens into a parse tree as defined by a context free grammar (CFG)</p>
 
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2002c5e7-01cf-4a53-9463-a14424c860a1/Untitled.png" alt="Untitled" /></p>
+<h2 id="parsing-example--while-loop-in-c">Parsing: Example – while loop in C</h2>
+
+<h3 id="context-free-grammar-part-of">Context-free grammar (part of):</h3>
+
+<p>iteration-statement → while ( expression ) statement</p>
+
+<p>statement → { block-item-list-opt }</p>
+
+<p>block-item-list-opt → block-item-list | ε</p>
+
+<p>block-item-list → block-item
+block-item-list → block-item-list block-item</p>
+
+<p>block-item → declaration
+block-item → statement</p>
+
+<h3 id="parse-tree-for-gcd-program">Parse tree for GCD program</h3>
+<ul>
+  <li>based on full context-free grammar</li>
+  <li>see next slides</li>
+</ul>
 
 <p>From here, our previous GCD example can be split up into a parse tree</p>
 
@@ -349,11 +302,99 @@
 
 <p>Finally, we have code generation which uses interpreters to run the syntax tree and target code generation which then produces assembly</p>
 
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e3cea77d-e7e2-4ef8-8295-bc07af8579f3/Untitled.png" alt="Untitled" /></p>
+<h2 id="assembly-code-for-gcd-program">Assembly Code for GCD Program</h2>
+
+<pre><code class="language-assembly">pushl   %ebp                # \
+movl    %esp, %ebp          # ) reserve space for local variables
+subl    $16, %esp           # /
+call    getint              # read
+movl    %eax, -8(%ebp)      # store i
+call    getint              # read
+movl    %eax, -12(%ebp)     # store j
+
+A: 
+movl    -8(%ebp), %edi      # load i
+movl    -12(%ebp), %ebx     # load j
+cmpl    %ebx, %edi          # compare
+je      D                   # jump if i == j
+
+movl    -8(%ebp), %edi      # load i
+movl    -12(%ebp), %ebx     # load j
+cmpl    %ebx, %edi          # compare
+jle     B                   # jump if i &lt; j
+
+movl    -8(%ebp), %edi      # load i
+movl    -12(%ebp), %ebx     # load j
+subl    %ebx, %edi          # i = i - j
+movl    %edi, -8(%ebp)      # store i
+jmp     C
+
+B: 
+movl    -12(%ebp), %edi     # load j
+movl    -8(%ebp), %ebx      # load i
+subl    %ebx, %edi          # j = j - i
+movl    %edi, -12(%ebp)     # store j
+
+C: 
+jmp     A
+
+D: 
+movl    -8(%ebp), %ebx      # load i
+push    %ebx                # push i (pass to putint)
+call    putint              # write
+addl    $4, %esp            # pop i
+leave                       # deallocate space for local variables
+mov     $0, %eax            # exit status for program
+ret                         # return to operating system
+</code></pre>
+
+<h3 id="corresponding-c-program">Corresponding C Program:</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">getint</span><span class="p">(),</span> <span class="n">j</span> <span class="o">=</span> <span class="n">getint</span><span class="p">();</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="n">j</span><span class="p">)</span> <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">;</span>
+        <span class="k">else</span> <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">-</span> <span class="n">i</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">putint</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>This is a bit of a naive solution that can definitely be approved upon, so our final step is to find these optimizations to either do things faster or take less space</p>
 
-<p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e3cea77d-e7e2-4ef8-8295-bc07af8579f3/Untitled.png" alt="Untitled" /></p>
+<h2 id="assembly-code-example">Assembly Code Example</h2>
+
+<pre><code class="language-assembly">pushl   %ebp
+movl    %esp, %ebp
+pushl   %ebx
+subl    $4, %esp
+andl    $-16, %esp
+call    getint
+movl    %eax, %ebx
+call    getint
+cmpl    %eax, %ebx
+je      C
+
+A: 
+cmpl    %eax, %ebx
+jle     D
+subl    %eax, %ebx
+
+B: 
+cmpl    %eax, %ebx
+jne     A
+
+C: 
+movl    %ebx, (%esp)
+call    putint
+movl    -4(%ebp), %ebx
+leave
+ret
+
+D: 
+subl    %ebx, %eax
+jmp     B
+</code></pre>
 
 
       </section>

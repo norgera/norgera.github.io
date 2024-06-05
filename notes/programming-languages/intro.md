@@ -6,76 +6,6 @@ toc: true
 
 # Intro to Programming Languages
 
-# Why So Many?
-
-Programming languages are everywhere, so it makes sense that we’ll need to program things differently
-
-As the devices evolve, the amount we can do with our programming evolves as well
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ac49748f-61bb-4e3f-84f3-fc4a9d0d447e/Untitled.png)
-
-But still, you could argue that we could create some “universal” programming language that could run on anything
-
-- We tried this with Java. It didn’t work.
-
-The reason we evolve languages is for a number of reasons, including developer preference, features, compilers, availability, marketing and special purposes
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c66687a0-74d3-4214-8ea8-d1ba87f4e696/Untitled.png)
-
-All of these programs, however, are fundamentally ways of thinking and expressing algorithms
-
-They also abstract a virtual machine, specifying what your hardware should do without manipulating wires
-
-Ultimately, we want implementation efficiency and conceptual clarity, with the most successful languages being…
-
-- Easy to learn (BASIC, Pascal, etc.)
-- Powerful (C, Perl, etc.)
-- Easy to implement (Fortran)
-- Fast (C)
-- Backed by a powerful sponsor (Visual Basic, COBOL)
-- Widely disseminated (Java)
-
-There’s two main types of languages:
-
-1. Imperative (dictating how a computer should do things)
-    1. von Neumann (C, Fortran, etc.)
-    2. OOP (C++, Java, etc.)
-    3. Scripting (Python, JS, etc.)
-2. Declarative (dictating what the computer does)
-    1. Functional (Scheme, Lisp, etc.)
-    2. Logic (Prolog)
-
-Overall, imperative languages dominate, but declarative languages are higher-level, which makes them much safer
-
-### Evolution
-
-We started with machine languages, going to assembly to abstract things and make them somewhat readable
-
-From there, we get to the first actual programming language, known as Fortran
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6e189fe2-c146-4a33-bc32-b45e50c1d6be/Untitled.png)
-
-From there, we evolve into more modern imperative languages
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/57e48bed-1536-462a-989d-d3c4e5fb551a/Untitled.png)
-
-However, our declarative languages look much freakier
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/065a8405-0cd5-4f74-aa3f-81de92f19d48/Untitled.png)
-
-Let’s break this down a little bit
-
-With Scheme, all your code is in the form (function arguments)
-
-With define, we define the function gcd, specifying the arguments with lambda, so the first two lines define gcd as a function ($\lambda$) of two arguments (a,b)
-
-The third line defines a condition, with (zero? b) asking if b is zero, return a if its
-
-If b isn’t zero, it goes to the else case, where it executes gcd with parameters (b, mod_a b)
-
-With Prolog, we only have one real code word, which is :-, meaning ‘if’ in the strictly logical sense (you should know what I mean from 2209)
-
-At its core, the distinction between languages is the ability to control complexity, with function, objects and other features to abstract away the underlying systems
 
 ## Compilation vs Interpretation
 
@@ -137,13 +67,57 @@ In the scanner, we divide the program into token, which are the smallest meaning
 
 - This is done using a deterministic finite automata (DFA)
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ad5e08e0-64a7-405e-a50b-aedddc2e1593/Untitled.png)
+
+## Scanning: Example
+
+### C Program (computes GCD):
+
+```c
+int main() {
+    int i = getint(), j = getint();
+    while (i != j) {
+        if (i > j) i = i - j;
+        else j = j - i;
+    }
+    putint(i);
+}
+```
+
+### Input – sequence of characters:
+```
+‘i’, ‘n’, ‘t’, ‘ ’, ‘m’, ‘a’, ‘i’, ‘n’, ‘(’, ‘)’ ...
+```
+
+### Output – tokens:
+```
+int, main, (, ), {, int, i, =, getint, (, ), ,, j, =, getint, (, ), ;, while, (, i, !=, j, ), {, if, (, i, >, j, ), i, =, i, -, j, ;, else, j, =, j, -, i, ;, }, putint, (, i, ), ;, }
+```
+
 
 On parsing, we check the syntax of the program to make sure the grammar is being adhered to, which is done via a pushdown automata (PDA)
 
 This parsing organizes tokens into a parse tree as defined by a context free grammar (CFG)
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2002c5e7-01cf-4a53-9463-a14424c860a1/Untitled.png)
+## Parsing: Example – while loop in C
+
+### Context-free grammar (part of):
+
+iteration-statement → while ( expression ) statement
+
+statement → { block-item-list-opt }
+
+block-item-list-opt → block-item-list \| ε
+
+block-item-list → block-item
+block-item-list → block-item-list block-item
+
+block-item → declaration
+block-item → statement
+
+### Parse tree for GCD program
+- based on full context-free grammar
+- see next slides
+
 
 From here, our previous GCD example can be split up into a parse tree
 
@@ -167,8 +141,102 @@ This semantic analysis produces a syntax tree, removing some of the more “usel
 
 Finally, we have code generation which uses interpreters to run the syntax tree and target code generation which then produces assembly
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e3cea77d-e7e2-4ef8-8295-bc07af8579f3/Untitled.png)
+
+## Assembly Code for GCD Program
+
+```assembly
+pushl   %ebp                # \
+movl    %esp, %ebp          # ) reserve space for local variables
+subl    $16, %esp           # /
+call    getint              # read
+movl    %eax, -8(%ebp)      # store i
+call    getint              # read
+movl    %eax, -12(%ebp)     # store j
+
+A: 
+movl    -8(%ebp), %edi      # load i
+movl    -12(%ebp), %ebx     # load j
+cmpl    %ebx, %edi          # compare
+je      D                   # jump if i == j
+
+movl    -8(%ebp), %edi      # load i
+movl    -12(%ebp), %ebx     # load j
+cmpl    %ebx, %edi          # compare
+jle     B                   # jump if i < j
+
+movl    -8(%ebp), %edi      # load i
+movl    -12(%ebp), %ebx     # load j
+subl    %ebx, %edi          # i = i - j
+movl    %edi, -8(%ebp)      # store i
+jmp     C
+
+B: 
+movl    -12(%ebp), %edi     # load j
+movl    -8(%ebp), %ebx      # load i
+subl    %ebx, %edi          # j = j - i
+movl    %edi, -12(%ebp)     # store j
+
+C: 
+jmp     A
+
+D: 
+movl    -8(%ebp), %ebx      # load i
+push    %ebx                # push i (pass to putint)
+call    putint              # write
+addl    $4, %esp            # pop i
+leave                       # deallocate space for local variables
+mov     $0, %eax            # exit status for program
+ret                         # return to operating system
+```
+
+### Corresponding C Program:
+
+```c
+int main() {
+    int i = getint(), j = getint();
+    while (i != j) {
+        if (i > j) i = i - j;
+        else j = j - i;
+    }
+    putint(i);
+}
+```
+
+
 
 This is a bit of a naive solution that can definitely be approved upon, so our final step is to find these optimizations to either do things faster or take less space
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e3cea77d-e7e2-4ef8-8295-bc07af8579f3/Untitled.png)
+## Assembly Code Example
+
+```assembly
+pushl   %ebp
+movl    %esp, %ebp
+pushl   %ebx
+subl    $4, %esp
+andl    $-16, %esp
+call    getint
+movl    %eax, %ebx
+call    getint
+cmpl    %eax, %ebx
+je      C
+
+A: 
+cmpl    %eax, %ebx
+jle     D
+subl    %eax, %ebx
+
+B: 
+cmpl    %eax, %ebx
+jne     A
+
+C: 
+movl    %ebx, (%esp)
+call    putint
+movl    -4(%ebp), %ebx
+leave
+ret
+
+D: 
+subl    %ebx, %eax
+jmp     B
+```
