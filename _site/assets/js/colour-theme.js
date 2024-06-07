@@ -21,17 +21,16 @@ document.addEventListener("DOMContentLoaded", function () {
         e.stopPropagation();
         const target = e.currentTarget.querySelector('i');
 
-        if(!picker){
+        if (!picker) {
             picker = new jscolor(target, {
                 onFineChange: 'updateColor(this)',
                 valueElement: null, // This ensures that the color value is not applied to the button itself
                 previewElement: null, // No preview element
                 styleElement: null // No style element
             });
-
         }
 
-        if(picker) picker.show();
+        if (picker) picker.show();
     }
 
     if (starButtons.length > 0) {
@@ -53,6 +52,12 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault();
         e.stopPropagation();
         alert('Green part clicked!');
+    }
+
+    // Check if the page was refreshed
+    if (performance.navigation.type === 1) {
+        localStorage.removeItem('selectedColor');
+        console.log('Page was reloaded, color reset to default.');
     }
 
     // Apply the saved color on page load
