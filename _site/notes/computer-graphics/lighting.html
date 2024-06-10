@@ -1,0 +1,528 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.5/jscolor.min.js"></script>
+    <script src="/assets/js/colour-theme.js" type="text/javascript"></script>
+    
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Lighting + Cameras | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Lighting + Cameras" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/computer-graphics/lighting.html" />
+<meta property="og:url" content="http://localhost:4000/notes/computer-graphics/lighting.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Lighting + Cameras" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Lighting + Cameras","url":"http://localhost:4000/notes/computer-graphics/lighting.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+    <button class="theme-switch star-button"><i class="far fa-star"></i></button>
+
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#what-is-light">What is Light?</a></li><li><a href="#reflections">Reflections</a></li><li><a href="#models">Models</a></li><li><a href="#light-sources">Light Sources</a></li><li><a href="#lighting-colors-and-materials">Lighting Colors and Materials</a><ul><li><a href="#a-phong-shader-in-glsl">A Phong shader in GLSL:</a></li></ul></li><li><a href="#camera-manipulation">Camera Manipulation</a></li></ul>
+            
+    
+  </div>
+  
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+</div>
+
+
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="lighting--cameras">Lighting + Cameras</h1>
+
+<p>To make our scenes more realistic, lighting will be necessary to create the desired effects</p>
+
+<p>But to go into this, we need a quick physics lesson</p>
+
+<h2 id="what-is-light">What is Light?</h2>
+
+<p>Light, as physics is concerned, is well-studied and gives us various terminology that will be useful, such as:</p>
+
+<ul>
+  <li>Irradiance: the amount of light recieved by a surface per unit area</li>
+  <li>Raidance: amount of light emitted by a surface per unit area</li>
+  <li>Reflection: change in direction of light where the light returns to the original volume</li>
+  <li>Refraction: change in direction of light where the light moves out of the original volume</li>
+  <li>Albedo: measure of amount of light reflected vs light refracted
+    <ul>
+      <li>In graphics, this can also refer to the base color of an object</li>
+    </ul>
+  </li>
+</ul>
+
+<p>White light is the combination of every color of light</p>
+
+<p><img src="images/light/d1.png" alt="2023-03-27_12-55.png" /></p>
+
+<p>The color we actually see has to do with which wavelengths are absorbed and which ones are not</p>
+
+<ul>
+  <li>This is where albedo comes in to describe the base color</li>
+</ul>
+
+<h2 id="reflections">Reflections</h2>
+
+<p>Now that we have a basic idea of how light works, let’s go over the math we need to render it</p>
+
+<p>For a perfect mirror, it’s actually pretty simple: all we need is the normal and the angle between the ray and the normal</p>
+
+<p><img src="images/light/d2.png" alt="2023-03-27_17-10.png" /></p>
+
+<p>This can be done with some simple dot vectors</p>
+
+\[\frac{\vec{i}\cdot \vec{n}}{|i||n|} = \frac{\vec{r}\cdot \vec{n}}{|r||n|}\]
+
+<ul>
+  <li>It gets even better since we have GLSL to compute this automatically</li>
+</ul>
+
+<p>There’s just one problem: most surfaces aren’t perfect mirrors, so to do photorealistic lighting, we need something else</p>
+
+\[L_o(\mathbf{x}, \omega_o, \lambda, t) = L_e(\mathbf{x}, \omega_o, \lambda, t) + \int_{\Omega} f_r(\mathbf{x}, \omega_i, \omega_o, \lambda, t)L_i(\mathbf{x}, \omega_i, \lambda, t)(\omega_i \cdot \mathbf{n}) \, d\omega_i\]
+
+<p>where</p>
+<ul>
+  <li>$ L_o(\mathbf{x}, \omega_o, \lambda, t) $ is the total spectral radiance of wavelength $\lambda$ directed outward along direction $\omega_o$ at time $t$, from a particular position $\mathbf{x}$</li>
+  <li>$\mathbf{x}$ is the location in space</li>
+  <li>$\omega_o$ is the direction of the outgoing light</li>
+  <li>$\lambda$ is a particular wavelength of light</li>
+  <li>$t$ is time</li>
+  <li>$ L_e(\mathbf{x}, \omega_o, \lambda, t) $ is emitted spectral radiance</li>
+  <li>$\int_{\Omega} \ldots d\omega_i$ is an integral over $\Omega$</li>
+  <li>$\Omega$ is the unit hemisphere centered around $\mathbf{n}$ containing all possible values for $\omega_i$ where $\omega_i \cdot \mathbf{n} &gt; 0$</li>
+  <li>$ f_r(\mathbf{x}, \omega_i, \omega_o, \lambda, t) $ is the bidirectional reflectance distribution function, the proportion of light reflected from $\omega_i$ to $\omega_o$ at position $\mathbf{x}$, time $t$, and at wavelength $\lambda$</li>
+  <li>$\omega_i$ is the negative direction of the incoming light</li>
+  <li>$ L_i(\mathbf{x}, \omega_i, \lambda, t) $ is spectral radiance of wavelength $\lambda$ coming inward toward $\mathbf{x}$ from direction $\omega_i$ at time $t$</li>
+  <li>$\mathbf{n}$ is the surface normal at $\mathbf{x}$</li>
+  <li>$\omega_i \cdot \mathbf{n}$ is the weakening factor of outward irradiance due to incident angle, as the light flux is smeared across a surface whose area is larger than the projected area perpendicular to the ray. This is often written as $\cos \theta_i$.</li>
+</ul>
+
+<p>This is, to be frank, a disgusting equation, so let’s pick it apart a bit</p>
+
+<ul>
+  <li>$L_o$ is the output light from the surface</li>
+  <li>$L_e$ is the emitted light from the surface</li>
+  <li>$L_i$ is the incident light on the surface</li>
+  <li>$f_r$ is the bidiractional reflectance distribution function (BRDF), where $\omega_i$ is the incoming light direction, $\omega_o$ is the outgoing direction and $\lambda$ is the wavelength
+    <ul>
+      <li>The exact function needs to be measured by experiment for every surface, but we can approximate with lighting models</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="models">Models</h2>
+
+<p>Lighting/shading models (used interchangeably) are a simplification of light, color, reflection and refraction and how they interact</p>
+
+<p>This has a few different types</p>
+
+<ul>
+  <li>Ambient reflectance: all the light that doesn’t come from a specific source (it just “exists”) (this naturally doesn’t cast shadows)</li>
+  <li>Lambertian reflectance: assumes BRDF is constant, meaning the reflection is evenly spread across all directions (gives a matte appearence known as diffuse reflection)</li>
+  <li>Phong model: combines the previous types along with specular</li>
+</ul>
+
+<p><img src="images/light/d3.png" alt="2023-03-27_17-38.png" /></p>
+
+<p>With the phong model, the color is calculated for each fragment individually as a combination of ambient, diffuse and specular reflection</p>
+
+\[color_{out} = ambient+diffuse+specular\]
+
+<p>This is the easy part, however, so let’s look at each part</p>
+
+<p>Ambient is uniform, so just paint it with a colour like we did before we knew about lighting</p>
+
+<p>Diffuse is independent of viewer position, calculated by the following formula</p>
+
+\[L_d = I \cdot \max(0, \mathbf{n} \cdot \mathbf{l})\]
+
+<p>where $I$ is the incoming light intensity, $\mathbf{n}$ is a normalized vector for the surface normal at that point, and $\mathbf{l}$ is a normalized vector for the direction to the light source from the point on the surface.</p>
+
+<ul>
+  <li>We use max since the dot product can be negative, which doesn’t make much sense.</li>
+</ul>
+
+<p>Specular does depend on viewer position, but what we want is glossy reflection, with mirrored highlights but not necessarily a mirrored finish. The actual formula is pretty similar to the one for diffuse:</p>
+
+\[L_s = I \cdot \max(0, \mathbf{v} \cdot \mathbf{r})^\alpha\]
+
+<p>where $I$ is the incoming light intensity, $\mathbf{r}$ is a normalized vector in the direction of the reflected light ray, and $\mathbf{v}$ is a normalized vector for the direction to the viewer from the point on the surface. Finally, $\alpha$ is the shininess parameter that controls how “shiny” the surface appears. The larger the value, the more shiny. Typical values are between 0 and 100.</p>
+
+<h2 id="light-sources">Light Sources</h2>
+
+<p>In order to make our light accurate, we need to define a source</p>
+
+<p>There are three main categories for this</p>
+
+<ul>
+  <li>Directional</li>
+  <li>Point</li>
+  <li>Spot</li>
+</ul>
+
+<p><img src="images/light/d4.png" alt="2023-03-27_18-17.png" /></p>
+
+<p>Most scenes just have one, but you could have as many as you want</p>
+
+<ul>
+  <li>This gets computationally expensive as we add more lights</li>
+</ul>
+
+<h2 id="lighting-colors-and-materials">Lighting Colors and Materials</h2>
+
+<p>Obviously scenes get more complicated than what we mentioned, so it’s good to have some parameters we can tweak</p>
+
+<p>To start, we can change the light color and intensity for each light source, with some libraries allowing us to specify ambient, specular and diffuse colors for a single source</p>
+
+<p>We can also modify our materials with various shaders with many parameters to choose from</p>
+
+<p>Below are some basic parameters that are present in all materials</p>
+
+<ul>
+  <li>$k_a$: the ambient reflection constant; the fraction of ambient light that is reflected</li>
+  <li>$k_d$: the diffuse reflection constant; the fraction of ambient light that is reflected</li>
+  <li>$k_s$: the specular reflection constant; the fraction of specular light that is reflected</li>
+</ul>
+
+<p>Ideally, we’d want a reflection constant for each wavelength, but that’s insanity unless we have a supercomputer, so most of the time we just use the color channels we have (red, green, blue) and specify colors for each parameter.</p>
+
+<h3 id="a-phong-shader-in-glsl">A Phong shader in GLSL:</h3>
+
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#version 400
+</span>
+<span class="c1">// Interpolated values from the vertex shaders</span>
+<span class="k">in</span> <span class="kt">vec3</span> <span class="n">Normal</span><span class="p">;</span>
+<span class="k">in</span> <span class="kt">vec3</span> <span class="n">EyeDirection</span><span class="p">;</span>
+<span class="k">in</span> <span class="kt">vec3</span> <span class="n">LightDirection</span><span class="p">;</span>
+
+<span class="k">out</span> <span class="kt">vec4</span> <span class="n">color</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">main</span><span class="p">(){</span>
+    <span class="c1">// Material colors</span>
+    <span class="kt">vec4</span> <span class="n">diffuse</span> <span class="o">=</span> <span class="kt">vec4</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span> <span class="c1">// blue-green color</span>
+    <span class="kt">vec4</span> <span class="n">ambient</span> <span class="o">=</span> <span class="kt">vec4</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">.</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">.</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span>
+    <span class="kt">vec4</span> <span class="n">specular</span> <span class="o">=</span> <span class="kt">vec4</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">.</span><span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">.</span><span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span>
+
+    <span class="kt">vec3</span> <span class="n">n</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span> <span class="n">Normal</span> <span class="p">);</span>
+    <span class="kt">vec3</span> <span class="n">l</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span> <span class="n">LightDirection</span> <span class="p">);</span>
+    <span class="kt">float</span> <span class="n">cosTheta</span> <span class="o">=</span> <span class="n">clamp</span><span class="p">(</span> <span class="n">dot</span><span class="p">(</span> <span class="n">n</span><span class="p">,</span> <span class="n">l</span> <span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="p">);</span> <span class="c1">// ensure dot product is between 0 and 1</span>
+
+    <span class="kt">vec3</span> <span class="n">E</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">EyeDirection</span><span class="p">);</span>
+    <span class="kt">vec3</span> <span class="n">R</span> <span class="o">=</span> <span class="n">reflect</span><span class="p">(</span><span class="o">-</span><span class="n">l</span><span class="p">,</span><span class="n">n</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">cosAlpha</span> <span class="o">=</span> <span class="n">clamp</span><span class="p">(</span> <span class="n">dot</span><span class="p">(</span> <span class="n">E</span><span class="p">,</span> <span class="n">R</span> <span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="p">);</span>
+
+    <span class="kt">float</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mi">64</span><span class="p">;</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">ambient</span> <span class="o">+</span> <span class="n">diffuse</span><span class="o">*</span><span class="n">cosTheta</span> <span class="o">+</span> <span class="n">specular</span><span class="o">*</span><span class="n">pow</span><span class="p">(</span><span class="n">cosAlpha</span><span class="p">,</span><span class="n">alpha</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="camera-manipulation">Camera Manipulation</h2>
+
+<p>We’ve talked about the camera in an abstract sense and given it a concrete location in the world, but now let’s manipulate it in more cool ways</p>
+
+<p><strong>First Person</strong></p>
+
+<p>In first person, you’re the camera, which is what’s commonly done by video games</p>
+
+<p>This is the simplest to do; just pick a height, put the camera there and have it look parallel to the ground</p>
+
+<p>First person cameras keep movement stiff, meaning the camera movement affects player movement as well, which is also easily done with a look_at function</p>
+
+<ul>
+  <li>VR is different since movement is independent, but this is outside the scope of this course</li>
+</ul>
+
+<p>We start with a world position $E$ with the y-axis pointing directly and a target $T$ with the same y coordinate</p>
+
+<p>Our last degree of freedom is rotation, so we only have $\theta$ left to define</p>
+
+<p><img src="images/light/d5.png" alt="Untitled" /></p>
+
+<p>$D=(\cos \theta , 0, \sin \theta )$, which we can use to form our matrix</p>
+
+<p>Movement is also fairly easy with classic tank controls to simply move the camera forward and backward, along with rotation</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">double</span> <span class="n">currentTime</span> <span class="o">=</span> <span class="n">glfwGetTime</span><span class="p">();</span>
+<span class="k">static</span> <span class="kt">double</span> <span class="n">lastTime</span> <span class="o">=</span> <span class="n">glfwGetTime</span><span class="p">();</span>
+<span class="kt">float</span> <span class="n">deltaTime</span> <span class="o">=</span> <span class="p">(</span><span class="n">currentTime</span> <span class="o">-</span> <span class="n">lastTime</span><span class="p">);</span>
+
+<span class="c1">// Rotate counterclockwise</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">glfwGetKey</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">GLFW_KEY_LEFT</span><span class="p">)</span> <span class="o">==</span> <span class="n">GLFW_PRESS</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">theta</span> <span class="o">-=</span> <span class="n">deltaTime</span> <span class="o">*</span> <span class="n">speed</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Rotate clockwise</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">glfwGetKey</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">GLFW_KEY_RIGHT</span><span class="p">)</span> <span class="o">==</span> <span class="n">GLFW_PRESS</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">theta</span> <span class="o">+=</span> <span class="n">deltaTime</span> <span class="o">*</span> <span class="n">speed</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">glm</span><span class="o">::</span><span class="n">vector3</span> <span class="nf">dir</span><span class="p">(</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">));</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">glfwGetKey</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">GLFW_KEY_UP</span><span class="p">)</span> <span class="o">==</span> <span class="n">GLFW_PRESS</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">eye</span> <span class="o">+=</span> <span class="n">dir</span> <span class="o">*</span> <span class="p">(</span><span class="n">deltaTime</span> <span class="o">*</span> <span class="n">speed</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Move backward</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">glfwGetKey</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">GLFW_KEY_DOWN</span><span class="p">)</span> <span class="o">==</span> <span class="n">GLFW_PRESS</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">eye</span> <span class="o">-=</span> <span class="n">dir</span> <span class="o">*</span> <span class="p">(</span><span class="n">deltaTime</span> <span class="o">*</span> <span class="n">speed</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">V</span> <span class="o">=</span> <span class="n">glm</span><span class="o">::</span><span class="n">lookAt</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">eye</span><span class="p">,</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">});</span>
+<span class="n">lastTime</span> <span class="o">=</span> <span class="n">currentTime</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><strong>Third Person</strong></p>
+
+<p>Third person consists of multiple different types of perspective</p>
+
+<ul>
+  <li>Fixed: camera stays in one place relative to the avatar</li>
+  <li>Tracking: camera follows the avatar, with no direct user control</li>
+  <li>Interactive: player controls both the avatar and camera independently</li>
+</ul>
+
+<p>For fixed, we can just define an offset of the camera, so the camera is at world position $P_p+O$ and is looking at $P_p+D$, where $P_p$ is the player position and $O$ is the offset</p>
+
+<p><strong>Movement</strong></p>
+
+<p>In third person, we must move the camera and the avatar, which makes things a bit more complicated</p>
+
+<p>The thing we need to recall is that we can’t just use look_at since movement isn’t completely one-to-one with camera movement, so we need to do the transformations outselves</p>
+
+<p>This isn’t so bad once we take into account local coordinates, but we can’t just manually move the z coordinate the same amount as we do for the player</p>
+
+<p>Instead, we must move the player relative to world coordinates by taking the direction into account</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">glm</span><span class="o">::</span><span class="n">vec3</span> <span class="nf">pos</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">);</span>
+<span class="n">glm</span><span class="o">::</span><span class="n">vec3</span> <span class="nf">dir</span><span class="p">(</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">));</span>
+
+<span class="c1">// Move forward</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">glfwGetKey</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">GLFW_KEY_UP</span><span class="p">)</span> <span class="o">==</span> <span class="n">GLFW_PRESS</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">pos</span> <span class="o">+=</span> <span class="n">dir</span> <span class="o">*</span> <span class="p">(</span><span class="n">deltaTime</span> <span class="o">*</span> <span class="n">speed</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Move backward</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">glfwGetKey</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">GLFW_KEY_DOWN</span><span class="p">)</span> <span class="o">==</span> <span class="n">GLFW_PRESS</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">pos</span> <span class="o">-=</span> <span class="n">dir</span> <span class="o">*</span> <span class="p">(</span><span class="n">deltaTime</span> <span class="o">*</span> <span class="n">speed</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>To adjust theta, we need to remember that the camera is behind the player with local z pointing into the screen and local x pointing to the left, so we turn left by increasing theta</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Rotate counterclockwise</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">glfwGetKey</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">GLFW_KEY_LEFT</span><span class="p">)</span> <span class="o">==</span> <span class="n">GLFW_PRESS</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">theta</span> <span class="o">+=</span> <span class="n">deltaTime</span> <span class="o">*</span> <span class="n">speed</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Rotate clockwise</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">glfwGetKey</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">GLFW_KEY_RIGHT</span><span class="p">)</span> <span class="o">==</span> <span class="n">GLFW_PRESS</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">theta</span> <span class="o">-=</span> <span class="n">deltaTime</span> <span class="o">*</span> <span class="n">speed</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Putting it all together, we can define a model matrix using the avatar’s world position and θ:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>M = glm::mat4(1.0f);
+M = glm::translate(M, pos);
+M = glm::rotate(M, θ, up);
+</code></pre></div></div>
+
+<ul>
+  <li>We do translation first because we want the model to move and THEN rotate in place</li>
+</ul>
+
+<p>The last thing to do is place the camera with that offset we talked about earlier</p>
+
+<p>Considering that we’re $d$ units behind the player, the camera position is given by the following</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">glm</span><span class="o">::</span><span class="n">vec3</span> <span class="n">camPos</span> <span class="o">=</span> <span class="n">pos</span><span class="p">;</span>
+<span class="n">camPos</span><span class="p">.</span><span class="n">x</span> <span class="o">-=</span> <span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">d</span><span class="p">;</span>
+<span class="n">camPos</span><span class="p">.</span><span class="n">z</span> <span class="o">-=</span> <span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">d</span><span class="p">;</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">glm</span><span class="o">::</span><span class="n">lookAt</span><span class="p">(</span><span class="n">camPos</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">up</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><strong>Spherical Coordinates</strong></p>
+
+<p>For certain applications, spherical coordinates makes our math much easier, which is a coordinate system with three axes</p>
+
+<ol>
+  <li>$r$: the distance of the point to the origin</li>
+  <li>$\theta$: the rotation of the point in the x-z plane from positive x to positive z</li>
+  <li>$\phi$: the rotation of the point off the y-axis from positive y to negative y</li>
+</ol>
+
+<p><img src="images/light/d6.png" alt="Untitled" /></p>
+
+<p>is pretty simple:</p>
+
+\[r=\sqrt{x^2+y^2+z^2} \\
+\theta, \phi = \text{Exercise for the reader} \\
+x = r \cos \theta \sin \phi \\
+y = r \cos \phi \\
+z = r \sin \theta \cos \phi\]
+
+<p><strong>Using Spherical Coordinates</strong></p>
+
+<p>With spherical coordinates, we can have the camera maintain its orientation when moving closer by modifying $r$, spin horizontally around an object with $\theta$ and spin vertically around an object with $\phi$</p>
+
+<p>For this, it’s not enough to just use arrow keys, so a better option is to use click-and-drag mouse operations for $\theta$ and $\phi$ and scroll for $r$</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">double</span> <span class="n">mouseDownX</span><span class="p">;</span>
+<span class="k">static</span> <span class="kt">double</span> <span class="n">mouseDownY</span><span class="p">;</span>
+<span class="k">static</span> <span class="kt">bool</span> <span class="n">firstPress</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+<span class="kt">double</span> <span class="n">dx</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">state</span> <span class="o">=</span> <span class="n">glfwGetMouseButton</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">GLFW_MOUSE_BUTTON_LEFT</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">GLFW_PRESS</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">firstPress</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">glfwGetCursorPos</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mouseDownX</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mouseDownY</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="n">xpos</span><span class="p">,</span> <span class="n">ypos</span><span class="p">;</span>
+    <span class="n">glfwGetCursorPos</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">xpos</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ypos</span><span class="p">);</span>
+
+    <span class="n">dx</span> <span class="o">=</span> <span class="n">xpos</span> <span class="o">-</span> <span class="n">mouseDownX</span><span class="p">;</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">ypos</span> <span class="o">-</span> <span class="n">mouseDownY</span><span class="p">;</span>
+
+    <span class="n">mouseDownX</span> <span class="o">=</span> <span class="n">xpos</span><span class="p">;</span>
+    <span class="n">mouseDownY</span> <span class="o">=</span> <span class="n">ypos</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">GLFW_RELEASE</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">firstPress</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

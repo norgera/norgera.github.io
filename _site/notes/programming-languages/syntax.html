@@ -1,0 +1,482 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.5/jscolor.min.js"></script>
+    <script src="/assets/js/colour-theme.js" type="text/javascript"></script>
+    
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Syntax | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Syntax" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/programming-languages/syntax.html" />
+<meta property="og:url" content="http://localhost:4000/notes/programming-languages/syntax.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Syntax" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Syntax","url":"http://localhost:4000/notes/programming-languages/syntax.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+    <button class="theme-switch star-button"><i class="far fa-star"></i></button>
+
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#scanning">Scanning</a></li><li><a href="#parsing">Parsing</a></li><li><a href="#more-on-scanning">More on Scanning</a><ul><li><a href="#pseudocode">Pseudocode</a></li></ul></li></ul>
+            
+    
+  </div>
+  
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+</div>
+
+
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="syntax">Syntax</h1>
+
+<h2 id="scanning">Scanning</h2>
+
+<p>In order for code to run correctly, it must be both syntactically and semantically correct</p>
+
+<p>Semantic correctness is hard to prove without running, but syntax is relatively easy and can be handled by the compiler</p>
+
+<p>Checking syntax is split into two parts: scanning and parsing</p>
+
+<p>In the scanning phase, we use regular expressions (regex) to define which tokens (shortest meaningful strings) are correct, while checking whatever tokens we come across with finite automata</p>
+
+<ul>
+  <li>
+    <p>For 3342, some alternate notation is used for regex operations</p>
+  </li>
+  <li><strong>$\varepsilon$</strong> is a regular expression</li>
+  <li>Any character <strong>$a \in \Sigma$</strong> is a regular expression</li>
+  <li>For regular expressions <strong>$\alpha$</strong>, <strong>$\beta$</strong>, the following are regular expressions:
+    <ul>
+      <li><strong>$\alpha \beta$</strong> - <em>concatenation</em> (concatenation symbol ‘·’ is often omitted: <strong>$\alpha \beta$</strong>)</li>
+      <li><strong>$\alpha \mid \beta$</strong> - <em>union</em> (‘$|$’ = or) (sometimes denoted <strong>$\alpha + \beta$</strong>)</li>
+      <li><strong>$\alpha^*$</strong> - <em>Kleene star</em> (0 or more repetitions)
+        <ul>
+          <li><strong>$\alpha^+ = \alpha \alpha^*$</strong> (1 or more repetitions)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>For a more practical example, a regex for signed integers will look something like this</p>
+
+\[(+|-|\epsilon)(0|1|2|3|4|5|6|7|8|9)^+\]
+
+<p>We can also represent more complex expressions using variables and the “can be” symbol (denoted $\rightarrow)$</p>
+
+<p>For example, we can define all numerical constants with the following system</p>
+
+\[number \rightarrow integer |real \\
+integer \rightarrow digit \space digit^* \\
+real \rightarrow integer \space exponent |decimal(exponent|\epsilon) \\
+decimal \rightarrow digit^*(.\space digit | digit \space .)digit^* \\
+exponent \rightarrow (e|E)(+|-|\epsilon)integer \\
+digit \rightarrow 0|1|2|3|4|5|6|7|8|9\]
+
+<p>In practice, we can utilize regular languages in many programming languages and in Unix with the grep tool</p>
+
+<ul>
+  <li>For a review of the grep tool, read the following (specifically the section on regex)</li>
+</ul>
+
+<h2 id="parsing">Parsing</h2>
+
+<p>Once we’ve scanned all the tokens to make sure they’re correct, we can then specify the structure with parsing</p>
+
+<p>Some of the main concerns with parsing are</p>
+
+<ul>
+  <li>Upper vs lower case (treated differently in C and Python)</li>
+  <li>Camel case (someIdentifier) vs underscore (some_identifier)</li>
+  <li>Unicode (non-latin characters)</li>
+  <li>White space (usually ignored, but it’s important for Python, Go and Swift)</li>
+</ul>
+
+<p>We define what counts as syntactically correct with context-free grammars (CFGs)</p>
+
+<p>As a practical example, we can define a CFG for arithmetic expressions</p>
+
+\[expr \rightarrow \text{id}|\text{number}|-expr|(expr)|expr\space op \space expr \\
+op \rightarrow +|-|*|/\]
+
+<p>With this grammar, we can derive many expressions</p>
+
+<p>For example, in order to derive something like slope * x + intercept, we can do the following</p>
+
+\[expr \Rightarrow expr \space op \space expr \\
+\Rightarrow expr \space op \space \text{id}\\
+\Rightarrow expr \space + \space \text{id}\\
+\Rightarrow expr \space op \space expr\space + \space \text{id}\\
+\Rightarrow expr \space op \space \text{id}\space + \space \text{id}\\
+\Rightarrow expr \space *\space \text{id}\space + \space \text{id}\\
+\Rightarrow \text{id}\space *\space \text{id}\space + \space \text{id}\]
+
+<ul>
+  <li>Note that we can’t derive the terms “slope”, “x” and “intercept”, so we simply derive “id”</li>
+  <li>We call the steps in between <strong>sentential form</strong></li>
+</ul>
+
+<p>What is expressed above is a right-most derivation, where we handle right-most nonterminals first, but we can also use left-most derivation</p>
+
+\[expr \Rightarrow expr \space op \space expr \\
+\Rightarrow expr \space op \space expr \space op \space expr\\
+\Rightarrow \text{id} \space op \space expr \space op \space expr\\
+\Rightarrow \text{id} \space *\space expr \space op \space expr\\
+\Rightarrow \text{id} \space *\space \text{id}\space op \space expr\\
+\Rightarrow \text{id} \space *\space \text{id}\space +\space expr\\
+\Rightarrow \text{id} \space *\space \text{id}\space +\space \text{id}\]
+
+<p>The parse tree for this will be the following</p>
+
+<p><img src="images/plang/syntax/s1.png" alt="Untitled" /></p>
+
+<p>And for the right-most derivation, we get this</p>
+
+<p><img src="images/plang/syntax/s2.png" alt="Untitled" /></p>
+
+<p>Since we have two different parse trees for the same string, our grammar is considered ambiguous, which is a problem for parsers since computers generally don’t deal well with ambiguity</p>
+
+<p>Optimally, we want unambiguous grammars to begin with so that we have one solution</p>
+
+<p>For our original grammar, we can redefine it to make it unambiguous</p>
+
+\[expr \rightarrow term|expr \space add\_op \space term \\
+term \rightarrow factor |term \space mult\_op \space factor \\
+factor \rightarrow \text{id}|\text{number}|-factor|(expr) \\
+add\_op\rightarrow +|
+- \\
+mult\_op\rightarrow *|/\]
+
+<p>This is good because it more accurately reflects the order in which we do math, with precedence for multiplication/division as well as left-associativity, meaning we break ties by handling the left side first</p>
+
+<p>This makes sure that we don’t actually go right-left and screw up our math</p>
+
+<p><img src="images/plang/syntax/s3.png" alt="Untitled" /></p>
+
+<p><img src="images/plang/syntax/s4.png" alt="Untitled" /></p>
+
+<h2 id="more-on-scanning">More on Scanning</h2>
+
+<p>In order to figure out how to do scanning, we should look at an example</p>
+
+<ul>
+  <li><strong>assign</strong> → <code class="language-plaintext highlighter-rouge">:=</code> (Algol style; C has <code class="language-plaintext highlighter-rouge">=</code>)</li>
+  <li><strong>plus</strong> → <code class="language-plaintext highlighter-rouge">+</code></li>
+  <li><strong>minus</strong> → <code class="language-plaintext highlighter-rouge">-</code></li>
+  <li><strong>times</strong> → <code class="language-plaintext highlighter-rouge">*</code></li>
+  <li><strong>div</strong> → <code class="language-plaintext highlighter-rouge">/</code></li>
+  <li><strong>lparen</strong> → <code class="language-plaintext highlighter-rouge">(</code></li>
+  <li><strong>rparen</strong> → <code class="language-plaintext highlighter-rouge">)</code></li>
+  <li><strong>id</strong> → <code class="language-plaintext highlighter-rouge">letter ( letter | digit )*</code> (except for <code class="language-plaintext highlighter-rouge">read</code> and <code class="language-plaintext highlighter-rouge">write</code>)</li>
+  <li><strong>number</strong> → <code class="language-plaintext highlighter-rouge">digit digit* | digit* ( . digit | digit . ) digit*</code></li>
+  <li><strong>comment</strong> → <code class="language-plaintext highlighter-rouge">/* ( non-* | * non-/ )* *^+/</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">// (non-newline)* newline</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p>We can start with some ad-hoc scanner with a very simple sequence of if-else statements</p>
+
+<ul>
+  <li>Skip any initial white space (spaces, tabs, and newlines)</li>
+  <li>If <code class="language-plaintext highlighter-rouge">cur_char ∈ {'(', ')', '+', '-', '*'}</code>:
+    <ul>
+      <li>Return the corresponding single-character token</li>
+    </ul>
+  </li>
+  <li>If <code class="language-plaintext highlighter-rouge">cur_char = ':'</code>:
+    <ul>
+      <li>Read the next character</li>
+      <li>If it is <code class="language-plaintext highlighter-rouge">=</code> then return <code class="language-plaintext highlighter-rouge">assign</code> else announce an error</li>
+    </ul>
+  </li>
+  <li>If <code class="language-plaintext highlighter-rouge">cur_char = '/'</code>:
+    <ul>
+      <li>Peek at the next character</li>
+      <li>If it is <code class="language-plaintext highlighter-rouge">*</code> or <code class="language-plaintext highlighter-rouge">/</code>:
+        <ul>
+          <li>Read additional characters until <code class="language-plaintext highlighter-rouge">*/</code> or <code class="language-plaintext highlighter-rouge">newline</code> is seen, respectively</li>
+          <li>Jump back to the top of code</li>
+        </ul>
+      </li>
+      <li>Else return <code class="language-plaintext highlighter-rouge">div</code></li>
+    </ul>
+  </li>
+  <li>If <code class="language-plaintext highlighter-rouge">cur_char = '.'</code>:
+    <ul>
+      <li>Read the next character</li>
+      <li>If it is a digit:
+        <ul>
+          <li>Read any additional digits</li>
+          <li>Return <code class="language-plaintext highlighter-rouge">number</code></li>
+        </ul>
+      </li>
+      <li>Else announce an error</li>
+    </ul>
+  </li>
+  <li>If <code class="language-plaintext highlighter-rouge">cur_char</code> is a digit:
+    <ul>
+      <li>Read any additional digits and at most one decimal point</li>
+      <li>Return <code class="language-plaintext highlighter-rouge">number</code></li>
+    </ul>
+  </li>
+  <li>If <code class="language-plaintext highlighter-rouge">cur_char</code> is a letter:
+    <ul>
+      <li>Read any additional letters and digits</li>
+      <li>Check to see whether the resulting string is <code class="language-plaintext highlighter-rouge">read</code> or <code class="language-plaintext highlighter-rouge">write</code>
+        <ul>
+          <li>If so then return the corresponding token</li>
+        </ul>
+      </li>
+      <li>Else return <code class="language-plaintext highlighter-rouge">id</code></li>
+    </ul>
+  </li>
+  <li>Else announce an error</li>
+</ul>
+
+<p>This is a good start, but we can definitely do better</p>
+
+<p><img src="images/plang/syntax/s5.png" alt="Untitled" /></p>
+
+<p><img src="images/plang/syntax/s6.png" alt="Untitled" /></p>
+
+<p>Using a DFA, we can add some structure to our scanner by directly using the regular expression to build a scanner, utilizing the property that all regular expressions can be converted to DFAs</p>
+
+<p>We can use tools such as lex, flex or scagen to build these, but first, we build an NFA and convert it to a DFA</p>
+
+<p>To go to an NFA, we have some general rules that we can apply based on what we see in the regular expression</p>
+
+<p>After this, we can start to build the DFA and reduce the states</p>
+
+<p>Scanners can be build ad-hoc as we’ve mentioned (fastest and most compact), through a semi-mechanical pure DFA (using nested case statements) or a table-driven DFA (automatic generation)</p>
+
+<p>Example of a pure scanner</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>state := 1
+loop
+read cur_char
+case state of
+1: case cur_char of
+' ', '\t', '\n': ...
+'a' ... 'z': ...
+'0' ... '9': ...
+'&gt;': ...
+...
+2: case cur_char of
+...
+:
+n: case cur_char of
+...
+</code></pre></div></div>
+
+<p>Table-driven scanner</p>
+
+<ul>
+  <li><strong>state</strong> = 0 .. <em>number_of_states</em></li>
+  <li><strong>token</strong> = 0 .. <em>number_of_tokens</em></li>
+  <li><strong>scan_tab</strong> : array [char, state] of record
+    <ul>
+      <li><strong>action</strong> : (move, recognize, error)</li>
+      <li><strong>new_state</strong> : state</li>
+    </ul>
+  </li>
+  <li><strong>token_tab</strong> : array [state] of token</li>
+  <li><strong>keyword_tab</strong> : set of record
+    <ul>
+      <li><strong>k_image</strong> : string</li>
+      <li><strong>k_token</strong> : token</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="pseudocode">Pseudocode</h3>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tok : token
+cur_char : char
+remembered_chars : list of char
+repeat
+  cur_state : state := start_state
+  image : string := null
+  remembered_state : state := 0 -- none
+  loop
+    read cur_char
+    case scan_tab[cur_char, cur_state].action of
+      move:
+        if token_tab[cur_state] ≠ 0 then
+          -- this could be a final state
+          remembered_state := cur_state
+          remembered_chars := ε
+        add cur_char to remembered_chars
+        cur_state := scan_tab[cur_char, cur_state].new_state
+      recognize:
+        tok := token_tab[cur_state]
+        unread cur_char -- push back into input stream
+        exit inner loop
+      error:
+        if remembered_state ≠ 0 then
+          tok := token_tab[remembered_state]
+          unread remembered_chars
+          remove remembered_chars from image
+          exit inner loop
+        else print error message and recover; probably start over
+        append cur_char to image
+    -- end inner loop
+until tok ∉ {white_space, comment}
+look image up in keyword_tab and replace tok with appropriate keyword if found
+return (tok, image)
+</code></pre></div></div>
+
+<p>Table used by table-driven scanner</p>
+
+<p><img src="images/plang/syntax/s7.png" alt="Table used by table-driven scanner" /></p>
+
+<p>No matter what method we choose, we need to apply the longest-possible token rule, which states that we should return only when the next character can’t contribute to the current token</p>
+
+<p>Sometimes we also need to look at more than one character to decide what we need to do</p>
+
+<p>For example, in old versions of Fortran, we need look-ahead to distinguish between DO 5 I = 1,25 (meaning execute statements up to 5 for I from 1 to 25) and DO 5 I = 1.25 (assign 1.25 to the variable DO5I)</p>
+
+<ul>
+  <li>This is what caused the loss of NASA’s Mariner 1</li>
+</ul>
+
+<p>Sometimes there’s lexical errors, but in this case, we should skip forward to the next possible new token and restart the scanning algorithm, keeping track of the error we came across</p>
+
+<p>This way, we can detect multiple such errors in one sweep instead of discovering them one at a time, which is especially useful in linters</p>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

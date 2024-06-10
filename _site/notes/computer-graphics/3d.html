@@ -1,0 +1,583 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.5/jscolor.min.js"></script>
+    <script src="/assets/js/colour-theme.js" type="text/javascript"></script>
+    
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Intro to 3D | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Intro to 3D" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/computer-graphics/3d.html" />
+<meta property="og:url" content="http://localhost:4000/notes/computer-graphics/3d.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Intro to 3D" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Intro to 3D","url":"http://localhost:4000/notes/computer-graphics/3d.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+    <button class="theme-switch star-button"><i class="far fa-star"></i></button>
+
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#affine-transforms">Affine Transforms</a><ul><li><a href="#eulers-rotation-theorem">Euler’s Rotation Theorem</a></li></ul></li><li><a href="#camera">Camera</a></li><li><a href="#perspective-projection">Perspective Projection</a></li><li><a href="#amending-some-lies">Amending Some Lies</a></li><li><a href="#more-on-cameras">More on Cameras</a></li><li><a href="#marching-cubes">Marching Cubes</a></li><li><a href="#marching-squares">Marching Squares</a></li><li><a href="#bitmaps">Bitmaps</a></li><li><a href="#marching-cubes-1">Marching Cubes</a></li></ul>
+            
+    
+  </div>
+  
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+</div>
+
+
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="intro-to-3d">Intro to 3D</h1>
+
+<h2 id="affine-transforms">Affine Transforms</h2>
+
+<p>Transforms are handled just about the same way they were in 2D, except we obviously add a third dimension to our matrices</p>
+
+\[\begin{bmatrix} 
+s_x &amp; 0 &amp; 0 \\
+0 &amp; s_y &amp; 0 \\
+0 &amp; 0 &amp; s_z
+\end{bmatrix}\]
+
+<p>For homogenous coordinates, we add onto that as well</p>
+
+\[\begin{bmatrix} 
+s_x &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; s_y &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; s_z &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix}\]
+
+<p>For translations, we add a third coordinate for our z axis to translate our point by a 3D vector</p>
+
+\[\begin{bmatrix} 
+1 &amp; 0 &amp; 0 &amp; t_x\\
+0 &amp; 1 &amp; 0 &amp; t_y\\
+0 &amp; 0 &amp; 1 &amp; t_z\\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix}\]
+
+<p>For rotations, things get very different, since we now have 3 degrees of freedom that we have to grapple with: roll, yaw and pitch</p>
+
+<p><img src="images/3d/w1.png" alt="Untitled" /></p>
+
+<p>How do we actually handle this? In two dimensions, we can recontextualize our original rotation as spinning the x-y plane around the z axis, much like a spinning top</p>
+
+<p><img src="images/3d/w2.png" alt="Untitled" /></p>
+
+<p>This defines a 3D matrix with z unchanged</p>
+
+\[R_z(\theta) = \begin{bmatrix}
+\cos(\theta) &amp; -\sin(\theta) &amp; 0 \\
+\sin(\theta) &amp; \cos(\theta) &amp; 0 \\
+0 &amp; 0 &amp; 1
+\end{bmatrix}\]
+
+<p>Now we can modify this slightly for the rest of our directions</p>
+
+\[R_x(\theta) = \begin{bmatrix}
+1 &amp; 0 &amp; 0 \\
+0 &amp; \cos(\theta) &amp; -\sin(\theta) \\
+0 &amp; \sin(\theta) &amp; \cos(\theta)
+\end{bmatrix}\]
+
+\[R_y(\theta) = \begin{bmatrix}
+\cos(\theta) &amp; 0 &amp; \sin(\theta) \\
+0 &amp; 1 &amp; 0 \\
+-\sin(\theta) &amp; 0 &amp; \cos(\theta)
+\end{bmatrix}\]
+
+<p>To combine these in cool ways, the most common method is z first, then x, then y</p>
+
+\[R_yR_xR_zv = v^\prime\]
+
+<p>In real world programming this combination will simply be one matrix called “Euler Angles” or some variation thereof, describing a 3D rotation is certain angles around the 3 axes</p>
+
+<p>EulerAngles(a,b,c) will rotate a degrees around the x axis, b degrees around the y axis and c degrees around the z axis</p>
+
+<ul>
+  <li>Unity does this in the order z, x, y</li>
+</ul>
+
+<h3 id="eulers-rotation-theorem">Euler’s Rotation Theorem</h3>
+
+<p>This theorem is an alternative to euler angles, which says that any 3D rotation can be described by some axis of rotation and an angle around the axis</p>
+
+<ul>
+  <li>Elementary rotations would be special cases around i,j,k</li>
+</ul>
+
+<p>Finding the axis is the hardest part, but all we really have to do is, given a general rotation matrix $R$, find a vector $\vec{u}$ s.t. $R\vec{u} = \vec{u}$</p>
+
+<p>The details aren’t important, but knowing what you’re doing is</p>
+
+<ul>
+  <li>We can just use glRotatef(theta, x, y, z) instead, which uses axis-angle</li>
+</ul>
+
+<h2 id="camera">Camera</h2>
+
+<p>The camera is one of the most important parts of any graphics library, being something from which we view a scene from</p>
+
+<p>We can think of this as existing at a point and looking at another point</p>
+
+<p>Much like we translate from local to world coordinates with a matrix $M$, we can implement the camera with a viewport matrix $V$ to go from world to camera coordinates</p>
+
+\[VMv_{local} = v_{camera}\]
+
+<p>This is referred to as camera space, where the camera exists at the origin and looks down the negative z axis</p>
+
+<p>So, in order the move the camera up to (0,0,3), we move the world down by (0,0,-3)</p>
+
+\[V = \begin{bmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; -3 \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix}\]
+
+<h2 id="perspective-projection">Perspective Projection</h2>
+
+<p>If we want to recreate realistic scenes, we want to recreate our sight, for which we must implement perspective, or making objects smaller and closer as they get further away</p>
+
+<p>Really, we want a perspective projection, as opposed to an orthographic projection</p>
+
+<p><img src="images/3d/w3.png" alt="Untitled" /></p>
+
+<p>The main difference between these two projections is that, whole orthographic projection is a rectangular prism, perspective projection is a square frustrum</p>
+
+<p><img src="images/3d/w4.png" alt="Untitled" /></p>
+
+<p>We then take this and translate it to NDC, forming a cube using a projection matrix P</p>
+
+\[PVMv_{local} = v_{NDC}\]
+
+<p><img src="images/3d/w5.png" alt="Untitled" /></p>
+
+<p>To further specify this frustrum, we need a few parameters</p>
+
+<ul>
+  <li><strong>Near clipping plane</strong>: the plane perpendicular to the x-y plane at $ z = \text{near} $ which defines the front of the frustum.</li>
+  <li><strong>Far clipping plane</strong>: the plane perpendicular to the x-y plane at $ z = \text{far} $ which defines the back of the frustum.</li>
+  <li><strong>Field of view</strong>: The angle between the lines of projection. Typically this is measured in the vertical direction. 45° is a reasonable number.</li>
+  <li><strong>Aspect ratio</strong>: This defines the square/rectangle shape of the near and far ends of the frustum. Since we have a vertical field of view, this specifies what fraction the vertical view is compared to the horizontal view.</li>
+</ul>
+
+<p>This is a lot to take in, but luckily, glm (opengl’s math library) does this for us</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">glm</span><span class="o">::</span><span class="n">mat4</span> <span class="n">P</span> <span class="o">=</span> <span class="n">glPerspective</span><span class="p">(</span><span class="n">fovy</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">near</span><span class="p">,</span> <span class="n">far</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Near and far are negative z coordinates, but we specify these to have positive values</li>
+</ul>
+
+<h2 id="amending-some-lies">Amending Some Lies</h2>
+
+<p>Before we go further, we need to make some corrections to our knowledge of NDC</p>
+
+<p><img src="images/3d/w6.png" alt="Untitled" /></p>
+
+<p>I told you that the camera is at z=0, so this would me z=-1 is behind the camera, right?</p>
+
+<p>That was the lie…</p>
+
+<p>The truth is, the x and y coordinates are how we described in earlier notes, but z=-1 is the near plane and z=1 is the far plane, so all objects that are at z&gt;-1 are behind objects at z=-1</p>
+
+<ul>
+  <li>This is only true if we have depth testing on, otherwise z is ignored</li>
+</ul>
+
+<p>So, in reality, z=-1 is closer than z=0</p>
+
+<p>If we think of the camera this way, it’s really at (0,0,-1) in the NDC, but it’s also at the origin in another way??? Why?????</p>
+
+<p>The reason comes down to clip space</p>
+
+<p>The real truth is that $PVMv_{local}=v_{clip}$, which refers to the clip space, not $v_{NDC}$</p>
+
+<p>For a symmetric frustrum, the perspective projection matrix is defined as such</p>
+
+<p><img src="images/3d/w7.png" alt="Untitled" /></p>
+
+<p>The clue for our conundrum comes from the fact that our projection matrix modifies the 4th homogenous coordinate, w</p>
+
+<p>So, within this clip space, we can clip out any vertices that would be outside NDC with perspective division</p>
+
+<p>Given a vertex (x,y,z,1) in clip space, we can get our NDC point like so</p>
+
+\[\begin{bmatrix}
+X_{NDC} \\
+Y_{NDC} \\
+Z_{NDC}
+\end{bmatrix}
+=
+\begin{bmatrix}
+x_{clip} / w_{clip} \\
+y_{clip} / w_{clip} \\
+z_{clip} / w_{clip}
+\end{bmatrix}\]
+
+<p>Since the NDC is defined to be [-1,1], testing which vertices to keep is very easy: just make sure we have all three of the following</p>
+
+<p>\(-w_{clip} &lt; x_{clip} &lt; w_{clip}\)
+\(-w_{clip} &lt; y_{clip} &lt; w_{clip}\)
+\(-w_{clip} &lt; z_{clip} &lt; w_{clip}\)</p>
+
+<p>If we have a primitive that’s partly outside and partly inside, OpenGL flips the primitive so that its new vertex fits directly in the NDC</p>
+
+<ul>
+  <li>As a special node, since the w value of the projection matrix varies, each vertex can be said to inhabit its own clip space, so we must translate each vertex individually</li>
+</ul>
+
+<h2 id="more-on-cameras">More on Cameras</h2>
+
+<p>One important note is that we CAN think of the camera has a single object, but we have to do a bit of translation work to make this viable</p>
+
+<ul>
+  <li>If you think this isn’t useful, try out Blender and come back to me</li>
+</ul>
+
+<p>Translating the camera is easy enough, given a desired position (e_x, e_y, e_z)</p>
+
+\[V_{trans} = \begin{bmatrix}
+1 &amp; 0 &amp; 0 &amp; -e_x \\
+0 &amp; 1 &amp; 0 &amp; -e_y \\
+0 &amp; 0 &amp; 1 &amp; -e_z \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix}\]
+
+<p>As for direction, we can define this as a vector, given d is the direction and t is the target</p>
+
+\[\vec{d} = \vec{e} - \vec{t} = \begin{bmatrix}
+e_x - t_x \\
+e_y - t_y \\
+e_z - t_z
+\end{bmatrix}\]
+
+<ul>
+  <li>We, of course, will normalize d</li>
+</ul>
+
+<p>Once we have a vector, we still have one more degree of freedom, so now we need to angle part of the axis-angle paradigm</p>
+
+<p>One way to specify this angle is to specify the proper $ x $ and $ y $ axes of the camera coordinate system. We do so with a simple trick. Look at your point on the wall again. This time, put the crown of your head facing toward the ceiling. Call this “upwards”. Now, to look at your point you may have to move your eyes a little bit up or down in their sockets. That’s okay, as long as we keep the crown of your head pointing upwards. If your head is the camera, your eyes are looking in the look direction and your right ear is facing in the direction of the positive $ x $ axis. Your ear points out to the right.</p>
+
+<p>Now, we will let our head drift away from the crown pointing directly up. Bring your chin up or down so that you’re still looking at your point on the wall, but now your eyes are looking “straight ahead”, but maybe your chin is no longer pointing parallel to the floor. That’s okay. This is the key observation: your right ear hasn’t moved! By tilting your chin up and down, you essentially rotate your head around the $ x $ axis (the axis coming out of your right ear). Once you’ve moved your chin so that the line of sight is “straight out of your head”, the crown of your head now doesn’t point directly up toward the ceiling, but the crown of your head still points directly “upwards” in the coordinate system relative to your eye balls.</p>
+
+<p>In summary:</p>
+
+<ol>
+  <li>Specify a position of the camera in world space.</li>
+  <li>Specify a look direction $ \vec{d} $ as the normalized $ \vec{e} - \vec{t} $.</li>
+  <li>Let the “up” direction be directly up toward the ceiling and then let your right ear point out toward the positive $ x $ axis.</li>
+  <li>Rotate around this $ x $ axis so that your line of sight returns to be $ \vec{d} $ and that the crown of your head is no longer pointing directly upward.</li>
+</ol>
+
+<p><img src="images/3d/w8.png" alt="Untitled" /></p>
+
+<p>To compute steps 3 and 4, use cross products.</p>
+
+<p>Given $ \vec{d} $, we compute $ \vec{r} $ as the cross product between $ \vec{d} $ and (0, 1, 0), that is, the cross product between $ \vec{d} $ and “directly up” in world coordinates. Then, we compute $ \vec{d} \times \vec{r} $ to get the “up” direction relative to the camera, call it $ \vec{up} $.</p>
+
+\[V = \begin{bmatrix}
+    \hat{r}_x &amp; \hat{r}_y &amp; \hat{r}_z &amp; -e_x \\
+    \hat{up}_x &amp; \hat{up}_y &amp; \hat{up}_z &amp; -e_y \\
+    \hat{d}_x &amp; \hat{d}_y &amp; \hat{d}_z &amp; -e_z \\
+    0 &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix}\]
+
+<p>This is the view matrix that (conceptually) positions the camera at location $(e_x, e_y, e_z)$ in world coordinates and looks toward $ \vec{t} $. Right? Not quite! Recall that the order of a transformation matters. This matrix above actually corresponds to rotating first and then translating. Will that give us what we want from a “look at” function? Nope. We need to move the camera to its position in the world first and then rotate it to look at what it should be looking at.</p>
+
+\[V = \begin{bmatrix}
+    \hat{r}_x &amp; \hat{r}_y &amp; \hat{r}_z &amp; -\hat{r}_z e_x - \hat{r}_y e_y - \hat{r}_z e_z \\
+    \hat{up}_x &amp; \hat{up}_y &amp; \hat{up}_z &amp; -\hat{up}_z e_x - \hat{up}_y e_y - \hat{up}_z e_z \\
+    \hat{d}_x &amp; \hat{d}_y &amp; \hat{d}_z &amp; -\hat{d}_z e_x - \hat{d}_y e_y - \hat{d}_z e_z \\
+    0 &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix}\]
+
+<h2 id="marching-cubes">Marching Cubes</h2>
+
+<p>So far we can use meshes, but how are these meshes made? We can use the marching cubes algorithm to form triangle meshes but, in order to understand it, we need to look at a simpler case</p>
+
+<h2 id="marching-squares">Marching Squares</h2>
+
+<p>Marching squares is an algorithm meant to approximate 2D shapes, the idea of which will form a basis for marching cubes, effectively separating into triangles</p>
+
+<p>The algorithm works as follows:</p>
+
+<ol>
+  <li>Divide the area into squares</li>
+  <li>For each square test whether the corners are inside or outside the square</li>
+  <li>Generate a vertex along any edge that has one corner inside the surface and one corner outside</li>
+  <li>Connect each vertex to its nearest neighbours</li>
+</ol>
+
+<p>Here’s an example of the algorithm in action</p>
+
+<p><img src="images/3d/w9.png" alt="Untitled" /></p>
+
+<p><img src="images/3d/w10.png" alt="Untitled" /></p>
+
+<p>If we want to simplify this even further, we can define a look-up table of pre-defined segments, since there’s only 16 cases</p>
+
+<h2 id="bitmaps">Bitmaps</h2>
+
+<p>A bitmap is a structure using individual bits to encode several booleans, with each bit representing true or false, which can be used as a number to handle compound cases</p>
+
+<p>With marching square, we can encode inside as true and outside as false, assigning each bit in a 4-bit number to a corner</p>
+
+<p>Top-left corner:     1000        Top-right corner:    0100
+Bottom-right corner: 0010        Bottom-left corner:  0001</p>
+
+<p>With a bitwise AND, we can get a particular case</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define TOP_LEFT 8
+#define TOP_RIGHT 4
+#define BOTTOM_RIGHT 2
+#define BOTTOM_LEFT 1
+</span>
+<span class="kt">int</span> <span class="k">case</span> <span class="o">=</span> <span class="mi">14</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="k">case</span> <span class="o">&amp;</span> <span class="n">TOP_LEFT</span><span class="p">)</span> <span class="err">{</span>
+    <span class="c1">// This case has the top-left corner inside the object</span>
+<span class="err">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="k">case</span> <span class="o">&amp;</span> <span class="n">TOP_RIGHT</span><span class="p">)</span> <span class="err">{</span>
+    <span class="c1">// This case has the top-right corner inside the object</span>
+<span class="err">}</span>
+
+<span class="c1">// ...</span>
+</code></pre></div></div>
+
+<p><img src="images/3d/w11.png" alt="Untitled" /></p>
+
+<p><img src="images/3d/w12.png" alt="Untitled" /></p>
+
+<p>We can also do the reverse with bitwise OR, building our number additively</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="k">case</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">top</span><span class="o">-</span><span class="n">left</span> <span class="n">corner</span> <span class="n">is</span> <span class="n">inside</span> <span class="n">object</span><span class="p">)</span> <span class="err">{</span>
+    <span class="k">case</span> <span class="o">|=</span> <span class="n">TOP_LEFT</span><span class="p">;</span>
+<span class="err">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">top</span><span class="o">-</span><span class="n">right</span> <span class="n">corner</span> <span class="n">is</span> <span class="n">inside</span> <span class="n">object</span><span class="p">)</span> <span class="err">{</span>
+    <span class="k">case</span> <span class="o">|=</span> <span class="n">TOP_RIGHT</span><span class="p">;</span>
+<span class="err">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">bottom</span><span class="o">-</span><span class="n">right</span> <span class="n">corner</span> <span class="n">is</span> <span class="n">inside</span> <span class="n">object</span><span class="p">)</span> <span class="err">{</span>
+    <span class="k">case</span> <span class="o">|=</span> <span class="n">BOTTOM_RIGHT</span><span class="p">;</span>
+<span class="err">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">bottom</span><span class="o">-</span><span class="n">left</span> <span class="n">corner</span> <span class="n">is</span> <span class="n">inside</span> <span class="n">object</span><span class="p">)</span> <span class="err">{</span>
+    <span class="k">case</span> <span class="o">|=</span> <span class="n">BOTTOM_LEFT</span><span class="p">;</span>
+<span class="err">}</span>
+</code></pre></div></div>
+
+<p>Given this new bitmap, we can use it as an index into a lookup table returning the corresponding line segments</p>
+
+<p>To encode these segments, we can start with labelling the midway points 0-3,</p>
+
+<p><img src="images/3d/w13.png" alt="Untitled" /></p>
+
+<p>Since there’s at most two of these line segments, we can encode each with 4 indices, using -1 as padding</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">marching_squares_lut</span><span class="p">[</span><span class="mi">16</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>We can then give a second lookup table for the vertices of the line segments</p>
+
+<p>Here is the content from the image in a markdown code block:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="n">g_verts</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span><span class="mf">0.5</span><span class="n">f</span><span class="p">,</span> <span class="mf">1.0</span><span class="n">f</span><span class="p">},</span>
+    <span class="p">{</span><span class="mf">1.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.5</span><span class="n">f</span><span class="p">},</span>
+    <span class="p">{</span><span class="mf">0.5</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">},</span>
+    <span class="p">{</span><span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.5</span><span class="n">f</span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// Note these vertices do not give exact positions. Rather, they give the position of a line segment's</span>
+<span class="c1">// vertex relative to the corners of the square which it is in. For a square with bottom-left corner (x, y)</span>
+<span class="c1">// and a side length s, one can compute the absolute positions of a line segment's vertex as:</span>
+
+<span class="n">x</span> <span class="o">+</span> <span class="n">s</span> <span class="o">*</span> <span class="n">g_verts</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">+</span> <span class="n">s</span> <span class="o">*</span> <span class="n">g_verts</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kt">float</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ymin</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">ymax</span><span class="p">;</span> <span class="n">y</span> <span class="o">+=</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">float</span> <span class="n">x</span> <span class="o">=</span> <span class="n">xmin</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">xmax</span><span class="p">;</span> <span class="n">x</span> <span class="o">+=</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">bottomleft</span> <span class="o">=</span> <span class="n">test</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+        <span class="n">bottomright</span> <span class="o">=</span> <span class="n">test</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">s</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+        <span class="n">topleft</span> <span class="o">=</span> <span class="n">test</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">s</span><span class="p">);</span>
+        <span class="n">topright</span> <span class="o">=</span> <span class="n">test</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">s</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">s</span><span class="p">);</span>
+
+        <span class="kt">int</span> <span class="k">case</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="c1">// build up bit mask...</span>
+    <span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></div>
+
+<h2 id="marching-cubes-1">Marching Cubes</h2>
+
+<p>Marching cubes is the exact same, except applied to cubes</p>
+
+<p>There’s 256 cases to go through, but excluding rotational symmetries and inverses, there’s only 15</p>
+
+<p>The algorithm isn’t too different either, we just have to change the lookup table and add an extra dimension to the march</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kt">float</span> <span class="n">z</span> <span class="o">=</span> <span class="n">zmin</span><span class="p">;</span> <span class="n">z</span> <span class="o">&lt;</span> <span class="n">zmax</span><span class="p">;</span> <span class="n">z</span> <span class="o">+=</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">float</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ymin</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">ymax</span><span class="p">;</span> <span class="n">y</span> <span class="o">+=</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">float</span> <span class="n">x</span> <span class="o">=</span> <span class="n">xmin</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">xmax</span><span class="p">;</span> <span class="n">x</span> <span class="o">+=</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// test the 8 corners and build a bitfield</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

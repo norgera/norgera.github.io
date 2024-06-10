@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.5/jscolor.min.js"></script>
+    <script src="/assets/js/colour-theme.js" type="text/javascript"></script>
+    
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Predicates | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Predicates" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/programming-languages/predicates.html" />
+<meta property="og:url" content="http://localhost:4000/notes/programming-languages/predicates.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Predicates" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Predicates","url":"http://localhost:4000/notes/programming-languages/predicates.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+    <button class="theme-switch star-button"><i class="far fa-star"></i></button>
+
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#predicates">Predicates</a></li><li><a href="#auto-proofs">Auto-Proofs</a></li></ul>
+            
+    
+  </div>
+  
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+</div>
+
+
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h2 id="predicates">Predicates</h2>
+
+<p>Predicates deal with mapping variables and constants to true for false, with the rules being called predicate calculus</p>
+
+<p>Operators:</p>
+<ul>
+  <li>and ∧</li>
+  <li>or ∨</li>
+  <li>not ¬</li>
+  <li>implication →</li>
+  <li>equivalence ↔</li>
+</ul>
+
+<p>Quantifiers:</p>
+<ul>
+  <li>existential ∃</li>
+  <li>universal ∀</li>
+</ul>
+
+<p>∀C (rainy(C) ∧ cold(C) → snowy(C))</p>
+
+<p>∀A, ∀B (takes(A, C) ∧ takes(B, C) → classmates(A, B))</p>
+
+<ul>
+  <li>
+    <p>Fermat’s last Theorem:<br />
+∀N ((N &gt; 2) → ¬(∃A ∃B ∃C (A^N + B^N = C^N)))</p>
+  </li>
+  <li>
+    <p>∀, ∃ bind variables like λ in λ-calculus</p>
+  </li>
+</ul>
+
+<p>There’s just a few important things I’ll go over here: first is the notion or normal form</p>
+
+<p>There’s many ways to write statements, but this isn’t good for us if we want automatic provers, so we should convert things to normal form</p>
+
+<p>One of these normal forms is clausal form, which we get to with the following steps</p>
+
+<p>∀X (¬student(X) → (¬resident(X) ∧ ¬∃Y (takes(X, Y) ∧ class(Y))))</p>
+
+<ol>
+  <li>
+    <p>eliminate → and ↔:<br />
+∀X (student(X) ∨ (¬resident(X) ∧ ¬∃Y (takes(X, Y) ∧ class(Y))))</p>
+  </li>
+  <li>
+    <p>move ¬ inward (using De Morgan’s laws):<br />
+∀X (student(X) ∨ (¬resident(X) ∧ ∀Y (¬(takes(X, Y) ∧ class(Y)))))<br />
+≡<br />
+∀X (student(X) ∨ (¬resident(X) ∧ ∀Y (¬takes(X, Y) ∨ ¬class(Y))))</p>
+  </li>
+</ol>
+
+<p>∀X (student(X) ∨ (¬resident(X) ∧ ∀Y (¬takes(X, Y) ∨ ¬class(Y))))</p>
+
+<ol>
+  <li>eliminate existential quantifiers<br />
+    <ul>
+      <li>Skolemization (not necessary in our example)</li>
+    </ul>
+  </li>
+  <li>pull universal quantifiers to the outside of the \proposition (some renaming might be needed)</li>
+</ol>
+
+<p>∀X ∀Y (student(X) ∨ (¬resident(X) ∧ (¬takes(X, Y) ∨ ¬class(Y))))\</p>
+<ul>
+  <li>convention: rules are universally quantified\</li>
+  <li>we drop the implicit ∀’s:</li>
+</ul>
+
+<p>student(X) ∨ (¬resident(X) ∧ (¬takes(X, Y) ∨ ¬class(Y)))</p>
+
+<ol>
+  <li>convert the proposition in conjunctive normal form (CNF)<br />
+    <ul>
+      <li>conjunction of disjunctions</li>
+    </ul>
+  </li>
+</ol>
+
+<p>(student(X) ∨ ¬resident(X)) ∧ <br />
+(student(X) ∨ ¬takes(X, Y) ∨ ¬class(Y))</p>
+
+<p>(student(X) ∨ ¬resident(X)) ∧ <br />
+(student(X) ∨ ¬takes(X, Y) ∨ ¬class(Y))</p>
+
+<ul>
+  <li>We can rewrite as:</li>
+</ul>
+
+<p>(resident(X) → student(X)) ∧ <br />
+((takes(X, Y) ∧ class(Y)) → student(X))</p>
+
+<p>≡</p>
+
+<p>(student(X) ← resident(X)) ∧ <br />
+(student(X) ← (takes(X, Y) ∧ class(Y)))</p>
+
+<p>Now that we have a normal form, we can throw this straight into a logical language like Prolog</p>
+
+<ul>
+  <li>
+    <p>We obtained:
+(student(X) ← resident(X)) ∧ 
+(student(X) ← (takes(X, Y) ∧ class(Y)))</p>
+  </li>
+  <li>
+    <p>which translates directly to Prolog:</p>
+  </li>
+</ul>
+
+<div class="language-prolog highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="ss">student</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span> <span class="p">:-</span> <span class="ss">resident</span><span class="p">(</span><span class="nv">X</span><span class="p">).</span>
+<span class="ss">student</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span> <span class="p">:-</span> <span class="ss">takes</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span> <span class="nv">Y</span><span class="p">),</span> <span class="ss">class</span><span class="p">(</span><span class="nv">Y</span><span class="p">).</span>
+</code></pre></div></div>
+
+<p>:- means “if”
+, means “and”</p>
+
+<p>Another particular case is the horn clause, where we only have one negated term</p>
+
+<ul>
+  <li><strong>Horn clauses</strong>
+    <ul>
+      <li>particular case of clauses: only one non-negated term:<br />
+¬Q₁ ∨ ¬Q₂ ∨ … ∨ ¬Qₖ ∨ P ≡<br />
+Q₁ ∧ Q₂ ∧ … ∧ Qₖ → P ≡<br />
+P ← Q₁ ∧ Q₂ ∧ … ∧ Qₖ</li>
+      <li>which is a rule in Prolog:</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-prolog highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">P</span> <span class="p">:-</span> <span class="nv">Q1</span><span class="p">,</span> <span class="nv">Q2</span><span class="p">,</span> <span class="p">...,</span> <span class="nv">Qk</span><span class="p">.</span>
+<span class="ss">for</span> <span class="ss">k</span> <span class="o">=</span> <span class="m">0</span> <span class="ss">we</span> <span class="ss">have</span> <span class="ss">a</span> <span class="ss">fact</span><span class="o">:</span>
+
+<span class="nv">P</span><span class="p">.</span>
+</code></pre></div></div>
+
+<h2 id="auto-proofs">Auto-Proofs</h2>
+
+<p>The thing that we’re most concerned with here is automated proving, meaning, given a set of axioms, we want to prove that our theorems follow through negating the theorem to get a contradiction</p>
+
+<ul>
+  <li><strong>Rule:</strong> both sides of <code class="language-plaintext highlighter-rouge">:-</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">P :- Q1, Q2, ..., Qk.</code> means <code class="language-plaintext highlighter-rouge">P ← Q1 ∧ Q2 ∧ ... ∧ Qk</code></li>
+    </ul>
+  </li>
+  <li><strong>Fact:</strong> left-hand side of (implicit) <code class="language-plaintext highlighter-rouge">:-</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">P.</code> means <code class="language-plaintext highlighter-rouge">P ← true</code></li>
+    </ul>
+  </li>
+  <li><strong>Query:</strong> right-hand side of (implicit) <code class="language-plaintext highlighter-rouge">:-</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">?- Q1, Q2, ..., Qk.</code></li>
+    </ul>
+  </li>
+  <li><strong>Automated proving:</strong> given a collection of axioms (facts and rules), add the negation of the theorem (query) we want to prove and attempt (using resolution) to obtain a contradiction
+    <ul>
+      <li>Query negation: <code class="language-plaintext highlighter-rouge">¬(Q1 ∧ Q2 ∧ ... ∧ Qk)</code></li>
+    </ul>
+  </li>
+  <li>Example
+    <div class="language-prolog highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="ss">student</span><span class="p">(</span><span class="ss">john</span><span class="p">).</span>
+<span class="o">?-</span> <span class="ss">student</span><span class="p">(</span><span class="ss">john</span><span class="p">).</span>
+<span class="ss">true</span><span class="p">.</span>
+</code></pre></div>    </div>
+    <p>Fact: student(john) ← true</p>
+  </li>
+</ul>
+
+<p>Query (negated):</p>
+
+<ul>
+  <li>¬student(john) ≡ false ← student(john)</li>
+</ul>
+
+<p>We obtain a contradiction (that proves the query):</p>
+
+<ul>
+  <li>false ← student(john) ← true</li>
+</ul>
+
+<p>The above contradiction is obvious; in general, use resolution.</p>
+
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

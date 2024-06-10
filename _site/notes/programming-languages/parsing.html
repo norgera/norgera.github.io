@@ -1,0 +1,491 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.5/jscolor.min.js"></script>
+    <script src="/assets/js/colour-theme.js" type="text/javascript"></script>
+    
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Parsing | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Parsing" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/programming-languages/parsing.html" />
+<meta property="og:url" content="http://localhost:4000/notes/programming-languages/parsing.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Parsing" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Parsing","url":"http://localhost:4000/notes/programming-languages/parsing.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+    <button class="theme-switch star-button"><i class="far fa-star"></i></button>
+
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#ll1-grammar-for-calculator-language">LL(1) Grammar for Calculator Language</a><ul><li><a href="#compare-with-lr-grammar">Compare with LR Grammar:</a></li></ul></li><li><a href="#top-down-parsers">Top-down Parsers</a></li><li><a href="#ll-parsing">LL-Parsing</a><ul><li><a href="#how-to-build-the-table">How to build the table:</a></li></ul></li><li><a href="#common-problems">Common Problems</a></li><li><a href="#common-prefixes">Common Prefixes</a></li></ul>
+            
+    
+  </div>
+  
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+</div>
+
+
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="parsing">Parsing</h1>
+
+<p>The entire compilation process is encapsulated in the parser, so it’s very important to know how they work</p>
+
+<p>Once the scanner grabs the token, it assembles them into a syntax tree and passes the tree through the parser, which is a language identifier</p>
+
+<ul>
+  <li>A CFG, by contrast, is a language generator</li>
+</ul>
+
+<p>As you may have learned from 3331, we can use the CYK algorithm to recognize languages, but this is a disastrously slow $O(n^3)$, but we can use $O(n)$ algorithms LL (left to right, leftmost derivation) and LR (left to right, rightmost derivation) to make the process faster</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Class</th>
+      <th>Direction of scanning</th>
+      <th>Derivation discovered</th>
+      <th>Parse tree construction</th>
+      <th>Algorithm used</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>LL</strong></td>
+      <td>left-to-right</td>
+      <td>left-most</td>
+      <td>top-down</td>
+      <td>predictive</td>
+    </tr>
+    <tr>
+      <td><strong>LR</strong></td>
+      <td>left-to-right</td>
+      <td>right-most</td>
+      <td>bottom-up</td>
+      <td>shift-reduce</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>In a top-down construction, we make predictions based on the next token, but in a bottom-up construction, we reduce the right-hand side</p>
+
+<p><img src="images/plang/parsing/a1.png" alt="Untitled" /></p>
+
+<p>Left is top-down, right is bottom-up, both are using A, B, C;</p>
+
+<p>With the bottom-up approach, we can get better grammars which can’t be parsed top down</p>
+
+<p>Taking the same line, we can use bottom-up processing to get a parse tree like so</p>
+
+<p><img src="images/plang/parsing/a2.png" alt="Untitled" /></p>
+
+<p>No matter which approach we use, we need to account for look-ahead, the number of characters we look ahead being defined by k</p>
+
+<p>The higher the k, the more powerful the compiler gets, but the more complicated it gets</p>
+
+<ul>
+  <li>Because of this, almost all real compilers use LL(1) or LR(1)</li>
+  <li>We can use LR(0) to define the prefix property, which states that no valid string is a prefix of another valid string</li>
+</ul>
+
+<p>Taking an example from last week, we can see that the choice between LL and LR is largely dependent on what we’re trying to do</p>
+
+<h2 id="ll1-grammar-for-calculator-language">LL(1) Grammar for Calculator Language</h2>
+
+<ul>
+  <li>Less intuitive: operands not on the same right-hand side</li>
+  <li>Parsing is easier ($$ added to mark the end of the program)</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>program → stmt_list $$
+stmt_list → stmt stmt_list | ε
+stmt → id := expr | read id | write expr
+expr → term term_tail
+term_tail → add_op term term_tail | ε
+term → factor fact_tail
+fact_tail → mult_op fact fact_tail | ε
+factor → ( expr ) | id | number
+add_op → + | -
+mult_op → * | /
+</code></pre></div></div>
+
+<h3 id="compare-with-lr-grammar">Compare with LR Grammar:</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>expr → term | expr add_op term
+term → factor | term mult_op factor
+factor → id | number | -factor | (expr)
+add_op → + | -
+mult_op → * | /
+</code></pre></div></div>
+
+<h2 id="top-down-parsers">Top-down Parsers</h2>
+
+<ul>
+  <li>By hand – recursive descent</li>
+  <li>Table-driven</li>
+</ul>
+
+<h2 id="ll-parsing">LL-Parsing</h2>
+
+<p>An approach we can take with LL-parsing is a recursive descent parser, where we have one subroutine for each nonterminal</p>
+
+<p><strong>Recursive Descent Parser</strong></p>
+
+<ul>
+  <li>One subroutine for each nonterminal</li>
+</ul>
+
+<p><strong>Example</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>read A
+read B
+sum := A + B
+write sum
+write sum / 2
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>procedure match(expected)
+  if input_token = expected then
+    consume_input_token()
+  else
+    parse_error
+
+-- this is the start routine:
+procedure program()
+  case input_token of
+    id, read, write, $$ :
+      stmt_list()
+      match($$)
+    otherwise
+      parse_error
+
+procedure stmt_list()
+  case input_token of
+    id, read, write :
+      stmt()
+      stmt_list()
+    $$ :
+      skip  -- epsilon production
+    otherwise
+      parse_error
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>procedure stmt()
+    case input_token of
+        id : match(id); match(:=); expr()
+        read : match(read); match(id)
+        write : match(write); expr()
+        otherwise parse_error
+
+procedure expr()
+    case input_token of
+        id, number, ( : term(); term_tail()
+        otherwise parse_error
+
+procedure term_tail()
+    case input_token of
+        +, - : add_op(); term(); term_tail()
+        ), id, read, write, $$ : skip -- epsilon production
+        otherwise parse_error
+
+procedure term()
+    case input_token of
+        id, number, ( : factor(); factor_tail()
+        otherwise parse_error
+
+procedure factor_tail()
+    case input_token of
+        *, / : mult_op(); factor(); factor_tail()
+        +, -, ), id, read, write, $$ : skip -- epsilon production
+        otherwise parse_error
+
+procedure factor()
+    case input_token of
+        id : match(id)
+        number : match(number)
+        ( : match(()); expr(); match())
+        otherwise parse_error
+
+procedure add_op()
+    case input_token of
+        + : match(+)
+        - : match(-)
+        otherwise parse_error
+
+procedure mult_op()
+    case input_token of
+        * : match(*)
+        / : match(/)
+        otherwise parse_error
+</code></pre></div></div>
+<p>When we read this out, we get the following parse tree</p>
+
+<p><img src="images/plang/parsing/a3.png" alt="Untitled" /></p>
+
+<p>Another option is a table-driven approach, where we repeatedly look up actions in a 2D table based on the current leftmost non-terminal and the current input token</p>
+
+<p>The actions we can take include</p>
+
+<ul>
+  <li>Matching a terminal</li>
+  <li>Predicting a production</li>
+  <li>Announcing a syntax error</li>
+</ul>
+
+<p>We run this with a pushdown automaton (PDA) with the stack containing the starting symbol</p>
+
+<p>To build the table itself, we must build up a few functions</p>
+
+<h3 id="how-to-build-the-table">How to build the table:</h3>
+
+<ul>
+  <li><strong>FIRST(α)</strong> – tokens that can start an α</li>
+  <li><strong>FOLLOW(A)</strong> – tokens that can come after an A</li>
+</ul>
+
+<p><strong>Definitions:</strong></p>
+
+<ul>
+  <li><strong>EPS(α)</strong> ≡ if α ⇒* ε then true else false</li>
+  <li><strong>FIRST(α)</strong> ≡ { c | α ⇒* cβ }</li>
+  <li><strong>FOLLOW(A)</strong> ≡ { c | S ⇒* αAcβ }</li>
+  <li><strong>PREDICT(A → α)</strong> ≡ FIRST(α) ∪ if EPS(α) then FOLLOW(A) else ∅</li>
+</ul>
+
+<p><strong>Notes:</strong></p>
+
+<ul>
+  <li>If a token belongs to the predict set of more than one production with the same left-hand side, then the grammar is not LL(1).</li>
+  <li><strong>Compute</strong>: pass over the grammar until nothing changes.</li>
+  <li>Algorithm and examples on the next slides.</li>
+</ul>
+
+<p><img src="images/plang/parsing/a4.png" alt="Untitled" /></p>
+
+<p>Fortunately, we can calculate this with a simple algorithm</p>
+
+<p><img src="images/plang/parsing/a5.png" alt="Untitled" /></p>
+
+<p><img src="images/plang/parsing/a6.png" alt="Untitled" /></p>
+
+<p>With our example grammar, it looks something like this</p>
+
+<p><img src="images/plang/parsing/a7.png" alt="Untitled" /></p>
+
+<h2 id="common-problems">Common Problems</h2>
+
+<p>When creating a grammar that’s LL(1), we sometimes run into problems</p>
+
+<p>The first problem is left-recursion, where $A \Rightarrow^+ A\alpha$ for some nonterminal $A$, the problem being that we can’t even parse it top-down</p>
+
+<ul>
+  <li>Other types of recursion are fine</li>
+</ul>
+
+<p>The way we solve this is by left-recursion elimination</p>
+
+<p>Example – cannot be parsed top-down</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>id_list → id_list_prefix ;
+id_list_prefix → id_list_prefix , id
+id_list_prefix → id
+</code></pre></div></div>
+
+<p>Solved by left-recursion elimination</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>id_list → id id_list_tail
+id_list_tail → , id id_list_tail
+</code></pre></div></div>
+<p>There’s also the issue of common prefixes, but we must keep in mind that eliminating left-recursion and common prefixes doesn’t make it LL; there’s infinitely many languages that are not LL that can be automatically transformed without problems</p>
+
+<h2 id="common-prefixes">Common Prefixes</h2>
+
+<p><strong>Example</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stmt → id := expr
+stmt → id ( argument_list )
+</code></pre></div></div>
+
+<p>Solved by left-factoring</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stmt → id stmt_list_tail
+stmt_list_tail → := expr
+stmt_list_tail → ( argument_list )
+</code></pre></div></div>
+
+<p>A real problem that DOES inhibit being LL is the dangling else problem</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stmt → if cond then_clause else_clause | other_stmt
+then_clause → then stmt
+else_clause → else stmt | ε
+
+if C₁ then if C₂ then S₁ else S₂
+</code></pre></div></div>
+
+<p>The issue with this is that it’s ambiguous, something that we can’t have when parsing in general</p>
+
+<p>There’s two ways of solving this: the first is to make this unambiguous, which gives a good bottom-up grammar but will be impossible to do top-down</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stmt → balanced_stmt | unbalanced_stmt
+balanced_stmt → if cond then balanced_stmt else balanced_stmt
+               | other_stmt
+unbalanced_stmt → if cond then stmt
+                 | if cond then balanced_stmt else unbalanced_stmt
+</code></pre></div></div>
+
+<p>The other way to handle this is an end marker, which adds an explicit ending to a statement</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stmt → IF cond then_clause else_clause END | other_stmt
+then_clause → THEN stmt_list
+else_clause → ELSE stmt_list | ε
+</code></pre></div></div>
+
+<p>The issue with this is that we can have a bunch of ends bunched up, but this is a relatively easy fix</p>
+
+<p>Problem with end markers: they tend to bunch up</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if A = B then …
+else if A = C then …
+else if A = D then …
+else if A = E then …
+else …
+end end end end
+</code></pre></div></div>
+
+<p>To avoid this: elsif</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if A = B then …
+elsif A = C then …
+elsif A = D then …
+elsif A = E then …
+else …
+end
+</code></pre></div></div>
+
+<p>You could also force an else for every if statement, but that’s a pain for any programmer using your language</p>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

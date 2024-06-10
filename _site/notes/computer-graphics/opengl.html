@@ -1,0 +1,635 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.5/jscolor.min.js"></script>
+    <script src="/assets/js/colour-theme.js" type="text/javascript"></script>
+    
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>OpenGL | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="OpenGL" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/computer-graphics/opengl.html" />
+<meta property="og:url" content="http://localhost:4000/notes/computer-graphics/opengl.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="OpenGL" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"OpenGL","url":"http://localhost:4000/notes/computer-graphics/opengl.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+    <button class="theme-switch star-button"><i class="far fa-star"></i></button>
+
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#line-clipping">Line Clipping</a></li><li><a href="#dotline-plots">Dot/Line Plots</a></li><li><a href="#transforms">Transforms</a></li><li><a href="#pixels">Pixels</a></li><li><a href="#movement">Movement</a></li><li><a href="#splines">Splines</a></li><li><a href="#user-interaction">User Interaction</a></li></ul>
+            
+    
+  </div>
+  
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+</div>
+
+
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="opengl">OpenGL</h1>
+
+<p>We know that we start with a coordinate system and we have all the math, but now what do we do? What we can start with is clipping lines</p>
+
+<h2 id="line-clipping">Line Clipping</h2>
+
+<p>Clipping, the act of excluding data from a drawing, is fundamental to computer graphics</p>
+
+<p>We can do this easily on lines with the Cohen-Sutherland algorithm, with the idea of dividing the screen space into 9 areas, with only the center area being visible</p>
+
+<ol>
+  <li>Line entirely in window = draw completely</li>
+  <li>Line entirely outside window = draw nothing</li>
+  <li>Otherwise cut it at the edge and repeat</li>
+</ol>
+
+<p>Testing the first two is pretty simple</p>
+
+<p><img src="images/intro/gl1.png" alt="y2 should be y1" /></p>
+
+<p>y2 should be y1</p>
+
+<ul>
+  <li>This test will miss some lines that are trivially outside, but we can just chop these and retest</li>
+</ul>
+
+<p>The idea with chopping is that we use all the mins and maxes as “knives” to cut the line</p>
+
+<p>An explanation on chopping can be found below</p>
+
+<p>We can use classic $ y = mx + b $ to determine the new endpoints after cutting. The key is that, when being cut by “top”, the endpoint’s new $ y $ coordinate is $ y_{\text{max}} $. When cut by “bottom” the endpoint’s new $ y $ is $ y_{\text{min}} $. Same goes for left and right, but for $ x $.</p>
+
+<p>Then, we can use the line’s slope to determine the corresponding $ x $ coordinate (when cut by top or bottom) or $ y $ coordinate (when cut by right or left).</p>
+
+\[m = \frac{y_1 - y_0}{x_1 - x_0}\]
+
+<p>Then, from $ (x_0, y_0) $, following along a straight line of slope $ m $, and ending at $ y_{\text{max}} $ must have corresponding $ x $ coordinate $ x_{\text{new}} $:</p>
+
+\[\frac{y_1 - y_0}{x_1 - x_0} = m = \frac{y_{\text{max}} - y_0}{x_{\text{new}} - x_0}\]
+
+\[(x_{\text{new}} - x_0)(y_1 - y_0) = (y_{\text{max}} - y_0)(x_1 - x_0)\]
+
+\[x_{\text{new}} - x_0 = (y_{\text{max}} - y_0)(x_1 - x_0) / (y_1 - y_0)\]
+
+\[x_{\text{new}} = x_0 + (y_{\text{max}} - y_0)(x_1 - x_0) / (y_1 - y_0)\]
+
+<p>The almost same formula can be used to find $ x_{\text{new}} $ at $ y_{\text{min}} $ by just replacing $ y_{\text{max}} $ with $ y_{\text{min}} $.</p>
+
+<p>When we are cutting along right or left, the new $ x $-coordinate will be $ x_{\text{max}} $ or $ x_{\text{min}} $, respectively. We can then find $ y_{\text{new}} $ using the same slope formula:</p>
+
+\[\frac{y_1 - y_0}{x_1 - x_0} = m = \frac{y_{\text{new}} - y_0}{x_{\text{max}} - x_0}\]
+
+\[(x_{\text{max}} - x_0)(y_1 - y_0) = (y_{\text{new}} - y_0)(x_1 - x_0)\]
+
+\[y_{\text{new}} - y_0 = (x_{\text{max}} - x_0)(y_1 - y_0) / (x_1 - x_0)\]
+
+\[y_{\text{new}} = y_0 + (x_{\text{max}} - x_0)(y_1 - y_0) / (x_1 - x_0)\]
+
+<p>There’s other ways to do this, but this is the simplest</p>
+
+<p>We can write an algorithm for this as such</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// let xmin, xmax, ymin, ymax be defined as globals</span>
+<span class="kt">bool</span> <span class="nf">CS_clip</span> <span class="p">(</span><span class="kt">float</span><span class="o">&amp;</span> <span class="n">x0</span><span class="p">,</span> <span class="kt">float</span><span class="o">&amp;</span> <span class="n">y0</span><span class="p">,</span> <span class="kt">float</span><span class="o">&amp;</span> <span class="n">x1</span><span class="p">,</span> <span class="kt">float</span><span class="o">&amp;</span> <span class="n">y1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">line</span> <span class="n">totally</span> <span class="n">inside</span> <span class="n">viewport</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">line</span> <span class="n">totally</span> <span class="n">outside</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">)</span> <span class="n">is</span> <span class="n">outside</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">y0</span> <span class="o">&gt;</span> <span class="n">ymax</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// top</span>
+                <span class="n">x0</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">ymax</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">);</span>
+                <span class="n">y0</span> <span class="o">=</span> <span class="n">ymax</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">y0</span> <span class="o">&lt;</span> <span class="n">ymin</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// bottom</span>
+                <span class="n">x0</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">ymin</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">);</span>
+                <span class="n">y0</span> <span class="o">=</span> <span class="n">ymin</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">x0</span> <span class="o">&gt;</span> <span class="n">xmax</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// right</span>
+                <span class="n">y0</span> <span class="o">=</span> <span class="n">y0</span> <span class="o">+</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">);</span>
+                <span class="n">x0</span> <span class="o">=</span> <span class="n">xmax</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>  <span class="c1">// left</span>
+                <span class="n">x0</span> <span class="o">=</span> <span class="n">xmin</span><span class="p">;</span>
+                <span class="n">y0</span> <span class="o">=</span> <span class="n">y0</span> <span class="o">+</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">xmin</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">((</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span> <span class="n">is</span> <span class="n">outside</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// repeat above but for (x1, y1)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>We also need to clip for polygons, but this is very sophisticated and we don’t need to know the algorithm</li>
+</ul>
+
+<h2 id="dotline-plots">Dot/Line Plots</h2>
+
+<p>Something cool we can do is use a bunch of tiny dots to draw images, since drawing enough of them will give us a full image</p>
+
+<p>This is useful for creating literal dot plots, but can be used for other things as well</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// set the world origin at the center of the screen</span>
+<span class="n">glMatrixMode</span><span class="p">(</span><span class="n">GL_PROJECTION</span><span class="p">);</span>
+<span class="n">glLoadIdentity</span><span class="p">();</span>
+<span class="n">glOrtho</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+<span class="cm">/* Loop until the user closes the window */</span>
+<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">glfwWindowShouldClose</span><span class="p">(</span><span class="n">window</span><span class="p">))</span>
+<span class="p">{</span>
+    <span class="cm">/* Poll for and process events */</span>
+    <span class="n">glfwPollEvents</span><span class="p">();</span>
+
+    <span class="cm">/* Clear here */</span>
+    <span class="n">glClear</span><span class="p">(</span><span class="n">GL_COLOR_BUFFER_BIT</span><span class="p">);</span>
+
+    <span class="c1">// Draw the plot as points</span>
+    <span class="kt">float</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">min_x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="n">glColor3f</span><span class="p">(</span><span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">);</span>
+    <span class="n">glPointSize</span><span class="p">(</span><span class="mf">2.0</span><span class="n">f</span><span class="p">);</span>
+    <span class="n">glBegin</span><span class="p">(</span><span class="n">GL_POINTS</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// calculate x-coord based on N and i</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">((</span><span class="kt">float</span><span class="p">)</span><span class="n">i</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_x</span> <span class="o">-</span> <span class="n">min_x</span><span class="p">)</span> <span class="o">+</span> <span class="n">min_x</span><span class="p">;</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">my_fave_f</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+        <span class="n">glVertex2f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">glEnd</span><span class="p">();</span>
+
+    <span class="cm">/* Swap front and back buffers */</span>
+    <span class="n">glfwSwapBuffers</span><span class="p">(</span><span class="n">window</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Poly-line drawings</strong></p>
+
+<p>A very useful kind of 2D drawing is a poly-line: connecting endpoints of multiple lines together. With $ N $ vertices we get $ N - 1 $ line segments. We can think of it as drawing by connecting dots, without picking up the pen from the paper.</p>
+
+<p>If we want to draw a star using the typical “opposite corners” approach, we can use poly-lines. It all starts with <code class="language-plaintext highlighter-rouge">glBegin(GL_LINE_STRIP)</code>.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">glBegin</span><span class="p">(</span><span class="n">GL_LINE_STRIP</span><span class="p">);</span>
+<span class="n">glVertex2f</span><span class="p">(</span><span class="o">-</span><span class="mf">3.5</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.5</span><span class="n">f</span><span class="p">);</span>
+<span class="n">glVertex2f</span><span class="p">(</span><span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">7.0</span><span class="n">f</span><span class="p">);</span>
+<span class="n">glVertex2f</span><span class="p">(</span><span class="mf">3.5</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.5</span><span class="n">f</span><span class="p">);</span>
+<span class="n">glVertex2f</span><span class="p">(</span><span class="o">-</span><span class="mf">5.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">3.5</span><span class="n">f</span><span class="p">);</span>
+<span class="n">glVertex2f</span><span class="p">(</span><span class="mf">5.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">3.5</span><span class="n">f</span><span class="p">);</span>
+<span class="n">glVertex2f</span><span class="p">(</span><span class="o">-</span><span class="mf">3.5</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.5</span><span class="n">f</span><span class="p">);</span>
+<span class="n">glEnd</span><span class="p">();</span>
+</code></pre></div></div>
+<p>The nice part of polyline drawings is that they are quite portable. Given a list of vertex positions, say, stored in a file, they can easily be loaded and rendered as a polyline drawing.</p>
+
+<h2 id="transforms">Transforms</h2>
+
+<p>In OpenGL, moving something doesn’t require anything more than transforming the grid the object resides in</p>
+
+<p>This is part of what makes ortho so useful, since we can very easily define specific transformations</p>
+
+<p>Take the following as an example:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">glMatrixMode</span><span class="p">(</span><span class="n">GL_PROJECTION</span><span class="p">);</span>
+<span class="n">glLoadIdentity</span><span class="p">();</span>
+<span class="n">glOrtho</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+<span class="n">glTranslatef</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">glBegin</span><span class="p">(</span><span class="n">GL_TRIANGLES</span><span class="p">);</span>
+    <span class="n">glVertex2f</span><span class="p">(</span><span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">1.0</span><span class="n">f</span><span class="p">);</span>
+    <span class="n">glVertex2f</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">);</span>
+    <span class="n">glVertex2f</span><span class="p">(</span><span class="mf">1.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">);</span>
+<span class="n">glEnd</span><span class="p">();</span>
+<span class="n">glTranslatef</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre></div></div>
+<p>Here, we’re modifying the projection matrix to translate the triangle, which isn’t great (although it works for now)</p>
+
+<p>An alternative is to use GL_MODELVIEW, which will be applied before the projection matrix</p>
+
+\[v_{ndc} = PV v_{local}\]
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">drawTriangle</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">glBegin</span><span class="p">(</span><span class="n">GL_TRIANGLES</span><span class="p">);</span>
+        <span class="n">glVertex2f</span><span class="p">(</span><span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">1.0</span><span class="n">f</span><span class="p">);</span>
+        <span class="n">glVertex2f</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">);</span>
+        <span class="n">glVertex2f</span><span class="p">(</span><span class="mf">1.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">);</span>
+    <span class="n">glEnd</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">glMatrixMode</span><span class="p">(</span><span class="n">GL_PROJECTION</span><span class="p">);</span>
+<span class="n">glLoadIdentity</span><span class="p">();</span>
+<span class="n">glOrtho</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+<span class="n">glMatrixMode</span><span class="p">(</span><span class="n">GL_MODELVIEW</span><span class="p">);</span>
+<span class="n">glLoadIdentity</span><span class="p">();</span>
+<span class="n">glTranslatef</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">drawTriangle</span><span class="p">();</span>
+
+<span class="n">glLoadIdentity</span><span class="p">();</span>
+<span class="n">glTranslatef</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">drawTriangle</span><span class="p">();</span>
+</code></pre></div></div>
+
+<h2 id="pixels">Pixels</h2>
+
+<p>Since screens are made of individual pixels, it’s time we learn how to convert to those</p>
+
+<p><strong>Rasterization</strong></p>
+
+<p>Rasterization is the process of transforming the vector-defined shapes and graphics primitives into a raster image that we can draw</p>
+
+<p>Even after we apply viewport transformations, we still have to convert everything from floating-point numbers and formulas to actual pixels, so we create fragments, which is all the data we need to draw a pixel</p>
+
+<ol>
+  <li>Raster position (coordinates)</li>
+  <li>Color</li>
+  <li>Texture coordinates</li>
+  <li>Depth</li>
+  <li>Alpha</li>
+  <li>etc.</li>
+</ol>
+
+<p>There’s lots of ways to handle this, but the main idea is to overlay the viewport onto a set of pixels, each with a test point in the center, using it to determine whether a primitive “covers” said pixel</p>
+
+<p><strong>Line Rasterization</strong></p>
+
+<p>A classic approach is Bresenham’s Line Algorithm, where we define a diamond shaped region and say that, if a line exits this region, it’s colored in</p>
+
+<p><img src="images/opengl/q1.png" alt="Untitled" /></p>
+
+<p>The precise area depends on the slope of the line</p>
+
+<p><img src="images/opengl/q2.png" alt="Untitled" /></p>
+
+<p>Notched corners are excluded from the test area, so if the line touches one of the other corners, it’s colored in</p>
+
+<p>Below is an example:</p>
+
+<p><img src="images/opengl/q3.png" alt="Untitled" /></p>
+
+<p><strong>Triangle Rasterization</strong></p>
+
+<p>This is a lot easier than line rasterization</p>
+
+<ol>
+  <li>If a pixel’s test point is in the region, color it</li>
+  <li>If it’s outside, don’t color it</li>
+  <li>If it’s right on the edge, color it if it falls on a top edge or left edge</li>
+</ol>
+
+<p><img src="images/opengl/q4.png" alt="Untitled" /></p>
+
+<ul>
+  <li>If we have a corner situation, we color the leftmost triangle</li>
+</ul>
+
+<p><img src="images/opengl/q5.png" alt="Untitled" /></p>
+
+<p><strong>Antialiasing</strong></p>
+
+<p>As we can see, making discrete pixels makes things look jagged and ugly, so it’s nice to have a way to smooth things out</p>
+
+<p><img src="images/opengl/q7.png" alt="Untitled" /></p>
+
+<p>This is commonly done with supersampling, with a special case called multisampling being used in practice a lot</p>
+
+<p>The process is pretty simple: given a pixel with $N$ test points, for each test point covered by a primitive, add $\frac{1}{N}$ of that primitives color to the pixel, while still using the top-left rule</p>
+
+<p><img src="images/opengl/q8.png" alt="Untitled" /></p>
+
+<ul>
+  <li>This is where terms like 2x multisampling or 8x multisampling come from</li>
+</ul>
+
+<p>This, of course, is computationally expensive, since we need to multiply the number of samples for each pixel (there’s ways around this, but that’s for another time)</p>
+
+<p>In OpenGL, this is made pretty simple</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">glfwWindowHint</span> <span class="p">(</span><span class="n">GLFW_SAMPLES</span> <span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+<span class="n">glEnable</span> <span class="p">(</span><span class="n">GL_MULTISAMPLE</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>The question is as follows then: how do actually sort these extra test points? Take the following three cases</p>
+
+<p><img src="images/opengl/q9.png" alt="Left-right: grid, rotated grid, jitter" /></p>
+
+<p>Left-right: grid, rotated grid, jitter</p>
+
+<p>Grid is the simplest to compute, but it’s bad with nearly-orthogonal lines, so rotated grid (RGSS) is the standard for 4x antialiasing</p>
+
+<h2 id="movement">Movement</h2>
+
+<p>2D drawing wouldn’t be complete if we couldn’t animate, so let’s figure out how to do that</p>
+
+<p><strong>Lerps and Tweens</strong></p>
+
+<p>A lerp (linear interpolation) is a simple operation that blends vector $A$ into vector $B$ in time $t$, where $P(0)=A, P(1)=B$</p>
+
+\[P(t)=A(1-t)+Bt\]
+
+<p>When applied to positions, we get a tween (in-between), which are particularly useful for animation since we can define them for individual vertices</p>
+
+<p>Applied simultaneously, we can move everything at once in a smooth movement, but we have to define key frames (”ends” of each tween) in order to actually draw a concrete image</p>
+
+<p><img src="images/opengl/q10.png" alt="Untitled" /></p>
+
+<p>In OpenGL, these are relatively simple</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Let's give it a try.</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">star</span> <span class="o">=</span> <span class="p">{</span><span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">10.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">2.5</span><span class="n">f</span><span class="p">,</span> <span class="mf">2.5</span><span class="n">f</span><span class="p">,</span> <span class="mf">10.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">2.5</span><span class="n">f</span><span class="p">,</span> <span class="mf">4.0</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.5</span><span class="n">f</span><span class="p">,</span>
+                           <span class="mf">7.0</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.0</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.0</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.0</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.0</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.5</span><span class="n">f</span><span class="p">,</span> 
+                           <span class="o">-</span><span class="mf">10.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">2.5</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.5</span><span class="n">f</span><span class="p">,</span> <span class="mf">2.5</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">,</span> <span class="mf">10.0</span><span class="n">f</span><span class="p">};</span>
+
+<span class="kt">float</span> <span class="n">v1x</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">v1y</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="mf">1.5388</span><span class="p">,</span> <span class="n">v2x</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="mf">1.30902</span><span class="p">,</span>
+      <span class="n">v2y</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="mf">0.951056</span><span class="p">,</span> <span class="n">v3x</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="mf">1.618034</span><span class="p">,</span> <span class="n">v3y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">poly</span> <span class="o">=</span> <span class="p">{</span><span class="n">v1x</span><span class="p">,</span> <span class="n">v1y</span><span class="p">,</span> <span class="n">v2x</span><span class="p">,</span> <span class="n">v2y</span><span class="p">,</span> <span class="n">v3x</span><span class="p">,</span> <span class="n">v3y</span><span class="p">,</span> <span class="o">-</span><span class="n">v2x</span><span class="p">,</span> <span class="n">v2y</span><span class="p">,</span> <span class="n">v1x</span><span class="p">,</span> <span class="o">-</span><span class="n">v1y</span><span class="p">,</span>
+                           <span class="o">-</span><span class="n">v1x</span><span class="p">,</span> <span class="o">-</span><span class="n">v1y</span><span class="p">,</span> <span class="o">-</span><span class="n">v2x</span><span class="p">,</span> <span class="o">-</span><span class="n">v2y</span><span class="p">,</span> <span class="o">-</span><span class="n">v3x</span><span class="p">,</span> <span class="n">v3y</span><span class="p">,</span> <span class="o">-</span><span class="n">v2x</span><span class="p">,</span> <span class="n">v2y</span><span class="p">,</span> <span class="o">-</span><span class="n">v1x</span><span class="p">,</span>
+                           <span class="n">v1y</span><span class="p">,</span> <span class="n">v1x</span><span class="p">,</span> <span class="n">v1y</span><span class="p">};</span>
+
+<span class="n">glMatrixMode</span><span class="p">(</span><span class="n">GL_PROJECTION</span><span class="p">);</span>
+<span class="n">glLoadIdentity</span><span class="p">();</span>
+<span class="n">glOrtho</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+<span class="kt">float</span> <span class="n">deltaT</span> <span class="o">=</span> <span class="mf">0.005</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vx</span><span class="p">,</span> <span class="n">vy</span><span class="p">;</span>
+
+<span class="cm">/* Loop until the user closes the window */</span>
+<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">glfwWindowShouldClose</span><span class="p">(</span><span class="n">window</span><span class="p">))</span>
+<span class="p">{</span>
+    <span class="c1">//...</span>
+    <span class="n">glBegin</span><span class="p">(</span><span class="n">GL_LINE_STRIP</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">star</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">vx</span> <span class="o">=</span> <span class="n">lerp</span><span class="p">(</span><span class="n">star</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">poly</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">t</span><span class="p">);</span>
+        <span class="n">vy</span> <span class="o">=</span> <span class="n">lerp</span><span class="p">(</span><span class="n">star</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">poly</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">t</span><span class="p">);</span>
+        <span class="n">glVertex2f</span><span class="p">(</span><span class="n">vx</span><span class="p">,</span> <span class="n">vy</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">glEnd</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="n">f</span> <span class="o">||</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">deltaT</span> <span class="o">*=</span> <span class="o">-</span><span class="mf">1.0</span><span class="n">f</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">t</span> <span class="o">+=</span> <span class="n">deltaT</span><span class="p">;</span>
+    <span class="c1">//...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Non-Linear Tweens</strong></p>
+
+<p>Fortunately, we can add another vector $C$ to make a non-linear tween</p>
+
+<p>The only issue is how do we actually partition $t$ into three pieces? Look at the following…</p>
+
+\[1=(1-t)+t \\
+1=((1-t)+t)^2 \\
+1=(1-t)^2+2(1-t)t+t^2\]
+
+<p>…well that was fast</p>
+
+<p>This will create a smooth quadratic, with $P(t)=C$ this time, and $B$  acting as an intermediary since there’s no $t$ such that $P(t)=B$</p>
+
+\[P(t)=(1-t)^2A+2t(1-t)B+t^2C\]
+
+<p>Note that the function never actually touches B, so it simply acts as a control</p>
+
+<p><img src="images/opengl/q11.png" alt="Untitled" /></p>
+
+<p>This, mathematically speaking, is a Bezier curve degree 2, but we can go even further</p>
+
+<p>If we chop this up further, we get the following</p>
+
+\[1=((1-t)+t)^3 \\
+1=(1-t)^3+3(1-t)^2t+3(1-t)t^2+t^3 \\
+P(t)=(1-t)^3A+3(1-t)^2tB+3(1-t)t^2C+t^3D \\\]
+
+<h2 id="splines">Splines</h2>
+
+<p>These are cool and all, but you can only extend these so far before they become unwieldly large</p>
+
+<p>Luckily, we can instead create a spline to connect everything together</p>
+
+<p>For example, if we have 5 points $A,B,C,D,E$, we can connect them pretty easily with a poly line with line segments $(A,B),(B,C),(C,D),(D,E)$</p>
+
+<p>We can apply this same piecewise treatment to splines, making a new piecewise function $S(t)$ that incorporates all our different points for $P(t)$</p>
+
+<p>Let’s say we have $ k $ such uniform subintervals. Thus, we have $[t_0, t_1), [t_1, t_2), \ldots, [t_{k-1}, t_k)$ with $ a = t_0 $ and $ b = t_k $. We will define a Bezier curve $ P_i(t) $ for each interval.</p>
+
+\[S(t) =
+\begin{cases}
+P_1(t), &amp; a \leq t &lt; t_1 \\
+P_2(t), &amp; t_1 \leq t &lt; t_2 \\
+P_3(t), &amp; t_1 \leq t &lt; t_3 \\
+\vdots &amp; \\
+P_k(t), &amp; t_{k-1} \leq t &lt; b \\
+\end{cases}\]
+
+<p>We, of course, have to scale this interval to $[0,1]$, which we can do with the following formula</p>
+
+\[\forall P_i(t), t^\prime = \frac{t-t_i}{t_{i+1}-t_i}\]
+
+<p>In practice, since we usually use splines to draw curves, we can just let the interval be $[0,1]$</p>
+
+<p>Taking 3 main points and 4 control points, we can use the following code to create a simple spline</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="n">Ax</span> <span class="o">=</span> <span class="o">-</span><span class="mi">15</span><span class="p">,</span> <span class="n">Ay</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span><span class="p">;</span>
+<span class="kt">float</span> <span class="n">Bx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">By</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+<span class="kt">float</span> <span class="n">Cx</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span> <span class="n">Cy</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+
+<span class="kt">float</span> <span class="n">c1x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="n">c1y</span> <span class="o">=</span> <span class="mi">9</span><span class="p">;</span>
+<span class="kt">float</span> <span class="n">c2x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="n">c2y</span> <span class="o">=</span> <span class="mi">17</span><span class="p">;</span>
+<span class="kt">float</span> <span class="n">c3x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c3y</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="kt">float</span> <span class="n">c4x</span> <span class="o">=</span> <span class="mi">9</span><span class="p">,</span> <span class="n">c4y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">;</span>
+
+<span class="n">glPointSize</span><span class="p">(</span><span class="mf">10.0</span><span class="n">f</span><span class="p">);</span>
+<span class="n">glBegin</span><span class="p">(</span><span class="n">GL_POINTS</span><span class="p">);</span>
+    <span class="n">glVertex2f</span><span class="p">(</span><span class="n">Ax</span><span class="p">,</span> <span class="n">Ay</span><span class="p">);</span>
+    <span class="n">glVertex2f</span><span class="p">(</span><span class="n">Bx</span><span class="p">,</span> <span class="n">By</span><span class="p">);</span>
+    <span class="n">glVertex2f</span><span class="p">(</span><span class="n">Cx</span><span class="p">,</span> <span class="n">Cy</span><span class="p">);</span>
+<span class="n">glEnd</span><span class="p">();</span>
+
+<span class="n">glPointSize</span><span class="p">(</span><span class="mf">2.0</span><span class="n">f</span><span class="p">);</span>
+<span class="n">glBegin</span><span class="p">(</span><span class="n">GL_POINTS</span><span class="p">);</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">float</span> <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="kt">float</span><span class="p">)</span> <span class="n">i</span><span class="p">;</span>
+    <span class="n">t</span> <span class="o">/=</span> <span class="n">N</span><span class="p">;</span>
+    <span class="n">glVertex2f</span><span class="p">(</span><span class="n">bezier4</span><span class="p">(</span><span class="n">Ax</span><span class="p">,</span> <span class="n">c1x</span><span class="p">,</span> <span class="n">c2x</span><span class="p">,</span> <span class="n">Bx</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="n">bezier4</span><span class="p">(</span><span class="n">Ay</span><span class="p">,</span> <span class="n">c1y</span><span class="p">,</span> <span class="n">c2y</span><span class="p">,</span> <span class="n">By</span><span class="p">,</span> <span class="n">t</span><span class="p">));</span>
+    <span class="n">glVertex2f</span><span class="p">(</span><span class="n">bezier4</span><span class="p">(</span><span class="n">Bx</span><span class="p">,</span> <span class="n">c3x</span><span class="p">,</span> <span class="n">c4x</span><span class="p">,</span> <span class="n">Cx</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="n">bezier4</span><span class="p">(</span><span class="n">By</span><span class="p">,</span> <span class="n">c3y</span><span class="p">,</span> <span class="n">c4y</span><span class="p">,</span> <span class="n">Cy</span><span class="p">,</span> <span class="n">t</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="n">glEnd</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p><img src="images/opengl/q12.png" alt="Untitled" /></p>
+
+<p>This obviously isn’t smooth, but we can alleviate this with some high school math to line up the control points</p>
+
+<p>Let’s calculate the line connecting control point 2 and $ B $. Recall that the formula for the line between two points is:</p>
+
+\[y - y_1 = \frac{y_1 - y_0}{x_1 - x_0} (x - x_1)\]
+
+\[c_2 = (-7, 17) \quad B = (-3, 15)\]
+
+\[y = \frac{15 - 17}{-3 + 7} (x + 7) + 17 = \frac{-x}{2} + \frac{27}{2}\]
+
+<p>So, we should move $ c_3 $ to also be on this line. Let’s keep its $ x $-coordinate the same and compute its correct $ y $ coordinate as:</p>
+
+\[c_{3,y} = \frac{-1}{2} + \frac{27}{2} = 13\]
+
+<p><img src="images/opengl/q13.png" alt="Untitled" /></p>
+
+<h2 id="user-interaction">User Interaction</h2>
+
+<p><strong>Interaction Paradigms</strong></p>
+
+<p>In genera, there are two ways to receive and process user interaction no matter what you’re working on</p>
+
+<ol>
+  <li>Polling - program constantly asks if events of interest happened</li>
+  <li>“Event Handlers”: Callbacks - have a function which handles a certain event</li>
+</ol>
+
+<p>Both of these can be used depending on what you need, so there’s no clear benefit to using one over the other</p>
+
+<p><strong>Mouse Interaction</strong></p>
+
+<p>The most obvious place to start with user interaction is the mouse, allowing users to interact with a precise location in the program as well as with the different types of presses (left click, right click, scroll, holds, etc.)</p>
+
+<p>As we’ve seen, the viewport has a bottom left origin, while most windowing systems have a top left origin, but luckily we can handle this with the following formula</p>
+
+\[mouse_y=screen_y-mouse_y\]
+
+<p><strong>Button Interaction</strong></p>
+
+<p>Buttons have two states: released and pressed</p>
+
+<ul>
+  <li>There’s a third called repeat but this is the most basic setup</li>
+</ul>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

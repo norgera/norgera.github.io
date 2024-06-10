@@ -1,22 +1,18 @@
 ---
 layout: default
+title: "Computer Science"
+has_children: true
 permalink: /notes/
 ---
 
-
-## Math
-
-* [Linear Algebra](linear-algebra)
-* [Calculus](calculus)
-
-
 ## Computer Science
 
-* [Image Compression](image-compression)
 * [Operating Systems](operating-systems)
 * [Computer Architecture](computer-architecture)
+* [Image Compression](image-compression)
+* [Computer Graphics](computer-graphics)
 * [Programming Languages](programming-languages)
-* [Systems Programming](systems-programming)
-* [Discrete Structures](discrete-structures)
 
 
+
+[Archived](archived)

@@ -1,0 +1,238 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.5/jscolor.min.js"></script>
+    <script src="/assets/js/colour-theme.js" type="text/javascript"></script>
+    
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Names and Flow | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Names and Flow" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/programming-languages/names-flow.html" />
+<meta property="og:url" content="http://localhost:4000/notes/programming-languages/names-flow.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Names and Flow" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Names and Flow","url":"http://localhost:4000/notes/programming-languages/names-flow.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+    <button class="theme-switch star-button"><i class="far fa-star"></i></button>
+
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#binding">Binding</a></li><li><a href="#scope">Scope</a><ul><li><a href="#dynamic-scoping">Dynamic Scoping</a></li><li><a href="#referencing-environment">Referencing Environment</a></li></ul></li></ul>
+            
+    
+  </div>
+  
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+</div>
+
+
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="names-and-flow">Names and Flow</h1>
+
+<p>When designing a new language, ease of programming is almost always the main driving force</p>
+
+<p>One of the core issues with language design is names, since they’re something that machines aren’t very good at handling: abstractions</p>
+
+<p>As we get higher in levels and farther from the hardware, our languages become much more abstract to manage complexity of modern programs, but this is also a double edged sword since it makes it harder for machines to handle</p>
+
+<p>We can divide these semantics into three parts:</p>
+
+<ol>
+  <li>Names: a character string abstracting some data</li>
+  <li>Binding: association between a name and the thing it names</li>
+  <li>Scope: the part of the program where a binding is active</li>
+</ol>
+
+<h2 id="binding">Binding</h2>
+
+<p>Binding can be static (bound before run time) or dynamic (bound at run time), which gives you either better efficiency or better flexibility, respectively</p>
+
+<ul>
+  <li>Compiled languages tend to have early binding times, while interpreted languages do this later</li>
+</ul>
+
+<p>The lifetime of this binding is the time between it’s creating and distruction, while its scope is the textual region where it’s active</p>
+
+<p>There’s many ways to store this, either statically (absolute address), stack (for subroutine calls and returns), and the heap (dynamically allocated memory)</p>
+
+<p>Static allocation is used for stuff that is very explicit, such as global variables, instructions, explicit constants or static variables, such as in C++</p>
+
+<p>With stack-based allocation, we take all our parameter, local variables and temporaries and throw them into a frame, which represents a subroutine call (this should be review from 2208)</p>
+
+<p>Heap allocation throws data into our RAM, allowing for us to expand our variables at will</p>
+
+<p>Allocating these variables with a first-fit algorithm is $O(n)$, but we can use pool allocation instead for $O(1)$ time</p>
+
+<p>Pool allocation uses a free list of blocks of different sizes, either with a buddy system with blocks of size $2^k$ or a Fibonacci heap with Fibonacci-sized numbers</p>
+
+<p>The issue with the heap is deallocation since it’s throwin into RAM, which is either done through explicit deallocation (C, C++, other low level languages) or implicit deallication/garbade collection (Python, Java)</p>
+
+<p>Explicit allication is usually simpler to implement and faster, but this comes with some problems for the programmer: deallocate too soon and you get a dangling reference, but if you don’t deallocate at the end of lifetime, you get a memory leak</p>
+
+<h2 id="scope">Scope</h2>
+
+<p>The scope, as we’ve mentioned, is the textual region of the program for which the binding is active</p>
+
+<p>A subroutine will usually create a new scope where we create local bindings and destroy them once the subroutine is exited, restoring the bindings for global variables</p>
+
+<p>Almost all languages employ static scoping, where scope is determined at compile time</p>
+
+<p>For subroutine, we might have nested subroutines, for which we will use the closest nested rule such as in Python and Scheme, but these don’t exist in languages such as C, C++ or Java</p>
+
+<p>Sometimes we might have a scope resolution operator for variables that are non-local</p>
+
+<h3 id="dynamic-scoping">Dynamic Scoping</h3>
+
+<p>Something that’s (luckily) not used anymore is dynamic scoping, where binding depends on the flow at run time, which is easier to implement (just a stack), but its harder to understand</p>
+
+<p>How this works is that, when we enter a new scope, we overwrite bindings by putting them on the stack</p>
+
+<p>This comes with its own problems, where the wrong variable is used in some functions</p>
+
+<h3 id="referencing-environment">Referencing Environment</h3>
+
+<p>The reference environment is the set of active binding, handled by lexical nesting in static scope and order of declarations at run time in dynamic scope</p>
+
+<p>The scope rules are applied wither when a routine is called (shallow binding, default in dynamic scoping) or when a reference is created (deep binding, default in static scoping)</p>
+
+<p>Deep binding is implemented through subroutine closure, which is an explicit representation of a reference environment</p>
+
+<p>The binding time matters since the running program may have two instances of some object for ones that are neither local or global</p>
+
+<p>This doesn’t matter for some languages, but for others, it’s very important</p>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

@@ -1,0 +1,544 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.5/jscolor.min.js"></script>
+    <script src="/assets/js/colour-theme.js" type="text/javascript"></script>
+    
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Render Pipeline | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Render Pipeline" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/computer-graphics/render.html" />
+<meta property="og:url" content="http://localhost:4000/notes/computer-graphics/render.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Render Pipeline" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Render Pipeline","url":"http://localhost:4000/notes/computer-graphics/render.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+    <button class="theme-switch star-button"><i class="far fa-star"></i></button>
+
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#vertex-specification">Vertex Specification</a></li><li><a href="#fixed-functions">Fixed Functions</a></li><li><a href="#primitive-assembly--face-culling">Primitive Assembly &amp; Face Culling</a></li><li><a href="#rasterization--attribute-interpolation">Rasterization &amp; Attribute Interpolation</a></li><li><a href="#sample-processing">Sample Processing</a><ul><li><a href="#depth">Depth</a></li><li><a href="#blending">Blending</a></li><li><a href="#clearing">Clearing</a></li></ul></li><li><a href="#shaders">Shaders</a><ul><li><a href="#vertex-shaders">Vertex Shaders</a></li><li><a href="#tesselation--geometry-shaders">Tesselation &amp; Geometry Shaders</a></li><li><a href="#fragment-shaders">Fragment Shaders</a></li></ul></li><li><a href="#shaders-in-practice">Shaders in Practice</a><ul><li><a href="#using-shaders">Using Shaders</a></li></ul></li><li><a href="#textures-again">Textures Again</a></li></ul>
+            
+    
+  </div>
+  
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+</div>
+
+
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="render-pipeline">Render Pipeline</h1>
+
+<p>Now that we’re heading into 3D, it’s important that we know how OpenGL actually renders objects and in what order</p>
+
+<p>The pipeline follows 5 basic steps</p>
+
+<ol>
+  <li>Vertex specification</li>
+  <li>Vertex processing</li>
+  <li>Vertex post-processing
+    <ol>
+      <li>Primitive assembly</li>
+      <li>Clipping</li>
+      <li>Face culling</li>
+    </ol>
+  </li>
+  <li>Rasterization</li>
+  <li>Sample Processing
+    <ol>
+      <li>Depth testing, blending, etc.</li>
+    </ol>
+  </li>
+</ol>
+
+<h2 id="vertex-specification">Vertex Specification</h2>
+
+<p>Vertices are, at their core, points in space used to generate primitives</p>
+
+<p>The only required attribute for these is position (glVertex), but there are others used to build the broader primitives</p>
+
+<ul>
+  <li>glColor</li>
+  <li>glNormal</li>
+  <li>glTexCoord (for textures)</li>
+</ul>
+
+<p>Since OpenGL is a state machine, vertex attributes like glColor persist and are applied to evert vertex specified with each glVertex call</p>
+
+<p>For the texture, we’re essentially covering triangles with an image rather than a color</p>
+
+<p><img src="images/render/a1.png" alt="Untitled" /></p>
+
+<p>The texture coordinates are a pair of floats in the range $[0,1]$, often called $(u,v)$, which map to the width and height of the texture, respectively</p>
+
+<p>The texture is then squished onto the image according to the triangle’s vertices to fit onto the triangle</p>
+
+<h2 id="fixed-functions">Fixed Functions</h2>
+
+<p>The fixed function pipeline, a layer in between vertex specification and assembly, defines default behaviour for vertices, basically consisting only of matrix multiplication (GL_MODELVIEW → GL_PROJECTION)</p>
+
+<ul>
+  <li>It’s consider fixed because it has no programmatic capabilities</li>
+</ul>
+
+<p>After this, we get to primitive assembly</p>
+
+<h2 id="primitive-assembly--face-culling">Primitive Assembly &amp; Face Culling</h2>
+
+<p>Primitive assembly is the process of breaking down a vertex stream into a sequence of base primitives (points, lines and triangles)</p>
+
+<ul>
+  <li>Face culling is done to remove triangles whose front face is or is not facing the camera</li>
+</ul>
+
+<p>With winding order and glFrontFace, we specify whether the front face has vertices circling clockwise or counter-clockwise around the center</p>
+
+<p>We can then enable face culling with glEnable(GL_CULL_FACE) and then well it which faces to cull, either front towards the camera (glCullFace(GL_FRONT)), back or both (GL_BACK, GL_FRONT_AND_BACK)</p>
+
+<h2 id="rasterization--attribute-interpolation">Rasterization &amp; Attribute Interpolation</h2>
+
+<p>Rasterization is the process of converting base primitives to fragments, providing all the information needed to color a pixel, including position, depth, color and other attributes</p>
+
+<p>What we didn’t color is interpolations, which is the process that rasterization uses to turn vertex attributes into the values for each fragment</p>
+
+<p>Interpolation is used to interpolate multiple vertices’ attributes across all fragments between those vertices, using a simple lerp between the attributes of each vertex</p>
+
+<p>However, since a triangle has three vertices, it’s not a simple lerp, but rather a weighted average based on the distance between a fragment’s position and each of the vertices</p>
+
+<p>For an example, if a triangle has all three vertices set to a different color, the result fragments vary between combinations of those colors</p>
+
+<p><img src="images/render/a2.png" alt="Untitled" /></p>
+
+<p>This is essentially how texture mapping works, since each fragment gets an interpolated value of texture coordinates</p>
+
+<ul>
+  <li>From here, we access a texture’s pixel (texel) to determine the color of the fragment</li>
+</ul>
+
+<p>We still need to handle discrete pixel coloring, which we do with texture filtering</p>
+
+<p>Two strategies exist: nearest neighbour and bilinear/linear filtering</p>
+
+<p><img src="images/render/a3.png" alt="Untitled" /></p>
+
+<h2 id="sample-processing">Sample Processing</h2>
+
+<p>Now that we have out fragments we need to draw them out to the frame buffer, but it’s possible for different primitives to overlap, allowing more than one fragment to cover the same pixel</p>
+
+<p>What we mainly need to consider is depth and blending; without enabling these, whatever is drawn last would be displayed</p>
+
+<ul>
+  <li>We enable these with glEnable</li>
+</ul>
+
+<h3 id="depth">Depth</h3>
+
+<p>When a fragment is determined to cover a pixel, it first checks if that pixel is already covered, color that pixel if it isn’t</p>
+
+<p>If it is, either color it again (overdraw) or discard the current fragment and leave the pixel unmodified</p>
+
+<p>The choice to overdraw depends on the depth test, using the z coordinate of the fragment after perspective divide to determine whether the current fragment passes or not</p>
+
+<p>The values that pass a depth test depend on the depth function, using glDepthFunc</p>
+
+<p>The options include</p>
+
+<ul>
+  <li>GL_LESS: if the depth value is less than the previous one, depth test passes</li>
+  <li>GL_GREATER: same thing but in reverse</li>
+</ul>
+
+<p>The actual comparison is facilitated through the depth buffer, so when we draw fragments to the frame buffer, we also draw them to the depth buffer in a one-to-one correspondence</p>
+
+<h3 id="blending">Blending</h3>
+
+<p>Blending allows fragments to be blended and mixed together to get interesting effects, using the blend function to determine how that fragment’s color is mixed with the existing pixel color in the frame buffer</p>
+
+<p>Many of these functions exist, but they all specify a weighted sum of the course color and the destination color</p>
+
+<p>Letting $f_{s,R}, f_{s,G}, f_{s,B}, f_{s,A}$ be the scale factors for the source color channels $R,G,B,A$ and $f_{d,R}, f_{d,G}, f_{d,B}, f_{d,A}$ be the destination color channels, the new color is calculated by the following</p>
+
+\[new_i = S_if_{s,i}+D_if_{d,i}\]
+
+<ul>
+  <li>$new_i$ is clamped so as to not overflow the max</li>
+</ul>
+
+<p>We specify the blend function with glBlendFunc with the most common being glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) and the default being glBlendFunc(GL_ONE, GL_ZERO)</p>
+
+<ul>
+  <li>The most common one mimics the effect of translucent objects</li>
+</ul>
+
+<h3 id="clearing">Clearing</h3>
+
+<p>We can clear our buffers and write a solid color to everywhere with glClear, with glClearColor specifying a default color and glClearDepth to specify a default depth (default is 1)</p>
+
+<h2 id="shaders">Shaders</h2>
+
+<p>An important part of graphics is shaders, which specify textures, lights, material, etc.</p>
+
+<p>We can use GLSL to write these shaders, which is a programming language similar to C, executed as a shader object, linking to become a program</p>
+
+<p>GLSL doesn’t have the same capacity as C, but it does include more stuff, including vectors, matrices, textures and more</p>
+
+<p>The basic program consists of 4 main parts</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#version xyz core //version code
+</span>
+<span class="n">in</span> <span class="n">vec3</span> <span class="n">fromPreviousShader</span> <span class="c1">//input variables</span>
+
+<span class="n">out</span> <span class="n">vec3</span> <span class="n">toNextShader</span> <span class="c1">//output variables</span>
+
+<span class="kt">void</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span> <span class="c1">//main function</span>
+	<span class="n">toNextShader</span> <span class="o">=</span> <span class="n">fromPreviousShader</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can also just write these as functions and call them from main</p>
+
+<h3 id="vertex-shaders">Vertex Shaders</h3>
+
+<p>Vertex shaders are executed for each vertex in a draw call, with the inputs coming from vertex specification and any other attributes</p>
+
+<ul>
+  <li>You NEED to have these attributes if the shader expects it, otherwise you’re screwed</li>
+</ul>
+
+<p>The outputs are then passed to the next stage (other shaders if they’re specified, post-processing if they’re not)</p>
+
+<p>We need a vertex position at minimum, which is specified in clip space, so for vertices in local coordinates, the output should be $PVMv_{local}=v_{clip}$</p>
+
+<ul>
+  <li>The shader usually does this itself but we can always do it on the client side</li>
+</ul>
+
+<h3 id="tesselation--geometry-shaders">Tesselation &amp; Geometry Shaders</h3>
+
+<p>These generate more primitives from existing primitives as a sort of primitive pre-assembly and extension, where tesselations sub-divide primitives and geometries create new vertices</p>
+
+<ul>
+  <li>More on this later…</li>
+</ul>
+
+<h3 id="fragment-shaders">Fragment Shaders</h3>
+
+<p>To shade fragments, we get some inputs by default that don’t need to be explicitly mentioned</p>
+
+<ul>
+  <li>vec4 gl_FragCoord, the (x,y) position of the fragment in window space</li>
+  <li>bool gl_FrontFacing, says whether or not the fragment is facing the camera or not</li>
+  <li>Anything else interpolated from vertex attributes in the vertex shader</li>
+</ul>
+
+<p>The output must include at least one color so that we can see it, traditionally using vec4 gl_FragColor as a built-in</p>
+
+<ul>
+  <li>This is deprecated in newer versions, so we should output a different variable that specifies what to draw</li>
+</ul>
+
+<p>If you noticed, the next shader must take input values that are outputted from the previous shader, which is known as interface matches</p>
+
+<h2 id="shaders-in-practice">Shaders in Practice</h2>
+
+<p>To actually use shaders, we specify the code as a string, which is compiled into a shader object and linked to programs at runtime</p>
+
+<p>The basic steps are as follows</p>
+
+<ol>
+  <li>Create a shader object with glCreateShader(GL_SHADER_TYPE), returning a unique ID</li>
+  <li>Specify the source code with glShaderSource(shaderID, count, stringArray, lengthArray)</li>
+  <li>Compile the shader with glCompileShader(shaderID)</li>
+</ol>
+
+<p>Usually stringArray is just one string, but OpenGL allows for several strings to be passed and a concatenation is produced, creating the source code</p>
+
+<ul>
+  <li>lengthArray is the length of the string (we can use NULL to specify that the strings are NULL-terminated)</li>
+</ul>
+
+<p>Now we don’t have a program yet, so let’s do that</p>
+
+<ol>
+  <li>Create the program with glCreateProgram()</li>
+  <li>Attach the objects with glAttachShader(programID, shaderID)</li>
+  <li>Link the program with glLinkProgram(programID) to create an executable</li>
+</ol>
+
+<p>This state is then fixed until we call glLinkProgram again</p>
+
+<h3 id="using-shaders">Using Shaders</h3>
+
+<p>Now we have a program, but we still need to use this, so we need to look at vertex specification</p>
+
+<p>Each attribute in a vertex shader is given a location, so we need to tell OpenGL where they are for each draw call</p>
+
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">in</span> <span class="kt">vec3</span> <span class="n">vertexPosition_modelspace</span><span class="p">;</span>
+<span class="k">in</span> <span class="kt">vec4</span> <span class="n">color_in</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>In the above, <code class="language-plaintext highlighter-rouge">vertexPosition_modelspace</code> implicitly has location 0 and <code class="language-plaintext highlighter-rouge">color_in</code>, location 1. We can also explicitly give a variable a location by prefacing it with <code class="language-plaintext highlighter-rouge">layout(location = i)</code>.</p>
+
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">layout</span><span class="p">(</span><span class="n">location</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">in</span> <span class="kt">vec3</span> <span class="n">vertexPosition_modelspace</span><span class="p">;</span>
+<span class="k">layout</span><span class="p">(</span><span class="n">location</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="k">in</span> <span class="kt">vec4</span> <span class="n">color_in</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Let’s say we have parallel arrays of floats for the vertex attributes of position and color. For example, vertex <code class="language-plaintext highlighter-rouge">i</code> should have (x, y, z) position:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(vertices[3*i], vertices[3*i + 1], vertices[3*i + 2])
+</code></pre></div></div>
+<p>and RGBA color:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(colors[3*i], colors[3*i + 1], colors[3*i + 2], colors[3*i + 3]).
+</code></pre></div></div>
+<p>We must enable a vertex attribute at a specific location, and then provide a pointer to that attribute data.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">glEnableVertexAttribArray</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="c1">// enable location 0</span>
+<span class="n">glVertexAttribPointer</span><span class="p">(</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">// attribute location in shader</span>
+    <span class="mi">3</span><span class="p">,</span>                  <span class="c1">// this attribute has 3 coordinates</span>
+    <span class="n">GL_FLOAT</span><span class="p">,</span>           <span class="c1">// type</span>
+    <span class="n">GL_FALSE</span><span class="p">,</span>           <span class="c1">// normalized?</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">// stride</span>
+    <span class="n">vertices</span>            <span class="c1">// vertex attribute pointer</span>
+<span class="p">);</span>
+
+<span class="n">glEnableVertexAttribArray</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// enable location 1</span>
+<span class="n">glVertexAttribPointer</span><span class="p">(</span>
+    <span class="mi">1</span><span class="p">,</span>                  <span class="c1">// attribute location</span>
+    <span class="mi">4</span><span class="p">,</span>                  <span class="c1">// this attribute has 4 coordinates</span>
+    <span class="n">GL_FLOAT</span><span class="p">,</span>           <span class="c1">// type</span>
+    <span class="n">GL_FALSE</span><span class="p">,</span>           <span class="c1">// normalized?</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">// stride</span>
+    <span class="n">colors</span>              <span class="c1">// vertex attribute pointer</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>We need to recall that our vertices are assumed to be in clip space, so we need to translate ourselves</p>
+
+<p>Luckily, GLSL provides us a way to just import the matrix that we’re using</p>
+
+<ol>
+  <li>
+    <p><strong>Find</strong> the uniform: we get the location of a uniform variable of name <code class="language-plaintext highlighter-rouge">varName</code> using <code class="language-plaintext highlighter-rouge">glGetUniformLocation(ProgramID, "varName")</code>. This returns a unique ID for the variable in the program. This find only needs to be done one time, after the program is linked.</p>
+  </li>
+  <li>
+    <p><strong>Set</strong> the uniform: we use <code class="language-plaintext highlighter-rouge">glUniform*(uniformID, ...)</code></p>
+  </li>
+</ol>
+
+<p>With this shader:</p>
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">in</span> <span class="kt">vec3</span> <span class="n">vertexPosition_modelspace</span><span class="p">;</span>
+<span class="k">uniform</span> <span class="kt">mat4</span> <span class="n">MVP</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nb">gl_Position</span> <span class="o">=</span> <span class="n">MVP</span> <span class="o">*</span> <span class="n">vertexPosition_modelspace</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The following sets the uniform:</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">glm</span><span class="o">::</span><span class="n">mat4</span> <span class="n">Projection</span> <span class="o">=</span> <span class="n">glm</span><span class="o">::</span><span class="n">perspective</span><span class="p">(</span><span class="n">glm</span><span class="o">::</span><span class="n">radians</span><span class="p">(</span><span class="mf">45.0</span><span class="n">f</span><span class="p">),</span> <span class="n">screenW</span><span class="o">/</span><span class="n">screenH</span><span class="p">,</span> <span class="mf">0.001</span><span class="n">f</span><span class="p">,</span> <span class="mf">1000.0</span><span class="n">f</span><span class="p">);</span>
+<span class="n">glm</span><span class="o">::</span><span class="n">mat4</span> <span class="n">V</span> <span class="o">=</span> <span class="n">glm</span><span class="o">::</span><span class="n">lookAt</span><span class="p">(</span><span class="n">eye</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">up</span><span class="p">);</span>
+<span class="n">glm</span><span class="o">::</span><span class="n">mat4</span> <span class="n">M</span> <span class="o">=</span> <span class="n">glm</span><span class="o">::</span><span class="n">mat4</span><span class="p">(</span><span class="mf">1.0</span><span class="n">f</span><span class="p">);</span> <span class="c1">// identity</span>
+<span class="n">glm</span><span class="o">::</span><span class="n">mat4</span> <span class="n">MVP</span> <span class="o">=</span> <span class="n">Projection</span> <span class="o">*</span> <span class="n">V</span> <span class="o">*</span> <span class="n">M</span><span class="p">;</span>
+
+<span class="n">GLuint</span> <span class="n">MatrixID</span> <span class="o">=</span> <span class="n">glGetUniformLocation</span><span class="p">(</span><span class="n">ProgramID</span><span class="p">,</span> <span class="s">"MVP"</span><span class="p">);</span>
+<span class="n">glUniformMatrix4fv</span><span class="p">(</span><span class="n">MatrixID</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">GL_FALSE</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">MVP</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]);</span>
+</code></pre></div></div>
+
+<h2 id="textures-again">Textures Again</h2>
+
+<p>We can use texture objects similarly to how we use shader objects, complete with texture storage</p>
+
+<ol>
+  <li>
+    <p><strong>Bind</strong> the texture object to a <strong>texture target</strong>. Possible targets are, <code class="language-plaintext highlighter-rouge">GL_TEXTURE_1D</code>, <code class="language-plaintext highlighter-rouge">GL_TEXTURE_2D</code>, <code class="language-plaintext highlighter-rouge">GL_TEXTURE_3D</code>, etc. depending on the dimensions of the image to load. This is done with <code class="language-plaintext highlighter-rouge">glBindTexture(textureTarget, textureID)</code>.</p>
+  </li>
+  <li>
+    <p><strong>Load</strong> the bitmap image into a texture target: <code class="language-plaintext highlighter-rouge">glTexImageXD</code> must use <code class="language-plaintext highlighter-rouge">GL_TEXTURE_XD</code> as its target, where X is one of 1, 2, 3.</p>
+  </li>
+  <li>
+    <p><strong>Generate Mipmaps</strong>. Just call <code class="language-plaintext highlighter-rouge">glGenerateMipmap(GL_TEXTURE_XD)</code>. Otherwise your texture won’t work.</p>
+  </li>
+  <li>
+    <p>After loading, one should <strong>unbind</strong> the texture object. Since OpenGL is a state machine, we want to avoid accidental side-effects of leaving a texture object bound. We unbind an object to a target by calling <code class="language-plaintext highlighter-rouge">glBindTexture(GL_TEXTURE_XD, 0)</code>.</p>
+  </li>
+</ol>
+
+<p>Texture units can also be defined, which are slots used to access texture data in draw calls.</p>
+
+<ol>
+  <li>
+    <p><strong>Set which texture unit is active</strong> by calling <code class="language-plaintext highlighter-rouge">glActiveTexture(GL_TEXTUREi)</code>.</p>
+  </li>
+  <li>
+    <p><strong>Enable a texture target within the active unit</strong>. We call <code class="language-plaintext highlighter-rouge">glEnable</code> with one of <code class="language-plaintext highlighter-rouge">GL_TEXTURE_1D</code>, <code class="language-plaintext highlighter-rouge">GL_TEXTURE_2D</code>, <code class="language-plaintext highlighter-rouge">GL_TEXTURE_3D</code>, etc. to get that texture enabled for subsequent draw calls.</p>
+  </li>
+  <li>
+    <p><strong>Bind</strong> a texture object to a texture target. We may have previously bound a texture object to a texture target in order to fill it with data, but now we have to bind it again so that the draw calls can read the texture data.</p>
+  </li>
+  <li>
+    <p>Do your draw calls (details below).</p>
+  </li>
+  <li>
+    <p><strong>Unbind</strong> the texture object.</p>
+  </li>
+</ol>
+
+<p>A vertex shader should input and output texture coordinates as part of the vertex specification. After interpolation, each fragment will have its own texture coordinates. Now, the fragment shader should use those texture coordinates to actually read data from the texture. This is the job of the sampler.</p>
+
+<div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#version 330 core
+</span>
+<span class="k">in</span> <span class="kt">vec2</span> <span class="n">uv2</span><span class="p">;</span>
+<span class="k">uniform</span> <span class="kt">sampler2D</span> <span class="n">tex</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nb">gl_FragColor</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">tex</span><span class="p">,</span> <span class="n">uv2</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In GLSL, we use the <code class="language-plaintext highlighter-rouge">texture()</code> function to read the color data from a texture’s texture storage at a particular location. If the texture is 2D, we need 2D coordinates, etc. The uniform variable <code class="language-plaintext highlighter-rouge">tex</code> is actually a simple integer to describe which texture unit to read from. By default, it is 0.</p>
+
+<p>If we want to read from a texture unit other than <code class="language-plaintext highlighter-rouge">GL_TEXTURE0</code>, we have to set the uniform in the shader appropriately. In our client code, we get the uniform location from the linked program object and then set its value:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GLuint</span> <span class="n">texID</span> <span class="o">=</span> <span class="n">glGetUniformLocation</span><span class="p">(</span><span class="n">ProgramID</span><span class="p">,</span> <span class="s">"tex"</span><span class="p">);</span>
+<span class="n">glUniform1i</span><span class="p">(</span><span class="n">texID</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span> <span class="c1">// i is an integer corresponding to GL_TEXTUREi</span>
+</code></pre></div></div>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

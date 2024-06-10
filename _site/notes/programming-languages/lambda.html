@@ -1,0 +1,563 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {
+          equationNumbers: { autoNumber: "ams" },
+          tagSide: "right",
+          Macros: {
+            bm: ["\\boldsymbol{#1}",1]
+          }
+        },
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        function stripcdata(x) {
+          if (x.startsWith('% <![CDATA[') && x.endsWith('%]]>'))
+            return x.substring(11, x.length - 4);
+          return x;
+        }
+        document.querySelectorAll("script[type='math/tex']").forEach(function (el) {
+          el.outerHTML = "\\(" + stripcdata(el.textContent) + "\\)";
+        });
+        document.querySelectorAll("script[type='math/tex; mode=display']").forEach(function (el) {
+          el.outerHTML = "\\[" + stripcdata(el.textContent) + "\\]";
+        });
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+        document.head.appendChild(script);
+      }, false);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+      type="text/javascript"></script>
+    <script src="/assets/js/dark-mode.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.5/jscolor.min.js"></script>
+    <script src="/assets/js/colour-theme.js" type="text/javascript"></script>
+    
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Lambda Calculus | nate’s site</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Lambda Calculus" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+<link rel="canonical" href="http://localhost:4000/notes/programming-languages/lambda.html" />
+<meta property="og:url" content="http://localhost:4000/notes/programming-languages/lambda.html" />
+<meta property="og:site_name" content="nate’s site" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Lambda Calculus" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Lambda Calculus","url":"http://localhost:4000/notes/programming-languages/lambda.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="preload" href="" as="image">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-108144808-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+
+<!-- You can set your favicon here -->
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <header>
+          
+
+          
+            <h1><a href="http://localhost:4000/">nate's site</a></h1>
+          
+
+          <p>CS undergrad @ University of Western Ontario</p>
+
+          <div class="link-wrapper">
+    <style scoped>
+      ul.link a {
+        color:var(--clr-h1-and-bold);
+        text-decoration:none;
+      }
+
+      ul.link a:hover, a:focus {
+        color: var(--clr-a-text-hvr);
+      }
+    </style>
+    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+      &mdash;
+      <li><a href="/posts"><i class="fas fa-quote-left"></i> posts</a></li>
+      <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+      <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+    </ul>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+    <button class="theme-switch star-button"><i class="far fa-star"></i></button>
+
+    
+      
+                
+                <h4>Table of Contents</h4>
+            
+                <ul class="toc"><li><a href="#syntactic-rules">Syntactic rules</a></li><li><a href="#substitution">Substitution</a><ul><li><a href="#substitution-rules">Substitution rules</a></li></ul></li><li><a href="#normal-form">Normal Form</a><ul><li><a href="#strategies">Strategies</a></li><li><a href="#in-application">In Application</a></li></ul></li><li><a href="#boolean-functions">Boolean functions</a></li><li><a href="#integers">Integers</a><ul><li><a href="#integer-operations">Integer operations</a></li></ul></li><li><a href="#control-flow">Control flow</a></li><li><a href="#recursion">Recursion</a></li><li><a href="#structures">Structures</a></li></ul>
+            
+    
+  </div>
+  
+
+        </header>
+
+        <div class="link-wrapper-mobile">
+    <a href="https://github.com/norgera">GitHub</a>
+    <a href="https://www.linkedin.com/in/nathanorgera/">LinkedIn</a>
+    <a href="/posts">posts</a>
+    <a href="/projects">projects</a>
+    <a href="/notes">notes</a>
+    <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+</div>
+
+
+
+        <div class="sidebar-footer"></div>
+      </div>
+      <section>
+
+      <h1 id="lambda-calculus">Lambda Calculus</h1>
+
+<p>Lambda calculus is a system of logic to study computations with functions, where everything is a function</p>
+
+<p>More specifically, it’s a system for representing functions abstractly, where $\lambda M.N$ is a function with parameters $M$ and body $N$</p>
+
+<ul>
+  <li>Ex. $(\lambda x.x<em>x)$ maps $x$ to $x</em>x$
+    <ul>
+      <li>$(\lambda x.x*x)4$ is the same but applied to 4</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="syntactic-rules">Syntactic rules</h2>
+
+<ul>
+  <li>application is left-associative
+    <ul>
+      <li>$ x \, y \, z $ means $ (x \, y) \, z $</li>
+    </ul>
+  </li>
+  <li>application has higher precedence than abstraction
+    <ul>
+      <li>$ \lambda x . A \, B $ means $ \lambda x . (A \, B) $ (not $ (\lambda x . A) \, B $)</li>
+    </ul>
+  </li>
+  <li>consecutive abstractions:
+    <ul>
+      <li>$ \lambda x_1 x_2 \ldots x_n . e $ means $ \lambda x_1 . (\lambda x_2 . (\ldots (\lambda x_n . e) \ldots )) $</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Example:</strong></p>
+
+<p>$ \lambda x y z . x \, z \, (y \, z) = (\lambda x . (\lambda y . (\lambda z . (x \, z) \, (y \, z)))) $</p>
+
+<p>We can bind a variable to a value with $\lambda x.M$, which binds $x$ to $\lambda x.M$</p>
+
+<ul>
+  <li>If $x$ is not bound, it’s free in $M$</li>
+</ul>
+
+<p>We can use free(M) to fetch the set of free variables in $M$</p>
+
+<ul>
+  <li>$free(x)={x}$</li>
+  <li>$free(MN)=free(M)\cup free(N)$</li>
+  <li>$free(\lambda x.M)=free(M)-{x}$</li>
+  <li>$bound(M)=\sim{free(M)}$</li>
+</ul>
+
+<h2 id="substitution">Substitution</h2>
+
+<p>In order to compute with pure $\lambda$  terms, we can reduce the terms as simply as possible, prioritizing the right-hand side</p>
+
+<p>We do this in a general form like so: $(\lambda x.M)N =_{\beta}{N/x}M$ or, put simply, subtitute N for x in M</p>
+
+<p>For example, we can do the following</p>
+
+\[(\lambda xy.x)uv =_{\beta} (\lambda y.u)v =_{\beta}u\]
+
+<p>In order to do this accurately, we need to make sure that ${N/x}M$ does not bind any variables that were previously free, so we must make sure that $free(N) \cap bound(M)=\emptyset$</p>
+
+<p><strong>Example</strong></p>
+
+<ul>
+  <li>$ x $ is free</li>
+  <li>$ y, z $ are bound</li>
+</ul>
+
+<p>$ \lambda y . \lambda z . x \, z \, (y \, z) $</p>
+
+<ul>
+  <li>If this doesn’t hold, we can simply rename with fresh variables until this is true</li>
+</ul>
+
+<p>For example, let’s say we have the following expression</p>
+
+\[(\lambda xy.xy)y\]
+
+<p>We can expand this out like so</p>
+
+\[(\lambda x.\lambda y.xy)y\]
+
+<p>Now, if $y$ is local then we can simplify, but $y$  could be bound, so we must substitute</p>
+
+\[(\lambda x.\lambda z.xz)y\]
+
+<p>Now we can evaluate</p>
+
+\[=_{\beta}\lambda z.yz\]
+
+<p>Substitution comes with some more rules as well</p>
+
+<h3 id="substitution-rules">Substitution rules</h3>
+
+<ul>
+  <li><strong>In variables</strong>: the same or different variable
+    <ul>
+      <li>${N/x}x = N$</li>
+      <li>${N/x}y = y, y \neq x$</li>
+    </ul>
+  </li>
+  <li><strong>In applications</strong> – the substitution distributes
+    <ul>
+      <li>${N/x}(P \, Q) = {N/x}P \, {N/x}Q$</li>
+    </ul>
+  </li>
+  <li><strong>In abstractions</strong> – several cases
+    <ul>
+      <li>no free $ x $:
+        <ul>
+          <li>${N/x}(\lambda x . P) = \lambda x . P$</li>
+        </ul>
+      </li>
+      <li>no interaction – $ y $ is not free in $ N $:
+        <ul>
+          <li>${N/x}(\lambda y . P) = \lambda y . {N/x}P$, $ y \neq x $, $ y \notin free(N) $</li>
+        </ul>
+      </li>
+      <li>renaming – $ y $ is free in $ N $; $ y $ is renamed to $ z $ in $ P $:
+        <ul>
+          <li>${N/x}(\lambda y . P) = \lambda z . {N/x}{z/y}P$,
+$ y \neq x $, $ y \in free(N) $, $ z \notin free(N) \cup free(P) $</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>You may have noticed a little subscript on our equals signs; this signifies beta-reduction, which applies an abstraction to an argument</p>
+
+<p>There’s also alpha-conversions, which renames formal parameters</p>
+
+<ul>
+  <li><strong>α-conversion</strong> – renaming the formal parameters
+    <ul>
+      <li>$\lambda x . M \Rightarrow_{\alpha} \lambda y . {y/x}M, y \notin free(M)$</li>
+    </ul>
+  </li>
+  <li><strong>β-reduction</strong> – applying an abstraction to an argument
+    <ul>
+      <li>$(\lambda x . M) N \Rightarrow_{\beta} {N/x} M$</li>
+    </ul>
+  </li>
+</ul>
+
+<p>We can combine these to reduce more complex statements</p>
+
+<p><strong>Example</strong></p>
+
+\[(\lambda x y z . x \, z \, (y \, z)) \, (\lambda x . x) \, (\lambda x . x)
+\Rightarrow_{\alpha} (\lambda x y z . x \, z \, (y \, z)) \, (\lambda u . u) \, (\lambda x . x)
+\Rightarrow_{\alpha} (\lambda x y z . x \, z \, (y \, z)) \, (\lambda u . u) \, (\lambda v . v)
+\Rightarrow_{\beta} (\lambda y z . (\lambda u . u) \, z \, (y \, z)) \, (\lambda v . v)
+\Rightarrow_{\beta} (\lambda y z . z \, (y \, z)) \, (\lambda v . v)
+\Rightarrow_{\beta} \lambda z . ((\lambda v . v) \, z)
+\Rightarrow_{\beta} \lambda z . z\]
+
+<p>Another example:</p>
+
+<p><strong>Example</strong></p>
+
+\[(\lambda f g h . f \, g \, (h \, h)) \, (\lambda x y . x) \, h \, (\lambda x . x \, x)
+\Rightarrow_{\beta} (\lambda g h . (\lambda x y . x) \, g \, (h \, h)) \, h \, (\lambda x . x \, x)
+\Rightarrow_{\alpha} (\lambda g k . (\lambda x y . x) \, g \, (k \, k)) \, h \, (\lambda x . x \, x)
+\Rightarrow_{\beta} (\lambda k . (\lambda x y . x) \, h \, (k \, k)) \, (\lambda x . x \, x)
+\Rightarrow_{\beta} (\lambda x y . x) \, h \, ((\lambda x . x \, x) \, (\lambda x . x \, x))
+\Rightarrow_{\beta} (\lambda y . h) \, ((\lambda x . x \, x) \, (\lambda x . x \, x))
+\Rightarrow_{\beta} h\]
+
+<p>Now, of course, there’s many ways to go about this (in line 2, we could’ve applied $\lambda xy.x$ to $g$, but it’s usually best to go from the outside in)</p>
+
+<ul>
+  <li>Both methods work, however</li>
+</ul>
+
+<h2 id="normal-form">Normal Form</h2>
+
+<p>Once we get to a form that can’t be beta-reduced, we call this normal form, like $\lambda x.x.x$</p>
+
+<p>There’s many ways to get to this form, but if it exists, you will find it eventually</p>
+
+<p><img src="images/plang/lambda/f1.png" alt="Screenshot from 2023-03-15 16-35-12.png" /></p>
+
+<p>Note that some reductions go into an infinite loop and thus can’t be reduced</p>
+
+\[(\lambda x.x.x)(\lambda x.x.x) \Rightarrow_{\beta}(\lambda x.x.x)(\lambda x.x.x)\]
+
+<p>The question becomes this: is there only one normal form? Yes!</p>
+
+<p>The theorem goes that for all pure $\lambda$-terms $M,P,Q$, if $M$ can be reduced to $P$ and can be reduced to $Q$, $P$ and $Q$ can both be reduced to $R$, so overall $M$ reduces to $R$</p>
+
+<p>This essentially states that normal forms, when they exist, are unique, which makes functional programming possible in the first place</p>
+
+<ul>
+  <li>Think about it: if we had multiple normal forms, the computer will have no idea which form to pick!</li>
+</ul>
+
+<h3 id="strategies">Strategies</h3>
+
+<p>In order to reduce, we can either call by value (applicative order - parameters are evaluated then passed) or call by name (normal order - parameters are passed unevaluated)</p>
+
+<p>Call-by-value: this might never reduce…</p>
+
+<p><strong>Example</strong></p>
+
+\[(\lambda y . h) ((\lambda x . x \, x) (\lambda x . x \, x))
+\Rightarrow_{\beta} (\lambda y . h) ((\lambda x . x \, x) (\lambda x . x \, x))
+\Rightarrow_{\beta} (\lambda y . h) ((\lambda x . x \, x) (\lambda x . x \, x))
+\Rightarrow_{\beta} \ldots\]
+
+<p><strong>Example</strong>
+Call-by-name: now we can reduce!</p>
+
+\[(\lambda y . h) ((\lambda x . x \, x) (\lambda x . x \, x)) \Rightarrow_{\beta} h\]
+
+<h3 id="in-application">In Application</h3>
+
+<p>Most programming languages will have boolean values true and false, but we can hack together a way to implement this</p>
+
+\[T =\lambda x.\lambda y.x \\
+F =\lambda x.\lambda y.y\]
+
+<p>With this, we can form a way to pick a value from a pair</p>
+
+<p><strong>Example</strong></p>
+
+\[((T \, P) \, Q) \Rightarrow_{\beta} (((\lambda x . \lambda y . x) \, P) \, Q) \Rightarrow_{\beta} ((\lambda y . P) \, Q) \Rightarrow_{\beta} P\]
+
+\[((F \, P) \, Q) \Rightarrow_{\beta} (((\lambda x . \lambda y . y) \, P) \, Q) \Rightarrow_{\beta} ((\lambda y . y) \, Q) \Rightarrow_{\beta} Q\]
+
+<p>From here, we can create boolean functions which form our logic gates</p>
+
+<h2 id="boolean-functions">Boolean functions</h2>
+
+<ul>
+  <li>$ \text{not} \equiv \lambda x . ((x \, F) \, T) $</li>
+  <li>$ \text{and} \equiv \lambda x . \lambda y . ((x \, y) \, F) $</li>
+  <li>$ \text{or} \equiv \lambda x . \lambda y . ((x \, T) \, y) $</li>
+</ul>
+
+<p><strong>Interpretation is consistent with predicate logic:</strong></p>
+
+\[\text{not} \, T \Rightarrow_{\beta} (\lambda x . ((x \, F) \, T) \, T \Rightarrow_{\beta} ((T \, F) \, T) \Rightarrow_{\beta} F\]
+
+\[\text{not} \, F \Rightarrow_{\beta} (\lambda x . ((x \, F) \, T) \, F \Rightarrow_{\beta} ((F \, F) \, T) \Rightarrow_{\beta} T\]
+
+<p>Now we’re starting to form something special: a language that we can use to do practical calculations!</p>
+
+<h2 id="integers">Integers</h2>
+
+<p>0 ≡ λf.λc.c<br />
+1 ≡ λf.λc.(f c)<br />
+2 ≡ λf.λc.(f (f c))<br />
+3 ≡ λf.λc.(f (f (f c)))<br />
+…<br />
+N ≡ λf.λc.(f (f … (f c))…)  // N times</p>
+
+<p><strong>Interpretation:</strong></p>
+
+<ul>
+  <li>$ c $ is the zero element</li>
+  <li>$ f $ is the successor function</li>
+</ul>
+
+<p>Here, we use the successor model to build integers off of each other, so 1 is the successor of 0, 2 is the successor of 1, etc.</p>
+
+<p>We can also perform computations like so</p>
+
+<p><strong>Integers (cont’d), Example calculations:</strong></p>
+
+\[(N \, a) = (\lambda f . \lambda c . (f \, (f \, ... (f \, c))...)) \, a \Rightarrow_{\beta} \lambda c . (a \, ... (a \, c)...) \quad \text{(N times)}\]
+
+\[((N \, a) \, b) = (a \, (a \, ...(a \, b)...)) \quad \text{(N times)}\]
+
+<h3 id="integer-operations">Integer operations</h3>
+
+<p><strong>Addition:</strong></p>
+
+<p>$ + \equiv \lambda M . \lambda N . \lambda a . \lambda b . ((M \, a) ((N \, a) \, b)) $</p>
+
+\[[M + N] = \lambda a . \lambda b . ((M \, a) ((N \, a) \, b)) \Rightarrow_{\beta}^* \lambda a . \lambda b . (a \, (a \, ...(a \, b)...) \quad \text{(M + N times)}\]
+
+<p><strong>Multiplication:</strong></p>
+
+<p>$ \times \equiv \lambda M . \lambda N . \lambda a . (M \, (N \, a)) $</p>
+
+\[[M \times N] = \lambda a . (M \, (N \, a)) \Rightarrow_{\beta}^* \lambda a . \lambda b . (a \, (a \, ...(a \, b)...) \quad \text{(M \times N times)}\]
+
+<p><strong>Exponentiation:</strong></p>
+
+<p>$ \wedge \equiv \lambda M . \lambda N . (N \, M) $</p>
+
+\[[M^N] = (N \, M) \Rightarrow_{\beta}^* \lambda a . \lambda b . (a \, (a \, ...(a \, b)...) \quad \text{(M^N times)}\]
+
+<h2 id="control-flow">Control flow</h2>
+
+<p><strong>if ≡ λc.λt.λe.c t e</strong></p>
+
+<ul>
+  <li>Interpretation: $ c $ = condition, $ t $ = then, $ e $ = else</li>
+</ul>
+
+<p><strong>Example</strong>:</p>
+
+<p><strong>if T 3 4</strong></p>
+
+\[(\lambda c . \lambda t . \lambda e . c \, t \, e) (\lambda x . \lambda y . x) \, 3 \, 4
+\Rightarrow_{\beta}^* (\lambda t . \lambda e . t) \, 3 \, 4
+\Rightarrow_{\beta}^* 3\]
+
+<p><strong>if F 3 4</strong></p>
+
+\[(\lambda c . \lambda t . \lambda e . c \, t \, e) (\lambda x . \lambda y . y) \, 3 \, 4
+\Rightarrow_{\beta}^* (\lambda t . \lambda e . e) \, 3 \, 4
+\Rightarrow_{\beta}^* 4\]
+
+<p>We can also model recursion, but this is where things get complicated</p>
+
+<p>You see, in order to do recursion the naive way, we would have a recursive function on both the left hand side and right hand side, but substitution here, the definition just gets bigger for infinity</p>
+
+<p>What we can do is just use beta-abstraction to abstract away the right hand side into its own function</p>
+
+<h2 id="recursion">Recursion</h2>
+
+<ul>
+  <li>
+    <p>$ \text{gcd} = \lambda a . \lambda b . (\text{if} (\text{equal} \, a \, b) \, a \, (\text{if} (\text{greater} \, a \, b) (\text{gcd} (\text{minus} \, a \, b) \, b) (\text{gcd} (\text{minus} \, b \, a) \, a))) $</p>
+  </li>
+  <li>This is not a definition because gcd appears in both sides
+    <ul>
+      <li>If we substitute this, the definition only gets bigger</li>
+    </ul>
+  </li>
+  <li>To obtain a real definition, we rewrite using $ \beta $-abstraction:
+    <ul>
+      <li>$ \text{gcd} = (\lambda g . \lambda a . \lambda b . (\text{if} (\text{equal} \, a \, b) \, a \, (\text{if} (\text{greater} \, a \, b) (g (\text{minus} \, a \, b) \, b) (g (\text{minus} \, b \, a) \, a)))) \text{gcd} $</li>
+    </ul>
+  </li>
+  <li>We obtain the equation:
+    <ul>
+      <li>$ \text{gcd} = f \, \text{gcd}, \text{ where} $
+        <ul>
+          <li>$ f = \lambda g . \lambda a . \lambda b . (\text{if} (\text{equal} \, a \, b) \, a \, (\text{if} (\text{greater} \, a \, b) (g (\text{minus} \, a \, b) \, b) (g (\text{minus} \, b \, a) \, a))) $</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>gcd is a fixed point of $ f $</li>
+</ul>
+
+<p>This is what we call the fixed point combinator, or Y-combinator, where if $Yf$ reduces to normal form, then $f(Yf)$ reduces to the same normal form</p>
+
+<p>This is essentially a general form of what we had earlier</p>
+
+<p>Applied to gcd, it can be used to abstract further</p>
+
+<ul>
+  <li>We get then a good definition for gcd:</li>
+</ul>
+
+\[\text{gcd} \equiv Y f = (\lambda h . (\lambda x . h \, (x \, x)) (\lambda x . h \, (x \, x))) (\lambda g . \lambda a . \lambda b . (\text{if} (\text{equal} \, a \, b) \, a \, (\text{if} (\text{greater} \, a \, b) (g (\text{minus} \, a \, b) \, b) (g (\text{minus} \, b \, a) \, a)))\]
+
+<ul>
+  <li>There’s a sample calculation in the slides, but it’s pretty long so I won’t include it here</li>
+</ul>
+
+<p>operations for lists:</p>
+
+<h2 id="structures">Structures</h2>
+
+<ul>
+  <li>select_first ≡ λx.λy.x</li>
+  <li>select_second ≡ λx.λy.y</li>
+  <li>cons ≡ λa.λd.λx.x a d</li>
+  <li>car ≡ λl.l select_first</li>
+  <li>cdr ≡ λl.l select_second</li>
+  <li>null? ≡ λl.l (λx.λy.F)</li>
+</ul>
+
+<p>Here, cons is a list, car is the head, cdr is the tail and null checks for an empty list</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cdr (cons A B)
+≡ (λl.l select_second) (cons A B)
+⇒ᵦ (cons A B) select_second
+≡ ((λa.λd.λx.x a d) A B) select_second
+⇒ᵦ* (λx.x A B) select_second
+⇒ᵦ select_second A B
+≡ (λx.λy.y) A B
+⇒ᵦ* B
+</code></pre></div></div>
+
+<p>While languages like C++ operate imperatively and can be quite complex, functional languages like Scheme and Haskell are rooted in lambda calculus. Understanding lambda calculus allows you to write code more intuitively in these languages.</p>
+
+<p>Although these languages do have their limitations, they offer intriguing insights and could lead to more practical applications in the future.
+The key is to think abstractly. Mastering this concept empowers you to tackle any problem.</p>
+
+
+      </section>
+      <footer></footer>
+    </div>
+    <!-- <script src="/assets/js/scale.fix.js"></script> !-->
+  </body>
+</html>

@@ -4,7 +4,7 @@ layout: default
 toc: true
 ---
 
-# Intro to Programming Languages
+# Introduction
 
 
 ## Compilation vs Interpretation
@@ -13,9 +13,9 @@ You may have heard of the distinction, but what does it actually mean?
 
 With a compiled language, we compile everything into bytecode before running anything
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f58ed1ba-db06-482b-a8fc-0a7d5444a773/Untitled.png)
+![Untitled](images/plang/intro/q1.png)
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fc428253-26a2-42bf-89a7-3bbbd4a0f701/Untitled.png)
+![Untitled](images/plang/intro/q2.png)
 
 With interpreted languages on the other hand, we have an interpreter throughout the program’s runtime translating each instruction into bytecode as it goes along
 
@@ -25,7 +25,7 @@ With compilation, we get better performance since we don’t have the bloat of a
 
 These aren’t mutually exclusive, however; you can have a system where we compile and then interpret
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3e43509e-2137-4ad9-a423-e460bc535b08/Untitled.png)
+![Untitled](images/plang/intro/q3.png)
 
 To put things more specifically, compilation is translation from one language into another, with full analysis of the meaning of the input
 
@@ -33,9 +33,9 @@ This entails semantic understanding of what is being processed, while pre-proces
 
 - Preprocessors are more common for interpreted languages, but they also exist in C/C++
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/bd2c3fd8-44a7-43f2-a668-098434e77e64/Untitled.png)
+![Untitled](images/plang/intro/q4.png)
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/409f6654-2350-4969-8f4c-3881a54051ab/Untitled.png)
+![Untitled](images/plang/intro/q5.png)
 
 We can also use a linker to merge libraries of subroutines (ex. math functions like log) into the final program
 
@@ -47,19 +47,19 @@ The compiler, in this case, will generate code that makes assumptions and runs v
 
 Another more modern way of approaching things is Just-In-Time (JIT) compilation, where we delay compilation until the last second
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/404362d0-65bb-40a0-943f-530e8306d920/Untitled.png)
+![Untitled](images/plang/intro/q6.png)
 
 Some more unconventional compilers include text formatters that compile high-level document (Latex) and query language processors that translate into primitive operations on files (SQL)
 
 - There’s also tools in IDEs that are separate from this, including debuggers, version management and profilers for performance analysis
 
-### Compilation/Interpretation Phases
+**Compilation/Interpretation Phases**
 
 Compilation is handled in several steps
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/77269407-83c7-4c60-9cdd-3cc13992208f/Untitled.png)
+![Untitled](images/plang/intro/q7.png)
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a572d10e-1cd6-4e10-b8d4-b270b19a488a/Untitled.png)
+![Untitled](images/plang/intro/q8.png)
 
 For interpretation, things are cut short a little bit
 
@@ -68,9 +68,9 @@ In the scanner, we divide the program into token, which are the smallest meaning
 - This is done using a deterministic finite automata (DFA)
 
 
-## Scanning: Example
+## Scanning
 
-### C Program (computes GCD):
+**C Program (computes GCD):**
 
 ```c
 int main() {
@@ -83,12 +83,12 @@ int main() {
 }
 ```
 
-### Input – sequence of characters:
+**Input – sequence of characters:**
 ```
 ‘i’, ‘n’, ‘t’, ‘ ’, ‘m’, ‘a’, ‘i’, ‘n’, ‘(’, ‘)’ ...
 ```
 
-### Output – tokens:
+**Output – tokens:**
 ```
 int, main, (, ), {, int, i, =, getint, (, ), ,, j, =, getint, (, ), ;, while, (, i, !=, j, ), {, if, (, i, >, j, ), i, =, i, -, j, ;, else, j, =, j, -, i, ;, }, putint, (, i, ), ;, }
 ```
@@ -98,9 +98,11 @@ On parsing, we check the syntax of the program to make sure the grammar is being
 
 This parsing organizes tokens into a parse tree as defined by a context free grammar (CFG)
 
-## Parsing: Example – while loop in C
+## Parsing
 
-### Context-free grammar (part of):
+**Example – while loop in C**
+
+**Context-free grammar (part of):**
 
 iteration-statement → while ( expression ) statement
 
@@ -114,16 +116,14 @@ block-item-list → block-item-list block-item
 block-item → declaration
 block-item → statement
 
-### Parse tree for GCD program
+**Parse tree for GCD program**
 - based on full context-free grammar
-- see next slides
-
 
 From here, our previous GCD example can be split up into a parse tree
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/be9d324a-3167-4c54-abf5-0f57b44437eb/Untitled.png)
+![Untitled](images/plang/intro/q9.png)
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e20fc87b-b06b-4eba-afec-77773d06121f/Untitled.png)
+![Untitled](images/plang/intro/q10.png)
 
 - You can go through the leaves left-first to read out the entire program
 
@@ -137,12 +137,12 @@ The compiler can only handle static semantic analysis, since dynamic semantics m
 
 This semantic analysis produces a syntax tree, removing some of the more “useless” internal nodes that are present in the parse tree and annotates the remaining nodes with attributes
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/71c4522b-1a26-4eb4-b0b8-1a126c03fdf7/Untitled.png)
+![Untitled](images/plang/intro/q11.png)
 
 Finally, we have code generation which uses interpreters to run the syntax tree and target code generation which then produces assembly
 
 
-## Assembly Code for GCD Program
+**Assembly Code for GCD Program**
 
 ```assembly
 pushl   %ebp                # \
@@ -189,7 +189,7 @@ mov     $0, %eax            # exit status for program
 ret                         # return to operating system
 ```
 
-### Corresponding C Program:
+**Corresponding C Program:**
 
 ```c
 int main() {
@@ -206,7 +206,7 @@ int main() {
 
 This is a bit of a naive solution that can definitely be approved upon, so our final step is to find these optimizations to either do things faster or take less space
 
-## Assembly Code Example
+**Assembly Code Example**
 
 ```assembly
 pushl   %ebp
