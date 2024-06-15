@@ -13,7 +13,10 @@ document.addEventListener("DOMContentLoaded", function () {
         borderRadius: 6,
         borderWidth: 1,
         borderColor: '#444',
-        previewElement: null
+        previewElement: null,
+        palette: [
+            '#7092be', '#4040bf', '#ab548a','#bf404c','#b5a940', '#3fa687'
+        ],
     };
 
     function showColorPicker(e) {
@@ -54,11 +57,6 @@ document.addEventListener("DOMContentLoaded", function () {
         alert('Green part clicked!');
     }
 
-    // Check if the page was refreshed
-    if (performance.navigation.type === 1) {
-        localStorage.removeItem('selectedColor');
-        console.log('Page was reloaded, color reset to default.');
-    }
 
     // Apply the saved color on page load
     const savedColor = localStorage.getItem('selectedColor');

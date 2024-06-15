@@ -63,8 +63,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Lighting + Cameras","url":"http://localhost:4000/notes/computer-graphics/lighting.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
-    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
+    <link rel="stylesheet" href="/assets/css/style.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -179,7 +179,7 @@
 
 <p>White light is the combination of every color of light</p>
 
-<p><img src="images/light/d1.png" alt="2023-03-27_12-55.png" /></p>
+<p><img src="/notes/computer-graphics/images/light/d1.png" alt="2023-03-27_12-55.png" /></p>
 
 <p>The color we actually see has to do with which wavelengths are absorbed and which ones are not</p>
 
@@ -193,7 +193,7 @@
 
 <p>For a perfect mirror, it’s actually pretty simple: all we need is the normal and the angle between the ray and the normal</p>
 
-<p><img src="images/light/d2.png" alt="2023-03-27_17-10.png" /></p>
+<p><img src="/notes/computer-graphics/images/light/d2.png" alt="2023-03-27_17-10.png" /></p>
 
 <p>This can be done with some simple dot vectors</p>
 
@@ -249,7 +249,7 @@
   <li>Phong model: combines the previous types along with specular</li>
 </ul>
 
-<p><img src="images/light/d3.png" alt="2023-03-27_17-38.png" /></p>
+<p><img src="/notes/computer-graphics/images/light/d3.png" alt="2023-03-27_17-38.png" /></p>
 
 <p>With the phong model, the color is calculated for each fragment individually as a combination of ambient, diffuse and specular reflection</p>
 
@@ -287,7 +287,7 @@
   <li>Spot</li>
 </ul>
 
-<p><img src="images/light/d4.png" alt="2023-03-27_18-17.png" /></p>
+<p><img src="/notes/computer-graphics/images/light/d4.png" alt="2023-03-27_18-17.png" /></p>
 
 <p>Most scenes just have one, but you could have as many as you want</p>
 
@@ -363,7 +363,7 @@
 
 <p>Our last degree of freedom is rotation, so we only have $\theta$ left to define</p>
 
-<p><img src="images/light/d5.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/light/d5.png" alt="Untitled" /></p>
 
 <p>$D=(\cos \theta , 0, \sin \theta )$, which we can use to form our matrix</p>
 
@@ -477,7 +477,7 @@ M = glm::rotate(M, θ, up);
   <li>$\phi$: the rotation of the point off the y-axis from positive y to negative y</li>
 </ol>
 
-<p><img src="images/light/d6.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/light/d6.png" alt="Untitled" /></p>
 
 <p>is pretty simple:</p>
 

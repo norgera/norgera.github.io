@@ -63,8 +63,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Syntax","url":"http://localhost:4000/notes/programming-languages/syntax.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
-    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
+    <link rel="stylesheet" href="/assets/css/style.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -256,11 +256,11 @@ op \rightarrow +|-|*|/\]
 
 <p>The parse tree for this will be the following</p>
 
-<p><img src="images/plang/syntax/s1.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/syntax/s1.png" alt="Untitled" /></p>
 
 <p>And for the right-most derivation, we get this</p>
 
-<p><img src="images/plang/syntax/s2.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/syntax/s2.png" alt="Untitled" /></p>
 
 <p>Since we have two different parse trees for the same string, our grammar is considered ambiguous, which is a problem for parsers since computers generally don’t deal well with ambiguity</p>
 
@@ -279,9 +279,9 @@ mult\_op\rightarrow *|/\]
 
 <p>This makes sure that we don’t actually go right-left and screw up our math</p>
 
-<p><img src="images/plang/syntax/s3.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/syntax/s3.png" alt="Untitled" /></p>
 
-<p><img src="images/plang/syntax/s4.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/syntax/s4.png" alt="Untitled" /></p>
 
 <h2 id="more-on-scanning">More on Scanning</h2>
 
@@ -365,9 +365,9 @@ mult\_op\rightarrow *|/\]
 
 <p>This is a good start, but we can definitely do better</p>
 
-<p><img src="images/plang/syntax/s5.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/syntax/s5.png" alt="Untitled" /></p>
 
-<p><img src="images/plang/syntax/s6.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/syntax/s6.png" alt="Untitled" /></p>
 
 <p>Using a DFA, we can add some structure to our scanner by directly using the regular expression to build a scanner, utilizing the property that all regular expressions can be converted to DFAs</p>
 
@@ -457,7 +457,7 @@ return (tok, image)
 
 <p>Table used by table-driven scanner</p>
 
-<p><img src="images/plang/syntax/s7.png" alt="Table used by table-driven scanner" /></p>
+<p><img src="/notes/programming-languages/images/plang/syntax/s7.png" alt="Table used by table-driven scanner" /></p>
 
 <p>No matter what method we choose, we need to apply the longest-possible token rule, which states that we should return only when the next character can’t contribute to the current token</p>
 

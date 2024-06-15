@@ -63,8 +63,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Introduction","url":"http://localhost:4000/notes/programming-languages/intro.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
-    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
+    <link rel="stylesheet" href="/assets/css/style.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -163,9 +163,9 @@
 
 <p>With a compiled language, we compile everything into bytecode before running anything</p>
 
-<p><img src="images/plang/intro/q1.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/intro/q1.png" alt="Untitled" /></p>
 
-<p><img src="images/plang/intro/q2.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/intro/q2.png" alt="Untitled" /></p>
 
 <p>With interpreted languages on the other hand, we have an interpreter throughout the program’s runtime translating each instruction into bytecode as it goes along</p>
 
@@ -177,7 +177,7 @@
 
 <p>These aren’t mutually exclusive, however; you can have a system where we compile and then interpret</p>
 
-<p><img src="images/plang/intro/q3.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/intro/q3.png" alt="Untitled" /></p>
 
 <p>To put things more specifically, compilation is translation from one language into another, with full analysis of the meaning of the input</p>
 
@@ -187,9 +187,9 @@
   <li>Preprocessors are more common for interpreted languages, but they also exist in C/C++</li>
 </ul>
 
-<p><img src="images/plang/intro/q4.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/intro/q4.png" alt="Untitled" /></p>
 
-<p><img src="images/plang/intro/q5.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/intro/q5.png" alt="Untitled" /></p>
 
 <p>We can also use a linker to merge libraries of subroutines (ex. math functions like log) into the final program</p>
 
@@ -203,7 +203,7 @@
 
 <p>Another more modern way of approaching things is Just-In-Time (JIT) compilation, where we delay compilation until the last second</p>
 
-<p><img src="images/plang/intro/q6.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/intro/q6.png" alt="Untitled" /></p>
 
 <p>Some more unconventional compilers include text formatters that compile high-level document (Latex) and query language processors that translate into primitive operations on files (SQL)</p>
 
@@ -215,9 +215,9 @@
 
 <p>Compilation is handled in several steps</p>
 
-<p><img src="images/plang/intro/q7.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/intro/q7.png" alt="Untitled" /></p>
 
-<p><img src="images/plang/intro/q8.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/intro/q8.png" alt="Untitled" /></p>
 
 <p>For interpretation, things are cut short a little bit</p>
 
@@ -278,9 +278,9 @@ block-item → statement</p>
 
 <p>From here, our previous GCD example can be split up into a parse tree</p>
 
-<p><img src="images/plang/intro/q9.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/intro/q9.png" alt="Untitled" /></p>
 
-<p><img src="images/plang/intro/q10.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/intro/q10.png" alt="Untitled" /></p>
 
 <ul>
   <li>You can go through the leaves left-first to read out the entire program</li>
@@ -298,7 +298,7 @@ block-item → statement</p>
 
 <p>This semantic analysis produces a syntax tree, removing some of the more “useless” internal nodes that are present in the parse tree and annotates the remaining nodes with attributes</p>
 
-<p><img src="images/plang/intro/q11.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/intro/q11.png" alt="Untitled" /></p>
 
 <p>Finally, we have code generation which uses interpreters to run the syntax tree and target code generation which then produces assembly</p>
 

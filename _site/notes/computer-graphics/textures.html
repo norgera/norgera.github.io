@@ -63,8 +63,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Improved Textures","url":"http://localhost:4000/notes/computer-graphics/textures.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
-    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
+    <link rel="stylesheet" href="/assets/css/style.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -163,7 +163,7 @@
 
 <p>A height map is a very simple map; it’s a grey-scale image where, the lighter a portion is, the higher up it is</p>
 
-<p><img src="images/textures/t1.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/textures/t1.png" alt="Untitled" /></p>
 
 <p>We can use this for more than height, but this is up to user interpretation and how it’s utilized in the rendering process</p>
 
@@ -200,19 +200,19 @@ L O R
 
 <p>Given a point on a surface, we can picture a plane at that point with the same normal as that surface</p>
 
-<p><img src="images/textures/t2.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/textures/t2.png" alt="Untitled" /></p>
 
 <p>The texture coordinates are also technically specified here, with the 2D space tangent to the point in all directions</p>
 
 <p>The normal of this plane is the normal of the surface at the point, spanned by two vectors called the tangent vector and the bitangent vector</p>
 
-<p><img src="images/textures/t3.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/textures/t3.png" alt="Untitled" /></p>
 
 <p>What we need to do now is to bring the height map normal over to world space, which we can do with yet another matrix</p>
 
 <p>Specifically, we want to convert $(T,B,N)$ to $(W_x, W_y, W_z)$, which is actually pretty simple: we already have world coordinates and tangent coordinates, so we can form a triangle like so</p>
 
-<p><img src="images/textures/t4.png" alt="P1-3 are in world space, while UV are in tangent space" /></p>
+<p><img src="/notes/computer-graphics/images/textures/t4.png" alt="P1-3 are in world space, while UV are in tangent space" /></p>
 
 <p>P1-3 are in world space, while UV are in tangent space</p>
 
@@ -263,7 +263,7 @@ T_z &amp; B_z &amp; N_z
 
 <p>In other words, given a triangle, we want to compute the TBN matrix for it, so the geometry shader with its per-triable info is very well suited for this</p>
 
-<p><img src="images/textures/t5.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/textures/t5.png" alt="Untitled" /></p>
 
 <p>Solving the system can be done by computing the inverse of the 2x2 matrix. The inverse can be computed using a formula of $ u_1, u_2, u_3, v_1, v_2, v_3 $ rather than actually computing a matrix inverse.</p>
 
@@ -334,7 +334,7 @@ T_z &amp; B_z &amp; N_z
 
 <p>Here’s what we get as the result</p>
 
-<p><img src="images/textures/t6.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/textures/t6.png" alt="Untitled" /></p>
 
 <h2 id="normal-mapping">Normal Mapping</h2>
 
@@ -344,7 +344,7 @@ T_z &amp; B_z &amp; N_z
 
 <p>The only problem is that normals can point in any direction, while colors can’t, so we must remap the RGB color range from $[0,1]$ to $[-1,1]$, so the blue-grey color we see (0.5,0.5,1) corresponds to the neutral normal of (0,0,1)</p>
 
-<p><img src="images/textures/t7.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/textures/t7.png" alt="Untitled" /></p>
 
 <div class="language-glsl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">vec3</span> <span class="n">heightN</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">normalTex</span><span class="p">,</span> <span class="n">uv_gs</span><span class="p">);</span>
     <span class="n">heightN</span> <span class="o">=</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span> <span class="o">*</span> <span class="n">heightN</span> <span class="o">-</span> <span class="kt">vec3</span><span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span>
@@ -398,7 +398,7 @@ T_z &amp; B_z &amp; N_z
 
 <p>With that all sorted, we get this cool (albeit crude) globe</p>
 
-<p><img src="images/textures/t8.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/textures/t8.png" alt="Untitled" /></p>
 
 <p>With displacement mapping of UV coordinates, we could do blurring, ripples, or anything else with editing the texture mapping</p>
 
@@ -422,7 +422,7 @@ T_z &amp; B_z &amp; N_z
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p><img src="images/textures/t9.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/textures/t9.png" alt="Untitled" /></p>
 
 <p>This gives us a wobbly earth like so</p>
 

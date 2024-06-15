@@ -63,8 +63,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Intro / Review","url":"http://localhost:4000/notes/computer-graphics/intro.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
-    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
+    <link rel="stylesheet" href="/assets/css/style.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -275,7 +275,7 @@ u_1v_2-u_2v_1\end{bmatrix}\]
 
 <p>The important thing about cross products is that they can be used to define the span of two vectors, i.e. the plane they take up</p>
 
-<p><img src="images/intro/i1.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/intro/i1.png" alt="Untitled" /></p>
 
 <p>How do we decide which direction to use is dependent on the “handedness” of the system</p>
 
@@ -323,7 +323,7 @@ b_{n,j}\end{bmatrix}\]
   <li>HBlank is almost never used, but VBlank is pretty important (this is where v-sync comes from)</li>
 </ul>
 
-<p><img src="images/intro/i2.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/intro/i2.png" alt="Untitled" /></p>
 
 <p>Nowadays, raster displays are pretty irrelevant, but they’re still used in graphics programs</p>
 
@@ -333,7 +333,7 @@ b_{n,j}\end{bmatrix}\]
 
 <p>The modern standard of displays (LCD and LED) combine the light from many subpixels to get deeper colors</p>
 
-<p><img src="images/intro/i3.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/intro/i3.png" alt="Untitled" /></p>
 
 <h2 id="color-models">Color Models</h2>
 
@@ -376,7 +376,7 @@ b_{n,j}\end{bmatrix}\]
   <li>For example, in #F3AB12, red is at F3 (100%), blue is at AB (~66%) and green is at 12 (almost 0%), so we can guess this is around orange</li>
 </ul>
 
-<p><img src="images/intro/i4.png" alt="More examples" /></p>
+<p><img src="/notes/computer-graphics/images/intro/i4.png" alt="More examples" /></p>
 
 <p>More examples</p>
 
@@ -388,11 +388,11 @@ b_{n,j}\end{bmatrix}\]
 
 <p>Different graphical systems have different coordinate systems with left-handed systems (origin at the top left) being used by Tkinter, Java Swing and Direct2D</p>
 
-<p><img src="images/intro/i5.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/intro/i5.png" alt="Untitled" /></p>
 
 <p>On the other hand, right-hand coordinate systems put the origin more naturally in the bottom left, which is used by Nintendo and Direct2D</p>
 
-<p><img src="images/intro/i6.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/intro/i6.png" alt="Untitled" /></p>
 
 <p>We’ll use right-handed systems for theory, but left-handed systems make more sense from an application perspective since that’s the way we read matrices</p>
 
@@ -486,7 +486,7 @@ b_{n,j}\end{bmatrix}\]
 
 <p>Since every screen is different, graphics libraries will use normalized device coordinates (NDCs) unless explicitly told to do otherwise</p>
 
-<p><img src="images/intro/i8.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/intro/i8.png" alt="Untitled" /></p>
 
 <p>Obviously most screens aren’t square, so GLFW handles this with a viewport, which is specified by a window’s width and height</p>
 
@@ -511,7 +511,7 @@ $y_s=(y+1)\frac{h}{2}+y_0$</p>
 
 <p>An affine transform is any geometric manipulation that preserves lines and parallelism</p>
 
-<p><img src="images/intro/i9.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/intro/i9.png" alt="Untitled" /></p>
 
 <p>Each of these can be combined and handled with a single matrix multiplication, which is great because this is most of what we do (except for perspective projection, which will come in later)</p>
 
@@ -546,7 +546,7 @@ s_y \cdot y
 
 <h2 id="shear">Shear</h2>
 
-<p><img src="images/intro/i10.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/intro/i10.png" alt="Untitled" /></p>
 
 <p>This is just another matrix multiplication, where the new shape has slope</p>
 
@@ -720,7 +720,7 @@ m &amp; 1 &amp; 0 \\
   <li>Transformation: same matrix, but keep in mind the new direction of $d_y$</li>
 </ul>
 
-<p><img src="images/intro/i11.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/intro/i11.png" alt="Untitled" /></p>
 
 <p>We can also think of these transformations as simply altering the coordinate system itself, much like turning your head around to look at something from an angle instead of turning the object itself</p>
 
@@ -734,7 +734,7 @@ m &amp; 1 &amp; 0 \\
 
 <p>To represent 3D objects on a 2D screen, we need to project it</p>
 
-<p><img src="images/intro/i12.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/intro/i12.png" alt="Untitled" /></p>
 
 <p>So far, we’ve just been setting $z=0$ in our 2D drawings, but we can set it farther back and get different effects</p>
 

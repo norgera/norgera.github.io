@@ -63,8 +63,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"OpenGL","url":"http://localhost:4000/notes/computer-graphics/opengl.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
-    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
+    <link rel="stylesheet" href="/assets/css/style.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -173,7 +173,7 @@
 
 <p>Testing the first two is pretty simple</p>
 
-<p><img src="images/intro/gl1.png" alt="y2 should be y1" /></p>
+<p><img src="/notes/computer-graphics/images/intro/gl1.png" alt="y2 should be y1" /></p>
 
 <p>y2 should be y1</p>
 
@@ -378,17 +378,17 @@
 
 <p>A classic approach is Bresenham’s Line Algorithm, where we define a diamond shaped region and say that, if a line exits this region, it’s colored in</p>
 
-<p><img src="images/opengl/q1.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/opengl/q1.png" alt="Untitled" /></p>
 
 <p>The precise area depends on the slope of the line</p>
 
-<p><img src="images/opengl/q2.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/opengl/q2.png" alt="Untitled" /></p>
 
 <p>Notched corners are excluded from the test area, so if the line touches one of the other corners, it’s colored in</p>
 
 <p>Below is an example:</p>
 
-<p><img src="images/opengl/q3.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/opengl/q3.png" alt="Untitled" /></p>
 
 <p><strong>Triangle Rasterization</strong></p>
 
@@ -400,25 +400,25 @@
   <li>If it’s right on the edge, color it if it falls on a top edge or left edge</li>
 </ol>
 
-<p><img src="images/opengl/q4.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/opengl/q4.png" alt="Untitled" /></p>
 
 <ul>
   <li>If we have a corner situation, we color the leftmost triangle</li>
 </ul>
 
-<p><img src="images/opengl/q5.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/opengl/q5.png" alt="Untitled" /></p>
 
 <p><strong>Antialiasing</strong></p>
 
 <p>As we can see, making discrete pixels makes things look jagged and ugly, so it’s nice to have a way to smooth things out</p>
 
-<p><img src="images/opengl/q7.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/opengl/q7.png" alt="Untitled" /></p>
 
 <p>This is commonly done with supersampling, with a special case called multisampling being used in practice a lot</p>
 
 <p>The process is pretty simple: given a pixel with $N$ test points, for each test point covered by a primitive, add $\frac{1}{N}$ of that primitives color to the pixel, while still using the top-left rule</p>
 
-<p><img src="images/opengl/q8.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/opengl/q8.png" alt="Untitled" /></p>
 
 <ul>
   <li>This is where terms like 2x multisampling or 8x multisampling come from</li>
@@ -434,7 +434,7 @@
 
 <p>The question is as follows then: how do actually sort these extra test points? Take the following three cases</p>
 
-<p><img src="images/opengl/q9.png" alt="Left-right: grid, rotated grid, jitter" /></p>
+<p><img src="/notes/computer-graphics/images/opengl/q9.png" alt="Left-right: grid, rotated grid, jitter" /></p>
 
 <p>Left-right: grid, rotated grid, jitter</p>
 
@@ -454,7 +454,7 @@
 
 <p>Applied simultaneously, we can move everything at once in a smooth movement, but we have to define key frames (”ends” of each tween) in order to actually draw a concrete image</p>
 
-<p><img src="images/opengl/q10.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/opengl/q10.png" alt="Untitled" /></p>
 
 <p>In OpenGL, these are relatively simple</p>
 
@@ -513,7 +513,7 @@
 
 <p>Note that the function never actually touches B, so it simply acts as a control</p>
 
-<p><img src="images/opengl/q11.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/opengl/q11.png" alt="Untitled" /></p>
 
 <p>This, mathematically speaking, is a Bezier curve degree 2, but we can go even further</p>
 
@@ -579,7 +579,7 @@ P_k(t), &amp; t_{k-1} \leq t &lt; b \\
 <span class="n">glEnd</span><span class="p">();</span>
 </code></pre></div></div>
 
-<p><img src="images/opengl/q12.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/opengl/q12.png" alt="Untitled" /></p>
 
 <p>This obviously isn’t smooth, but we can alleviate this with some high school math to line up the control points</p>
 
@@ -595,7 +595,7 @@ P_k(t), &amp; t_{k-1} \leq t &lt; b \\
 
 \[c_{3,y} = \frac{-1}{2} + \frac{27}{2} = 13\]
 
-<p><img src="images/opengl/q13.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/opengl/q13.png" alt="Untitled" /></p>
 
 <h2 id="user-interaction">User Interaction</h2>
 

@@ -63,8 +63,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Intro to 3D","url":"http://localhost:4000/notes/computer-graphics/3d.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
-    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
+    <link rel="stylesheet" href="/assets/css/style.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -187,11 +187,11 @@ s_x &amp; 0 &amp; 0 &amp; 0\\
 
 <p>For rotations, things get very different, since we now have 3 degrees of freedom that we have to grapple with: roll, yaw and pitch</p>
 
-<p><img src="images/3d/w1.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/3d/w1.png" alt="Untitled" /></p>
 
 <p>How do we actually handle this? In two dimensions, we can recontextualize our original rotation as spinning the x-y plane around the z axis, much like a spinning top</p>
 
-<p><img src="images/3d/w2.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/3d/w2.png" alt="Untitled" /></p>
 
 <p>This defines a 3D matrix with z unchanged</p>
 
@@ -270,17 +270,17 @@ s_x &amp; 0 &amp; 0 &amp; 0\\
 
 <p>Really, we want a perspective projection, as opposed to an orthographic projection</p>
 
-<p><img src="images/3d/w3.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/3d/w3.png" alt="Untitled" /></p>
 
 <p>The main difference between these two projections is that, whole orthographic projection is a rectangular prism, perspective projection is a square frustrum</p>
 
-<p><img src="images/3d/w4.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/3d/w4.png" alt="Untitled" /></p>
 
 <p>We then take this and translate it to NDC, forming a cube using a projection matrix P</p>
 
 \[PVMv_{local} = v_{NDC}\]
 
-<p><img src="images/3d/w5.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/3d/w5.png" alt="Untitled" /></p>
 
 <p>To further specify this frustrum, we need a few parameters</p>
 
@@ -304,7 +304,7 @@ s_x &amp; 0 &amp; 0 &amp; 0\\
 
 <p>Before we go further, we need to make some corrections to our knowledge of NDC</p>
 
-<p><img src="images/3d/w6.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/3d/w6.png" alt="Untitled" /></p>
 
 <p>I told you that the camera is at z=0, so this would me z=-1 is behind the camera, right?</p>
 
@@ -326,7 +326,7 @@ s_x &amp; 0 &amp; 0 &amp; 0\\
 
 <p>For a symmetric frustrum, the perspective projection matrix is defined as such</p>
 
-<p><img src="images/3d/w7.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/3d/w7.png" alt="Untitled" /></p>
 
 <p>The clue for our conundrum comes from the fact that our projection matrix modifies the 4th homogenous coordinate, w</p>
 
@@ -402,7 +402,7 @@ e_z - t_z
   <li>Rotate around this $ x $ axis so that your line of sight returns to be $ \vec{d} $ and that the crown of your head is no longer pointing directly upward.</li>
 </ol>
 
-<p><img src="images/3d/w8.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/3d/w8.png" alt="Untitled" /></p>
 
 <p>To compute steps 3 and 4, use cross products.</p>
 
@@ -443,9 +443,9 @@ e_z - t_z
 
 <p>Here’s an example of the algorithm in action</p>
 
-<p><img src="images/3d/w9.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/3d/w9.png" alt="Untitled" /></p>
 
-<p><img src="images/3d/w10.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/3d/w10.png" alt="Untitled" /></p>
 
 <p>If we want to simplify this even further, we can define a look-up table of pre-defined segments, since there’s only 16 cases</p>
 
@@ -477,9 +477,9 @@ Bottom-right corner: 0010        Bottom-left corner:  0001</p>
 <span class="c1">// ...</span>
 </code></pre></div></div>
 
-<p><img src="images/3d/w11.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/3d/w11.png" alt="Untitled" /></p>
 
-<p><img src="images/3d/w12.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/3d/w12.png" alt="Untitled" /></p>
 
 <p>We can also do the reverse with bitwise OR, building our number additively</p>
 
@@ -502,7 +502,7 @@ Bottom-right corner: 0010        Bottom-left corner:  0001</p>
 
 <p>To encode these segments, we can start with labelling the midway points 0-3,</p>
 
-<p><img src="images/3d/w13.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/3d/w13.png" alt="Untitled" /></p>
 
 <p>Since there’s at most two of these line segments, we can encode each with 4 indices, using -1 as padding</p>
 

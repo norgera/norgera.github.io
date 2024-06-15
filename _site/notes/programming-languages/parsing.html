@@ -63,8 +63,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Parsing","url":"http://localhost:4000/notes/programming-languages/parsing.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
-    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
+    <link rel="stylesheet" href="/assets/css/style.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -197,7 +197,7 @@
 
 <p>In a top-down construction, we make predictions based on the next token, but in a bottom-up construction, we reduce the right-hand side</p>
 
-<p><img src="images/plang/parsing/a1.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/parsing/a1.png" alt="Untitled" /></p>
 
 <p>Left is top-down, right is bottom-up, both are using A, B, C;</p>
 
@@ -205,7 +205,7 @@
 
 <p>Taking the same line, we can use bottom-up processing to get a parse tree like so</p>
 
-<p><img src="images/plang/parsing/a2.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/parsing/a2.png" alt="Untitled" /></p>
 
 <p>No matter which approach we use, we need to account for look-ahead, the number of characters we look ahead being defined by k</p>
 
@@ -344,7 +344,7 @@ procedure mult_op()
 </code></pre></div></div>
 <p>When we read this out, we get the following parse tree</p>
 
-<p><img src="images/plang/parsing/a3.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/parsing/a3.png" alt="Untitled" /></p>
 
 <p>Another option is a table-driven approach, where we repeatedly look up actions in a 2D table based on the current leftmost non-terminal and the current input token</p>
 
@@ -384,17 +384,17 @@ procedure mult_op()
   <li>Algorithm and examples on the next slides.</li>
 </ul>
 
-<p><img src="images/plang/parsing/a4.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/parsing/a4.png" alt="Untitled" /></p>
 
 <p>Fortunately, we can calculate this with a simple algorithm</p>
 
-<p><img src="images/plang/parsing/a5.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/parsing/a5.png" alt="Untitled" /></p>
 
-<p><img src="images/plang/parsing/a6.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/parsing/a6.png" alt="Untitled" /></p>
 
 <p>With our example grammar, it looks something like this</p>
 
-<p><img src="images/plang/parsing/a7.png" alt="Untitled" /></p>
+<p><img src="/notes/programming-languages/images/plang/parsing/a7.png" alt="Untitled" /></p>
 
 <h2 id="common-problems">Common Problems</h2>
 

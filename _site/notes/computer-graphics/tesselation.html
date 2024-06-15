@@ -63,8 +63,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Tesselation Shaders","url":"http://localhost:4000/notes/computer-graphics/tesselation.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
-    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
+    <link rel="stylesheet" href="/assets/css/style.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -165,7 +165,7 @@
 
 <p>We create more vertex data by adding a patch, which computes new vertex values for the purpose of having more rendered data and, thus, better visual results that otherwise wouldn’t be possible due to limited resources</p>
 
-<p><img src="images/tesselation/t1.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/tesselation/t1.png" alt="Untitled" /></p>
 
 <p>This patch is a special primitive which consists of $n$ vertices in the range $[0,32)$</p>
 
@@ -183,7 +183,7 @@
 
 <p>The algorithms themselves are disgusting to look at so I’ll spare you the details, but in general we want to equally space out our new vertices as much as possible when we put in an integer</p>
 
-<p><img src="images/tesselation/t2.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/tesselation/t2.png" alt="Untitled" /></p>
 
 <ul>
   <li>We can use decimals to do unequal spacing, but that’s outside the scope of this course</li>
@@ -191,7 +191,7 @@
 
 <p>For triangles, there’s 3 outer tesselation levels and 1 inner tesselation level</p>
 
-<p><img src="images/tesselation/t3.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/tesselation/t3.png" alt="Untitled" /></p>
 
 <p>We start by subdividing the outer edges based on the inner tesselation level (outer based on inner…you can see why I’m sparing the details) and then, for each generated vertex, drawing a perpendicular line from it towards the center</p>
 
@@ -199,21 +199,21 @@
 
 <p>From here, we continue making new vertices from the lines crossing with the rings, making new lines out of those vertices and so on and so forth</p>
 
-<p><img src="images/tesselation/t4.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/tesselation/t4.png" alt="Untitled" /></p>
 
 <p>Next, we remove all the generated vertices on the outside, recalculating them with the outer tesselation level</p>
 
 <p>Finally, we triangulate the vertices so that the mesh spans the area of the triangle</p>
 
-<p><img src="images/tesselation/t5.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/tesselation/t5.png" alt="Untitled" /></p>
 
 <p>Quads are a similar story, except there’s two inner tesselation levels (one for vertical, one for horizontal) and four outer tesselation levels</p>
 
-<p><img src="images/tesselation/t6.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/tesselation/t6.png" alt="Untitled" /></p>
 
 <p>These are more often used in 3D graphics to smooth out and add detail to objects</p>
 
-<p><img src="images/tesselation/t7.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/tesselation/t7.png" alt="Untitled" /></p>
 
 <h2 id="geometry-shaders">Geometry Shaders</h2>
 
@@ -235,11 +235,11 @@
 
 <p>We specify lines_adjacency with GL_LINES_ADJACENCY in glDrawArrays or glDrawElements</p>
 
-<p><img src="images/tesselation/t8.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/tesselation/t8.png" alt="Untitled" /></p>
 
 <p>Triangles, likewise, are done the same way but with GL_TRIANGLES_ADJACENCY</p>
 
-<p><img src="images/tesselation/t9.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/tesselation/t9.png" alt="Untitled" /></p>
 
 <p>We output zero or more primitive, all of which have a particular output type, including points, line strips and triangle strips</p>
 
@@ -389,7 +389,7 @@
 
 <p>Adding some bezier curves, we get hair!</p>
 
-<p><img src="images/tesselation/t10.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/tesselation/t10.png" alt="Untitled" /></p>
 
 <h2 id="tesselation-control-shaders">Tesselation Control Shaders</h2>
 
@@ -506,7 +506,7 @@
 
 <p>Barycentric coordinates give positions within a triangle as a 3D vector, thus giving the weights in a weighted sum of the 3 corners</p>
 
-<p><img src="images/tesselation/t11.png" alt="Untitled" /></p>
+<p><img src="/notes/computer-graphics/images/tesselation/t11.png" alt="Untitled" /></p>
 
 <p>Overall, our TES might look something like this</p>
 

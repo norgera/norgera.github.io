@@ -63,8 +63,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Types","url":"http://localhost:4000/notes/programming-languages/types.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=73055b779652926c507dea048dc5316b621c78b2">
-    <link rel="stylesheet" href="/assets/css/style.css?v=73055b779652926c507dea048dc5316b621c78b2">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
+    <link rel="stylesheet" href="/assets/css/style.css?v=15970e72490d98195d9cc62a146fe1d08b376353">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -404,7 +404,7 @@ queue&lt;int, 50&gt; int_queue;
 
 <p>We can use these arrays to take slices, like we do with matrices</p>
 
-<p><img src="images/plang/types/d1.png" alt="2023-04-24_20-42_3.png" /></p>
+<p><img src="/notes/programming-languages/images/plang/types/d1.png" alt="2023-04-24_20-42_3.png" /></p>
 
 <p>These can either be allocated by static allocation (array that exists for the program’s life, known at compile time) stack allocation (array with a lifetime inside a subroutine, known at compile time) or heap/stack allocation (dynamically allocated arrays, allocated in the heap if the shape changes during runtime, else allocated on stack)</p>
 
@@ -426,7 +426,7 @@ queue&lt;int, 50&gt; int_queue;
   }
 }
 </code></pre></div>    </div>
-    <p><img src="images/plang/types/d2.png" alt="2023-04-24_20-43_1.png" /></p>
+    <p><img src="/notes/programming-languages/images/plang/types/d2.png" alt="2023-04-24_20-43_1.png" /></p>
   </li>
 </ul>
 
@@ -434,21 +434,21 @@ queue&lt;int, 50&gt; int_queue;
 
 <p>Most languages use row major order, while Fortran (being the stubborn rebel child that it is) uses column-major order</p>
 
-<p><img src="images/plang/types/d3.png" alt="2023-04-24_20-43_2.png" /></p>
+<p><img src="/notes/programming-languages/images/plang/types/d3.png" alt="2023-04-24_20-43_2.png" /></p>
 
 <p>Arrays also need to be allocated in a certain way, either contiguous (consecutive location in memory and consecutive rows adjacent in memory) or row pointers (consecutive rows anywhere in memory, with some extra memory for pointers)</p>
 
 <p>This should be very familiar if you know C (which you should)</p>
 
-<p><img src="images/plang/types/d4.png" alt="2023-04-24_20-44.png" /></p>
+<p><img src="/notes/programming-languages/images/plang/types/d4.png" alt="2023-04-24_20-44.png" /></p>
 
 <p>We also need to calculate the address to access these elements, which gets increasing complicated as we scale up our arrays</p>
 
-<p><img src="images/plang/types/d5.png" alt="2023-04-24_20-44_1.png" /></p>
+<p><img src="/notes/programming-languages/images/plang/types/d5.png" alt="2023-04-24_20-44_1.png" /></p>
 
 <p>We can calculate this faster with a few tricks</p>
 
-<p><img src="images/plang/types/d6.png" alt="2023-04-24_20-44_2.png" /></p>
+<p><img src="/notes/programming-languages/images/plang/types/d6.png" alt="2023-04-24_20-44_2.png" /></p>
 
 <h3 id="sets">Sets</h3>
 
@@ -484,7 +484,7 @@ O = X ^ Y                      # symmetric diff.
 
 <p>We can use these pointers to form recursive data types, with objects containing references to other objects, like in linked lists and trees</p>
 
-<p><img src="images/plang/types/d7.png" alt="2023-04-24_20-45_1.png" /></p>
+<p><img src="/notes/programming-languages/images/plang/types/d7.png" alt="2023-04-24_20-45_1.png" /></p>
 
 <p>The problem with these is that we can have dangling references, where a pointer refers to an object that is deallocated in memory</p>
 
@@ -498,7 +498,7 @@ O = X ^ Y                      # symmetric diff.
 
 <p>The problem with this is when we have circular lists, where it’s not referenced outside of itself, but each record has a reference count of 1</p>
 
-<p><img src="images/plang/types/d8.png" alt="2023-04-24_20-46.png" /></p>
+<p><img src="/notes/programming-languages/images/plang/types/d8.png" alt="2023-04-24_20-46.png" /></p>
 
 <ul>
   <li>
@@ -533,7 +533,7 @@ O = X ^ Y                      # symmetric diff.
 
 <p>What we can do instead is pointer reversal, where we reverse pointers to go the other way around</p>
 
-<p><img src="images/plang/types/d9.png" alt="2023-04-24_20-46_1.png" /></p>
+<p><img src="/notes/programming-languages/images/plang/types/d9.png" alt="2023-04-24_20-46_1.png" /></p>
 
 <p>We can also use stop-and-copy, where we copy useful data compactly from one half of the heap to the other</p>
 
