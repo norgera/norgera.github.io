@@ -31,36 +31,36 @@ toc: true
 SPECIAL_CHAR = '∆'
 
 def print_cyclic_shifts(s: str) -> None:
-    """Print all cyclic shifts of a given string."""
+    # Print all cyclic shifts of a given string
     n = len(s)
     for i in range(n):
         cyclic_shift = s[i:] + s[:i]
         print(f"{i} {cyclic_shift}")
 
 def generate_cyclic_shifts(s: str) -> list[str]:
-    """Generate all cyclic shifts of a given string."""
+    # Generate all cyclic shifts of a given string
     n = len(s)
     return [s[i:] + s[:i] for i in range(n)]
 
 def sort_cyclic_shifts_alphabetically(s: str) -> list[str]:
-    """Sort cyclic shifts alphabetically, treating the special character as a space."""
+    # Sort cyclic shifts alphabetically, treating the special character as a space
     cyclic_shifts = generate_cyclic_shifts(s)
     return sorted(cyclic_shifts, key=lambda x: x.replace(SPECIAL_CHAR, ' '))
 
 def last_chars_from_sorted_shifts(s: str) -> str:
-    """Get the last characters from sorted cyclic shifts."""
+    # Get the last characters from sorted cyclic shifts
     sorted_shifts = sort_cyclic_shifts_alphabetically(s)
     return ''.join(shift[-1] for shift in sorted_shifts)
 
 def remove_repeated_chars(s: str) -> str:
-    """Remove repeated characters, preserving order."""
+    # Remove repeated characters, preserving order
     sorted_string = ''.join(sorted(s, key=lambda x: x.replace(SPECIAL_CHAR, ' ')))
     seen = set()
     result = [char for char in sorted_string if not (char in seen or seen.add(char))]
     return ''.join(result)
 
 def process_string(s: str) -> None:
-    """Process string by generating cyclic shifts, sorting, and performing further operations."""
+    # Process string by generating cyclic shifts, sorting, and performing further operations
     print("Cyclic Shifts:")
     print_cyclic_shifts(s)
 
