@@ -550,4 +550,4 @@ For example:
 
 - Note that if we’re using this approach, we can include the program counter and link register as well to save ourselves an instruction
     
-    ![Untitled](images/core/b21.pngd.png)
+    ![Untitled](images/core/b21.png)

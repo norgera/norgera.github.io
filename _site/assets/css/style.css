@@ -134,7 +134,7 @@ clr -> color
 bg -> background
 hvr -> hover
 */
-:root { --code-1181dd: #1181dd; --code-007aaa: #007aaa; --code-001c99: #001c99; --code-009999: #009999; --code-008080: #008080; --code-3c5d5d: #3c5d5d; --code-009926: #009926; --code-990073: #990073; --code-800080: #800080; --code-445588: #445588; --code-000080: #000080; --code-aaaaaa: #aaaaaa; --code-999999: #999999; --code-888888: #888888; --code-555555: #555555; }
+:root { --code-d14: #d14; --code-aa0000: #aa0000; --code-990000: #990000; --code-009999: #009999; --code-008080: #008080; --code-3c5d5d: #3c5d5d; --code-009926: #009926; --code-990073: #990073; --code-800080: #800080; --code-445588: #445588; --code-000080: #000080; --code-aaaaaa: #aaaaaa; --code-999999: #999999; --code-888888: #888888; --code-555555: #555555; }
 
 body { background-color: var(--clr-bg); padding: 50px; font: 15px/1.5 "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--clr-text); font-weight: 400; }
 
@@ -233,7 +233,7 @@ clr -> color
 bg -> background
 hvr -> hover
 */
-:root { --code-1181dd: #1181dd; --code-007aaa: #007aaa; --code-001c99: #001c99; --code-009999: #009999; --code-008080: #008080; --code-3c5d5d: #3c5d5d; --code-009926: #009926; --code-990073: #990073; --code-800080: #800080; --code-445588: #445588; --code-000080: #000080; --code-aaaaaa: #aaaaaa; --code-999999: #999999; --code-888888: #888888; --code-555555: #555555; }
+:root { --code-d14: #d14; --code-aa0000: #aa0000; --code-990000: #990000; --code-009999: #009999; --code-008080: #008080; --code-3c5d5d: #3c5d5d; --code-009926: #009926; --code-990073: #990073; --code-800080: #800080; --code-445588: #445588; --code-000080: #000080; --code-aaaaaa: #aaaaaa; --code-999999: #999999; --code-888888: #888888; --code-555555: #555555; }
 
 .MathJax_Display, .MJXc-display, .MathJax_SVG_Display { overflow-x: auto; overflow-y: hidden; }
 
@@ -246,6 +246,8 @@ hr { width: 100%; }
 pre { font-size: 14px; }
 
 .theme-switch { align-self: flex-end; background-color: transparent; border: none; /* Remove borders */ color: var(--clr-text); font-size: 16px; /* Set a font size */ cursor: pointer; /* Mouse pointer on hover */ z-index: 10; /* Ensure buttons are on top */ position: relative; /* Ensure buttons are positioned correctly */ }
+
+.bottom-left-btn { position: fixed; bottom: 5px; left: 5px; background-color: transparent; color: var(--clr-text); font-size: 16px; border: none; cursor: pointer; z-index: 10; }
 
 .link-wrapper { display: flex; flex-direction: column; }
 

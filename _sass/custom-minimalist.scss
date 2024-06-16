@@ -41,6 +41,18 @@ pre {
   position: relative; /* Ensure buttons are positioned correctly */
 }
 
+.bottom-left-btn {
+  position: fixed;
+  bottom: 5px;
+  left: 5px;
+  background-color: transparent;
+  color: var(--clr-text);
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
 
 .link-wrapper {
   display: flex;
