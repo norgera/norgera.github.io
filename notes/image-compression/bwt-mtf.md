@@ -111,6 +111,8 @@ Sorted Cyclic Shifts Alphabetically: \\
 
 L Sequence: sshtth∆ii∆e - (last column)
 
+Symbols: ∆ehist
+
 ### Move-to-Front Encoding
 - **Overview**:
   - A coding scheme that takes advantage of long runs of identical symbols is the Move-to-Front encoding scheme, or simply MTF (a.k.a. Global Structure Transformation, or simply GST).
