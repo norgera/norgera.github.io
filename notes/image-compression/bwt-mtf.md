@@ -17,69 +17,67 @@ toc: true
     - The BWT decoding procedure is not immediately obvious once we know the encoding procedure.
 
 - **Algorithm Summary**:
-  - Given a sequence of letters of length \(N\):
-    - Create \(N - 1\) other sequences, where each of these \(N - 1\) sequences is a cyclic shift of the original sequence; The total number of sequences is \(N - 1 + 1\) (the original sequence) = \(N\).
-    - These \(N\) sequences are sorted in lexicographic (alphabetical) order.
-    - The encoder encodes the last letter in each cyclically shifted and sorted sequence (i.e., encoding a sequence of length \(N\) letters).
+  - Given a sequence of letters of length $N$:
+    - Create $N - 1$ other sequences, where each of these $N - 1$ sequences is a cyclic shift of the original sequence; The total number of sequences is $N - 1 + 1$ (the original sequence) = $N$.
+    - These $N$ sequences are sorted in lexicographic (alphabetical) order.
+    - The encoder encodes the last letter in each cyclically shifted and sorted sequence (i.e., encoding a sequence of length $N$ letters).
     - The compressed file consists of two parts:
-      - This sequence of Last letters, \(L\).
+      - This sequence of Last letters, $L$.
       - The position of the original sequence in the sorted list.
 
 #### Example Code
 
 ```python
-def print_cyclic_shifts(s):
+SPECIAL_CHAR = '∆'
+
+def print_cyclic_shifts(s: str) -> None:
+    """Print all cyclic shifts of a given string."""
     n = len(s)
     for i in range(n):
         cyclic_shift = s[i:] + s[:i]
         print(f"{i} {cyclic_shift}")
 
-def sort_cyclic_shifts_alphabetically(s):
+def generate_cyclic_shifts(s: str) -> list[str]:
+    """Generate all cyclic shifts of a given string."""
     n = len(s)
-    cyclic_shifts = [s[i:] + s[:i] for i in range(n)]
-    cyclic_shifts_sorted = sorted(cyclic_shifts, key=lambda x: x.replace('∆', ' '))
-    for i, shift in enumerate(cyclic_shifts_sorted):
-        print(f"{i} {shift}")
+    return [s[i:] + s[:i] for i in range(n)]
 
-def last_chars_from_sorted_shifts(s):
-    n = len(s)
-    cyclic_shifts = [s[i:] + s[:i] for i in range(n)]
-    cyclic_shifts_sorted = sorted(cyclic_shifts, key=lambda x: x.replace('∆', ' '))
-    last_chars = ''.join(shift[-1] for shift in cyclic_shifts_sorted)
-    return last_chars
+def sort_cyclic_shifts_alphabetically(s: str) -> list[str]:
+    """Sort cyclic shifts alphabetically, treating the special character as a space."""
+    cyclic_shifts = generate_cyclic_shifts(s)
+    return sorted(cyclic_shifts, key=lambda x: x.replace(SPECIAL_CHAR, ' '))
 
-def remove_repeated_chars(s):
-    """
-    First sort the string s in alphabetical order, considering '∆' as a space (which sorts before all other characters),
-    then remove repeated characters, preserving the order of characters in the sorted string.
-    """
-    # Sort the string alphabetically, treating '∆' as a space
-    sorted_string = ''.join(sorted(s, key=lambda x: x.replace('∆', ' ')))
+def last_chars_from_sorted_shifts(s: str) -> str:
+    """Get the last characters from sorted cyclic shifts."""
+    sorted_shifts = sort_cyclic_shifts_alphabetically(s)
+    return ''.join(shift[-1] for shift in sorted_shifts)
+
+def remove_repeated_chars(s: str) -> str:
+    """Remove repeated characters, preserving order."""
+    sorted_string = ''.join(sorted(s, key=lambda x: x.replace(SPECIAL_CHAR, ' ')))
     seen = set()
-    result = []
-    for char in sorted_string:
-        if char not in seen:
-            seen.add(char)
-            result.append(char)
-    # After sorting and removing duplicates, concatenate back to a unique sorted string
-    unique_sorted_string = ''.join(result)
-    return unique_sorted_string
+    result = [char for char in sorted_string if not (char in seen or seen.add(char))]
+    return ''.join(result)
 
-
-def process_string(s):
+def process_string(s: str) -> None:
+    """Process string by generating cyclic shifts, sorting, and performing further operations."""
     print("Cyclic Shifts:")
     print_cyclic_shifts(s)
+
     print("\nSorted Cyclic Shifts Alphabetically:")
-    sort_cyclic_shifts_alphabetically(s)
+    sorted_shifts = sort_cyclic_shifts_alphabetically(s)
+    for i, shift in enumerate(sorted_shifts):
+        print(f"{i} {shift}")
+
     last_chars = last_chars_from_sorted_shifts(s)
     print(f"\nL Sequence: {last_chars}")
+
     unique_sorted_string = remove_repeated_chars(last_chars)
     print(f"\nSymbols: {unique_sorted_string}")
 
 # Example usage
 original_string = "this∆is∆the"
 process_string(original_string)
-
 print("\n")
 ```
 
