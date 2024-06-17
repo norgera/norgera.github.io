@@ -19,10 +19,11 @@ document.addEventListener("DOMContentLoaded", function () {
         ],
     };
 
-    // Get the saved color from localStorage or set a default color
+    // Get the saved color from localStorage or set a default lightness
     const savedColor = localStorage.getItem('selectedColor');
-    const initialColor = savedColor ? JSON.parse(savedColor) : getCssHsl('--clr-a-text');
-    const hexColor = savedColor ? hslToHex(initialColor.h, initialColor.s, initialColor.l) : hslToHex(initialColor.h, initialColor.s, initialColor.l);
+    const cssHsl = getCssHsl('--clr-a-text');
+    const initialHsl = savedColor ? JSON.parse(savedColor) : { ...cssHsl, l: 50 }; // Default lightness to 50%
+    const hexColor = savedColor ? hslToHex(initialHsl.h, initialHsl.s, initialHsl.l) : hslToHex(cssHsl.h, cssHsl.s, 50); // Use CSS hue and saturation, default lightness to 50%
 
     function showColorPicker(e) {
         e.preventDefault();
