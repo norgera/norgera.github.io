@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
         borderColor: '#444',
         previewElement: null,
         palette: [
-            '#7092be', '#4040bf', '#ab548a','#bf404c','#b5a940', '#3fa687'
+            '#7092be', '#4040bf', '#ab548a', '#bf404c', '#b5a940', '#3fa687'
         ],
     };
 
@@ -25,11 +25,17 @@ document.addEventListener("DOMContentLoaded", function () {
         const target = e.currentTarget.querySelector('i');
 
         if (!picker) {
+            // Get the saved color from localStorage or set a default color
+            const savedColor = localStorage.getItem('selectedColor');
+            const initialColor = savedColor ? JSON.parse(savedColor) : { h: 0, s: 0, l: 50 };
+            const hexColor = hslToHex(initialColor.h, initialColor.s, initialColor.l);
+
             picker = new jscolor(target, {
                 onFineChange: 'updateColor(this)',
                 valueElement: null, // This ensures that the color value is not applied to the button itself
                 previewElement: null, // No preview element
-                styleElement: null // No style element
+                styleElement: null, // No style element
+                value: hexColor // Set the initial color
             });
         }
 
@@ -56,7 +62,6 @@ document.addEventListener("DOMContentLoaded", function () {
         e.stopPropagation();
         alert('Green part clicked!');
     }
-
 
     // Apply the saved color on page load
     const savedColor = localStorage.getItem('selectedColor');
@@ -109,4 +114,15 @@ function hexToHSL(hex) {
         s: Math.round(s * 100),
         l: Math.round(l * 100)
     };
+}
+
+function hslToHex(h, s, l) {
+    l /= 100;
+    const a = s * Math.min(l, 1 - l) / 100;
+    const f = n => {
+        const k = (n + h / 30) % 12;
+        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return Math.round(255 * color).toString(16).padStart(2, '0');
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
 }
