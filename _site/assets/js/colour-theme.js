@@ -21,8 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Get the saved color from localStorage or set a default color
     const savedColor = localStorage.getItem('selectedColor');
-    const initialColor = savedColor ? JSON.parse(savedColor) : { h: 0, s: 0, l: 50 };
-    const hexColor = hslToHex(initialColor.h, initialColor.s, initialColor.l);
+    const initialColor = savedColor ? JSON.parse(savedColor) : getCssHsl('--clr-a-text');
+    const hexColor = savedColor ? hslToHex(initialColor.h, initialColor.s, initialColor.l) : hslToHex(initialColor.h, initialColor.s, initialColor.l);
 
     function showColorPicker(e) {
         e.preventDefault();
@@ -124,4 +124,11 @@ function hslToHex(h, s, l) {
         return Math.round(255 * color).toString(16).padStart(2, '0');
     };
     return `#${f(0)}${f(8)}${f(4)}`;
+}
+
+function getCssHsl(variable) {
+    const style = getComputedStyle(document.documentElement);
+    const value = style.getPropertyValue(variable);
+    const hsl = value.match(/\d+/g).map(Number);
+    return { h: hsl[0], s: hsl[1], l: hsl[2] };
 }
