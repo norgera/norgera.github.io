@@ -19,17 +19,17 @@ document.addEventListener("DOMContentLoaded", function () {
         ],
     };
 
+    // Get the saved color from localStorage or set a default color
+    const savedColor = localStorage.getItem('selectedColor');
+    const initialColor = savedColor ? JSON.parse(savedColor) : { h: 0, s: 0, l: 50 };
+    const hexColor = hslToHex(initialColor.h, initialColor.s, initialColor.l);
+
     function showColorPicker(e) {
         e.preventDefault();
         e.stopPropagation();
         const target = e.currentTarget.querySelector('i');
 
         if (!picker) {
-            // Get the saved color from localStorage or set a default color
-            const savedColor = localStorage.getItem('selectedColor');
-            const initialColor = savedColor ? JSON.parse(savedColor) : { h: 0, s: 0, l: 50 };
-            const hexColor = hslToHex(initialColor.h, initialColor.s, initialColor.l);
-
             picker = new jscolor(target, {
                 onFineChange: 'updateColor(this)',
                 valueElement: null, // This ensures that the color value is not applied to the button itself
@@ -64,7 +64,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Apply the saved color on page load
-    const savedColor = localStorage.getItem('selectedColor');
     if (savedColor) {
         const hslColor = JSON.parse(savedColor);
         applyColor(hslColor);
