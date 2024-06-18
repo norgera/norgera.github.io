@@ -247,7 +247,7 @@ pre { font-size: 14px; }
 
 .theme-switch { align-self: flex-end; background-color: transparent; border: none; /* Remove borders */ color: var(--clr-text); font-size: 16px; /* Set a font size */ cursor: pointer; /* Mouse pointer on hover */ z-index: 10; /* Ensure buttons are on top */ position: relative; /* Ensure buttons are positioned correctly */ }
 
-.bottom-left-btn { position: fixed; bottom: 5px; left: 5px; background-color: transparent; color: var(--clr-text); font-size: 16px; border: none; cursor: pointer; z-index: 10; }
+.bottom-left-btn { position: fixed; bottom: 5px; left: 5px; background-color: transparent; color: var(--clr-text); font-size: 16px; border: none; cursor: pointer; z-index: 100000; }
 
 .link-wrapper { display: flex; flex-direction: column; }
 
