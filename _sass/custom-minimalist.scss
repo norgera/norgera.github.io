@@ -69,8 +69,9 @@ pre {
 
 .toc {
   padding-left: 10%;
+  z-index: 1; /* Ensure TOC has a lower z-index */
+  position: relative; /* Ensure positioning context */
   ul {
-    margin-bottom: 0; /* remove bottom margin from nested sublists */
+    margin-bottom: 0; /* Remove bottom margin from nested sublists */
   }
 }
-
