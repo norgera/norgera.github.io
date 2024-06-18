@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
         width: 200,
         position: 'right',
         backgroundColor: '#333',
-        insetColor: '#FFF',
+        controlBorderColor: '#FFF',
         shadow: true,
         borderRadius: 6,
         borderWidth: 1,
@@ -32,10 +32,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!picker) {
             picker = new jscolor(target, {
-                onFineChange: 'updateColor(this)',
+                onInput: 'updateColor(this)',
                 valueElement: null, // This ensures that the color value is not applied to the button itself
                 previewElement: null, // No preview element
-                styleElement: null, // No style element
                 value: hexColor // Set the initial color
             });
         }
