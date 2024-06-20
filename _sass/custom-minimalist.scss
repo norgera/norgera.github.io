@@ -42,7 +42,6 @@ pre {
 }
 
 .bottom-left-btn {
-  position: fixed;
   bottom: 5px;
   left: 5px;
   background-color: transparent;
@@ -52,6 +51,8 @@ pre {
   cursor: pointer;
   z-index: 10000;
   display: block;
+  position: fixed;
+  transform: translateZ(0); /* This can help Safari render the button correctly */
 }
 
 
@@ -71,7 +72,18 @@ pre {
   padding-left: 10%;
   z-index: 1; /* Ensure TOC has a lower z-index */
   position: relative; /* Ensure positioning context */
+  overflow-y: auto; /* Ensure scrolling is handled properly */
   ul {
     margin-bottom: 0; /* Remove bottom margin from nested sublists */
+  }
+}
+
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance: none) {
+    .bottom-left-btn {
+      position: absolute; /* Change to absolute for Safari */
+      bottom: 10px;
+      left: 10px;
+    }
   }
 }
