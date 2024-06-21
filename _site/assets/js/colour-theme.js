@@ -19,11 +19,10 @@ document.addEventListener("DOMContentLoaded", function () {
         ],
     };
 
-    // Get the saved color from localStorage or set a default lightness
     const savedColor = localStorage.getItem('selectedColor');
     const cssHsl = getCssHsl('--clr-a-text');
-    const initialHsl = savedColor ? JSON.parse(savedColor) : { ...cssHsl, l: 50 }; // Default lightness to 50%
-    const hexColor = savedColor ? hslToHex(initialHsl.h, initialHsl.s, initialHsl.l) : hslToHex(cssHsl.h, cssHsl.s, 50); // Use CSS hue and saturation, default lightness to 50%
+    const initialHsl = savedColor ? JSON.parse(savedColor) : { ...cssHsl, l: 50 };
+    const hexColor = savedColor ? hslToHex(initialHsl.h, initialHsl.s, initialHsl.l) : hslToHex(cssHsl.h, cssHsl.s, 50);
 
     function showColorPicker(e) {
         e.preventDefault();
@@ -33,9 +32,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!picker) {
             picker = new jscolor(target, {
                 onInput: 'updateColor(this)',
-                valueElement: null, // This ensures that the color value is not applied to the button itself
-                previewElement: null, // No preview element
-                value: hexColor // Set the initial color
+                valueElement: null,
+                previewElement: null,
+                value: hexColor
             });
         }
 
@@ -45,11 +44,11 @@ document.addEventListener("DOMContentLoaded", function () {
     if (starButtons.length > 0) {
         starButtons.forEach(button => {
             button.addEventListener('click', showColorPicker);
-            button.addEventListener('touchstart', showColorPicker); // Add touchstart event listener for mobile
+            button.addEventListener('touchstart', showColorPicker);
             const greenPart = button.querySelector('.green-part');
             if (greenPart) {
                 greenPart.addEventListener('click', handleGreenPartClick);
-                greenPart.addEventListener('touchstart', handleGreenPartClick); // Add touchstart event listener for mobile
+                greenPart.addEventListener('touchstart', handleGreenPartClick);
             }
             console.log('Star button event listener added');
         });
@@ -63,12 +62,20 @@ document.addEventListener("DOMContentLoaded", function () {
         alert('Green part clicked!');
     }
 
-    // Apply the saved color on page load
     if (savedColor) {
         const hslColor = JSON.parse(savedColor);
         applyColor(hslColor);
         console.log('Applied saved color:', hslColor);
     }
+
+    document.querySelector('.toc').addEventListener('scroll', function () {
+        const btn = document.querySelector('.bottom-left-btn');
+        if (btn) {
+            btn.style.display = 'none';
+            btn.offsetHeight;
+            btn.style.display = 'block';
+        }
+    });
 });
 
 function updateColor(picker) {
@@ -78,7 +85,6 @@ function updateColor(picker) {
     console.log('New color selected: ', hslColor);
 
     applyColor(hslColor);
-    // Save the selected color to localStorage
     localStorage.setItem('selectedColor', JSON.stringify(hslColor));
 }
 

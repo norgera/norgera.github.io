@@ -49,10 +49,11 @@ pre {
   font-size: 16px;
   border: none;
   cursor: pointer;
-  z-index: 10000;
+  z-index: 100000; /* Increase z-index */
   display: block;
-  position: fixed; /* Keep this as fixed */
-  transform: translateZ(0); /* Helps with Safari rendering issues */
+  position: fixed;
+  will-change: transform; /* Add will-change */
+  transform: translateZ(0); /* Add translateZ */
 }
 
 
@@ -70,12 +71,10 @@ pre {
 
 .toc {
   padding-left: 10%;
-  z-index: 1; /* Ensure TOC has a lower z-index */
-  position: relative; /* Ensure positioning context */
-  overflow-y: auto; /* Enable vertical scrolling */
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  z-index: 1;
+  position: relative;
   ul {
-    margin-bottom: 0; /* Remove bottom margin from nested sublists */
+    margin-bottom: 0;
   }
 }
 
