@@ -247,16 +247,16 @@ pre { font-size: 14px; }
 
 .theme-switch { align-self: flex-end; background-color: transparent; border: none; /* Remove borders */ color: var(--clr-text); font-size: 16px; /* Set a font size */ cursor: pointer; /* Mouse pointer on hover */ z-index: 10; /* Ensure buttons are on top */ position: relative; /* Ensure buttons are positioned correctly */ }
 
-.bottom-left-btn { bottom: 5px; left: 5px; background-color: transparent; color: var(--clr-text); font-size: 16px; border: none; cursor: pointer; z-index: 10000; display: block; position: fixed; transform: translateZ(0); /* This can help Safari render the button correctly */ }
+.bottom-left-btn { bottom: 5px; left: 5px; background-color: transparent; color: var(--clr-text); font-size: 16px; border: none; cursor: pointer; z-index: 10000; display: block; position: fixed; /* Default to fixed for most browsers */ transform: translateZ(0); /* Help Safari render correctly */ }
 
 .link-wrapper { display: flex; flex-direction: column; }
 
 .link-wrapper-mobile { display: flex; justify-content: space-evenly; align-items: center; color: black; }
 
-.toc { padding-left: 10%; z-index: 1; /* Ensure TOC has a lower z-index */ position: relative; /* Ensure positioning context */ overflow-y: auto; /* Ensure scrolling is handled properly */ }
+.toc { padding-left: 10%; z-index: 1; /* Ensure TOC has a lower z-index */ position: relative; /* Ensure positioning context */ }
 .toc ul { margin-bottom: 0; /* Remove bottom margin from nested sublists */ }
 
-@media not all and (min-resolution: 0.001dpcm) { @supports (-webkit-appearance: none) { .bottom-left-btn { position: absolute; /* Change to absolute for Safari */ bottom: 10px; left: 10px; } } }
+@media not all and (min-resolution: 0.001dpcm) { @supports (-webkit-appearance: none) { .bottom-left-btn { position: absolute; /* Change to absolute for Safari */ } } }
 .img-circle { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-bottom: 10px; }
 
 .overlay { position: fixed; top: 0; bottom: 0; left: 0; right: 0; background: rgba(0, 0, 0, 0.7); transition: opacity 500ms; visibility: hidden; opacity: 0; }

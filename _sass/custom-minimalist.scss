@@ -51,8 +51,8 @@ pre {
   cursor: pointer;
   z-index: 10000;
   display: block;
-  position: fixed;
-  transform: translateZ(0); /* This can help Safari render the button correctly */
+  position: fixed; /* Default to fixed for most browsers */
+  transform: translateZ(0); /* Help Safari render correctly */
 }
 
 
@@ -72,7 +72,6 @@ pre {
   padding-left: 10%;
   z-index: 1; /* Ensure TOC has a lower z-index */
   position: relative; /* Ensure positioning context */
-  overflow-y: auto; /* Ensure scrolling is handled properly */
   ul {
     margin-bottom: 0; /* Remove bottom margin from nested sublists */
   }
@@ -82,8 +81,6 @@ pre {
   @supports (-webkit-appearance: none) {
     .bottom-left-btn {
       position: absolute; /* Change to absolute for Safari */
-      bottom: 10px;
-      left: 10px;
     }
   }
 }
