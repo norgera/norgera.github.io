@@ -10,8 +10,9 @@ Lambda calculus is a system of logic to study computations with functions, where
 
 More specifically, it’s a system for representing functions abstractly, where $\lambda M.N$ is a function with parameters $M$ and body $N$
 
-- Ex. $(\lambda x.x*x)$ maps $x$ to $x*x$
-    - $(\lambda x.x*x)4$ is the same but applied to 4
+- Ex. $(\lambda x . x \ast x)$ maps $x$ to $x \ast x$
+    - $(\lambda x . x \ast x) 4$ is the same but applied to 4
+
 
 ## Syntactic rules
 

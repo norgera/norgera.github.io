@@ -245,19 +245,17 @@ hr { width: 100%; }
 
 pre { font-size: 14px; }
 
-.theme-switch { align-self: flex-end; background-color: transparent; border: none; /* Remove borders */ color: var(--clr-text); font-size: 16px; /* Set a font size */ cursor: pointer; /* Mouse pointer on hover */ z-index: 10; /* Ensure buttons are on top */ position: relative; /* Ensure buttons are positioned correctly */ }
+.theme-switch { align-self: flex-end; background-color: transparent; border: none; color: var(--clr-text); font-size: 16px; cursor: pointer; }
 
-.bottom-left-btn { bottom: 5px; left: 5px; background-color: transparent; color: var(--clr-text); font-size: 16px; border: none; cursor: pointer; z-index: 100000; /* Increase z-index */ display: block; position: fixed; will-change: transform; /* Add will-change */ transform: translateZ(0); /* Add translateZ */ }
+.bottom-left-btn { bottom: 5px; left: 5px; background-color: transparent; color: var(--clr-text); font-size: 16px; border: none; cursor: pointer; position: fixed; }
 
 .link-wrapper { display: flex; flex-direction: column; }
 
 .link-wrapper-mobile { display: flex; justify-content: space-evenly; align-items: center; color: black; }
 
-.toc { padding-left: 10%; z-index: 1; position: relative; }
-.toc ul { margin-bottom: 0; }
+.toc { padding-left: 10%; }
+.toc ul { margin-bottom: 0; /* remove bottom margin from nested sublists */ }
 
-/* Safari specific fix */
-@media not all and (min-resolution: 0.001dpcm) { @supports (-webkit-appearance: none) { .bottom-left-btn { position: fixed; /* Make sure it's fixed */ bottom: 5px; /* Adjust to make it visible */ left: 5px; /* Adjust to make it visible */ } } }
 .img-circle { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-bottom: 10px; }
 
 .overlay { position: fixed; top: 0; bottom: 0; left: 0; right: 0; background: rgba(0, 0, 0, 0.7); transition: opacity 500ms; visibility: hidden; opacity: 0; }

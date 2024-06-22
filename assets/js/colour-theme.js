@@ -2,8 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const starButtons = document.querySelectorAll('button.star-button');
 
     // Initialize jscolor picker
-    let picker = null;
-
     jscolor.presets.default = {
         width: 200,
         position: 'right',
@@ -23,44 +21,28 @@ document.addEventListener("DOMContentLoaded", function () {
     const savedColor = localStorage.getItem('selectedColor');
     const cssHsl = getCssHsl('--clr-a-text');
     const initialHsl = savedColor ? JSON.parse(savedColor) : { ...cssHsl, l: 50 }; // Default lightness to 50%
-    const hexColor = savedColor ? hslToHex(initialHsl.h, initialHsl.s, initialHsl.l) : hslToHex(cssHsl.h, cssHsl.s, 50); // Use CSS hue and saturation, default lightness to 50%
+    const hexColor = hslToHex(initialHsl.h, initialHsl.s, initialHsl.l); // Use CSS hue and saturation, default lightness to 50%
 
     function showColorPicker(e) {
         e.preventDefault();
         e.stopPropagation();
         const target = e.currentTarget.querySelector('i');
 
-        if (!picker) {
-            picker = new jscolor(target, {
-                onInput: 'updateColor(this)',
-                valueElement: null, // This ensures that the color value is not applied to the button itself
-                previewElement: null, // No preview element
-                value: hexColor // Set the initial color
-            });
-        }
+        const picker = new jscolor(target, {
+            onInput: 'updateColor(this)',
+            valueElement: null, // This ensures that the color value is not applied to the button itself
+            previewElement: null, // No preview element
+            value: hexColor // Set the initial color
+        });
 
-        if (picker) picker.show();
+        picker.show();
     }
 
     if (starButtons.length > 0) {
         starButtons.forEach(button => {
             button.addEventListener('click', showColorPicker);
             button.addEventListener('touchstart', showColorPicker); // Add touchstart event listener for mobile
-            const greenPart = button.querySelector('.green-part');
-            if (greenPart) {
-                greenPart.addEventListener('click', handleGreenPartClick);
-                greenPart.addEventListener('touchstart', handleGreenPartClick); // Add touchstart event listener for mobile
-            }
-            console.log('Star button event listener added');
         });
-    } else {
-        console.log('No star buttons found');
-    }
-
-    function handleGreenPartClick(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        alert('Green part clicked!');
     }
 
     // Apply the saved color on page load

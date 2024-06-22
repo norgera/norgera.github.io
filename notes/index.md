@@ -7,11 +7,13 @@ permalink: /notes/
 
 ## Computer Science
 
+* [Image Compression](image-compression)
+* [Programming Languages](programming-languages)
+* [Computer Graphics](computer-graphics)
 * [Operating Systems](operating-systems)
 * [Computer Architecture](computer-architecture)
-* [Image Compression](image-compression)
-* [Computer Graphics](computer-graphics)
-* [Programming Languages](programming-languages)
+
+
 
 
 
