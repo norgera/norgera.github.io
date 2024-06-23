@@ -39,15 +39,19 @@ pre {
   cursor: pointer;
 }
 
-.bottom-left-btn {
+.button-container {
+  position: fixed;
   bottom: 5px;
   left: 5px;
+}
+
+.bottom-left-btn {
   background-color: transparent;
   color: var(--clr-text);
   font-size: 16px;
   border: none;
   cursor: pointer;
-  position: fixed;
+  display: block;
 }
 
 .link-wrapper {

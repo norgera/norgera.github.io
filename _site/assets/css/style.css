@@ -247,7 +247,9 @@ pre { font-size: 14px; }
 
 .theme-switch { align-self: flex-end; background-color: transparent; border: none; color: var(--clr-text); font-size: 16px; cursor: pointer; }
 
-.bottom-left-btn { bottom: 5px; left: 5px; background-color: transparent; color: var(--clr-text); font-size: 16px; border: none; cursor: pointer; position: fixed; }
+.button-container { position: fixed; bottom: 5px; left: 5px; }
+
+.bottom-left-btn { background-color: transparent; color: var(--clr-text); font-size: 16px; border: none; cursor: pointer; display: block; }
 
 .link-wrapper { display: flex; flex-direction: column; }
 
