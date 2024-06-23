@@ -63,8 +63,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Eigenvalues and Eigenvectors","url":"http://localhost:4000/notes/linear-algebra/eigenstuff.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=649b00c103eb68f4c35f75928e4d8f083c989fa0">
-    <link rel="stylesheet" href="/assets/css/style.css?v=649b00c103eb68f4c35f75928e4d8f083c989fa0">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=69450e061dd963c6ca7017865836bfa1d6ea6ff8">
+    <link rel="stylesheet" href="/assets/css/style.css?v=69450e061dd963c6ca7017865836bfa1d6ea6ff8">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -108,17 +108,17 @@
           <div class="link-wrapper">
     <style scoped>
       ul.link a {
-        color:var(--clr-h1-and-bold);
-        text-decoration:none;
-      }
+      color: var(--clr-h1-and-bold);
+      text-decoration: none;
+    }
 
-      ul.link a:hover, a:focus {
-        color: var(--clr-a-text-hvr);
-      }
+    ul.link a:hover, ul.link a:focus {
+      color: var(--clr-a-text-hvr);
+    }
     </style>
-    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
-      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
-      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+    <ul class="link"><li><a href="https://github.com/norgera" target="_blank" onclick="blurLink(this)"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/" target="_blank" onclick="blurLink(this)"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io" target="_blank" onclick="blurLink(this)"><i class="far fa-bookmark"></i> Site Repository</a></li>
       &mdash;
       <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
       <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
@@ -136,6 +136,11 @@
     
   </div>
   
+  <script>
+    function blurLink(link) {
+      link.blur();
+    }
+  </script>
 
         </header>
 

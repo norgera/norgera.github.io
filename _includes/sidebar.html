@@ -1,17 +1,17 @@
 <div class="link-wrapper">
     <style scoped>
       ul.link a {
-        color:var(--clr-h1-and-bold);
-        text-decoration:none;
-      }
+      color: var(--clr-h1-and-bold);
+      text-decoration: none;
+    }
 
-      ul.link a:hover, a:focus {
-        color: var(--clr-a-text-hvr);
-      }
+    ul.link a:hover, ul.link a:focus {
+      color: var(--clr-a-text-hvr);
+    }
     </style>
-    <ul class="link"><li><a href="https://github.com/norgera"><i class="fab fa-github"></i> GitHub</a></li>
-      <li><a href="https://www.linkedin.com/in/nathanorgera/"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
-      <li><a href="https://github.com/norgera/norgera.github.io"><i class="far fa-bookmark"></i> Site Repository</a></li>
+    <ul class="link"><li><a href="https://github.com/norgera" target="_blank" onclick="blurLink(this)"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/" target="_blank" onclick="blurLink(this)"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io" target="_blank" onclick="blurLink(this)"><i class="far fa-bookmark"></i> Site Repository</a></li>
       &mdash;
       <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
       <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
@@ -24,3 +24,8 @@
     {% endif %}
   </div>
   
+  <script>
+    function blurLink(link) {
+      link.blur();
+    }
+  </script>
