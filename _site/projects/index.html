@@ -63,8 +63,8 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Home","headline":"Projects","url":"http://localhost:4000/projects/"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=69450e061dd963c6ca7017865836bfa1d6ea6ff8">
-    <link rel="stylesheet" href="/assets/css/style.css?v=69450e061dd963c6ca7017865836bfa1d6ea6ff8">
+    <link rel="stylesheet" href="/assets/css/colors-manual.css?v=3a755d534de67a8467eb5727ede652bdbbbb43f3">
+    <link rel="stylesheet" href="/assets/css/style.css?v=3a755d534de67a8467eb5727ede652bdbbbb43f3">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -116,9 +116,9 @@
       color: var(--clr-a-text-hvr);
     }
     </style>
-    <ul class="link"><li><a href="https://github.com/norgera" target="_blank" onclick="blurLink(this)"><i class="fab fa-github"></i> GitHub</a></li>
-      <li><a href="https://www.linkedin.com/in/nathanorgera/" target="_blank" onclick="blurLink(this)"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
-      <li><a href="https://github.com/norgera/norgera.github.io" target="_blank" onclick="blurLink(this)"><i class="far fa-bookmark"></i> Site Repository</a></li>
+    <ul class="link"><li><a href="https://github.com/norgera" target="_blank" class="link-item"><i class="fab fa-github"></i> GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/nathanorgera/" target="_blank" class="link-item"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      <li><a href="https://github.com/norgera/norgera.github.io" target="_blank" class="link-item"><i class="far fa-bookmark"></i> Site Repository</a></li>
       &mdash;
       <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
       <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
@@ -130,9 +130,11 @@
   </div>
   
   <script>
-    function blurLink(link) {
+    document.querySelectorAll('.link-item').forEach(link => {
+    link.addEventListener('click', function() {
       link.blur();
-    }
+    });
+  });
   </script>
 
         </header>
