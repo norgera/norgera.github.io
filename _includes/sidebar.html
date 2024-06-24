@@ -26,8 +26,10 @@
 
 <script>
   document.querySelectorAll('.link-item').forEach(link => {
-  link.addEventListener('click', function() {
-    link.blur();
+    link.addEventListener('click', function(event) {
+      setTimeout(() => {
+        event.target.blur();
+      }, 100);
+    });
   });
-});
 </script>
