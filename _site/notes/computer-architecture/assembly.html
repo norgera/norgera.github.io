@@ -108,34 +108,15 @@
           <div class="link-wrapper">
   <style scoped>
     ul.link a {
-      color: var(--clr-h1-and-bold);
-      text-decoration: none;
-    }
+    color: var(--clr-h1-and-bold);
+    text-decoration: none;
+  }
 
-    ul.link a:hover, ul.link a:focus {
-      color: var(--clr-a-text-hvr);
-    }
-
-    ul.link {
-      list-style-type: none; /* Remove bullets */
-      margin: 0; /* Remove default bottom margin */ 
-      padding: 0.4px; /* Remove default left padding */
-    }
-
-    ul.link li + li {
-      margin-top: 6px;
-    }
-
-    ul.link:last-child {
-      margin-bottom: 6px;
-    }
-
-    ul.link a i {
-      margin-right: 2px; /* Space between icon and text */
-    }
+  ul.link a:hover, ul.link a:focus {
+    color: var(--clr-a-text-hvr);
+  }
   </style>
-  <ul class="link">
-    <li><a href="https://github.com/norgera" target="_blank" class="link-item"><i class="fab fa-github"></i> GitHub</a></li>
+  <ul class="link"><li><a href="https://github.com/norgera" target="_blank" class="link-item"><i class="fab fa-github"></i> GitHub</a></li>
     <li><a href="https://www.linkedin.com/in/nathanorgera/" target="_blank" class="link-item"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
     <li><a href="https://github.com/norgera/norgera.github.io" target="_blank" class="link-item"><i class="far fa-bookmark"></i> Site Repository</a></li>
     &mdash;
@@ -157,10 +138,10 @@
 
 <script>
   document.querySelectorAll('.link-item').forEach(link => {
-    link.addEventListener('click', function() {
-      this.blur();
-    });
+  link.addEventListener('click', function() {
+    link.blur();
   });
+});
 </script>
 
         </header>
