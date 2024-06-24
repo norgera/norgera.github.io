@@ -116,10 +116,10 @@
     color: var(--clr-a-text-hvr);
   }
   </style>
-  <ul class="link"><li><a href="https://github.com/norgera" target="_blank" class="link-item" onclick="setTimeout(() => this.blur(), 100);"><i class="fab fa-github"></i> GitHub</a></li>
-    <li><a href="https://www.linkedin.com/in/nathanorgera/" target="_blank" class="link-item" onclick="setTimeout(() => this.blur(), 100);"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
-    <li><a href="https://github.com/norgera/norgera.github.io" target="_blank" class="link-item" onclick="setTimeout(() => this.blur(), 100);"><i class="far fa-bookmark"></i> Site Repository</a></li>
-  &mdash;
+  <ul class="link"><li><a href="https://github.com/norgera" target="_blank" class="link-item"><i class="fab fa-github"></i> GitHub</a></li>
+    <li><a href="https://www.linkedin.com/in/nathanorgera/" target="_blank" class="link-item"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+    <li><a href="https://github.com/norgera/norgera.github.io" target="_blank" class="link-item"><i class="far fa-bookmark"></i> Site Repository</a></li>
+    &mdash;
     <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
     <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
   </ul>
@@ -131,12 +131,10 @@
 
 <script>
   document.querySelectorAll('.link-item').forEach(link => {
-    link.addEventListener('click', function(event) {
-      setTimeout(() => {
-        event.target.blur();
-      }, 100);
-    });
+  link.addEventListener('click', function() {
+    link.blur();
   });
+});
 </script>
 
         </header>
