@@ -7,4 +7,20 @@
 {% if site.favicon %}
 <link rel="shortcut icon" type="image/x-icon" href="{{ '/assets/images/favicon.png' | relative_url }}">{% endif %}
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var links = [
+        document.querySelector('a[href="https://github.com/norgera/"]'),
+        document.querySelector('a[href="https://scikit-learn.org/stable/"]'),
+        document.querySelector('a[href="https://ocw.mit.edu/courses/18-01-single-variable-calculus-fall-2006/pages/lecture-notes/"]'),
+        document.querySelector('a[href="https://web.stanford.edu/class/cs103x/cs103x-notes.pdf/"]')
+      ];
+      links.forEach(function(link) {
+        if (link) {
+          link.setAttribute('target', '_blank');
+        }
+      });
+    });
+  </script>
+
 <!-- end custom head snippets -->
