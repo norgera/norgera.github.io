@@ -1,0 +1,16 @@
+title: nate's site
+email: nathan.orgera@gmail.com
+description: Home
+about: CS undergrad @ University of Western Ontario
+show_downloads: false
+google_analytics: UA-108144808-1
+include: ['_pages']
+favicon: true
+color-scheme: manual
+markdown: kramdown
+kramdown:
+  parse_block_html: true
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jemoji

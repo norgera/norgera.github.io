@@ -1,0 +1,36 @@
+const getTheme = () => localStorage.getItem('theme') || 'light';
+
+document.addEventListener("DOMContentLoaded", function () {
+    const moonButtons = document.querySelectorAll('button.moon-button');
+    let themeToggled = false;
+
+    function toggleTheme(e) {
+        e.preventDefault(); // Prevent default action to avoid double toggling
+        if (!themeToggled) {
+            const currentTheme = getTheme();
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeToggled = true;
+
+            // Emit custom event to notify about theme change
+            const themeChangeEvent = new CustomEvent('themeChange', { detail: { theme: newTheme } });
+            document.dispatchEvent(themeChangeEvent);
+        }
+    }
+
+    moonButtons.forEach(button => {
+        button.addEventListener('click', toggleTheme);
+        button.addEventListener('touchstart', toggleTheme); // Add touchstart event listener for mobile
+        button.addEventListener('touchend', (e) => e.preventDefault()); // Prevent click after touchstart
+    });
+
+    const currentTheme = getTheme();
+    if (currentTheme) {
+        document.documentElement.setAttribute('data-theme', currentTheme);
+    }
+
+    // Reset themeToggled flag after interaction
+    document.addEventListener('touchend', () => { themeToggled = false; });
+    document.addEventListener('mouseup', () => { themeToggled = false; });
+});

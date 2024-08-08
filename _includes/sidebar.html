@@ -1,0 +1,32 @@
+<div class="link-wrapper">
+  <style scoped>
+    ul.link a {
+    color: var(--clr-h1-and-bold);
+    text-decoration: none;
+  }
+
+  ul.link a:hover, ul.link a:focus {
+    color: var(--clr-a-text-hvr);
+  }
+  </style>
+  <ul class="link"><li><a href="https://github.com/norgera" target="_blank" class="link-item"><i class="fab fa-github"></i> GitHub</a></li>
+    <li><a href="https://www.linkedin.com/in/nathanorgera/" target="_blank" class="link-item"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+    <li><a href="https://github.com/norgera/norgera.github.io" target="_blank" class="link-item"><i class="far fa-bookmark"></i> Site Repository</a></li>
+    &mdash;
+    <li><a href="/projects"><i class="fas fa-code-branch"></i> projects</a></li>
+    <li><a href="/notes"><i class="fa fa-sticky-note"></i> notes</a></li>
+  </ul>
+  <button class="theme-switch moon-button"><i class="far fa-moon"></i></button>
+
+  {% if page.toc %}
+    {% include toc.html html=content h_min=2 class="toc" title="Table of Contents" title_tag="h4" %}
+  {% endif %}
+</div>
+
+<script>
+  document.querySelectorAll('.link-item').forEach(link => {
+  link.addEventListener('click', function() {
+    link.blur();
+  });
+});
+</script>
