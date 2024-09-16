@@ -1,4 +1,12 @@
-const getTheme = () => localStorage.getItem('theme') || 'light';
+const getTheme = () => localStorage.getItem('theme') || detectSystemTheme();
+
+// Function to detect system theme preference
+function detectSystemTheme() {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+    }
+    return 'light';
+}
 
 document.addEventListener("DOMContentLoaded", function () {
     const moonButtons = document.querySelectorAll('button.moon-button');
@@ -33,4 +41,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // Reset themeToggled flag after interaction
     document.addEventListener('touchend', () => { themeToggled = false; });
     document.addEventListener('mouseup', () => { themeToggled = false; });
+
+    // Listen for changes in system theme preference and update if no manual change has been made
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (!localStorage.getItem('theme')) {
+            const newSystemTheme = e.matches ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newSystemTheme);
+        }
+    });
 });

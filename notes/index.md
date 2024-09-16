@@ -10,8 +10,10 @@ permalink: /notes/
 * [Image Compression](image-compression)
 * [Operating Systems](operating-systems)
 * [Computer Architecture](computer-architecture)
-* [Systems Programming](/notes/systems-programming)
-
+* [Systems Programming](systems-programming)
+* [Programming Languages](programming-languages)
+* [Computer Graphics](computer-graphics)
+* [Databases](databases)
 
 
 
