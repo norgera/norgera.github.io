@@ -42,11 +42,22 @@ document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener('touchend', () => { themeToggled = false; });
     document.addEventListener('mouseup', () => { themeToggled = false; });
 
-    // Listen for changes in system theme preference and update if no manual change has been made
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    // Listen for changes in system theme preference and update only if no manual change has been made
+    const systemThemeListener = window.matchMedia('(prefers-color-scheme: dark)');
+    systemThemeListener.addEventListener('change', e => {
         if (!localStorage.getItem('theme')) {
             const newSystemTheme = e.matches ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', newSystemTheme);
         }
     });
+
+    // Optional: Add a way to reset the theme preference
+    const resetThemeButton = document.querySelector('#reset-theme');
+    if (resetThemeButton) {
+        resetThemeButton.addEventListener('click', () => {
+            localStorage.removeItem('theme');
+            const systemTheme = detectSystemTheme();
+            document.documentElement.setAttribute('data-theme', systemTheme);
+        });
+    }
 });
