@@ -10,4 +10,6 @@ See my [github page](https://github.com/norgera/) for an up-to-date list of proj
 
 #### projects I’ve contributed to
 
-[scikit-learn](https://scikit-learn.org/stable/): A machine learning Python library for predictive data analysis
+[Scikit-learn](https://scikit-learn.org/stable/): A machine learning Python library for predictive data analysis
+
+[AoTTG-2](https://aottg2.com/): A community driven effort to revive the classic AoTTG experience created by Fenglee
