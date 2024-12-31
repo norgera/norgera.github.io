@@ -7,14 +7,12 @@ permalink: /notes/
 
 ## Computer Science
 
-* [Image Compression](image-compression)
+* [Distributed Systems](distributed-systems)
 * [Operating Systems](operating-systems)
+* [Computer Organization](computer-organization)
 * [Computer Architecture](computer-architecture)
 * [Systems Programming](systems-programming)
-* [Programming Languages](programming-languages)
-* [Computer Graphics](computer-graphics)
 * [Databases](databases)
-
-
+* [Image Compression](image-compression)
 
 [Archived](archived)
