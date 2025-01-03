@@ -4,183 +4,325 @@ layout: default
 toc: true
 ---
 
-### Introduction to Databases
+# ER Diagrams
 
----
+## Databases
 
-**Key Concepts**
+A database is a group of related data
 
-- **Data**: Known facts that can be recorded and hold meaning.
-- **Database**: A collection of related data.
-- **Mini-World**: A model of a part of the real world that a database represents, e.g., a hospital, a library.
-- **DBMS**: A software package/system to create and manage databases.
+Technically, anything that stores related data counts as a database, but we commonly think about large servers storing terabytes of data within itself
 
-**Example**: In a university database, data could represent students, courses, professors, and grades. Each of these is part of the "mini-world" of the university that the database models.
+The database stores, of course, **data** (known facts that have implicit meaning and can be recorded), modelling what’s known as a **mini-world** (some part of the real world represented by the data in the database, ex. a university)
 
-### Advantages of DBMS over Flat Files
+We can navigate a database through many different systems, but what’s most common nowadays is a **database management system** or **DBMS** (a software package to create/maintain computerized databases)
 
-1. **Reduces Data Redundancy**: Ensures consistency by centralizing data management.
-2. **Multiple User Interfaces**: Allows multiple types of users to interact with the data.
-3. **Security, Integrity, and Backups**: Includes built-in tools for these processes.
-4. **Improved Performance**: Centralized data reduces the complexity of queries.
-5. **Enforce Standards**: Ensures data remains organized and consistent.
+- These, together with a database and its data, create a **database system**
 
-**Example**: Consider an **Actor performs in Movie** relationship. In a well-designed database, this would be represented as a many-to-many relationship where multiple actors can perform in multiple movies. Without a DBMS, ensuring data consistency across such complex relationships would be challenging.
+Back in the day, computer scientists had to use **flat files** (txt or ascii files), where each row is a **record** (instance) to form a database, but this is inefficient for a number of reasons
 
----
+The first reason is inconsistent data, since there’s no type checking for pieces of data in each record
 
-### Roles in a Database Environment
+- Ex. nothing stops me from putting “ssss” in a student’s ID number
 
-1. **Database Administrator (DBA)**:
-    - Manages database access.
-    - Ensures backups and security.
-    - Monitors performance and upgrades.
-2. **Database Designer**:
-    - Determines the data to be stored.
-    - Creates models and structures for the database.
-3. **System Analyst and Application Programmer**:
-    - Understands user needs and implements database-driven applications.
-4. **End Users**:
-    - Access and manage the data, usually via an interface created by programmers.
+There’s also a number of other benefits of having a DBMS, including
 
-**Example**: In the 3-Schema Architecture, end users typically interact with the **External Level**, which provides a view of the data tailored to their needs, hiding the complexities of the database.
+- Reduced data redundancy
+- Isolation from data
+- Persistent storage
+- Multi-user usage and sharing
+- Better security and backups
+- Generalized query tools (ex. SQL)
+- Multiple UIs
+- Standard enforcement
+- Reduced development time
+- Up-to-date centralized data
 
----
+The only real disadvantages of DBMS are their cost, their training requirements for management and their complexity, but these pale in comparison to the practical benefits
 
-### Three-Schema Architecture & Data Independence
+## Who Handles a DBMS?
 
-- **Schema**: Describes the structure of the data but not the actual data.
-    - *Schema vs. State*: Schema is static (like a blueprint), while the state changes as data is updated.
-- **Three Levels**:
-    1. **Internal Level**: Physical storage of data.
-    2. **Conceptual Level**: Logical structure of the database.
-    3. **External Level**: What end users interact with (views).
-- **Data Independence**:
-    - *Logical Data Independence*: Allows changes to the conceptual schema without affecting the external level.
-    - *Physical Data Independence*: Allows changes to physical storage without affecting the logical organization.
+Due to their complexity, special protocols need to be made in their management, including the roles in a team meant to manage it
 
-**Example**: If we have the table `PLAYER` with `PlayerID`, `FirstName`, and `TeamID`, users may only see the names and teams through the **External Level**, while the actual `PlayerID` used to connect relationships might be hidden.
+First, we have **database administrators (DBA)** who’s job includes giving new users access, upgrading the DBMS, monitoring its usage and performance, checking for security breaches and managing backups
 
----
+Next is the **database designer**, who build the database through identifying data, relationships between data and the proper model to use
 
-### Entity Relationship Diagrams (ERDs)
+Of course, we also need to determine what our end users need, which is where the **system analysts** come in
 
-- **Entities and Attributes**:
-    - *Entity*: A real-world object represented in the database (e.g., Employee).
-    - *Attributes*: Properties of the entity (e.g., Name, Salary).
-- **Keys**:
-    - *Primary Key*: Uniquely identifies an entity.
-    - *Foreign Key*: References primary keys in other tables, linking entities.
-    - *Composite Key*: Uses multiple attributes to form a key.
+- **Application programmers** fill in the gaps by making software to implement the specs with a programming language and testing their implementation
 
-**Example**: In the relationship **COURSE offers SECTION**, the **SECTION** would be a weak entity because its identification depends on the **COURSE** it belongs to. Each **SECTION** is identified by a combination of its section number and course, which is represented using a composite key.
+Finally, we have the **end users** who, while not part of the technical team, are the main consumers of data from the database, accessing data by either getting reports or using software
 
-- **Relationships**:
-    - *One-to-One*, *One-to-Many*, *Many-to-Many* relationships represent how entities relate.
-    - **Example**: In the relationship **Actor performs in Movie**, this would be a many-to-many relationship because multiple actors can perform in multiple movies.
+Let’s put ourselves in the shoes of the database designer for a second to explain why they’re built the way they are
 
----
+## Schema
 
-### Participation and Weak Entities
+First, let’s define some terms
 
-- **Total vs. Partial Participation**:
-    - *Total*: All entities must participate in the relationship.
-    - *Partial*: Only some entities participate.
-- **Weak Entities**:
-    - Lacking a unique identifier, a *weak entity* depends on a related *strong entity* for identification.
+When we say **schema**, we mean a description of the database (such as defining what types of data are in each table and how many tables we have) but NOT the data itself
 
-**Example**: The relationship **COUNTRY has capital CITY** demonstrates **total participation** because every country must have a capital city. The **CITY** entity is not a weak entity in this case.
+- In each database we also have **instances** (which we’ve talked about before as being records), encapsulated by a **state**, all the data in the database at some moment in time
 
----
+When we define a new database, what we are really doing is specifying its schema, meaning the initial state will be empty
 
-### Crow's Foot Notation
+- A DBMS will make sure data is valid by storing the schema and the scheme of the schema, also known as **meta data** (more about this later)
 
-- This notation provides a clearer, standardized way to represent cardinality (the number of relationships between entities).
-    - *One-to-One*, *One-to-Many*, *Many-to-Many* relationships are visually represented.
+For the schema, there’s three levels, the **internal, conceptual** and **external**
 
-**Example**: If we model **Aunt has Niece**, this would be a many-to-many relationship, as an aunt can have multiple nieces, and a niece can have multiple aunts.
+Internal schema describe the storage itself and their locations, deep down to the ones and zeroes
 
----
+With conceptual schema, we store all the data into tables (aka the relational model, more on this later) to make things easier to read
 
-### Relational Models
+What if we don’t need all the data as an end user? We make an external schema to present the data we need in the way we want
 
-1. **Hierarchical Model**:
-    - Organizes data into a tree-like structure (parent-child relationships).
-    - *Disadvantage*: Only handles 1:N relationships, and data redundancy becomes an issue.
-2. **Network Model**:
-    - More flexible than the hierarchical model, supports complex relationships but is harder to implement and maintain.
-    - *Disadvantage*: Uses pointers and circular lists, making it complicated.
-3. **Relational Model**:
-    - Introduced by *Codd (1970)*. Data is organized into relations (tables), which consist of rows (tuples) and columns (attributes).
-    - The relational model is the basis for modern DBMS.
+- We can have multiple external schemas per database depending on what we need
 
-**Example**: In the **COUNTRY has capital CITY** relationship, the relational model would represent this using two tables: one for `COUNTRY` and one for `CITY`, with a foreign key in the `CITY` table pointing back to the `COUNTRY`.
+Because of these external schemas, we need to have **data independence** to make sure we don’t break the end user experience, with two types existing: **logical data independence** and **physical data independence**
 
----
+Logical data independence is the capacity to change the conceptual schema without changing the external schema (ex. adding a new table shouldn’t be a problem, but making old tables reference that table or deleting old tables could)
 
-#### Keys in Relational Models
+The other type is physical data independence, where we can make changes to the physical schema without changing the conceptual schema (ex. upgrading the storage system to make data retrieval faster)
 
-- **Primary Key**: Ensures unique rows in a table.
-- **Super Key**: Any combination of attributes that guarantee uniqueness.
-- **Candidate Key**: Minimal super key.
-- **Foreign Key**: Enforces referential integrity by linking tables.
+Now that we understand a schema is, we can build one, right? First, we should model our data properly
 
-**Example**: In the relationship **PAINTER paints PAINTING**, the `PAINTING` table would have a foreign key that references the `PAINTER` table, ensuring that each painting is associated with an existing painter.
+## Modelling
 
----
+With databases, like all projects, it’s always best to create a plan before starting out, so we should start out with thinking about what data we need
 
-#### Properties of Relations
+Let’s say we’re building a database for a recipe website; we need to think of storing users with their username, login, authored recipes, saved recipes and anything else needed
 
-- Each table must have unique names, no duplicate rows (tuples), and the values in each column must come from the same domain.
-- The order of tuples doesn’t matter in a relation, but each tuple must be distinct.
+To apply this thought process to some other application, we should think about
 
-**Example**: If you have a table for `STUDENT` with attributes like `StudentNum`, `Name`, and `GPA`, each `StudentNum` must be unique, ensuring no two students have the same identifier.
+- Any data customers need to use/generate
+- Any screens customers use to modify/enter data
+- The way customers view the data
+- What you can get away with not storing
+    - This step is essential to minimizing bloat
 
----
+After we think about this, we draw a model, specifically an **ER Diagram (Entity Relationship Model)**
 
-#### Mapping ER Diagrams to Relational Models
+This is a model created by Peter Chen in 1976 and acts as a visual representation of data which we can map to a currently used model for database implementation (ex. Relational Model)
 
-- Entities become tables.
-- Relationships are represented using foreign keys or join tables (for many-to-many).
-- Weak entities and multi-valued attributes require special handling by combining keys or creating separate tables.
+![Untitled](images/Intro/a1.png)
 
-**Example**: In the relationship **AAA** to **BBB** via **RRR** (M:N), the primary key of the relationship table for `RRR` will be a composite key made up of the primary keys of both `AAA` (`A1`) and `BBB` (`B1`).
 
----
 
-#### Constraints in Relational Models
+To better explain the process, let’s build a model of the following mini-world together
 
-1. **Key Constraints**: Ensure uniqueness (e.g., Primary Key).
-2. **Referential Integrity**: Foreign keys must refer to valid entries in other tables.
-3. **Semantic Integrity**: Data must make sense logically (e.g., salary cannot be negative).
+- Suppose we plan to model a company which is organized into departments.
+- Each department has a unique name, number and employee who manages it (we want to keep track of when the employee started managing the department)
+- A department may have several locations
+- A department controls a bunch of projects, each project has a unique number, name and a single location
+- Each employee has a name, number, address, salary, sex and birthdate
+- An employee is assigned to only one department but may work on several projects which are not necessarily from the same department
+- Keep track of the number of hours each employee works on each project.
+- Keep track of the direct supervisor of each employee
+- Keep track of the dependents of each employee (name, sex, birthdate and relation)
 
-**Example**: Deleting a row from the `PLAYER` table where `PlayerID = 111` would violate referential integrity if `CaptainPlayerID` in the `TEAM` table references `PlayerID = 111`.
+## More on ER Diagrams
 
----
+To start off with, what should we use to draw the diagram? We have several options, including
 
-### Attribute Terminology
+- [Draw.IO](http://Draw.IO)
+- smartdraw
+- Microsoft Visio
+- etc…
 
-1. **Multivalued Attribute**: An attribute that can have multiple values.
-    - **Example**: **Mandarin** (Languages spoken by a student).
-2. **Derived Attribute**: An attribute calculated from other data.
-    - **Example**: **12** (Age of a student based on birthdate).
-3. **Composite Attribute**: An attribute that consists of multiple components.
-    - **Example**: **Homer Jay Simpson** (First, middle, and last name of a student).
-4. **Key Attribute**: A unique attribute used to identify an entity.
-    - **Example**: **hsimpson23** (UserID of a student).
-5. **Relationship Attribute**: An attribute that describes a relationship between entities.
-    - **Example**: **89%** (Grade given to a student for a course).
+Next, we need to figure out how to represent our mini world using the right terminology, since if we hand over an ER diagram with the wrong symbols, the database application might be flawed
 
----
+To start, we need to differentiate entities from attributes
 
-### Integrity and Constraints
+An **entity** is something that can exist separate from anything else, while an **attribute** is some characteristic that is attached to an entity
 
-- **Primary Key Constraint**: Every table must have a unique primary key.
-- **Referential Integrity**: Foreign keys must match primary keys in the related table or be NULL.
-- **Semantic Constraints**: Ensure logical consistency, like salaries being positive.
+For example, in “Each employee has a name, number, address, salary, sex and birthdate”, ‘employee’ would be an entity and ‘name’ would be an attribute
 
-**Example**: Inserting a new player with `TeamID = 66` into the `PLAYER` table would violate referential integrity if `TeamID = 66` does not exist in the
+- If we chose to split first name and last name in our model, a full name would be what’s considered a **composite attribute**
+- We can also differentiate between **multivalued attributes** as opposed to single-valued attributes, like how salary is a single attribute while a department’s projects would be multivalued
+- **Derived** vs **Stored** values are also an important distinction, like how we don’t need to store a person’s age if we have their birth date, meaning we can make age a derived value
 
-`TEAM` table.
+For each attribute, we also have a **domain** (meaning a set of values that the attribute can be equal to, i.e. integers, strings, characters, etc.)
 
----
+Each entity is stored in a table along with everything that has the same **entity type** with a unique **key** as to differentiate them (ex. your student ID number)
+
+In terms of ER diagrams, we use the following symbols
+
+![Untitled](images/Intro/a2.png)
+
+Now let’s look at our example again
+
+- Suppose we plan to model a company which is organized into departments.
+- Each department has a unique name, number and employee who manages it (we want to keep track of when the employee started managing the department)
+- A department may have several locations
+- A department controls a bunch of projects, each project has a unique number, name and a single location
+- Each employee has a name, number, address, salary, sex and birthdate
+- An employee is assigned to only one department but may work on several projects which are not necessarily from the same department
+- Keep track of the number of hours each employee works on each project.
+- Keep track of the direct supervisor of each employee
+- Keep track of the dependents of each employee (name, sex, birthdate and relation)
+
+Now we can begin to see where the entities are
+
+- Department: name, number, location(s)
+
+![Untitled](images/Intro/a3.png)
+
+- Employee: name, number, address, salary, sex, birthdate
+- Project: number, name, location
+- Dependent: name, sex, birthdate, relationship
+    - ER diagrams for these will be left as an exercise for the class
+
+Now that we’ve covered the entity part of Entity Relationship, let’s talk about the relationship part
+
+### Relationships
+
+Notice how, when we defined our entities earlier, we didn’t mark the department manager or anything else where two entities interact
+
+This is where we define our **relationships** (named grouping of entities)
+
+- The set of relationships of the same type is referred to as the **relationship set**
+    - More technically, a relationship type $R$ among $n$ entity types $E1,E2,...,En$ is a set of instances $ri$, where $ri$ associates $n$ entities $e1,e2,...,en$ and each entity $ej \in ri$ is a member of entity type $Ej, 1 \leq j \leq n$, hence making $R$ a mathematical relation on $E1,E2,...,En$
+    - For example, (“Laura”, “Computer Science”) is a relationship set of (Prof, Department), with the relationship type being “teaches”
+
+![Untitled](images/Intro/a4.png)
+
+
+Things get more complicated as you expand your instances out
+
+- Since there are two entities in the relationship set, we call this a **binary relationship**
+
+![Untitled](images/Intro/a5.png)
+
+Representation in ER form
+
+In the above example, sometimes we want to associate an attribute onto a relationship, especially in situations where you want the attribute to describe the relationship somehow.
+
+![Untitled](images/Intro/a6.png)
+
+We can also have ternary relationships (the above diagram says a part is supplied by a supplier for a project).
+
+As weird as it may sound, unary relationships also have their uses, especially when an instance has a relationship with a different instance of the same type (e.g., a student is friends with another student).
+
+We can also talk about a relationship’s **cardinality ratio**, with the common ones being one-to-one, many-to-one, and many-to-many:
+
+- **One-to-One**: Two instances are alone in their relationship (e.g., an employee could only manage one department and a department could only be managed by one employee).
+- **Many-to-One**: One side of the relationship can share many relationships of the same type (e.g., an employee can only work for one department, but a department can have many employees).
+  - **One-to-Many** is the same thing but from the other side.
+- **Many-to-Many**: Both sides are free to add multiple instances (e.g., many employees work on one project, and an employee can work on many projects).
+
+![Untitled](images/Intro/a7.png)
+
+ER representation of a one-to-many relationship
+
+![Untitled](images/Intro/a8.png)
+
+ER symbols
+
+- Note that in a many-to-many relationship we use M on one side and N on the other.
+
+For our overarching example, let’s look at the relationships:
+
+- Suppose we plan to model a company which is organized into departments.
+- Each department has a unique name, number, and employee who manages it (we want to keep track of when the employee started managing the department).
+- A department may have several locations.
+- A department controls a bunch of projects, each project has a unique number, name, and a single location.
+- Each employee has a name, number, address, salary, sex, and birthdate.
+- An employee is assigned to only one department but may work on several projects which are not necessarily from the same department.
+- Keep track of the number of hours each employee works on each project.
+- Keep track of the direct supervisor of each employee.
+- Keep track of the dependents of each employee (name, sex, birthdate, and relation).
+
+Our relationships would look something like this:
+
+- Employee MANAGES department (one-to-one) (has start date as attribute).
+- Department CONTROLS projects (one-to-many).
+- Employees WORK_FOR department (many-to-one).
+- Employees WORK_ON projects (many-to-many) (has hours as attribute).
+- Employee SUPERVISES employees (one-to-many).
+- Employee HAS dependents (one-to-many).
+
+We’ve been careful about our use of the word “can” up until now, but what if some relationship is mandatory?
+
+### Participation
+
+**Participation** refers to whether or not an entity must participate in a relationship.
+
+- If EVERY instance in the entity type has to participate in the relationship, it’s called **total participation** and we mark the relationship with a double line in our ER diagrams.
+- Otherwise, it’s **partial participation** and we use a single line.
+- We can also use (min, max) as notation which defines a minimum and maximum number of relationships (as long as $0 \leq min \leq max$ and $max \geq 1$).
+  - A min of 0 implies partial participation.
+
+![Untitled](images/Intro/a9.png)
+
+We put a double line on the side with total participation.
+
+![Untitled](images/Intro/a10.png)
+
+Note that the maximum of one side should match the other side.
+
+Let’s go back to our example again:
+
+- Suppose we plan to model a company which is organized into departments.
+- Each department has a unique name, number, and employee who manages it (we want to keep track of when the employee started managing the department).
+- A department may have several locations.
+- A department controls a bunch of projects, each project has a unique number, name, and a single location.
+- Each employee has a name, number, address, salary, sex, and birthdate.
+- An employee is assigned to only one department but may work on several projects which are not necessarily from the same department.
+- Keep track of the number of hours each employee works on each project.
+- Keep track of the direct supervisor of each employee.
+- Keep track of the dependents of each employee (name, sex, birthdate, and relation).
+
+Our participation may look something like this:
+
+- Employee (0,1) MANAGES (1,1) department.
+- Department (0, M) CONTROLS (1,1) projects.
+- Employees (1,M) WORK_FOR (1,1) department.
+- Employees (1,M) WORK_ON (1,N) projects.
+- Employee (0,M) SUPERVISES (0,1) employees.
+- Employee (0,M) HAS (1,1) dependents.
+
+### Weak Entities
+
+In a relationship, we often run into situations where one side can’t exist without the other, with the side that won’t remain being referred to as a **weak entity**.
+
+- For example, a room doesn’t exist without a building, but a building can exist without a room.
+
+Weak entities also have some other properties, including:
+
+- They have no key attribute (should have a partial key or key relative to the owner entity).
+  - The partial key should have a dashed underline.
+- They always have total participation with their owner.
+- They are always represented with a double line around the entity and its relationship.
+
+![Untitled](images/Intro/a11.png)
+
+In our example from before, a dependent can be considered a weak entity since, without an attached employee, we don’t need to store it.
+
+### General Guidelines
+
+After everything’s done, our ER diagram looks something like this:
+
+![Untitled](images/Intro/a12.png)
+
+While this is technically correct, it’s clunky and hard to read, so let’s look at how we can improve it.
+
+Here are some guidelines that should be followed:
+
+- Use either all singular or all plural names (preferably singular).
+- Use meaningful names (i.e., Item1 and Item2 aren’t very helpful).
+- Make relationships read from left to right and top to bottom (i.e., department HAS employee, not department WORKS FOR employee, referring to the diagram above).
+
+### Crow’s Feet Notation
+
+This won’t be tested, but it’s good to recognize.
+
+This notation is similar to UML diagrams, where attributes are under the entity name in a rectangle.
+
+![Untitled](images/Intro/a13.png)
+
+Instead of diamonds for relationships, we simply have lines that tell us the cardinality and participation depending on the notches.
+
+![Untitled](images/Intro/a14.png)
+
+With this, we can represent all of our relationships with a different notation.
+
+![Untitled](images/Intro/a15.png)
