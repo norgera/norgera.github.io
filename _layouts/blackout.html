@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="{{ site.lang | default: 'en-US' }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b0c0d">
+    <meta name="color-scheme" content="dark">
+    <meta name="description" content="{{ page.description | escape }}">
+    <title>{{ page.title }}</title>
+    <style>html{background:#0b0c0d;color:#f4f4f2}</style>
+    <link rel="icon" type="image/png" href="{{ '/assets/images/blackout/app-icon.png' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/blackout.css' | relative_url }}">
+  </head>
+  <body class="blackout blackout--{{ page.page_kind | default: 'page' }}">
+    <header class="blackout-header">
+      <div class="blackout-container blackout-header-inner">
+        <a class="blackout-brand" href="{{ '/blackout/' | relative_url }}">
+          <img src="{{ '/assets/images/blackout/app-icon.png' | relative_url }}" width="34" height="34" alt="">
+          <span>Blackout</span>
+        </a>
+        <nav aria-label="Blackout navigation">
+          <a href="https://github.com/norgera/Blackout">GitHub</a>
+          <a class="blackout-download-small" href="https://github.com/norgera/Blackout/releases/latest/download/Blackout.dmg">Download</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="blackout-container">
+      {{ content }}
+    </main>
+
+    <footer class="blackout-footer">
+      <div class="blackout-container blackout-footer-inner">
+        <span>Blackout by Nathan Orgera</span>
+        <nav aria-label="Legal navigation">
+          <a href="{{ '/blackout/privacy/' | relative_url }}">Privacy</a>
+          <a href="{{ '/blackout/terms/' | relative_url }}">Terms</a>
+          <a href="{{ '/' | relative_url }}">nate's site</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>
