@@ -118,10 +118,64 @@ body.blackout {
   font-size: 19px;
 }
 
-.blackout-download {
-  display: inline-block;
+.blackout-install {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
   margin-top: 28px;
+  scroll-margin-top: 24px;
+}
+
+.blackout-command {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  overflow: hidden;
+  border: 1px solid #3a3d41;
+  border-radius: 8px;
+  background: #151719;
+}
+
+.blackout-command code {
+  overflow-x: auto;
+  padding: 10px 13px;
+  color: #dfe1e3;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.blackout-command button {
+  align-self: stretch;
+  min-width: 60px;
+  padding: 0 12px;
+  border: 0;
+  border-left: 1px solid #3a3d41;
+  background: #24272a;
+  color: var(--blackout-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.blackout-command button:hover {
+  background: #303438;
+}
+
+.blackout-command button:focus-visible,
+.blackout-release:focus-visible {
+  outline: 2px solid #f4f4f2;
+  outline-offset: 3px;
+}
+
+.blackout-release {
+  display: inline-block;
   padding: 11px 19px;
+  border: 1px solid #d9d9d7;
   border-radius: 8px;
   background: #f1f1ef;
   color: #0b0c0d !important;
@@ -219,6 +273,20 @@ body.blackout {
 
   .blackout-hero {
     padding-top: 64px;
+  }
+
+  .blackout-install {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .blackout-command,
+  .blackout-release {
+    width: 100%;
+  }
+
+  .blackout-release {
+    text-align: center;
   }
 
   .blackout-demo {
